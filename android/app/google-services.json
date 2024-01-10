@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113086635979",
+    "project_id": "lets-collect-cab16",
+    "storage_bucket": "lets-collect-cab16.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113086635979:android:59845456b9848a7187204e",
+        "android_client_info": {
+          "package_name": "com.crayotech.lets_collect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaF7Ze2tfN-M9A2ywhJPdZozessrKDZh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
