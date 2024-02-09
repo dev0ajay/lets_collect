@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:lets_collect/src/model/cms/terms_and_condition.dart';
 
 import '../../model/state_model.dart';
-import '../../resources/api_providers/profile_provider.dart';
+import '../../resources/api_providers/profile_screen_provider.dart';
 
 part 'terms_and_condition_event.dart';
 part 'terms_and_condition_state.dart';

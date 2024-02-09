@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -55,7 +56,11 @@ class MyButton extends StatelessWidget {
             SizedBox(width: showImage ? 8 : 0),
             Text(
               text,
-              style: TextStyle(fontSize: Textfontsize, color: TextColors),
+              style: GoogleFonts.roboto(
+                color: TextColors,
+                fontSize: Textfontsize,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ],
         ),

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lets_collect/src/model/cms/privacy_policies.dart';
 import 'package:lets_collect/src/model/state_model.dart';
-import 'package:lets_collect/src/resources/api_providers/profile_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 
 part 'privacy_policies_event.dart';
 part 'privacy_policies_state.dart';

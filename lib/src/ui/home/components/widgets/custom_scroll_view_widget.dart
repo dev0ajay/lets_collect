@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:lets_collect/src/ui/home/components/widgets/special_offer-details_overlay_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -79,6 +78,17 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   ),
                 );
               }
+              if(state is HomeErrorState) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Lottie.asset(Assets.TRY_AGAIN),
+                      const Text("state"),
+                    ],
+                  ),
+                );
+              }
+
               if (state is HomeLoaded) {
                 return CustomScrollView(
                   slivers: [
@@ -132,24 +142,19 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
+                                  border: Border.all(color: AppColors.borderColor,width: 1),
+                                  boxShadow: const [
                                     BoxShadow(
-                                      color: Colors.grey.shade400,
-                                      blurRadius: 1.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: const Offset(
-                                        0.0, // Move to right 10  horizontally
-                                        0.0, // Move to bottom 10 Vertically
-                                      ),
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(4, 2),
+                                      spreadRadius: 0,
                                     ),
                                     BoxShadow(
-                                      color: Colors.grey.shade300,
-                                      blurRadius: 1.0, // soften the shadow
-                                      spreadRadius: 0.0, //extend the shadow
-                                      offset: const Offset(
-                                        -1.0, // Move to right 10  horizontally
-                                        -1.0, // Move to bottom 10 Vertically
-                                      ),
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(-4, -2),
+                                      spreadRadius: 0,
                                     ),
                                   ],
                                 ),
@@ -200,54 +205,59 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Container(
-                                height: getProportionateScreenHeight(160),
-                                width: getProportionateScreenWidth(150),
-                                decoration: BoxDecoration(
-                                  // color: AppColors.primaryColor,
-                                  gradient: const RadialGradient(
-                                    center: Alignment(0, 1),
-                                    radius: 0,
-                                    colors: [
-                                      Color(0xFFFFCACE),
-                                      Color(0xFFF55562)
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      flex: 3,
-                                      child: Center(
-                                        child:
-                                            Image.asset(Assets.SCAN, scale: 6)
-                                                .animate()
-                                                .shake(
-                                                  duration: const Duration(
-                                                      milliseconds: 400),
-                                                ),
-                                      ),
+                              padding: const EdgeInsets.only(left: 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.push('/scan');
+                                  },
+                                child: Container(
+                                  height: getProportionateScreenHeight(160),
+                                  width: getProportionateScreenWidth(150),
+                                  decoration: BoxDecoration(
+                                    // color: AppColors.primaryColor,
+                                    gradient: const RadialGradient(
+                                      center: Alignment(0, 1),
+                                      radius: 0,
+                                      colors: [
+                                        Color(0xFFFFCACE),
+                                        Color(0xFFF55562),
+                                      ],
                                     ),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Text(
-                                        "Scan",
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.primaryWhiteColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Center(
+                                          child:
+                                              Image.asset(Assets.SCAN, scale: 6)
+                                                  .animate()
+                                                  .shake(
+                                                    duration: const Duration(
+                                                        milliseconds: 400),
+                                                  ),
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          "Scan",
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primaryWhiteColor,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 0),
                               child: Container(
                                 height: getProportionateScreenHeight(160),
                                 width: getProportionateScreenWidth(150),
@@ -278,13 +288,16 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 ),
                                       ),
                                     ),
-                                    Text(
-                                      "Total points \n ${state.homeResponse.totalPoints} pts",
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.primaryWhiteColor,
+                                    Flexible(
+                                      flex: 1,
+                                      child: Text(
+                                        "Total points \n ${state.homeResponse.totalPoints} pts",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.openSans(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.primaryWhiteColor,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -490,11 +503,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         padding: const EdgeInsets.all(15),
                                         child: GestureDetector(
                                             onTap: () {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) =>
-                                                const SpecialOfferDetailsOverlayWidget(),
-                                              );
+                                              context.push('/special_offer_details');
                                             },
                                           child: Container(
                                             height:

@@ -3,7 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/countryscreen/signup_country_screen.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
-import 'package:lets_collect/src/ui/home/components/special_offer_screen.dart';
+import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
+import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
+import 'package:lets_collect/src/ui/reward/components/widgets/filter.dart';
+import 'package:lets_collect/src/ui/reward/qr_code_screen.dart';
+import 'package:lets_collect/src/ui/scan/scan_history_screen.dart';
+import 'package:lets_collect/src/ui/special_offer/components/offer_details_arguments.dart';
+import 'package:lets_collect/src/ui/special_offer/special_offer_details_screen.dart';
+import 'package:lets_collect/src/ui/special_offer/special_offer_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/help_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/my_profile_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/privacy_policies.dart';
@@ -11,6 +18,7 @@ import 'package:lets_collect/src/ui/profile/components/terms_and_conditions.dart
 import 'package:lets_collect/src/ui/reward/components/brand/brand_product_listing_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect/lets_collect_redeem_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/partner/partner_product_listing_screen.dart';
+import 'package:lets_collect/src/ui/reward/components/redeem_screen.dart';
 import 'package:lets_collect/src/ui/reward/reward_screen.dart';
 import 'package:lets_collect/src/ui/scan/long_reciept_screen.dart';
 import 'package:lets_collect/src/ui/search/components/search_details_screen.dart';
@@ -25,6 +33,7 @@ import '../src/ui/forget_password/components/widget/forget_password_confirm_scre
 import '../src/ui/forget_password/components/widget/forget_password_otp_screen.dart';
 import '../src/ui/home/home_screen.dart';
 import '../src/ui/profile/profile_screen.dart';
+import '../src/ui/scan/components/scan_detail_screen_argument.dart';
 import '../src/ui/scan/scan_screen.dart';
 
 class AppRouter {
@@ -42,7 +51,7 @@ class AppRouter {
            return CustomTransitionPage<void>(
                 key: state.pageKey,
                 child: const Login_screen(),
-                transitionDuration: const Duration(milliseconds: 150),
+                transitionDuration: const Duration(milliseconds: 950),
                 transitionsBuilder: (BuildContext context,
                     Animation<double> animation,
                     Animation<double> secondaryAnimation,
@@ -108,7 +117,7 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child: const RewardScreen(),
+                  child:  const RewardScreen(),
                   transitionDuration: const Duration(milliseconds: 950),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -129,17 +138,17 @@ class AppRouter {
           GoRoute(
             path: 'lets_collect_redeem',
             builder: (BuildContext context, GoRouterState state) =>
-            const LetsCollectRedeemScreen(),
+             LetsCollectRedeemScreen(redeemScreenArguments: state.extra as LetCollectRedeemScreenArguments,),
           ),
           GoRoute(
             path: 'brand_products',
             builder: (BuildContext context, GoRouterState state) =>
-            const BrandProductListingScreen(),
+             BrandProductListingScreen(redeemScreenArguments: state.extra as LetCollectRedeemScreenArguments,),
           ),
           GoRoute(
             path: 'partner_products',
             builder: (BuildContext context, GoRouterState state) =>
-            const PartnerProductListingScreen(),
+             PartnerProductListingScreen(redeemScreenArguments: state.extra as LetCollectRedeemScreenArguments,),
           ),
 
           GoRoute(
@@ -244,10 +253,36 @@ class AppRouter {
               builder: (BuildContext context, GoRouterState state) =>
               const SpecialOfferScreen()
           ),
+          GoRoute(
+              path: 'special_offer_details',
+              builder: (BuildContext context, GoRouterState state) =>
+               SpecialOfferScreenDetails(offerDetailsArguments: state.extra as OfferDetailsArguments,)
+          ),
+          GoRoute(
+              path: 'redeem_screen',
+              builder: (BuildContext context, GoRouterState state) =>
+               RedeemScreen(brandAndPartnerRedeemArguments: state.extra as BrandAndPartnerRedeemArguments,)
+          ),
+          GoRoute(
+              path: 'filter_screen',
+              builder: (BuildContext context, GoRouterState state) =>
+              const FilterSheet(),
+          ),
+          GoRoute(
+            path: 'scan_history',
+            builder: (BuildContext context, GoRouterState state) =>
+             const ScanHistoryDetailsScreen(),
+          ),
+          GoRoute(
+            path: 'qr_code',
+            builder: (BuildContext context, GoRouterState state) =>
+            const QrCodeGenerationScreen()
+          ),
         ],
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>
             const SplashScreen(),
+
 
       ),
     ],

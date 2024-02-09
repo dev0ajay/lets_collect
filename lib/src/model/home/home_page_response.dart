@@ -107,7 +107,7 @@ class Offer {
   final String offerHeadingArabic;
   final String offerDetails;
   final String offerDetailsArabic;
-  final String ageGroup;
+  // final String ageGroup;
   final String productQtyLimit;
   final String superMartkets;
   final dynamic scanNumLimit;
@@ -126,7 +126,7 @@ class Offer {
     required this.offerHeadingArabic,
     required this.offerDetails,
     required this.offerDetailsArabic,
-    required this.ageGroup,
+    // required this.ageGroup,
     required this.productQtyLimit,
     required this.superMartkets,
     required this.scanNumLimit,
@@ -146,7 +146,7 @@ class Offer {
     offerHeadingArabic: json["offer_heading_arabic"],
     offerDetails: json["offer_details"],
     offerDetailsArabic: json["offer_details_arabic"],
-    ageGroup: json["age_group"],
+    // ageGroup: json["age_group"],
     productQtyLimit: json["product_qty_limit"],
     superMartkets: json["super_martkets"],
     scanNumLimit: json["scan_num_limit"],
@@ -166,7 +166,7 @@ class Offer {
     "offer_heading_arabic": offerHeadingArabic,
     "offer_details": offerDetails,
     "offer_details_arabic": offerDetailsArabic,
-    "age_group": ageGroup,
+    // "age_group": ageGroup,
     "product_qty_limit": productQtyLimit,
     "super_martkets": superMartkets,
     "scan_num_limit": scanNumLimit,

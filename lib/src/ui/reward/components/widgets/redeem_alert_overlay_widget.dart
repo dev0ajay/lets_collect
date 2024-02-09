@@ -1,15 +1,24 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 import '../../../scan/components/widgets/scan_screen_collect_button.dart';
 
 class RedeemAlertOverlayWidget extends StatefulWidget {
-  const RedeemAlertOverlayWidget({super.key});
+  final String imageUrl;
+  final String requiredPoints;
+  final String qrUrl;
+  const RedeemAlertOverlayWidget({super.key,required this.imageUrl,required this.requiredPoints,required this.qrUrl});
 
   @override
   State<StatefulWidget> createState() => RedeemAlertOverlayWidgetState();
@@ -22,6 +31,7 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
   final interval = const Duration(seconds: 1);
   final int timerMaxSeconds = 60;
   int currentSeconds = 0;
+  String qrUrl = "";
 
   String get timerText =>
       '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
@@ -37,6 +47,10 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
           print(timer.tick);
           currentSeconds = timer.tick;
           if (timer.tick >= timerMaxSeconds) timer.cancel();
+          if (timer.tick >= timerMaxSeconds) {
+            context.pop();
+            context.pop();
+          }
         });
       }
     });
@@ -57,6 +71,8 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
 
     controller.forward();
     startTimeout();
+    print(widget.imageUrl);
+    print(widget.requiredPoints);
   }
 
   @override
@@ -68,8 +84,16 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
 
   @override
   Widget build(BuildContext context) {
+
     return Center(
-      child: Material(
+      child: BlocConsumer<RedeemBloc, RedeemState>(
+  listener: (context, state) {
+    if(state is RedeemLoaded) {
+      qrUrl = state.qrCodeUrlRequestResponse.data!.url!;
+    }
+  },
+  builder: (context, state) {
+    return Material(
         color: Colors.transparent,
         child: ScaleTransition(
           scale: scaleAnimation,
@@ -94,37 +118,54 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
                   ),
                 ),
                 // const SizedBox(height: 10),
-                Center(
-                  child: Image.network(
-                    "https://images.unsplash.com/photo-1525904097878-94fb15835963?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                    height: 95,
-                    width: 150,
+                Expanded(
+                  flex: 4,
+                  child: Center(
+                    child: CachedNetworkImage(
+                      imageUrl:
+                      widget.imageUrl,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) => Lottie.asset(Assets.JUMBINGDOT,height: 10,width: 10),
+                      errorWidget: (context, url, error) => const ImageIcon(
+                        size: 100,
+                        color: AppColors.hintColor,
+                        AssetImage(Assets.NO_IMG),),
+                    ),
                   ),
                 ),
                 // const SizedBox(height: 20),
-                Text(
-                  "Points Redeemed: 60 points",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.openSans(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    "Points get Redeemed: ${widget.requiredPoints} points",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 // const SizedBox(height: 10),
-                Text(
-                  "Remaining time",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.roboto(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    "Remaining time",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
-                Text(
-                  timerText,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.openSans(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w700,
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    timerText,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 Text(
@@ -136,15 +177,25 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
                   ),
                 ),
                 // SizedBox(height:30),
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ScanScreenCollectButton(text: "Redeem"),
+                 Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: InkWell(
+                      onTap: () {
+                          context.push('/qr_code');
+                      },
+                        child:  const ScanScreenCollectButton(text: "Redeem"),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
-      ),
+      );
+  },
+),
     );
   }
 }

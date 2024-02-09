@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
@@ -16,9 +17,10 @@ class MyTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final String? prefixText;
   final IconData? prefixIcon;
+  final List<TextInputFormatter>? inputFormatter;
 
   const MyTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.obscureText,
     required this.maxLines,
@@ -28,7 +30,8 @@ class MyTextField extends StatefulWidget {
     required this.focusNode,
     this.prefixText,
     this.prefixIcon,
-  }) : super(key: key);
+    this.inputFormatter,
+  });
 
   @override
   _MyTextFieldState createState() => _MyTextFieldState();
@@ -41,8 +44,9 @@ class _MyTextFieldState extends State<MyTextField> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return SizedBox(
-      height: getProportionateScreenHeight(55),
+      // height: getProportionateScreenHeight(55),
       child: TextFormField(
+        inputFormatters: widget.inputFormatter,
         focusNode: widget.focusNode,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
@@ -50,6 +54,7 @@ class _MyTextFieldState extends State<MyTextField> {
         obscureText: widget.obscureText && !_passwordVisible,
         validator: widget.validator,
         decoration: InputDecoration(
+
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),
@@ -60,8 +65,10 @@ class _MyTextFieldState extends State<MyTextField> {
 
           ),
           hintText: widget.hintText,
-          hintStyle: GoogleFonts.openSans(
-              color: Colors.grey, fontWeight: FontWeight.normal),
+          labelStyle: GoogleFonts.roboto(
+              color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
+          hintStyle: GoogleFonts.roboto(
+              color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
           contentPadding: const EdgeInsets.all(15),
           fillColor: Colors.white,
           filled: true,
@@ -71,7 +78,7 @@ class _MyTextFieldState extends State<MyTextField> {
               ? Container(
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.primaryWhiteColor,
               border: Border(
                 right: BorderSide(
                   color: AppColors.borderColor,
@@ -81,7 +88,8 @@ class _MyTextFieldState extends State<MyTextField> {
             ),
             child: Text(
               widget.prefixText!,
-              style: const TextStyle(color: Colors.grey),
+              style: GoogleFonts.roboto(
+                  color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
             ),
           )
               : null,

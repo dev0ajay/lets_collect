@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lets_collect/src/model/home/home_page_response.dart';
 import 'package:lets_collect/src/model/state_model.dart';
-import 'package:lets_collect/src/resources/api_providers/home_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -19,6 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if(stateModel is SuccessState) {
         emit(HomeLoaded(homeResponse: stateModel.value));
       }
+      if(stateModel is ErrorState) {}
       }
     );
   }

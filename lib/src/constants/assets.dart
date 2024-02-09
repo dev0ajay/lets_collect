@@ -14,6 +14,15 @@ class Assets {
   static const String LOCK = 'assets/png_icons/lock.png';
   static const String MAIL = 'assets/png_icons/mail.png';
   static const String TICK = 'assets/png_icons/tick icon.png';
+  static const String DISABLED_TICK = 'assets/png_icons/disabled_tick.png';
+  static const String SIDE_ARROW = 'assets/png_icons/side_arrow.png';
+  static const String DOWN_ARROW = 'assets/png_icons/down arrow.png';
+  static const String NO_IMAGE = 'assets/png_icons/noImage.jpg';
+  static const String NO_IMG = 'assets/png_icons/no_image.png';
+
+
+
+
 
   ///Lottie
   static const String SELECT_CITY_LOTTIE = 'assets/lottie/selectCity.json';
@@ -23,6 +32,14 @@ class Assets {
   static const String NO_INTERNET = 'assets/lottie/nonetwork.json';
   static const String NO_DATA = 'assets/lottie/no_data.json';
   static const String OOPS = 'assets/lottie/oops.json';
+  static const String TRY_AGAIN = 'assets/lottie/error.json';
+  static const String SCANING = 'assets/lottie/scan.json';
+  static const String CHOOSE = 'assets/lottie/choose.json';
+  static const String SOON = 'assets/lottie/soon.json';
+
+
+
+
 
 
   ///SVG
@@ -48,7 +65,7 @@ class Assets {
 
   ///home screen
   static const String WALLET = 'assets/png_icons/wallet.png';
-  static const String SCAN = 'assets/png_icons/face-scan.png';
+  static const String SCAN = 'assets/png_icons/scan_img.png';
   static const String HOME = 'assets/png_icons/home.png';
   static const String REWARD = 'assets/png_icons/gift.png';
   static const String PROFILE = 'assets/png_icons/user.png';

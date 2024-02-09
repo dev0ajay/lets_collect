@@ -1,14 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
+import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/redeem_alert_overlay_widget.dart';
 import 'package:lets_collect/src/ui/scan/components/widgets/scan_screen_collect_button.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
+import '../lets_collect_redeem_screen_arguments.dart';
 
 class LetsCollectRedeemScreen extends StatefulWidget {
-  const LetsCollectRedeemScreen({super.key});
+  final LetCollectRedeemScreenArguments redeemScreenArguments;
+
+  const LetsCollectRedeemScreen(
+      {super.key, required this.redeemScreenArguments});
 
   @override
   State<LetsCollectRedeemScreen> createState() =>
@@ -16,11 +25,10 @@ class LetsCollectRedeemScreen extends StatefulWidget {
 }
 
 class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
-
-
   @override
   void initState() {
     super.initState();
+    // ObjectFactory().prefs.getLetsCollectTierData()!.data.letsCollect.forEach((element) { });
   }
 
   @override
@@ -58,7 +66,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: '1200',
+                text: widget.redeemScreenArguments.requiredPoint,
                 style: GoogleFonts.roboto(
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -114,18 +122,33 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                               flex: 4,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
-                                child: Image.network(
-                                  "https://images.unsplash.com/photo-1525904097878-94fb15835963?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      widget.redeemScreenArguments.imageUrl,
                                   fit: BoxFit.fill,
-                                  // height: 350,
+                                  placeholder: (context, url) => Lottie.asset(
+                                      Assets.JUMBINGDOT,
+                                      height: 10,
+                                      width: 10),
+                                  errorWidget: (context, url, error) =>
+                                      const ImageIcon(
+                                    color: AppColors.hintColor,
+                                    AssetImage(Assets.NO_IMG),
+                                  ),
                                 ),
+                                // Image.network(
+                                //   widget.redeemScreenArguments.imageUrl,
+                                //   fit: BoxFit.fill,
+                                //
+                                //   // height: 350,
+                                // ),
                               ),
                             ),
                             const SizedBox(height: 30),
                             Flexible(
                               flex: 1,
                               child: Text(
-                                "60",
+                                widget.redeemScreenArguments.requiredPoint,
                                 style: GoogleFonts.roboto(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
@@ -151,12 +174,14 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
               ),
               Expanded(
                 flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    _showDialogBox(context: context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      _showDialogBox(
+                          context: context,
+                          storeList: widget.redeemScreenArguments.wereToRedeem);
+                    },
                     child: Text(
                       " Where can i redeem this reward?",
                       style: GoogleFonts.roboto(
@@ -171,13 +196,27 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                 ),
               ),
               Flexible(
-                flex: 3,
+                flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 0),
                   child: GestureDetector(
                     onTap: () {
-                      showDialog(context: context, builder: (BuildContext context)
-                      => const RedeemAlertOverlayWidget(),);
+                      BlocProvider.of<RedeemBloc>(context).add(
+                        GetQrCodeUrlEvent(
+                          qrCodeUrlRequest: QrCodeUrlRequest(rewardId: 2),
+                        ),
+                      );
+
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            RedeemAlertOverlayWidget(
+                          imageUrl: widget.redeemScreenArguments.imageUrl,
+                          requiredPoints:
+                              widget.redeemScreenArguments.requiredPoint,
+                          qrUrl: '',
+                        ),
+                      );
                     },
                     child: const ScanScreenCollectButton(text: "Redeem"),
                   ),
@@ -202,13 +241,17 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
       ),
     );
   }
+
   void _showDialogBox({
     required BuildContext context,
+    required List<String> storeList,
   }) {
     showDialog(
-
       context: context,
       builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(9),
+            side: const BorderSide(color: AppColors.borderColor)),
         backgroundColor: AppColors.primaryWhiteColor,
         elevation: 5,
         alignment: Alignment.center,
@@ -227,27 +270,29 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Flexible(
-                flex: 3,
-                child: Center(
-                  child: Text("In Following Physical Store")
+              Center(
+                  child: Text(
+                "In Following Physical Store",
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
-              ),
+              )),
               const SizedBox(height: 20),
-
-              Flexible(
+              Expanded(
                 flex: 2,
-                child:
-               Column(
-                 children: [
-                   Text('\u2022 Bullet Text'),
-                   Text('\u2022 Bullet Text'),
-                   Text('\u2022 Bullet Text'),
-
-                 ],
-               ),
+                child: Column(
+                    children: List.generate(
+                  storeList.length,
+                  (index) => Text(
+                    "\u2022 ${storeList[index]}",
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )),
               ),
-
             ],
           ),
         ),

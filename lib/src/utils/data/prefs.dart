@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:lets_collect/src/model/auth/login_request_response.dart';
 import 'package:lets_collect/src/model/auth/response.dart';
+import 'package:lets_collect/src/model/reward_tier/reward_tier_request_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// shared preference storage
@@ -30,6 +31,12 @@ class Prefs {
   static const String? _IS_MOB_NUM_VERIFIED = "is_mob_num_verified";
   static const String? _IS_REFERRAL_LOADED = "is_referral_loaded";
   static const String? _IS_HELP_CENTER_LOADED = "is_help_center_loaded";
+  static const String? _BRAND_TIER_DATA = "brand_tier_data";
+  static const String? _PARTNER_TIER_DATA = "partner_tier_data";
+  static const String? _LETSCOLLECT_TIER_DATA = "letsCollect_tier_data";
+
+
+
 
 
 
@@ -251,6 +258,51 @@ class Prefs {
     return result;
   }
 
+
+  ///  brand tier data
+  void saveBrandTierData(RewardTierRequestResponse result) {
+    String jsonString = jsonEncode(result);
+    _sharedPreferences!.setString(_BRAND_TIER_DATA!, jsonString);
+  }
+
+  /// get brand tier data
+  RewardTierRequestResponse? getBrandTierData() {
+    Map<String, dynamic>? resultMap =
+    jsonDecode(_sharedPreferences!.getString(_BRAND_TIER_DATA!)!);
+    var result = RewardTierRequestResponse.fromJson(resultMap!);
+    return result;
+  }
+
+
+  ///  partner tier data
+  void savePartnerTierData(RewardTierRequestResponse result) {
+    String jsonString = jsonEncode(result);
+    _sharedPreferences!.setString(_PARTNER_TIER_DATA!, jsonString);
+  }
+
+  ///  get partner tier data
+  RewardTierRequestResponse? getPartnerTierData() {
+    Map<String, dynamic>? resultMap =
+    jsonDecode(_sharedPreferences!.getString(_PARTNER_TIER_DATA!)!);
+    var result = RewardTierRequestResponse.fromJson(resultMap!);
+    return result;
+  }
+
+
+
+  ///  lets collect tier data
+  void saveLetsCollectTierData(RewardTierRequestResponse result) {
+    String jsonString = jsonEncode(result);
+    _sharedPreferences!.setString(_LETSCOLLECT_TIER_DATA!, jsonString);
+  }
+
+  /// get lets collect tier data
+  RewardTierRequestResponse? getLetsCollectTierData() {
+    Map<String, dynamic>? resultMap =
+    jsonDecode(_sharedPreferences!.getString(_LETSCOLLECT_TIER_DATA!)!);
+    var result = RewardTierRequestResponse.fromJson(resultMap!);
+    return result;
+  }
 
   ///  referral data
   // void saveReferralContent(ReferralScreenResponse result) {

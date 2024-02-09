@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/ui/home/components/widgets/alert_overlay_widget.dart';
 import 'package:lets_collect/src/ui/home/components/widgets/custom_scroll_view_widget.dart';
@@ -39,7 +40,7 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
           listener: (context, state) {
             if(!isEmailVerifyRewardExecuted) {
               if (state is HomeLoaded) {
-                if (state.homeResponse.emailVerified == 1) {
+                if (state.homeResponse.emailVerificationPoints != 0 || state.homeResponse.emailVerificationPoints.isGreaterThan(0)) {
                   setState(() {
                     isDone = true;
                     isEmailVerifyRewardExecuted = true;
@@ -48,11 +49,17 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
                   });
                 }
 
-                if (state.homeResponse.emailVerified == 0) {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => const AlertOverlay());
+                if(!isEmailVerifyRewardExecuted) {
+                  if (state.homeResponse.emailVerified == 0) {
+                    setState(() {
+                      isEmailVerifyRewardExecuted = true;
+                    });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => const AlertOverlay());
+                  }
                 }
+
               }
 
             }

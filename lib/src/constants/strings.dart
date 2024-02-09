@@ -47,7 +47,7 @@ static const String FIND_YOUR_FAVOURITE = "Find Your Favourite";
 
   ///signup
   static const String SINGUP_BUTTON_TEXT = "Next";
-  static const String SIGNUP_SUB_HEADING = "Join Today And Collect";
+  static const String SIGNUP_SUB_HEADING = "Join Today And Start Collecting";
   static const String SIGNUP_FIRSTNAME_LABEL_TEXT = "First Name";
   static const String SIGNUP_LASTNAME_LABEL_TEXT = "Last Name";
   static const String SIGNUP_EMAIL_LABEL_TEXT = "E-mail";

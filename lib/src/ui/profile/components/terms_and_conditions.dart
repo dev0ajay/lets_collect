@@ -4,7 +4,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
-import 'package:lets_collect/src/resources/api_providers/profile_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../resources/api_providers/auth_provider.dart';

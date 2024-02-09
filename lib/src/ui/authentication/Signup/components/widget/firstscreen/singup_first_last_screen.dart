@@ -3,15 +3,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
-
+import '../../../../../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../../../../../constants/colors.dart';
-import '../calenderscreen/singup_calender_screen.dart';
 
 class SignupUiwidget1 extends StatefulWidget {
   const SignupUiwidget1({super.key});
@@ -93,6 +92,12 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
     }
     return null;
   }
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,13 +137,12 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
                 ),
               ).animate().then(delay: 200.ms).slideX(),
               const SizedBox(height: 20),
-              const Center(
+               Center(
                   child: Text(
                 Strings.SIGNUP_SUB_HEADING,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.openSans(
+                  color: AppColors.primaryWhiteColor,fontSize: 18,
+                  fontWeight: FontWeight.w400,
                 ),
               )).animate().then(delay: 200.ms).slideX(),
               const SizedBox(height: 40),
@@ -186,7 +190,7 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
                 ],
               ).animate().then(delay: 200.ms).slideX(),
               const SizedBox(
-                height: 20,
+                height: 20
               ),
               MyTextField(
                 // horizontal: 20,
@@ -244,21 +248,33 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
                 height: 20,
               ),
               Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(
-                    checkColor: AppColors.secondaryColor,
-                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
+                  Flexible(
+                    flex: 1,
+                    child: Checkbox(
+                      checkColor: AppColors.secondaryColor,
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                    ),
                   ),
-                  const Text(
-                    Strings.SIGNUP_TEXT1,
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
+                   Expanded(
+                     flex: 5,
+                     child: Text(
+                      Strings.SIGNUP_TEXT1,
+                      style: GoogleFonts.openSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryWhiteColor,
+                        letterSpacing: 1,
+                      ),
+                                       ),
+                   ),
                 ],
               ).animate().then(delay: 200.ms).slideX(),
               const SizedBox(height: 15),
@@ -313,43 +329,84 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
                 ),
               ).animate().then(delay: 200.ms).slideX(),
               const SizedBox(height: 15),
-              const Padding(
-                padding: EdgeInsets.only(left: 13),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(Strings.SIGNUP_NOTES1,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(Strings.SIGNUP_NOTES2,
-                            style: TextStyle(
-                                color: AppColors.secondaryColor, fontSize: 14)),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(Strings.SIGNUP_NOTES3,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(Strings.SIGNUP_NOTES4,
-                            style: TextStyle(
-                                color: AppColors.secondaryColor, fontSize: 14)),
-                      ],
-                    ),
-                  ],
-                ),
-              ).animate().then(delay: 200.ms).slideX(),
+               const TermsAndConditionWidget().animate().then(delay: 200.ms).slideX(),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class TermsAndConditionWidget extends StatelessWidget {
+  const TermsAndConditionWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+     padding: const EdgeInsets.only(left: 13),
+     child: Text.rich(
+       TextSpan(
+         children: [
+           TextSpan(
+             text: 'By signing up, you agree to the',
+             style: GoogleFonts.openSans(
+               color: AppColors.primaryWhiteColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w400,
+               letterSpacing: 0.8,
+             ),
+           ),
+           TextSpan(
+             text: ' ',
+             style: GoogleFonts.openSans(
+               color: AppColors.primaryWhiteColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w400,
+               letterSpacing: 0.8,
+             ),
+           ),
+           TextSpan(
+             text: 'Terms and Conditions\n',
+             style: GoogleFonts.openSans(
+               color: AppColors.secondaryColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w600,
+               letterSpacing: 0.8,
+             ),
+           ),
+           TextSpan(
+             text: 'and our',
+             style: GoogleFonts.openSans(
+               color: AppColors.primaryWhiteColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w400,
+               letterSpacing: 0.8,
+             ),
+           ),
+           TextSpan(
+             text: ' ',
+             style: GoogleFonts.openSans(
+               color: AppColors.secondaryColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w400,
+               letterSpacing: 0.8,
+             ),
+           ),
+           TextSpan(
+             text: 'Privacy Policy',
+             style: GoogleFonts.openSans(
+               color: AppColors.secondaryColor,
+               fontSize: 12,
+               fontWeight: FontWeight.w600,
+               letterSpacing: 0.8,
+             ),
+           ),
+         ],
+       ),
+     ),
+                  );
   }
 }

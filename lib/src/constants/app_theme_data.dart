@@ -25,7 +25,7 @@ class AppTheme {
     cardTheme: const CardTheme(color: AppColors.primaryWhiteColor),
     fontFamily: "Fonarto",
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    useMaterial3: true,
+    useMaterial3: false,
     // primaryColor: _lightPrimarySwatch,
     // scaffoldBackgroundColor: _lightPrimaryVariantColor,
 
@@ -44,8 +44,9 @@ class AppTheme {
 
           ),
       displaySmall: TextStyle(
-          // fontSize: 72,
-          // fontWeight: FontWeight.bold,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        color: AppColors.secondaryColor
 
           ),
     ),

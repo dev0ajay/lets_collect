@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
@@ -15,7 +19,7 @@ import '../../../../forget_password/components/forget_password_screen.dart';
 import '../../../Signup/components/singup_screen.dart';
 
 class LoginUiwidget extends StatefulWidget {
-  const LoginUiwidget({Key? key}) : super(key: key);
+  const LoginUiwidget({super.key});
 
   @override
   State<LoginUiwidget> createState() => _LoginUiwidgetState();
@@ -23,6 +27,11 @@ class LoginUiwidget extends StatefulWidget {
 
 class _LoginUiwidgetState extends State<LoginUiwidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>[
+    'email',
+    'https://www.googleapi.com/auth/contacts.readonly'
+  ]);
+  late GoogleSignInAccount _currentUser;
 
   String? validateEmail(String? value) {
     String pattern =
@@ -57,6 +66,68 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   TextEditingController passwordController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
+  final auth = FirebaseAuth.instance;
+   String gUser = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    // _googleSignIn.onCurrentUserChanged.listen((account) {
+    //   setState(() {
+    //     _currentUser = account!;
+    //   });
+    //   if (_currentUser != null) {
+    //     print("User already authenticated");
+    //   }
+    // });
+    // _googleSignIn.signInSilently();
+  }
+
+  Future<void> handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (error) {
+      print("Sign in error: $error");
+    }
+  }
+
+  // Future<User?> signInWithGoogle({required BuildContext context}) async {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   User? user;
+  //
+  //   final GoogleSignIn googleSignIn = GoogleSignIn();
+  //
+  //   final GoogleSignInAccount? googleSignInAccount =
+  //       await googleSignIn.signIn();
+  //
+  //   if (googleSignInAccount != null) {
+  //     final GoogleSignInAuthentication googleSignInAuthentication =
+  //         await googleSignInAccount.authentication;
+  //
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleSignInAuthentication.accessToken,
+  //       idToken: googleSignInAuthentication.idToken,
+  //     );
+  //
+  //     try {
+  //       final UserCredential userCredential =
+  //           await auth.signInWithCredential(credential);
+  //
+  //       user = userCredential.user;
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'account-exists-with-different-credential') {
+  //         // handle the error here
+  //       } else if (e.code == 'invalid-credential') {
+  //         // handle the error here
+  //       }
+  //     } catch (e) {
+  //       // handle the error here
+  //     }
+  //   }
+  //
+  //   return user;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -121,22 +192,27 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Center(
+                      Center(
                         child: Text(
                           Strings.LOGIN_WELCOME_BACK,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.5),
+                          style: GoogleFonts.openSans(
+                            color: AppColors.primaryWhiteColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 30),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5, bottom: 5),
-                        child: Text(Strings.LOGIN_EMAIL_LABEL_TEXT,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, bottom: 5),
+                        child: Text(
+                          Strings.LOGIN_EMAIL_LABEL_TEXT,
+                          style: GoogleFonts.roboto(
+                            color: AppColors.primaryWhiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                       MyTextField(
                         hintText: Strings.LOGIN_EMAIL_HINT_TEXT,
@@ -156,11 +232,16 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5, bottom: 5),
-                        child: Text(Strings.LOGIN_PASSWORD_LABEL_TEXT,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, bottom: 5),
+                        child: Text(
+                          Strings.LOGIN_PASSWORD_LABEL_TEXT,
+                          style: GoogleFonts.roboto(
+                            color: AppColors.primaryWhiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                       MyTextField(
                         hintText: Strings.LOGIN_PASSWORD_HINT_TEXT,
@@ -193,12 +274,14 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 ),
                               );
                             },
-                            child: const Text(
+                            child: Text(
                               Strings.LOGIN_FORGET_PASSWORD_TEXT,
                               textAlign: TextAlign.left,
                               maxLines: 1,
-                              style: TextStyle(
-                                color: Colors.white,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.primaryWhiteColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
@@ -254,17 +337,24 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                         },
                       ),
                       const SizedBox(height: 15),
-                      const Center(
-                          child: Text(Strings.LOGIN_DONT_HAVE_AN_AC,
-                              style: TextStyle(color: Colors.white))),
+                      Center(
+                        child: Text(
+                          Strings.LOGIN_DONT_HAVE_AN_AC,
+                          style: GoogleFonts.openSans(
+                            color: AppColors.primaryWhiteColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       Center(
                         child: MyButton(
                           imagePath: Assets.MAIL,
                           Textfontsize: 16,
-                          TextColors: Colors.grey,
+                          TextColors: AppColors.iconGreyColor,
                           text: Strings.EMAIL_SINGUP,
-                          color: Colors.white,
+                          color: AppColors.primaryWhiteColor,
                           width: 160,
                           height: 40,
                           onTap: () {
@@ -285,30 +375,93 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Flexible(
-                            child: MyButton(
-                              imagePath: Assets.GOOGLE,
-                              Textfontsize: 14,
-                              TextColors: Colors.grey,
-                              text: Strings.Google_singup,
-                              color: Colors.white,
-                              width: 160,
-                              height: 40,
-                              onTap: () {},
-                              showImage: true,
-                              imagewidth: 20,
-                              imageheight: 20,
+                            child: BlocConsumer<GoogleSignInCubit,
+                                GoogleSignInState>(
+                              listener: (context, state) {
+                                if(state is GoogleSignInSuccess) {
+                                  gUser = state.user.displayName!;
+                                  context.go('/home');
+                                }
+                              },
+                              builder: (context, state) {
+                                return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(160, 40),
+                                    backgroundColor:
+                                        AppColors.primaryWhiteColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: state is GoogleSignInLoading
+                                      ? null
+                                      : () => context
+                                          .read<GoogleSignInCubit>()
+                                          .login(),
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        Assets.GOOGLE,
+                                        width: 20,
+                                        height: 20,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      state is GoogleSignInLoading
+                                          ? const Center(
+                                              // widthFactor: 2,
+                                              child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 2, bottom: 2, left: 20),
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.secondaryColor,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                      )
+                                          : Text(
+                                        gUser,
+                                              // Strings.Google_singup,
+                                              style: GoogleFonts.roboto(
+                                                color:
+                                                    AppColors.primaryGrayColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                );
+                                //   MyButton(
+                                //   imagePath: Assets.GOOGLE,
+                                //   Textfontsize: 14,
+                                //   TextColors: AppColors.iconGreyColor,
+                                //   text: state is GoogleSignInLoading ? CircularProgressIndicator(
+                                //
+                                //   ) : Strings.Google_singup,
+                                //   color: AppColors.primaryWhiteColor,
+                                //   width: 160,
+                                //   height: 40,
+                                //   onTap: () {
+                                //     // handleSignIn();
+                                //     // signInWithGoogle(context: context);
+                                //     if ()
+                                //   },
+                                //   showImage: true,
+                                //   imagewidth: 20,
+                                //   imageheight: 20,
+                                // );
+                              },
                             ),
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: MyButton(
                               imagePath: Assets.FACEBOOK,
                               Textfontsize: 14,
-                              TextColors: Colors.grey,
+                              TextColors: AppColors.iconGreyColor,
                               text: Strings.FACEBOOK_SIGNUP,
-                              color: Colors.white,
+                              color: AppColors.primaryWhiteColor,
                               width: 160,
                               height: 40,
                               onTap: () {},
@@ -319,42 +472,50 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 13),
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 13),
                         child: Column(
                           children: [
                             Row(
                               children: [
-                                Text(Strings.LOGIN_NOTES1,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14)),
-                                SizedBox(
-                                  width: 6,
+                                Text(
+                                  Strings.LOGIN_NOTES1,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.primaryWhiteColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
-                                Text(Strings.LOGIN_NOTES2,
-                                    style: TextStyle(
-                                        color: AppColors.secondaryColor,
-                                        fontSize: 14)),
+                                const SizedBox(width: 6),
+                                Text(
+                                  Strings.LOGIN_NOTES2,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.secondaryColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ],
                             ),
                             Row(
                               children: [
-                                Text(Strings.LOGIN_NOTES3,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    )),
-                                SizedBox(
-                                  width: 6,
+                                Text(
+                                  Strings.LOGIN_NOTES3,
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.primaryWhiteColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
+                                const SizedBox(width: 6),
                                 Text(
                                   Strings.LOGIN_NOTES4,
-                                  style: TextStyle(
-                                      color: AppColors.secondaryColor,
-                                      fontSize: 14),
+                                  style: GoogleFonts.openSans(
+                                    color: AppColors.secondaryColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ],
                             ),

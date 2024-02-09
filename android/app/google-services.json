@@ -12,7 +12,20 @@
           "package_name": "com.crayotech.lets_collect"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "113086635979-7omk2al589h612f11ajsr6b1au6vua65.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crayotech.lets_collect",
+            "certificate_hash": "4d128a56774b415eb10a63efb8a9cafac0ee1ab1"
+          }
+        },
+        {
+          "client_id": "113086635979-ggqk5rnq6b0g9e475vgqc5jijf4s5u3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBaF7Ze2tfN-M9A2ywhJPdZozessrKDZh8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113086635979-ggqk5rnq6b0g9e475vgqc5jijf4s5u3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

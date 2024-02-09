@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lets_collect/app.dart';
@@ -7,8 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
 
-  // await Firebase.initializeApp();
+  );
   // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   // ConnectionStatusSingleton connectionStatus =
   // ConnectionStatusSingleton.getInstance();

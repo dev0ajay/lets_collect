@@ -1,9 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
@@ -14,6 +17,7 @@ import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pinput/pinput.dart';
 import '../../../../../../bloc/sign_up_bloc/sign_up_bloc.dart';
 import '../../../../../../constants/colors.dart';
 import '../../../../../../model/auth/sign_up_request.dart';
@@ -43,23 +47,18 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
   final FocusNode _countrynumber = FocusNode();
 
   String? validatePhoneNumber(String? value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter phone number';
+    if (value!.length < 8 || value.isEmpty) {
+      return 'Enter a valid phone number';
     } else {
       return null;
     }
   }
 
-
   String selectedCountry = "";
   int? selectedCountryID;
-
   String selectedCity = "";
   String? selectedCityValue;
   String? selectedCountryValue;
-
 
   @override
   void initState() {
@@ -90,8 +89,13 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                       "The user name has already been taken.") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:
-                        Text(state.signUpRequestErrorResponse.data.userName!),
+                    backgroundColor: AppColors.secondaryColor,
+                    content: Text(
+                      state.signUpRequestErrorResponse.data.userName!,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                      ),
+                    ),
                   ),
                 );
               } else if (state
@@ -100,7 +104,13 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                       "The email has already been taken.") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(state.signUpRequestErrorResponse.data.email!),
+                    backgroundColor: AppColors.secondaryColor,
+                    content: Text(
+                      state.signUpRequestErrorResponse.data.email!,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                      ),
+                    ),
                   ),
                 );
               } else if (state
@@ -109,8 +119,13 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                       "The mobile no has already been taken.") {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:
-                        Text(state.signUpRequestErrorResponse.data.mobileNo!),
+                    backgroundColor: AppColors.secondaryColor,
+                    content: Text(
+                      state.signUpRequestErrorResponse.data.mobileNo!,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                      ),
+                    ),
                   ),
                 );
               }
@@ -150,17 +165,13 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                       height: getProportionateScreenHeight(20),
                     ),
                     Center(
-                      child: BlocBuilder<SignUpBloc, SignUpState>(
-                        builder: (context, state) {
-                          if (state is SignUpErrorState) {
-                            return Text(
-                              state.signUpRequestErrorResponse.message,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 25),
-                            );
-                          }
-                          return const SizedBox();
-                        },
+                      child: Text(
+                        "Almost Done!",
+                        style: GoogleFonts.openSans(
+                          color: AppColors.primaryWhiteColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -181,11 +192,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
-                                hint:  Row(
+                                hint: Row(
                                   children: [
                                     Expanded(
-                                      child:
-                                      Center(
+                                      child: Center(
                                         child: Lottie.asset(Assets.JUMBINGDOT,
                                             height: 70, width: 90),
                                       ),
@@ -199,25 +209,18 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 14, right: 14),
                                   decoration: BoxDecoration(
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          1.0, // Move to right 10  horizontally
-                                          1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
                                       ),
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          -1.0,
-                                          // Move to right 10  horizontally
-                                          -1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(5),
@@ -228,27 +231,26 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   ),
                                   elevation: 2,
                                 ),
-
                                 menuItemStyleData: const MenuItemStyleData(
                                   height: 40,
                                   padding: EdgeInsets.only(left: 14, right: 14),
                                 ),
                               ),
                             );
-
                           }
                           if (state is CountryLoaded) {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
-                                hint: const Row(
+                                hint: Row(
                                   children: [
                                     Expanded(
                                       child: Text(
                                         "Country",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.hintColor,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -257,29 +259,32 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 ),
                                 items: state.countryResponse.data
                                     .map((item) => DropdownMenuItem<String>(
-                                  value: item.countriesId.toString(),
-                                  child: Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                          value: item.countriesId.toString(),
+                                          child: Text(
+                                            item.name,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  AppColors.primaryBlackColor,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
                                     .toList(),
                                 value: selectedCountryValue,
                                 onChanged: (String? value) {
                                   setState(() {
                                     selectedCountryValue = value;
                                     selectedCountry = selectedCountryValue!;
-                                    selectedCountryID = int.tryParse(selectedCountry);
+                                    selectedCountryID =
+                                        int.tryParse(selectedCountry);
                                   });
-                                  BlocProvider.of<CityBloc>(context).add(GetCityEvent(
-                                      getCityRequest: GetCityRequest(countriesId: selectedCountryID!)
-                                  ),);
-                                  
+                                  BlocProvider.of<CityBloc>(context).add(
+                                    GetCityEvent(
+                                        getCityRequest: GetCityRequest(
+                                            countriesId: selectedCountryID!)),
+                                  );
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: 50,
@@ -287,25 +292,18 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 14, right: 14),
                                   decoration: BoxDecoration(
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          1.0, // Move to right 10  horizontally
-                                          1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
                                       ),
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          -1.0,
-                                          // Move to right 10  horizontally
-                                          -1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(5),
@@ -336,9 +334,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   scrollbarTheme: ScrollbarThemeData(
                                     radius: const Radius.circular(40),
                                     thickness:
-                                    MaterialStateProperty.all<double>(6),
+                                        MaterialStateProperty.all<double>(6),
                                     thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
+                                        MaterialStateProperty.all<bool>(true),
                                   ),
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
@@ -351,7 +349,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                           return const SizedBox();
                         },
                       ),
-               
                     ).animate().then(delay: 200.ms).slideX(),
                     SizedBox(height: getProportionateScreenHeight(20)),
                     Center(
@@ -361,11 +358,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
-                                hint:  Row(
+                                hint: Row(
                                   children: [
                                     Expanded(
-                                      child:
-                                      Center(
+                                      child: Center(
                                         child: Lottie.asset(Assets.JUMBINGDOT,
                                             height: 70, width: 90),
                                       ),
@@ -379,25 +375,18 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 14, right: 14),
                                   decoration: BoxDecoration(
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          1.0, // Move to right 10  horizontally
-                                          1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
                                       ),
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          -1.0,
-                                          // Move to right 10  horizontally
-                                          -1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(5),
@@ -408,7 +397,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   ),
                                   elevation: 2,
                                 ),
-
                                 menuItemStyleData: const MenuItemStyleData(
                                   height: 40,
                                   padding: EdgeInsets.only(left: 14, right: 14),
@@ -420,14 +408,15 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                             return DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
-                                hint: const Row(
+                                hint: Row(
                                   children: [
                                     Expanded(
                                       child: Text(
                                         "City",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey,
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.hintColor,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -439,10 +428,11 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                           value: item.cityId.toString(),
                                           child: Text(
                                             item.city,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              // fontWeight: FontWeight.bold,
-                                              color: Colors.black,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  AppColors.primaryBlackColor,
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -461,25 +451,18 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 14, right: 14),
                                   decoration: BoxDecoration(
-                                    boxShadow: [
+                                    boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          1.0, // Move to right 10  horizontally
-                                          1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
                                       ),
                                       BoxShadow(
-                                        color: Colors.grey.shade600,
-                                        blurRadius: 1.0, // soften the shadow
-                                        spreadRadius: 0.0, //extend the shadow
-                                        offset: const Offset(
-                                          -1.0,
-                                          // Move to right 10  horizontally
-                                          -1.0, // Move to bottom 10 Vertically
-                                        ),
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(5),
@@ -497,7 +480,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   ),
                                   iconSize: 14,
                                   iconEnabledColor: AppColors.secondaryColor,
-                                  iconDisabledColor: AppColors.primaryBlackColor,
+                                  iconDisabledColor:
+                                      AppColors.primaryBlackColor,
                                 ),
                                 dropdownStyleData: DropdownStyleData(
                                   maxHeight: 200,
@@ -527,27 +511,26 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                       ),
                     ),
                     SizedBox(height: getProportionateScreenHeight(20)),
-                Padding(
-                  padding: const EdgeInsets.only(left: 22,right: 22),
-                  child: MyTextField(
-                    focusNode: _countrynumber,
-                    // horizontal: 10,
-                    hintText: Strings.PHONE_NUMBER,
-                    obscureText: false,
-                    maxLines: 1,
-                    controller: phonenumberController,
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      String? err = validatePhoneNumber(value);
-                      if (err != null) {
-                        _countrynumber.requestFocus();
-                      }
-                      return err;
-                    },
-                  )
-                          .animate().then(delay: 200.ms).slideX(),
-                ),
-
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30, right: 30),
+                      child: MyTextField(
+                        inputFormatter: [LengthLimitingTextInputFormatter(8)],
+                        focusNode: _countrynumber,
+                        // horizontal: 10,
+                        hintText: Strings.PHONE_NUMBER,
+                        obscureText: false,
+                        maxLines: 1,
+                        controller: phonenumberController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          String? err = validatePhoneNumber(value);
+                          if (err != null) {
+                            _countrynumber.requestFocus();
+                          }
+                          return err;
+                        },
+                      ).animate().then(delay: 200.ms).slideX(),
+                    ),
                     SizedBox(height: getProportionateScreenHeight(30)),
                     BlocBuilder<SignUpBloc, SignUpState>(
                       builder: (context, state) {
@@ -592,7 +575,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                         gender:
                                             widget.signUpArgumentClass.gender!,
                                         dob: widget.signUpArgumentClass.dob!,
-                                        nationalityId: widget.signUpArgumentClass.nationalityID!,
+                                        nationalityId: widget
+                                            .signUpArgumentClass.nationalityID!,
                                         city: selectedCity,
                                         countryId: selectedCountry,
                                       ),

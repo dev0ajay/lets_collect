@@ -3,13 +3,20 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
+import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
+import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
+import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
+import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
+import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
+import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
 import 'package:lets_collect/src/constants/app_theme_data.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -17,10 +24,11 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/resources/api_providers/auth_provider.dart';
 import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
-import 'package:lets_collect/src/resources/api_providers/home_provider.dart';
-import 'package:lets_collect/src/resources/api_providers/profile_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/reward_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/scan_receipt_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/search_provider.dart';
-import 'package:lets_collect/src/ui/home/home_screen.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/network_connectivity/network_helper.dart';
 import 'package:lottie/lottie.dart';
@@ -51,6 +59,12 @@ class _AppState extends State<App> {
         ),
         RepositoryProvider(
           create: (create) => NetworkHelper(),
+        ),
+        RepositoryProvider(
+          create: (create) => RewardScreenProvider(),
+        ),
+        RepositoryProvider(
+          create: (create) => ScanReceiptApiProvider(),
         ),
       ],
       child: MultiBlocProvider(
@@ -104,6 +118,39 @@ class _AppState extends State<App> {
               profileDataProvider: RepositoryProvider.of(context),
             ),
           ),
+          BlocProvider<FilterBloc>(
+            create: (BuildContext context) => FilterBloc(
+              rewardScreenProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<RewardTierBloc>(
+            create: (BuildContext context) => RewardTierBloc(
+              rewardScreenProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<BrandAndPartnerProductBloc>(
+            create: (BuildContext context) => BrandAndPartnerProductBloc(
+                rewardScreenProvider: RepositoryProvider.of(context),
+
+            ),
+          ),
+          BlocProvider<ScanBloc>(
+            create: (BuildContext context) => ScanBloc(
+              scanReceiptApiProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<GoogleSignInCubit>(
+            create: (BuildContext context) => GoogleSignInCubit(
+            ),
+          ),
+          BlocProvider<OfferBloc>(
+            create: (BuildContext context) => OfferBloc(homeDataProvider: RepositoryProvider.of(context))
+          ),
+
+          BlocProvider<RedeemBloc>(
+              create: (BuildContext context) => RedeemBloc( rewardScreenProvider: RepositoryProvider.of(context))
+          ),
+
         ],
         child: BlocBuilder<NetworkBloc, NetworkState>(
           builder: (context, state) {

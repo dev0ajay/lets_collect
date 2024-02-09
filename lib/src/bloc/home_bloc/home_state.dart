@@ -20,3 +20,11 @@ class HomeLoaded extends HomeState {
   @override
   List<Object> get props => [homeResponse];
 }
+
+
+class HomeErrorState extends HomeState {
+  final String errorMsg;
+  const HomeErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

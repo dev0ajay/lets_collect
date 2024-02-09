@@ -11,16 +11,18 @@ class SliverBackgroundWidget extends StatelessWidget {
   final bool isLetsCollectRewardSelected;
   final bool  isBrandSelected;
   final bool isPartnerSelected;
+  final String letsCollectTotalPoints;
 
   const SliverBackgroundWidget(
       {super.key,
       required this.isLetsCollectRewardSelected,
       required this.isPartnerSelected,
-      required this.isBrandSelected});
+      required this.isBrandSelected,
+        required this.letsCollectTotalPoints,
+      });
 
   @override
   Widget build(BuildContext context) {
-    String tireOnePoint = "1200";
     return Stack(
       children: [
         Align(
@@ -65,7 +67,7 @@ class SliverBackgroundWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          tireOnePoint,
+                          letsCollectTotalPoints,
                           style: GoogleFonts.openSans(
                             color: AppColors.primaryWhiteColor,
                             fontSize: 36,

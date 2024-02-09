@@ -49,14 +49,14 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    email: json["email"] == null ? null : json["email"],
-    mobileNo: json["mobile_no"] == null ? null : json["mobile_no"],
-    userName: json["user_name"] == null ? null : json["user_name"],
+    email: json["email"] ?? "",
+    mobileNo: json["mobile_no"] ?? "",
+    userName: json["user_name"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
-    "email": email == null ? null : email,
-    "mobile_no": mobileNo == null ? null : mobileNo,
-    "user_name": userName == null ? null : userName,
+    "email": email ?? "",
+    "mobile_no": mobileNo ?? "",
+    "user_name": userName ?? "",
   };
 }
