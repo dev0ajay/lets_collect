@@ -701,6 +701,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Brand",
@@ -714,7 +715,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: '800',
+                        text: widget.redeemScreenArguments.requiredPoint,
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                           fontSize: 20,
@@ -792,6 +793,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     onTap: () {
                       context.push('/redeem_screen',
                         extra: BrandAndPartnerRedeemArguments(
+                          rewardId: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardId!,
                             requiredPoints: state.brandAndPartnerProductRequestResponse.data!.rewards![index].requiredPoints.toString(),
                             productImageUrl: state.brandAndPartnerProductRequestResponse.data!.rewards![index].productImage!,
                             qrCodeGenerationUrl: "",

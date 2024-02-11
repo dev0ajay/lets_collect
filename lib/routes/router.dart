@@ -276,7 +276,7 @@ class AppRouter {
           GoRoute(
             path: 'qr_code',
             builder: (BuildContext context, GoRouterState state) =>
-            const QrCodeGenerationScreen()
+             QrCodeGenerationScreen(qrUrl: state.extra as String)
           ),
         ],
         path: '/',

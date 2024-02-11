@@ -382,7 +382,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               rewardTierRequest:
                                                                   RewardTierRequest(
                                                                 sort:
-                                                                    selectedSortFilter,
+                                                                    sortQuery,
                                                                 eligible: "",
                                                                 categoryId: "",
                                                                 brandId: "",
@@ -976,7 +976,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         sort:
                                                                             "",
                                                                         eligible:
-                                                                            "",
+                                                                        eligibleFilter ==
+                                                                            "Eligible"
+                                                                            ? "1"
+                                                                            : "",
                                                                         categoryId: selectedCategoryFilters.isEmpty
                                                                             ? ""
                                                                             : selectedCategoryFilters,
@@ -1061,7 +1064,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   ),
                                                                   IconButton(
                                                                     onPressed:
-                                                                        () {},
+                                                                        () {
+                                                                      context.pop();
+                                                                        },
                                                                     icon:
                                                                         const Icon(
                                                                       Icons
@@ -1135,19 +1140,19 @@ class _RewardScreenState extends State<RewardScreen> {
                           ),
                         ),
                         const Spacer(flex: 1),
-                        const Flexible(
+                         Flexible(
                           flex: 1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 "LetsCollect",
                                 overflow: TextOverflow.fade,
                                 softWrap: true,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 15),
                               ),
-                              Text("1200"),
+                              Text(letsCollectTotalPoints.toString()),
                             ],
                           ),
                         ),
@@ -1427,7 +1432,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   rewardTierRequest:
                                                                       RewardTierRequest(
                                                                     sort:
-                                                                        selectedSortFilter,
+                                                                        sortQuery,
                                                                     eligible:
                                                                         "",
                                                                     categoryId:
@@ -1992,7 +1997,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             sort:
                                                                                 "",
                                                                             eligible:
-                                                                                "",
+                                                                            eligibleFilter ==
+                                                                                "Eligible"
+                                                                                ? "1"
+                                                                                : "",
                                                                             categoryId: selectedCategoryFilters.isEmpty
                                                                                 ? ""
                                                                                 : selectedCategoryFilters,
@@ -2002,6 +2010,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           ),
                                                                         ),
                                                                       );
+                                                                      context.pop();
                                                                     },
                                                                     child: Text(
                                                                       "Apply",
@@ -2076,7 +2085,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       ),
                                                                       IconButton(
                                                                         onPressed:
-                                                                            () {},
+                                                                            () {
+                                                                          context.pop();
+                                                                            },
                                                                         icon:
                                                                             const Icon(
                                                                           Icons
@@ -2971,12 +2982,16 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             RewardTierRequestEvent(
                                                                               rewardTierRequest: RewardTierRequest(
                                                                                 sort: "",
-                                                                                eligible: "",
+                                                                                eligible: eligibleFilter ==
+                                                                                    "Eligible"
+                                                                                    ? "1"
+                                                                                    : "",
                                                                                 categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
                                                                                 brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
                                                                               ),
                                                                             ),
                                                                           );
+                                                                          context.pop();
                                                                         },
                                                                         child:
                                                                             Text(
@@ -4426,6 +4441,8 @@ class _RewardScreenState extends State<RewardScreen> {
                       context.push(
                         '/lets_collect_redeem',
                         extra: LetCollectRedeemScreenArguments(
+                          totalPoint: letsCollectTotalPoints,
+                          rewardId: state.rewardTierRequestResponse.data!.letsCollect![index].rewardId,
                           requiredPoint: state.rewardTierRequestResponse.data!
                               .letsCollect![index].requiredPoints!
                               .toString(),
@@ -4562,6 +4579,7 @@ class _RewardScreenState extends State<RewardScreen> {
                     context.push(
                       '/brand_products',
                       extra: LetCollectRedeemScreenArguments(
+                        rewardId: state.rewardTierRequestResponse.data!.brand![index].rewardId,
                         requiredPoint: state.rewardTierRequestResponse.data!
                             .brand![index].requiredPoints
                             .toString(),
@@ -4679,6 +4697,7 @@ class _RewardScreenState extends State<RewardScreen> {
                     context.push(
                       '/partner_products',
                       extra: LetCollectRedeemScreenArguments(
+                        rewardId: state.rewardTierRequestResponse.data!.partner![index].rewardId,
                         requiredPoint: state.rewardTierRequestResponse.data!
                             .partner![index].requiredPoints
                             .toString(),

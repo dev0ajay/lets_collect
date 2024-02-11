@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/instance_manager.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
-import '../../utils/image_picker/image_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
 

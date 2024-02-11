@@ -5,6 +5,8 @@ import 'package:lets_collect/src/model/auth/forgot_password_otp_request_response
 import 'package:lets_collect/src/model/auth/get_Nationality_Response.dart';
 import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/auth/get_country_response.dart';
+import 'package:lets_collect/src/model/auth/google_login_request.dart';
+import 'package:lets_collect/src/model/auth/google_login_response.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request_response.dart';
 import 'package:lets_collect/src/model/auth/sign_up_error_response_model.dart';
@@ -146,6 +148,21 @@ class AuthProvider{
       if (response.statusCode == 200) {
         return StateModel<ForgotPasswordResetRequestResponse>.success(
             ForgotPasswordResetRequestResponse.fromJson(response.data));
+      } else {
+        return null;
+      }}
+    else{
+      return null;
+    }
+  }
+
+  Future<StateModel?> googleLogin(GoogleLoginRequest googleLoginRequest) async {
+    final response = await ObjectFactory().apiClient.googleLogin(googleLoginRequest);
+    print(response.toString());
+    if(response!=null){
+      if (response.statusCode == 200) {
+        return StateModel<GoogleLoginResponse>.success(
+            GoogleLoginResponse.fromJson(response.data));
       } else {
         return null;
       }}

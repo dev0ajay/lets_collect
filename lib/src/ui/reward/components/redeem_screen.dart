@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
@@ -7,8 +8,10 @@ import 'package:lets_collect/src/ui/reward/components/widgets/redeem_alert_overl
 import 'package:lets_collect/src/ui/scan/components/widgets/scan_screen_collect_button.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import '../../../bloc/redeem/redeem_bloc.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
+import '../../../model/redeem/qr_code_url_request.dart';
 
 class RedeemScreen extends StatefulWidget {
   final BrandAndPartnerRedeemArguments brandAndPartnerRedeemArguments;
@@ -187,13 +190,17 @@ class _RedeemScreenState extends State<RedeemScreen> {
                 padding: const EdgeInsets.only(top: 0),
                 child: GestureDetector(
                   onTap: () {
+                    BlocProvider.of<RedeemBloc>(context).add(
+                      GetQrCodeUrlEvent(
+                        qrCodeUrlRequest: QrCodeUrlRequest(rewardId: widget.brandAndPartnerRedeemArguments.rewardId),
+                      ),
+                    );
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
                            RedeemAlertOverlayWidget(
                              imageUrl: widget.brandAndPartnerRedeemArguments.productImageUrl,
                              requiredPoints: widget.brandAndPartnerRedeemArguments.requiredPoints,
-                             qrUrl: '',
                            ),
                     );
                   },

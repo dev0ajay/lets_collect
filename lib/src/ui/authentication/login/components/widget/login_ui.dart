@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,9 +8,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
+import 'package:lets_collect/src/model/auth/google_login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
@@ -17,6 +22,7 @@ import '../../../../../components/my_button.dart';
 import '../../../../../constants/colors.dart';
 import '../../../../forget_password/components/forget_password_screen.dart';
 import '../../../Signup/components/singup_screen.dart';
+import '../../../Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 
 class LoginUiwidget extends StatefulWidget {
   const LoginUiwidget({super.key});
@@ -67,7 +73,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final auth = FirebaseAuth.instance;
-   String gUser = "";
+   String gUsername = "";
+   String gUserEmail = "";
 
   @override
   void initState() {
@@ -162,7 +169,44 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
         }
       },
       builder: (context, state) {
-        return WillPopScope(
+        return BlocConsumer<GoogleLoginBloc, GoogleLoginState>(
+  listener: (context, state) {
+    if(state is GoogleLoginLoaded) {
+      if (state.googleLoginResponse.success == true &&
+          state.googleLoginResponse.token!.isNotEmpty) {
+        ObjectFactory()
+            .prefs
+            .setAuthToken(token: state.googleLoginResponse.token);
+        ObjectFactory().prefs.setUserId(
+            userId: state.googleLoginResponse.data!.id.toString());
+        ObjectFactory().prefs.setUserName(
+            userName: state.googleLoginResponse.data!.userName);
+        ObjectFactory().prefs.setIsLoggedIn(true);
+        context.pushReplacement("/home");
+        // ignore: unnecessary_null_comparison
+      } else if (state.googleLoginResponse.success == false &&
+          state.googleLoginResponse.token!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: AppColors.primaryWhiteColor,
+            content: Text(
+              state.googleLoginResponse.message!,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+        context.push('/signUpCalenderScreen',extra: SignUpArgumentClass(
+          firsname: gUsername,
+          lastName: "",
+          email: gUserEmail,
+          password: "",
+          confirmPassword: "",
+        ),);
+      }
+    }
+  },
+  builder: (context, state) {
+    return WillPopScope(
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
@@ -379,8 +423,17 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 GoogleSignInState>(
                               listener: (context, state) {
                                 if(state is GoogleSignInSuccess) {
-                                  gUser = state.user.displayName!;
-                                  context.go('/home');
+                                  gUsername = state.user.displayName!;
+                                  gUserEmail = state.user.email!;
+                                  BlocProvider.of<GoogleLoginBloc>(context).add(
+                                   GetGoogleLoginEvent(
+                                       googleLoginRequest:
+                                       GoogleLoginRequest(email: state.user.email!,
+                                           deviceToken: ObjectFactory().prefs.getFcmToken()!,
+                                           deviceType: Platform.isAndroid ? "A" : "I",
+                                       ),
+                                   ),
+                                  );
                                 }
                               },
                               builder: (context, state) {
@@ -420,8 +473,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             ),
                                       )
                                           : Text(
-                                        gUser,
-                                              // Strings.Google_singup,
+                                              Strings.Google_singup,
                                               style: GoogleFonts.roboto(
                                                 color:
                                                     AppColors.primaryGrayColor,
@@ -532,6 +584,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             return false;
           },
         );
+  },
+);
       },
     );
   }

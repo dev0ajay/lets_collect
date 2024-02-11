@@ -5,6 +5,7 @@ import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_otp_request.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
 import 'package:lets_collect/src/model/auth/get_city_request.dart';
+import 'package:lets_collect/src/model/auth/google_login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/sign_up_request.dart';
 import 'package:lets_collect/src/model/offer/offer_list_request.dart';
@@ -332,7 +333,12 @@ class ApiClient {
     );
   }
 
-
+  Future<Response> googleLogin(GoogleLoginRequest googleLoginRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.GOOGLE_LOGIN,
+      data: googleLoginRequest,
+    );
+  }
 
 
 }

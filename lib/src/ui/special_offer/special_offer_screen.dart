@@ -1014,7 +1014,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                           offerImgUrl: state.offerListRequestResponse.data![index].offerImage!,
                                           startDate: state.offerListRequestResponse.data![index].startDate!,
                                         storeList: state.offerListRequestResponse.data![index].superMartketName!,
-                                      )
+                                      ),
                                   );
                                 },
                                 child: Container(

@@ -66,7 +66,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: widget.redeemScreenArguments.requiredPoint,
+                text: widget.redeemScreenArguments.totalPoint,
                 style: GoogleFonts.roboto(
                   fontSize: 30,
                   fontWeight: FontWeight.w700,
@@ -203,7 +203,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                     onTap: () {
                       BlocProvider.of<RedeemBloc>(context).add(
                         GetQrCodeUrlEvent(
-                          qrCodeUrlRequest: QrCodeUrlRequest(rewardId: 2),
+                          qrCodeUrlRequest: QrCodeUrlRequest(rewardId: widget.redeemScreenArguments.rewardId!),
                         ),
                       );
 
@@ -214,7 +214,6 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                           imageUrl: widget.redeemScreenArguments.imageUrl,
                           requiredPoints:
                               widget.redeemScreenArguments.requiredPoint,
-                          qrUrl: '',
                         ),
                       );
                     },

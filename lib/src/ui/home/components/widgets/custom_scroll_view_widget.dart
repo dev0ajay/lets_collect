@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
+import '../../../special_offer/components/offer_details_arguments.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
   const CustomScrollViewWidget({super.key});
@@ -503,7 +504,16 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         padding: const EdgeInsets.all(15),
                                         child: GestureDetector(
                                             onTap: () {
-                                              context.push('/special_offer_details');
+                                              context.push('/special_offer_details',
+                                                extra: OfferDetailsArguments(
+                                                offerHeading: state.homeResponse.data.offers[index].offerHeading,
+                                                endDate: state.homeResponse.data.offers[index].endDate,
+                                                offerDetailText: state.homeResponse.data.offers[index].offerDetails,
+                                                offerImgUrl: state.homeResponse.data.offers[index].offerImage,
+                                                startDate: state.homeResponse.data.offers[index].startDate,
+                                                storeList: [],
+                                              ),
+                                              );
                                             },
                                           child: Container(
                                             height:

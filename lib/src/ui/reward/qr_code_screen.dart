@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 
 class QrCodeGenerationScreen extends StatefulWidget {
-  const QrCodeGenerationScreen({super.key});
+  final String qrUrl;
+  const QrCodeGenerationScreen({super.key,required this.qrUrl});
 
   @override
   State<QrCodeGenerationScreen> createState() => _QrCodeGenerationScreenState();
 }
 
 class _QrCodeGenerationScreenState extends State<QrCodeGenerationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    print("QRURL: ${widget.qrUrl}");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,13 +26,12 @@ class _QrCodeGenerationScreenState extends State<QrCodeGenerationScreen> {
           children: [
 
           QrImageView(
-
             dataModuleStyle: const QrDataModuleStyle(
               color: AppColors.primaryColor,
               dataModuleShape: QrDataModuleShape.square
             ),
             backgroundColor: AppColors.primaryWhiteColor,
-          data: "https://www.instagram.com/_new_year_boy_?igsh=cTd3OHFtMm4yc2Rj",
+          data: widget.qrUrl,
           version: QrVersions.auto,
 
           embeddedImageStyle: const QrEmbeddedImageStyle(

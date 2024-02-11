@@ -17,6 +17,7 @@ class Strings {
 
   static const String OTP_DISCRIPTION = "A One-Time password has been send to your email. ";
   static const String BUTTON_VERIFICATION = "Verify";
+  static  String FCM = "";
 
 
 

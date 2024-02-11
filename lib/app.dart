@@ -10,6 +10,7 @@ import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
@@ -149,6 +150,9 @@ class _AppState extends State<App> {
 
           BlocProvider<RedeemBloc>(
               create: (BuildContext context) => RedeemBloc( rewardScreenProvider: RepositoryProvider.of(context))
+          ),
+          BlocProvider<GoogleLoginBloc>(
+              create: (BuildContext context) => GoogleLoginBloc(authProvider: RepositoryProvider.of(context))
           ),
 
         ],

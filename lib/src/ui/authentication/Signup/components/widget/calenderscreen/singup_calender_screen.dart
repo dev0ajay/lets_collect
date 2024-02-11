@@ -50,6 +50,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
 
   @override
   void initState() {
+    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
     BlocProvider.of<CountryBloc>(context)
         .add(GetCountryEvent());
     super.initState();

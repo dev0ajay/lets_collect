@@ -869,6 +869,7 @@ class _PartnerProductListingScreenState
               onTap: () {
                 context.push('/redeem_screen',
                   extra: BrandAndPartnerRedeemArguments(
+                    rewardId: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardId!,
                     requiredPoints: state.brandAndPartnerProductRequestResponse.data!.rewards![index].requiredPoints.toString(),
                     productImageUrl: state.brandAndPartnerProductRequestResponse.data!.rewards![index].productImage!,
                     qrCodeGenerationUrl: "",

@@ -95,7 +95,7 @@ class _SignupUiwidget1State extends State<SignupUiwidget1> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+    // BlocProvider.of<NationalityBloc>(context).add(GetNationality());
 
   }
 

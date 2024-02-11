@@ -17,8 +17,7 @@ import '../../../scan/components/widgets/scan_screen_collect_button.dart';
 class RedeemAlertOverlayWidget extends StatefulWidget {
   final String imageUrl;
   final String requiredPoints;
-  final String qrUrl;
-  const RedeemAlertOverlayWidget({super.key,required this.imageUrl,required this.requiredPoints,required this.qrUrl});
+  const RedeemAlertOverlayWidget({super.key,required this.imageUrl,required this.requiredPoints});
 
   @override
   State<StatefulWidget> createState() => RedeemAlertOverlayWidgetState();
@@ -183,9 +182,20 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
                     alignment: Alignment.bottomCenter,
                     child: InkWell(
                       onTap: () {
-                          context.push('/qr_code');
+                        context.pop();
+                          context.push('/qr_code',extra: qrUrl);
                       },
-                        child:  const ScanScreenCollectButton(text: "Redeem"),
+                        child:   BlocBuilder<RedeemBloc, RedeemState>(
+  builder: (context, state) {
+    if(state is RedeemLoading) {
+     return const SizedBox();
+    }
+    if(state is RedeemLoaded) {
+      return const ScanScreenCollectButton(text: "Redeem");
+    }
+    return const SizedBox();
+  },
+),
                     ),
                   ),
                 ),

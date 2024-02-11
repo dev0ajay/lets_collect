@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:lets_collect/src/ui/home/home_screen.dart';
 
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/strings.dart';
 import '../../utils/data/object_factory.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,6 +33,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Timer(_duration, navigationPage);
   }
 
+  void registerNotification() {
+    FirebaseMessaging fm = FirebaseMessaging.instance;
+    fm.getToken().then((token) {
+      print("token is $token");
+      Strings.FCM = token ?? "";
+      ObjectFactory().prefs.setFcmToken(token: token);
+    });
+  }
+
   void navigationPage() {
     if (mounted) {
       ObjectFactory().prefs.isLoggedIn()!
@@ -41,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    registerNotification();
     _loadWidget();
     super.initState();
   }
