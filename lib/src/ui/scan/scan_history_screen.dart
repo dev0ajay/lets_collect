@@ -10,10 +10,10 @@ import '../../model/scan_receipt/scan_receipt_history_request.dart';
 import 'components/scan_detail_screen_argument.dart';
 
 class ScanHistoryDetailsScreen extends StatefulWidget {
-  // final ScanDetailsScreenArgument scanDetailsScreenArgument;
+  final ScanDetailsScreenArgument scanDetailsScreenArgument;
 
   const ScanHistoryDetailsScreen(
-      {super.key});
+      {super.key, required this.scanDetailsScreenArgument});
 
   @override
   State<ScanHistoryDetailsScreen> createState() =>
@@ -21,18 +21,14 @@ class ScanHistoryDetailsScreen extends StatefulWidget {
 }
 
 class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
-
-
   @override
   void initState() {
     super.initState();
     BlocProvider.of<ScanBloc>(context).add(
       ScanReceiptHistoryEvent(
-        scanReceiptHistoryRequest:
-        ScanReceiptHistoryRequest(
-            pointId: 14
-          // widget.scanDetailsScreenArgument.pointId
-        ),
+        scanReceiptHistoryRequest: ScanReceiptHistoryRequest(pointId: 14
+            // widget.scanDetailsScreenArgument.pointId
+            ),
       ),
     );
   }
@@ -45,253 +41,158 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
         return false;
       },
       child: Scaffold(
-        body: Stack(
-          children: [
-            CustomScrollView(
-              slivers: [
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 20),
-                  sliver: SliverAppBar(
-                    // backgroundColor: AppColors.primaryColor,
-                    automaticallyImplyLeading: false,
-                    expandedHeight: 300.0,
-                    floating: false,
-                    pinned: true,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 70),
-                          width: 350,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset: const Offset(3, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
+        backgroundColor: AppColors.primaryWhiteColor,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColors.primaryWhiteColor,
+          title: Text(
+            "Scan details",
+            style: GoogleFonts.openSans(
+              color: AppColors.primaryColor,
+              fontSize: 25,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          leading: IconButton(
+            onPressed: () {
+              context.pop();
+            },
+            icon:
+                const Icon(Icons.arrow_back_ios, color: AppColors.primaryColor),
+          ),
+        ),
+        body: SafeArea(
+          child: BlocBuilder<ScanBloc, ScanState>(
+            builder: (context, state) {
+              if (state is ScanReceiptHistoryLoading) {
+                return const Center(
+                  child: RefreshProgressIndicator(
+                    color: AppColors.secondaryColor,
+                    backgroundColor: AppColors.primaryWhiteColor,
+                  ),
+                );
+              }
+              if (state is ScanReceiptHistoryLoaded) {
+                if (state.scanReceiptHistoryResponse.data!.isNotEmpty) {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.only(top: 20),
+                        sliver: SliverToBoxAdapter(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                " ${"state."} ${"state"}",
-                                style: GoogleFonts.openSans(
-                                  color: AppColors.primaryColor,
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    flex: 0,
-                                    child: Text(
-                                      "",
-                                      // AppLocalizations.of(context)!.date,
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                  const Text(
+                                    "Total Points",
+                                    style: TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: Text(
-                                      "",
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                  Text(
+                                    widget.scanDetailsScreenArgument.totalPoint
+                                        .toString(),
+                                    style: const TextStyle(
+                                      color: AppColors.primaryColor,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 0,
-                                    child: Text(
-                                      "",
-                                      // AppLocalizations.of(context)!
-                                      //     .supermarket,
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: Text(
-                                      "",
-                                      // "  context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                      //       ?state.purchaseHistoryDetailsResponse.data.receiptData.branch
-                                      //       :state.purchaseHistoryDetailsResponse.data.receiptData.branch,"
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 0,
-                                    child: Text(
-                                      "",
-                                      // AppLocalizations.of(context)!
-                                      //     .totalitem,
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: Text(
-                                      "",
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              )
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: BlocBuilder<ScanBloc, ScanState>(
-                    builder: (context, state) {
-                      if(state is ScanReceiptHistoryLoading) {
-                        return const Center(
-                          child: RefreshProgressIndicator(
-                            backgroundColor: AppColors.primaryWhiteColor,
-                            color: AppColors.secondaryColor,
-                          ),
-                        );
-                      }
-                      if(state is ScanReceiptHistoryLoaded) {
-                        if(state.scanReceiptHistoryResponse.data!.isNotEmpty) {
-                          return Column(
+                      SliverPadding(
+                        padding: const EdgeInsets.only(top: 20),
+                        sliver: SliverToBoxAdapter(
+                          child: Column(
                             children: [
                               ListView.builder(
                                 padding: const EdgeInsets.only(top: 10),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: 1,
+                                itemCount: state
+                                    .scanReceiptHistoryResponse.data!.length,
                                 itemBuilder: (context, index) {
                                   return Container(
+                                    padding: const EdgeInsets.all(20),
                                     margin: const EdgeInsets.only(
-                                        left: 30, right: 30, bottom: 10, top: 0),
+                                        left: 30,
+                                        right: 30,
+                                        bottom: 10,
+                                        top: 0),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(8.0),
-                                      boxShadow: [
+                                      boxShadow: const [
                                         BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 1,
-                                          offset: const Offset(
-                                              3, 3), // changes position of shadow
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 2),
+                                          spreadRadius: 0,
+                                        ),
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(-4, -2),
+                                          spreadRadius: 0,
                                         ),
                                       ],
                                     ),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(state.scanReceiptHistoryResponse.data![index].productName.toString()),
-                                            Text(""),
-                                            Text(""),
-
+                                            Text(state
+                                                .scanReceiptHistoryResponse
+                                                .data![index]
+                                                .brandName!),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 3.0),
+                                              child: Text(state
+                                                  .scanReceiptHistoryResponse
+                                                  .data![index]
+                                                  .productName!),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 3.0),
+                                              child: Text(
+                                                  "Points: ${state.scanReceiptHistoryResponse.data![index].points.toString()}"),
+                                            ),
                                           ],
                                         ),
-                                        Text(state.scanReceiptHistoryResponse.data![index].points.toString()),
                                       ],
                                     ),
-
                                   );
                                 },
                               ),
                             ],
-                          );
-                        } else {
-                          return Center(
-                            child: Lottie.asset(Assets.OOPS),
-                          );
-                        }
-                      }
-                      return const SizedBox();
-
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10)),
-                color: AppColors.primaryColor,
-              ),
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back_ios_rounded,
-                          size: 18, color: AppColors.primaryWhiteColor),
-                    ),
-                    Text(
-                      "",
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        color: AppColors.primaryWhiteColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: Lottie.asset(Assets.OOPS),
+                  );
+                }
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

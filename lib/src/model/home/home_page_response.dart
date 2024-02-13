@@ -1,4 +1,5 @@
 
+
 import 'dart:convert';
 
 HomeResponse homeResponseFromJson(String str) => HomeResponse.fromJson(json.decode(str));
@@ -6,26 +7,26 @@ HomeResponse homeResponseFromJson(String str) => HomeResponse.fromJson(json.deco
 String homeResponseToJson(HomeResponse data) => json.encode(data.toJson());
 
 class HomeResponse {
-  final bool success;
-  final int statusCode;
-  final Data data;
-  final int totalPoints;
-  final int emailVerified;
-  final int emailVerificationPoints;
+  bool? success;
+  int? statusCode;
+  Data? data;
+  int? totalPoints;
+  int? emailVerified;
+  int? emailVerificationPoints;
 
   HomeResponse({
-    required this.success,
-    required this.statusCode,
-    required this.data,
-    required this.totalPoints,
-    required this.emailVerified,
-    required this.emailVerificationPoints,
+    this.success,
+    this.statusCode,
+    this.data,
+    this.totalPoints,
+    this.emailVerified,
+    this.emailVerificationPoints,
   });
 
   factory HomeResponse.fromJson(Map<String, dynamic> json) => HomeResponse(
     success: json["success"],
     statusCode: json["status_code"],
-    data: Data.fromJson(json["data"]),
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
     totalPoints: json["total_points"],
     emailVerified: json["email_verified"],
     emailVerificationPoints: json["email_verification_points"],
@@ -34,7 +35,7 @@ class HomeResponse {
   Map<String, dynamic> toJson() => {
     "success": success,
     "status_code": statusCode,
-    "data": data.toJson(),
+    "data": data?.toJson(),
     "total_points": totalPoints,
     "email_verified": emailVerified,
     "email_verification_points": emailVerificationPoints,
@@ -42,42 +43,42 @@ class HomeResponse {
 }
 
 class Data {
-  final List<Brand> brands;
-  final List<Offer> offers;
+  List<Brand>? brands;
+  List<Offer>? offers;
 
   Data({
-    required this.brands,
-    required this.offers,
+    this.brands,
+    this.offers,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
-    offers: List<Offer>.from(json["offers"].map((x) => Offer.fromJson(x))),
+    brands: json["brands"] == null ? [] : List<Brand>.from(json["brands"]!.map((x) => Brand.fromJson(x))),
+    offers: json["offers"] == null ? [] : List<Offer>.from(json["offers"]!.map((x) => Offer.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "brands": List<dynamic>.from(brands.map((x) => x.toJson())),
-    "offers": List<dynamic>.from(offers.map((x) => x.toJson())),
+    "brands": brands == null ? [] : List<dynamic>.from(brands!.map((x) => x.toJson())),
+    "offers": offers == null ? [] : List<dynamic>.from(offers!.map((x) => x.toJson())),
   };
 }
 
 class Brand {
-  final int id;
-  final String brandName;
-  final String brandNameArabic;
-  final String brandLogo;
-  final String brandLink;
-  final int defaultPoints;
-  final int status;
+  int? id;
+  String? brandName;
+  String? brandNameArabic;
+  String? brandLogo;
+  String? brandLink;
+  int? defaultPoints;
+  int? status;
 
   Brand({
-    required this.id,
-    required this.brandName,
-    required this.brandNameArabic,
-    required this.brandLogo,
-    required this.brandLink,
-    required this.defaultPoints,
-    required this.status,
+    this.id,
+    this.brandName,
+    this.brandNameArabic,
+    this.brandLogo,
+    this.brandLink,
+    this.defaultPoints,
+    this.status,
   });
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
@@ -102,42 +103,42 @@ class Brand {
 }
 
 class Offer {
-  final int id;
-  final String offerHeading;
-  final String offerHeadingArabic;
-  final String offerDetails;
-  final String offerDetailsArabic;
-  // final String ageGroup;
-  final String productQtyLimit;
-  final String superMartkets;
-  final dynamic scanNumLimit;
-  final int offerRuleValue;
-  final String offerImage;
-  final String startDate;
-  final String endDate;
-  final int associatedPoints;
-  final int pointsTierId;
-  final int pointValidityPeriod;
-  final int moicApproval;
+  int? id;
+  String? offerHeading;
+  String? offerHeadingArabic;
+  String? offerDetails;
+  String? offerDetailsArabic;
+  String? productQtyLimit;
+  String? superMartkets;
+  dynamic scanNumLimit;
+  int? offerRuleValue;
+  String? offerImage;
+  String? startDate;
+  String? endDate;
+  int? associatedPoints;
+  int? pointsTierId;
+  int? pointValidityPeriod;
+  int? moicApproval;
+  List<String>? superMartketName;
 
   Offer({
-    required this.id,
-    required this.offerHeading,
-    required this.offerHeadingArabic,
-    required this.offerDetails,
-    required this.offerDetailsArabic,
-    // required this.ageGroup,
-    required this.productQtyLimit,
-    required this.superMartkets,
-    required this.scanNumLimit,
-    required this.offerRuleValue,
-    required this.offerImage,
-    required this.startDate,
-    required this.endDate,
-    required this.associatedPoints,
-    required this.pointsTierId,
-    required this.pointValidityPeriod,
-    required this.moicApproval,
+    this.id,
+    this.offerHeading,
+    this.offerHeadingArabic,
+    this.offerDetails,
+    this.offerDetailsArabic,
+    this.productQtyLimit,
+    this.superMartkets,
+    this.scanNumLimit,
+    this.offerRuleValue,
+    this.offerImage,
+    this.startDate,
+    this.endDate,
+    this.associatedPoints,
+    this.pointsTierId,
+    this.pointValidityPeriod,
+    this.moicApproval,
+    this.superMartketName,
   });
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
@@ -146,7 +147,6 @@ class Offer {
     offerHeadingArabic: json["offer_heading_arabic"],
     offerDetails: json["offer_details"],
     offerDetailsArabic: json["offer_details_arabic"],
-    // ageGroup: json["age_group"],
     productQtyLimit: json["product_qty_limit"],
     superMartkets: json["super_martkets"],
     scanNumLimit: json["scan_num_limit"],
@@ -158,6 +158,7 @@ class Offer {
     pointsTierId: json["points_tier_id"],
     pointValidityPeriod: json["point_validity_period"],
     moicApproval: json["moic_approval"],
+    superMartketName: json["super_martket_name"] == null ? [] : List<String>.from(json["super_martket_name"]!.map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -166,7 +167,6 @@ class Offer {
     "offer_heading_arabic": offerHeadingArabic,
     "offer_details": offerDetails,
     "offer_details_arabic": offerDetailsArabic,
-    // "age_group": ageGroup,
     "product_qty_limit": productQtyLimit,
     "super_martkets": superMartkets,
     "scan_num_limit": scanNumLimit,
@@ -178,5 +178,6 @@ class Offer {
     "points_tier_id": pointsTierId,
     "point_validity_period": pointValidityPeriod,
     "moic_approval": moicApproval,
+    "super_martket_name": superMartketName == null ? [] : List<dynamic>.from(superMartketName!.map((x) => x)),
   };
 }

@@ -40,6 +40,7 @@ static const String FIND_YOUR_FAVOURITE = "Find Your Favourite";
   static const String LOGIN_DONT_HAVE_AN_AC = "Don't have an account ?";
   static const String EMAIL_SINGUP = "Email Sign up";
   static const String Google_singup = "Google Sign up";
+  static const String Google_login = "Google Login";
   static const String FACEBOOK_SIGNUP = "Facebook Sign up";
   static const String LOGIN_NOTES1 = "By signing up, you agree to the";
   static const String LOGIN_NOTES2 = "Terms and Conditions";

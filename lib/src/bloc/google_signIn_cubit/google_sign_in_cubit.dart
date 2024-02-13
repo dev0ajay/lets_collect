@@ -38,5 +38,14 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
     }
   }
 
+  void signOut() async{
+    try {
+      GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+      emit(GoogleSignInLoggedOut());
+
+    } catch(e) {}
+  }
+
 
 }

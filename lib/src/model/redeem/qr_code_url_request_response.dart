@@ -31,16 +31,20 @@ class QrCodeUrlRequestResponse {
 
 class Data {
   final String? url;
+  final int? qrStatus;
 
   Data({
     this.url,
+    this.qrStatus,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     url: json["url"],
+    qrStatus: json["qr_status"],
   );
 
   Map<String, dynamic> toJson() => {
     "url": url,
+    "qr_status": qrStatus,
   };
 }

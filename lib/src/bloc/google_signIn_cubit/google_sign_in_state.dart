@@ -7,6 +7,7 @@ class GoogleSignInInitial extends GoogleSignInState {}
 
 class GoogleSignInLoading extends GoogleSignInState {}
 
+class GoogleSignInLoggedOut extends GoogleSignInState {}
 
 class GoogleSignInSuccess extends GoogleSignInState {
   final User user;

@@ -5,6 +5,7 @@ import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firs
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
+import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/filter.dart';
 import 'package:lets_collect/src/ui/reward/qr_code_screen.dart';
 import 'package:lets_collect/src/ui/scan/scan_history_screen.dart';
@@ -85,7 +86,7 @@ class AppRouter {
           GoRoute(
             path: 'signUp',
             builder: (BuildContext context, GoRouterState state) =>
-            const SignupUiwidget1(),
+             SignupUiwidget1(from: state.extra as String, gUserMail: state.extra as String,),
           ),
 
           GoRoute(
@@ -271,12 +272,12 @@ class AppRouter {
           GoRoute(
             path: 'scan_history',
             builder: (BuildContext context, GoRouterState state) =>
-             const ScanHistoryDetailsScreen(),
+              ScanHistoryDetailsScreen(scanDetailsScreenArgument: state.extra as ScanDetailsScreenArgument,),
           ),
           GoRoute(
             path: 'qr_code',
             builder: (BuildContext context, GoRouterState state) =>
-             QrCodeGenerationScreen(qrUrl: state.extra as String)
+             QrCodeGenerationScreen(qrCodeScreenArguments: state.extra as QrCodeScreenArguments)
           ),
         ],
         path: '/',

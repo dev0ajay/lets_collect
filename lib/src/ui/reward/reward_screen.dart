@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
@@ -436,22 +437,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                   ),
                                 ],
                               ),
-                              child: const Row(
+                              child:  Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Sort",
                                     style: TextStyle(
                                       color: AppColors.iconGreyColor,
                                       fontSize: 13,
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.sort,
-                                    size: 18,
-                                    color: AppColors.iconGreyColor,
-                                  ),
+                                  SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
+
                                 ],
                               ),
                             ),
@@ -1118,22 +1116,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                   ),
                                 ],
                               ),
-                              child: const Row(
+                              child:  Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Filter",
                                     style: TextStyle(
                                       color: AppColors.iconGreyColor,
                                       fontSize: 13,
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.sort,
-                                    size: 18,
-                                    color: AppColors.iconGreyColor,
-                                  ),
+                                  SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
+
                                 ],
                               ),
                             ),
@@ -1490,22 +1485,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ],
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Sort",
                                         style: TextStyle(
                                           color: AppColors.iconGreyColor,
                                           fontSize: 13,
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.sort,
-                                        size: 18,
-                                        color: AppColors.iconGreyColor,
-                                      ),
+                                      SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
+
                                     ],
                                   ),
                                 ),
@@ -2140,22 +2132,18 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ],
                                   ),
-                                  child: const Row(
+                                  child:  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Filter",
                                         style: TextStyle(
                                           color: AppColors.iconGreyColor,
                                           fontSize: 13,
                                         ),
                                       ),
-                                      Icon(
-                                        Icons.sort,
-                                        size: 18,
-                                        color: AppColors.iconGreyColor,
-                                      ),
+                                      SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
                                     ],
                                   ),
                                 ),
@@ -2500,22 +2488,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                           ),
                                         ],
                                       ),
-                                      child: const Row(
+                                      child:  Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Sort",
                                             style: TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
                                           ),
-                                          Icon(
-                                            Icons.sort,
-                                            size: 18,
-                                            color: AppColors.iconGreyColor,
-                                          ),
+                                          SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
+
                                         ],
                                       ),
                                     ),
@@ -3113,22 +3098,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                           ),
                                         ],
                                       ),
-                                      child: const Row(
+                                      child:  Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Filter",
                                             style: TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
                                           ),
-                                          Icon(
-                                            Icons.sort,
-                                            size: 18,
-                                            color: AppColors.iconGreyColor,
-                                          ),
+                                          SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
+
                                         ],
                                       ),
                                     ),
@@ -3478,22 +3460,19 @@ class _RewardScreenState extends State<RewardScreen> {
                                     ),
                                   ],
                                 ),
-                                child: const Row(
+                                child:  Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Sort",
                                       style: TextStyle(
                                         color: AppColors.iconGreyColor,
                                         fontSize: 13,
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.sort,
-                                      size: 18,
-                                      color: AppColors.iconGreyColor,
-                                    ),
+                                    SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
+
                                   ],
                                 ),
                               ),
@@ -4137,22 +4116,18 @@ class _RewardScreenState extends State<RewardScreen> {
                                     ),
                                   ],
                                 ),
-                                child: const Row(
+                                child:  Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Filter",
                                       style: TextStyle(
                                         color: AppColors.iconGreyColor,
                                         fontSize: 13,
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.sort,
-                                      size: 18,
-                                      color: AppColors.iconGreyColor,
-                                    ),
+                                    SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
                                   ],
                                 ),
                               ),
@@ -4484,10 +4459,15 @@ class _RewardScreenState extends State<RewardScreen> {
                                   imageUrl: state.rewardTierRequestResponse.data!
                                       .letsCollect![index].productImage!,
                                   width: MediaQuery.of(context).size.width,
-                                  placeholder: (context, url) => Lottie.asset(
-                                      Assets.JUMBINGDOT,
-                                      height: 10,
-                                      width: 10),
+                                  placeholder: (context, url) => SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: Lottie.asset(
+                                        Assets.JUMBINGDOT,
+                                        // height: 10,
+                                        // width: 10,
+                                    ),
+                                  ),
                                   errorWidget: (context, url, error) =>
                                       const ImageIcon(
                                         color: AppColors.hintColor,
@@ -4625,10 +4605,14 @@ class _RewardScreenState extends State<RewardScreen> {
                           imageUrl: state.rewardTierRequestResponse.data!
                               .brand![index].brandLogo!,
                           width: MediaQuery.of(context).size.width,
-                          placeholder: (context, url) => Lottie.asset(
-                              Assets.JUMBINGDOT,
-                              height: 10,
-                              width: 10),
+                          placeholder: (context, url) => SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Lottie.asset(
+                                Assets.JUMBINGDOT,
+                                height: 10,
+                                width: 10),
+                          ),
                           errorWidget: (context, url, error) => const ImageIcon(
                             color: AppColors.hintColor,
                             AssetImage(Assets.NO_IMG),

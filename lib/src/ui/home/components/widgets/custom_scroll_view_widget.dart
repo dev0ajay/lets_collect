@@ -351,14 +351,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   height: getProportionateScreenHeight(130),
                                   child: CarouselSlider(
                                     items: List.generate(
-                                        state.homeResponse.data.brands.length,
+                                        state.homeResponse.data!.brands!.length,
                                         (index) => GestureDetector(
                                               onTap: () {
                                                 _launchInBrowser(state
                                                     .homeResponse
-                                                    .data
-                                                    .brands[index]
-                                                    .brandLink);
+                                                    .data!
+                                                    .brands![index]
+                                                    .brandLink!,
+                                                );
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -386,9 +387,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                   child: CachedNetworkImage(
                                                       imageUrl: state
                                                           .homeResponse
-                                                          .data
-                                                          .brands[index]
-                                                          .brandLogo),
+                                                          .data!
+                                                          .brands![index]
+                                                          .brandLogo!,),
                                                 ),
                                               ),
                                             ),
@@ -396,7 +397,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     options: CarouselOptions(
                                       onPageChanged: (index, reason) {
                                         setState(() {
-                                          print(reason.toString());
                                           carouselIndex = index;
                                         });
                                       },
@@ -416,7 +416,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   padding: const EdgeInsets.only(top: 10),
                                   child: DotsIndicator(
                                     dotsCount:
-                                        state.homeResponse.data.brands.length,
+                                        state.homeResponse.data!.brands!.length,
                                     axis: Axis.horizontal,
                                     position: carouselIndex,
                                     decorator: DotsDecorator(
@@ -431,13 +431,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         size: Size(
                                             (MediaQuery.of(context).size.width -
                                                     290) /
-                                                state.homeResponse.data.brands
+                                                state.homeResponse.data!.brands!
                                                     .length,
                                             5),
                                         activeSize: Size(
                                             (MediaQuery.of(context).size.width -
                                                     290) /
-                                                state.homeResponse.data.brands
+                                                state.homeResponse.data!.brands!
                                                     .length,
                                             5),
                                         color: AppColors.shadow,
@@ -499,19 +499,19 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   FadeEffect(delay: 300.ms),
                                 ],
                                     children: List.generate(
-                                      state.homeResponse.data.offers.length,
+                                      state.homeResponse.data!.offers!.length,
                                       (index) => Padding(
                                         padding: const EdgeInsets.all(15),
                                         child: GestureDetector(
                                             onTap: () {
                                               context.push('/special_offer_details',
                                                 extra: OfferDetailsArguments(
-                                                offerHeading: state.homeResponse.data.offers[index].offerHeading,
-                                                endDate: state.homeResponse.data.offers[index].endDate,
-                                                offerDetailText: state.homeResponse.data.offers[index].offerDetails,
-                                                offerImgUrl: state.homeResponse.data.offers[index].offerImage,
-                                                startDate: state.homeResponse.data.offers[index].startDate,
-                                                storeList: [],
+                                                offerHeading: state.homeResponse.data!.offers![index].offerHeading!,
+                                                endDate: state.homeResponse.data!.offers![index].endDate!,
+                                                offerDetailText: state.homeResponse.data!.offers![index].offerDetails!,
+                                                offerImgUrl: state.homeResponse.data!.offers![index].offerImage!,
+                                                startDate: state.homeResponse.data!.offers![index].startDate!,
+                                                storeList: state.homeResponse.data!.offers![index].superMartketName!,
                                               ),
                                               );
                                             },
@@ -554,8 +554,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                   BorderRadius.circular(20),
                                               child: CachedNetworkImage(
                                                 fit: BoxFit.cover,
-                                                imageUrl: state.homeResponse.data
-                                                    .offers[index].offerImage,
+                                                imageUrl: state.homeResponse.data!
+                                                    .offers![index].offerImage!,
                                                 imageBuilder:
                                                     (context, imageProvider) =>
                                                         Container(

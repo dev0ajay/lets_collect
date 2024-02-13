@@ -423,6 +423,66 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
+  void _showDialogBox({
+    required BuildContext context,
+    required List<String> storeList,
+  }) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(9),
+            side: const BorderSide(color: AppColors.borderColor)),
+        backgroundColor: AppColors.primaryWhiteColor,
+        elevation: 5,
+        alignment: Alignment.center,
+        title: Text(
+          "Are you sure?"
+        ),
+        content: SizedBox(
+          height: getProportionateScreenHeight(260),
+          width: getProportionateScreenWidth(320),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                  child: Text(
+                    "In Following Physical Store",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )),
+              const SizedBox(height: 20),
+              Expanded(
+                flex: 2,
+                child: Column(
+                    children: List.generate(
+                      storeList.length,
+                          (index) => Text(
+                        "\u2022 ${storeList[index]}",
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 

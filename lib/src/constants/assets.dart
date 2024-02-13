@@ -21,9 +21,6 @@ class Assets {
   static const String NO_IMG = 'assets/png_icons/no_image.png';
 
 
-
-
-
   ///Lottie
   static const String SELECT_CITY_LOTTIE = 'assets/lottie/selectCity.json';
   static const String JUMBINGDOT = 'assets/lottie/jumbingdot.json';
@@ -38,16 +35,11 @@ class Assets {
   static const String SOON = 'assets/lottie/soon.json';
 
 
-
-
-
-
   ///SVG
   static const String HELP_SVG = 'assets/svg/help_svg.svg';
   static const String CONTAINER_SVG = 'assets/svg/container.svg';
-
-
-
+  static const String SORT_SVG = 'assets/svg/sort.svg';
+  static const String FILTER_SVG = 'assets/svg/filter.svg';
 
 
 
@@ -59,8 +51,6 @@ class Assets {
   static const String BEGA = 'assets/png_icons/bega.png';
   static const String DURRA = 'assets/png_icons/durra.png';
   static const String MAZA = 'assets/png_icons/maza.png';
-
-
 
 
   ///home screen

@@ -138,15 +138,38 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: GestureDetector(
+                    child: InkWell(
+                      splashColor: AppColors.secondaryButtonColor,
+                      splashFactory: InkSplash.splashFactory,
                       onTap: () {
+                      if(galleryFile != null) {
                         BlocProvider.of<ScanBloc>(context).add(
                           ScanReceiptEvent(
                               data: FormData.fromMap({"file": imageUploadFormated})),
                         );
                         _showDialogBox(context: context);
+                      }else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.secondaryColor,
+                            content: Text(
+                              "Please choose a file.",
+                              style: GoogleFonts.roboto(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.primaryWhiteColor,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
                       },
-                      child: const ScanScreenCollectButton(text: 'Collect'),
+                      child: const SizedBox(
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: ScanScreenCollectButton(text: 'Collect'),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -253,15 +276,7 @@ class _ScanScreenState extends State<ScanScreen> {
                               alignment: Alignment.topLeft,
                               child: IconButton(
                                 onPressed: () {
-                                  // context.pop();
-                                  context.push(
-                                      '/scan_history',
-                                      extra: ScanDetailsScreenArgument(
-                                      pointId: state
-                                          .scanReceiptRequestResponse
-                                          .data!
-                                      .pointId!),
-                                  );
+                                  context.pop();
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -345,6 +360,10 @@ class _ScanScreenState extends State<ScanScreen> {
                                   context.push(
                                     '/scan_history',
                                     extra: ScanDetailsScreenArgument(
+                                      totalPoint: state
+                                          .scanReceiptRequestResponse
+                                          .data!
+                                          .totalPoints!,
                                         pointId: state
                                             .scanReceiptRequestResponse
                                             .data!

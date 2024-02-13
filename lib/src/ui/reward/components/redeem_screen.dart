@@ -188,7 +188,9 @@ class _RedeemScreenState extends State<RedeemScreen> {
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.only(top: 0),
-                child: GestureDetector(
+                child: InkWell(
+                  splashColor: AppColors.secondaryButtonColor,
+                  splashFactory: InkSplash.splashFactory,
                   onTap: () {
                     BlocProvider.of<RedeemBloc>(context).add(
                       GetQrCodeUrlEvent(
@@ -204,7 +206,12 @@ class _RedeemScreenState extends State<RedeemScreen> {
                            ),
                     );
                   },
-                  child: const ScanScreenCollectButton(text: "Redeem"),
+                  child: const SizedBox(
+                    child: Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: ScanScreenCollectButton(text: 'Redeem'),
+                    ),
+                  ),
                 ),
               ),
             ),

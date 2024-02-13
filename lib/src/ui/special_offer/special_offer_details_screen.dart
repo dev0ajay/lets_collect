@@ -89,9 +89,11 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
               // flex: 2,
               child: Text(
                 widget.offerDetailsArguments.offerHeading,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.primaryColor,
-                  fontSize: 32,
+                  fontSize: 30,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -117,7 +119,7 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
               text: TextSpan(
                 text: 'Start Date: ',
                 style: const TextStyle(
-                    color: AppColors.secondaryButtonColor,
+                    color: AppColors.primaryColor2,
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     fontFamily: "Fonarto"
@@ -144,10 +146,10 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
               text: TextSpan(
                 text: 'End Date: ',
                 style: const TextStyle(
-                    color: AppColors.secondaryButtonColor,
+                    color: AppColors.primaryColor2,
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
-                    fontFamily: "Fonarto"
+                    fontFamily: "Fonarto",
                 ),
                 children: <TextSpan>[
                   TextSpan(
@@ -168,28 +170,32 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                 // flex: 1,
                 child: Text("Find this exclusive offer at: ",
                     style: GoogleFonts.openSans(
+                      decoration: TextDecoration.underline,
                   color: AppColors.primaryColor2,
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
                 ),
                 ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 10),
             Expanded(
               flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  growable: true,
-                  widget.offerDetailsArguments.storeList.length,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      "\u2022 ${widget.offerDetailsArguments.storeList[index]}",
-                      style: GoogleFonts.openSans(
-                        color: AppColors.primaryColor2,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                    growable: true,
+                    widget.offerDetailsArguments.storeList.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "\u2022 ${widget.offerDetailsArguments.storeList[index]}",
+                        style: GoogleFonts.openSans(
+                          color: AppColors.primaryColor2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),

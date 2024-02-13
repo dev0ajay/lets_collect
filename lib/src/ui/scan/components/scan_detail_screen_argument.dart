@@ -1,4 +1,5 @@
 class ScanDetailsScreenArgument {
   final int pointId;
-  ScanDetailsScreenArgument({required this.pointId});
+  final int totalPoint;
+  ScanDetailsScreenArgument({required this.pointId,required this.totalPoint});
 }

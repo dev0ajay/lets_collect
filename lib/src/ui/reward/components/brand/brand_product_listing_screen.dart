@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
@@ -361,21 +362,18 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Sort",
                       style: TextStyle(
                         color: AppColors.iconGreyColor,
                         fontSize: 13,
                       ),
                     ),
-                    Icon(
-                      Icons.sort,
-                      size: 18,
-                      color: AppColors.iconGreyColor,
-                    ),
+                    SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10),
+
                   ],
                 ),
               ),
@@ -676,21 +674,18 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Filter",
                       style: TextStyle(
                         color: AppColors.iconGreyColor,
                         fontSize: 13,
                       ),
                     ),
-                    Icon(
-                      Icons.sort,
-                      size: 18,
-                      color: AppColors.iconGreyColor,
-                    ),
+                    SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
+
                   ],
                 ),
               ),
@@ -836,10 +831,14 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                       .rewards![index]
                                       .productImage!,
                                   width: MediaQuery.of(context).size.width,
-                                  placeholder: (context, url) => Lottie.asset(
-                                    Assets.JUMBINGDOT,
-                                    height: 10,
-                                    width: 10,
+                                  placeholder: (context, url) => SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: Lottie.asset(
+                                      Assets.JUMBINGDOT,
+                                      // height: 10,
+                                      // width: 10,
+                                    ),
                                   ),
                                   errorWidget: (context, url, error) =>
                                       const ImageIcon(

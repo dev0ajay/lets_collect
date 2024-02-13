@@ -8,29 +8,31 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 class MyTextField extends StatefulWidget {
-  final String hintText;
+   String? hintText;
   final FocusNode? focusNode;
   final keyboardType;
   final bool obscureText;
+   bool? enable;
   final int maxLines;
-  final TextEditingController controller;
+   TextEditingController? controller;
   final String? Function(String?)? validator;
   final String? prefixText;
   final IconData? prefixIcon;
   final List<TextInputFormatter>? inputFormatter;
 
-  const MyTextField({
+   MyTextField({
     super.key,
-    required this.hintText,
+     this.hintText,
     required this.obscureText,
     required this.maxLines,
-    required this.controller,
+     this.controller,
     this.validator,
     required this.keyboardType,
     required this.focusNode,
     this.prefixText,
     this.prefixIcon,
     this.inputFormatter,
+     this.enable,
   });
 
   @override
@@ -46,6 +48,7 @@ class _MyTextFieldState extends State<MyTextField> {
     return SizedBox(
       // height: getProportionateScreenHeight(55),
       child: TextFormField(
+        enabled: widget.enable,
         inputFormatters: widget.inputFormatter,
         focusNode: widget.focusNode,
         controller: widget.controller,

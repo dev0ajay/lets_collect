@@ -40,7 +40,7 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
           listener: (context, state) {
             if(!isEmailVerifyRewardExecuted) {
               if (state is HomeLoaded) {
-                if (state.homeResponse.emailVerificationPoints != 0 || state.homeResponse.emailVerificationPoints.isGreaterThan(0)) {
+                if (state.homeResponse.emailVerificationPoints != 0 || state.homeResponse.emailVerificationPoints!.isGreaterThan(0)) {
                   setState(() {
                     isDone = true;
                     isEmailVerifyRewardExecuted = true;
@@ -49,10 +49,10 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
                   });
                 }
 
-                if(!isEmailVerifyRewardExecuted) {
-                  if (state.homeResponse.emailVerified == 0) {
+                if(isEmailNotVerifyExecuted) {
+                  if (state.homeResponse.emailVerified == 0 && state.homeResponse.emailVerificationPoints == 0) {
                     setState(() {
-                      isEmailVerifyRewardExecuted = true;
+                      isEmailNotVerifyExecuted = true;
                     });
                     showDialog(
                         context: context,

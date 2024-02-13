@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
@@ -163,7 +164,8 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                 ),
                                                 const Divider(
                                                     color: AppColors
-                                                        .primaryGrayColor),
+                                                        .primaryGrayColor,
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -393,21 +395,18 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                             ),
                           ],
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               "Sort",
                               style: TextStyle(
                                 color: AppColors.iconGreyColor,
                                 fontSize: 13,
                               ),
                             ),
-                            Icon(
-                              Icons.sort,
-                              size: 18,
-                              color: AppColors.iconGreyColor,
-                            ),
+                            SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
+
                           ],
                         ),
                       ),
@@ -943,21 +942,18 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                             ),
                           ],
                         ),
-                        child: const Row(
+                        child:  Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               "Filter",
                               style: TextStyle(
                                 color: AppColors.iconGreyColor,
                                 fontSize: 13,
                               ),
                             ),
-                            Icon(
-                              Icons.sort,
-                              size: 18,
-                              color: AppColors.iconGreyColor,
-                            ),
+                            SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
+
                           ],
                         ),
                       ),

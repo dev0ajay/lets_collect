@@ -1,7 +1,7 @@
-
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -73,13 +73,13 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final auth = FirebaseAuth.instance;
-   String gUsername = "";
-   String gUserEmail = "";
+  String gUsername = "";
+  String gUserEmail = "";
 
   @override
   void initState() {
     super.initState();
-
+    registerNotification();
     // _googleSignIn.onCurrentUserChanged.listen((account) {
     //   setState(() {
     //     _currentUser = account!;
@@ -89,6 +89,15 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
     //   }
     // });
     // _googleSignIn.signInSilently();
+  }
+
+  void registerNotification() {
+    FirebaseMessaging fm = FirebaseMessaging.instance;
+    fm.getToken().then((token) {
+      print("token is $token");
+      Strings.FCM = token ?? "";
+      ObjectFactory().prefs.setFcmToken(token: token);
+    });
   }
 
   Future<void> handleSignIn() async {
@@ -170,422 +179,425 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
       },
       builder: (context, state) {
         return BlocConsumer<GoogleLoginBloc, GoogleLoginState>(
-  listener: (context, state) {
-    if(state is GoogleLoginLoaded) {
-      if (state.googleLoginResponse.success == true &&
-          state.googleLoginResponse.token!.isNotEmpty) {
-        ObjectFactory()
-            .prefs
-            .setAuthToken(token: state.googleLoginResponse.token);
-        ObjectFactory().prefs.setUserId(
-            userId: state.googleLoginResponse.data!.id.toString());
-        ObjectFactory().prefs.setUserName(
-            userName: state.googleLoginResponse.data!.userName);
-        ObjectFactory().prefs.setIsLoggedIn(true);
-        context.pushReplacement("/home");
-        // ignore: unnecessary_null_comparison
-      } else if (state.googleLoginResponse.success == false &&
-          state.googleLoginResponse.token!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: AppColors.primaryWhiteColor,
-            content: Text(
-              state.googleLoginResponse.message!,
-              style: const TextStyle(color: Colors.black),
-            ),
-          ),
-        );
-        context.push('/signUpCalenderScreen',extra: SignUpArgumentClass(
-          firsname: gUsername,
-          lastName: "",
-          email: gUserEmail,
-          password: "",
-          confirmPassword: "",
-        ),);
-      }
-    }
-  },
-  builder: (context, state) {
-    return WillPopScope(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Center(
-                        child: Text(
-                          Strings.LOGIN_LETS_COLLECT,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            letterSpacing: 2.0,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Center(
-                        child: Image.asset(
-                          Assets.APP_LOGO,
-                          scale: 30,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Center(
-                        child: Text(
-                          Strings.LOGIN_WELCOME_BACK,
-                          style: GoogleFonts.openSans(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5, bottom: 5),
-                        child: Text(
-                          Strings.LOGIN_EMAIL_LABEL_TEXT,
-                          style: GoogleFonts.roboto(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      MyTextField(
-                        hintText: Strings.LOGIN_EMAIL_HINT_TEXT,
-                        obscureText: false,
-                        maxLines: 1,
-                        controller: emailController,
-                        keyboardType: TextInputType.text,
-                        focusNode: _emailFocus,
-                        validator: (value) {
-                          String? err = validateEmail(value);
-                          if (err != null) {
-                            _emailFocus.requestFocus();
-                          }
-                          return err;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5, bottom: 5),
-                        child: Text(
-                          Strings.LOGIN_PASSWORD_LABEL_TEXT,
-                          style: GoogleFonts.roboto(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      MyTextField(
-                        hintText: Strings.LOGIN_PASSWORD_HINT_TEXT,
-                        obscureText: true,
-                        maxLines: 1,
-                        controller: passwordController,
-                        keyboardType: TextInputType.text,
-                        focusNode: _passwordFocus,
-                        validator: (value) {
-                          String? err = validatePassword(value);
-                          if (err != null) {
-                            _passwordFocus.requestFocus();
-                          }
-                          return err;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+          listener: (context, state) {
+            if (state is GoogleLoginLoaded) {
+              if (state.googleLoginResponse.success == true &&
+                  state.googleLoginResponse.token!.isNotEmpty) {
+                ObjectFactory()
+                    .prefs
+                    .setAuthToken(token: state.googleLoginResponse.token);
+                ObjectFactory().prefs.setUserId(
+                    userId: state.googleLoginResponse.data!.id.toString());
+                ObjectFactory().prefs.setUserName(
+                    userName: state.googleLoginResponse.data!.userName);
+                ObjectFactory().prefs.setIsLoggedIn(true);
+                context.pushReplacement("/home");
+                // ignore: unnecessary_null_comparison
+              } else if (state.googleLoginResponse.success == false &&
+                  state.googleLoginResponse.token!.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.primaryWhiteColor,
+                    content: Text(
+                      state.googleLoginResponse.message!,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                  ),
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>  SignUpScreen(
+                      from: 'Google', gmail: gUserEmail,
+                    ),
+                  ),
+                );
+                //   extra:
+                // SignUpArgumentClass(
+                //   firsname: gUsername,
+                //   lastName: "",
+                //   email: gUserEmail,
+                //   password: "",
+                //   confirmPassword: "",
+                // ),);
+              }
+            }
+          },
+          builder: (context, state) {
+            return WillPopScope(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const Forget_password_screen(),
+                          const Center(
+                            child: Text(
+                              Strings.LOGIN_LETS_COLLECT,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                letterSpacing: 2.0,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Center(
+                            child: Image.asset(
+                              Assets.APP_LOGO,
+                              scale: 30,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Center(
+                            child: Text(
+                              Strings.LOGIN_WELCOME_BACK,
+                              style: GoogleFonts.openSans(
+                                color: AppColors.primaryWhiteColor,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5, bottom: 5),
+                            child: Text(
+                              Strings.LOGIN_EMAIL_LABEL_TEXT,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.primaryWhiteColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          MyTextField(
+                            hintText: Strings.LOGIN_EMAIL_HINT_TEXT,
+                            obscureText: false,
+                            maxLines: 1,
+                            controller: emailController,
+                            keyboardType: TextInputType.text,
+                            focusNode: _emailFocus,
+                            validator: (value) {
+                              String? err = validateEmail(value);
+                              if (err != null) {
+                                _emailFocus.requestFocus();
+                              }
+                              return err;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 5, bottom: 5),
+                            child: Text(
+                              Strings.LOGIN_PASSWORD_LABEL_TEXT,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.primaryWhiteColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          MyTextField(
+                            hintText: Strings.LOGIN_PASSWORD_HINT_TEXT,
+                            obscureText: true,
+                            maxLines: 1,
+                            controller: passwordController,
+                            keyboardType: TextInputType.text,
+                            focusNode: _passwordFocus,
+                            validator: (value) {
+                              String? err = validatePassword(value);
+                              if (err != null) {
+                                _passwordFocus.requestFocus();
+                              }
+                              return err;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Forget_password_screen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  Strings.LOGIN_FORGET_PASSWORD_TEXT,
+                                  textAlign: TextAlign.left,
+                                  maxLines: 1,
+                                  style: GoogleFonts.roboto(
+                                    color: AppColors.primaryWhiteColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              if (state is LoginLoading) {
+                                return const Center(
+                                  child: RefreshProgressIndicator(
+                                    color: AppColors.primaryWhiteColor,
+                                    backgroundColor: AppColors.secondaryColor,
+                                  ),
+                                );
+                              }
+                              return Center(
+                                child: MyButton(
+                                  Textfontsize: 16,
+                                  TextColors: Colors.white,
+                                  text: Strings.LOGIN_BUTTON_TEXT,
+                                  color: AppColors.secondaryColor,
+                                  width: 340,
+                                  height: 40,
+                                  onTap: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      // If the form is valid, perform login action
+                                      // For demo, I'm just navigating to the HomeScreen
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                        LoginRequestEvent(
+                                          loginRequest: LoginRequest(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: "All fields are important",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        backgroundColor: Colors.black87,
+                                        textColor: Colors.white,
+                                      );
+                                    }
+                                  },
+                                  showImage: false,
+                                  imagePath: '',
+                                  imagewidth: 0,
+                                  imageheight: 0,
                                 ),
                               );
                             },
+                          ),
+                          const SizedBox(height: 15),
+                          Center(
                             child: Text(
-                              Strings.LOGIN_FORGET_PASSWORD_TEXT,
-                              textAlign: TextAlign.left,
-                              maxLines: 1,
-                              style: GoogleFonts.roboto(
+                              Strings.LOGIN_DONT_HAVE_AN_AC,
+                              style: GoogleFonts.openSans(
                                 color: AppColors.primaryWhiteColor,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      BlocBuilder<LoginBloc, LoginState>(
-                        builder: (context, state) {
-                          if (state is LoginLoading) {
-                            return const Center(
-                              child: RefreshProgressIndicator(
-                                color: AppColors.primaryWhiteColor,
-                                backgroundColor: AppColors.secondaryColor,
-                              ),
-                            );
-                          }
-                          return Center(
+                          const SizedBox(height: 10),
+                          Center(
                             child: MyButton(
+                              imagePath: Assets.MAIL,
                               Textfontsize: 16,
-                              TextColors: Colors.white,
-                              text: Strings.LOGIN_BUTTON_TEXT,
-                              color: AppColors.secondaryColor,
-                              width: 340,
-                              height: 40,
-                              onTap: () {
-                                if (_formKey.currentState!.validate()) {
-                                  // If the form is valid, perform login action
-                                  // For demo, I'm just navigating to the HomeScreen
-                                  BlocProvider.of<LoginBloc>(context).add(
-                                    LoginRequestEvent(
-                                      loginRequest: LoginRequest(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  Fluttertoast.showToast(
-                                    msg: "All fields are important",
-                                    toastLength: Toast.LENGTH_LONG,
-                                    gravity: ToastGravity.BOTTOM,
-                                    backgroundColor: Colors.black87,
-                                    textColor: Colors.white,
-                                  );
-                                }
-                              },
-                              showImage: false,
-                              imagePath: '',
-                              imagewidth: 0,
-                              imageheight: 0,
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      Center(
-                        child: Text(
-                          Strings.LOGIN_DONT_HAVE_AN_AC,
-                          style: GoogleFonts.openSans(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Center(
-                        child: MyButton(
-                          imagePath: Assets.MAIL,
-                          Textfontsize: 16,
-                          TextColors: AppColors.iconGreyColor,
-                          text: Strings.EMAIL_SINGUP,
-                          color: AppColors.primaryWhiteColor,
-                          width: 160,
-                          height: 40,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUpScreen(),
-                              ),
-                            );
-                          },
-                          showImage: true,
-                          imagewidth: 28,
-                          imageheight: 20,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: BlocConsumer<GoogleSignInCubit,
-                                GoogleSignInState>(
-                              listener: (context, state) {
-                                if(state is GoogleSignInSuccess) {
-                                  gUsername = state.user.displayName!;
-                                  gUserEmail = state.user.email!;
-                                  BlocProvider.of<GoogleLoginBloc>(context).add(
-                                   GetGoogleLoginEvent(
-                                       googleLoginRequest:
-                                       GoogleLoginRequest(email: state.user.email!,
-                                           deviceToken: ObjectFactory().prefs.getFcmToken()!,
-                                           deviceType: Platform.isAndroid ? "A" : "I",
-                                       ),
-                                   ),
-                                  );
-                                }
-                              },
-                              builder: (context, state) {
-                                return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(160, 40),
-                                    backgroundColor:
-                                        AppColors.primaryWhiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  onPressed: state is GoogleSignInLoading
-                                      ? null
-                                      : () => context
-                                          .read<GoogleSignInCubit>()
-                                          .login(),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        Assets.GOOGLE,
-                                        width: 20,
-                                        height: 20,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      state is GoogleSignInLoading
-                                          ? const Center(
-                                              // widthFactor: 2,
-                                              child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 2, bottom: 2, left: 20),
-                                              child: CircularProgressIndicator(
-                                                color: AppColors.secondaryColor,
-                                                strokeWidth: 2,
-                                              ),
-                                            ),
-                                      )
-                                          : Text(
-                                              Strings.Google_singup,
-                                              style: GoogleFonts.roboto(
-                                                color:
-                                                    AppColors.primaryGrayColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                );
-                                //   MyButton(
-                                //   imagePath: Assets.GOOGLE,
-                                //   Textfontsize: 14,
-                                //   TextColors: AppColors.iconGreyColor,
-                                //   text: state is GoogleSignInLoading ? CircularProgressIndicator(
-                                //
-                                //   ) : Strings.Google_singup,
-                                //   color: AppColors.primaryWhiteColor,
-                                //   width: 160,
-                                //   height: 40,
-                                //   onTap: () {
-                                //     // handleSignIn();
-                                //     // signInWithGoogle(context: context);
-                                //     if ()
-                                //   },
-                                //   showImage: true,
-                                //   imagewidth: 20,
-                                //   imageheight: 20,
-                                // );
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: MyButton(
-                              imagePath: Assets.FACEBOOK,
-                              Textfontsize: 14,
                               TextColors: AppColors.iconGreyColor,
-                              text: Strings.FACEBOOK_SIGNUP,
+                              text: Strings.EMAIL_SINGUP,
                               color: AppColors.primaryWhiteColor,
                               width: 160,
                               height: 40,
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUpScreen(
+                                      from: 'Email', gmail: '',
+                                    ),
+                                  ),
+                                );
+                              },
                               showImage: true,
-                              imagewidth: 8,
+                              imagewidth: 28,
                               imageheight: 20,
                             ),
                           ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: BlocConsumer<GoogleSignInCubit,
+                                    GoogleSignInState>(
+                                  listener: (context, state) {
+                                    if (state is GoogleSignInSuccess) {
+                                      gUsername = state.user.displayName!;
+                                      gUserEmail = state.user.email!;
+                                      BlocProvider.of<GoogleLoginBloc>(context)
+                                          .add(
+                                        GetGoogleLoginEvent(
+                                          googleLoginRequest:
+                                              GoogleLoginRequest(
+                                            email: state.user.email!,
+                                            deviceToken: ObjectFactory()
+                                                .prefs
+                                                .getFcmToken()!,
+                                            deviceType:
+                                                Platform.isAndroid ? "A" : "I",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        fixedSize: const Size(160, 40),
+                                        backgroundColor:
+                                            AppColors.primaryWhiteColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      onPressed: state is GoogleSignInLoading
+                                          ? null
+                                          : () => context
+                                              .read<GoogleSignInCubit>()
+                                              .login(),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            Assets.GOOGLE,
+                                            width: 20,
+                                            height: 20,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          state is GoogleSignInLoading
+                                              ? const Center(
+                                                  // widthFactor: 2,
+                                                  child: SizedBox(
+                                                    height: 30,
+                                                    width: 30,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      color: AppColors
+                                                          .secondaryColor,
+                                                      strokeWidth: 2,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Text(
+                                                  state is GoogleSignInSuccess
+                                                      ? Strings.Google_login
+                                                      : state is GoogleSignInLoggedOut ?
+                                                  Strings.Google_singup : "Sign up/Login",
+                                                  style: GoogleFonts.roboto(
+                                                    color: AppColors
+                                                        .primaryGrayColor,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(
+                                child: MyButton(
+                                  imagePath: Assets.FACEBOOK,
+                                  Textfontsize: 14,
+                                  TextColors: AppColors.iconGreyColor,
+                                  text: Strings.FACEBOOK_SIGNUP,
+                                  color: AppColors.primaryWhiteColor,
+                                  width: 160,
+                                  height: 40,
+                                  onTap: () {},
+                                  showImage: true,
+                                  imagewidth: 8,
+                                  imageheight: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 13),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      Strings.LOGIN_NOTES1,
+                                      style: GoogleFonts.openSans(
+                                        color: AppColors.primaryWhiteColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      Strings.LOGIN_NOTES2,
+                                      style: GoogleFonts.openSans(
+                                        color: AppColors.secondaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      Strings.LOGIN_NOTES3,
+                                      style: GoogleFonts.openSans(
+                                        color: AppColors.primaryWhiteColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      Strings.LOGIN_NOTES4,
+                                      style: GoogleFonts.openSans(
+                                        color: AppColors.secondaryColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                      const SizedBox(height: 15),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  Strings.LOGIN_NOTES1,
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.primaryWhiteColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  Strings.LOGIN_NOTES2,
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.secondaryColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  Strings.LOGIN_NOTES3,
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.primaryWhiteColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  Strings.LOGIN_NOTES4,
-                                  style: GoogleFonts.openSans(
-                                    color: AppColors.secondaryColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          onWillPop: () async {
-            return false;
+              onWillPop: () async {
+                return false;
+              },
+            );
           },
         );
-  },
-);
       },
     );
   }

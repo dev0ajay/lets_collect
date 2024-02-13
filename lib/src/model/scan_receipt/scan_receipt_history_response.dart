@@ -34,7 +34,7 @@ class Datum {
   final String? productName;
   final String? brandName;
   final int? points;
-  final DateTime? addedDate;
+  final String? addedDate;
 
   Datum({
     this.productName,
@@ -47,13 +47,13 @@ class Datum {
     productName: json["product_name"],
     brandName: json["brand_name"],
     points: json["points"],
-    addedDate: json["added_date"] == null ? null : DateTime.parse(json["added_date"]),
+    addedDate: json["added_date"] == null ? null : json["added_date"],
   );
 
   Map<String, dynamic> toJson() => {
     "product_name": productName,
     "brand_name": brandName,
     "points": points,
-    "added_date": addedDate?.toIso8601String(),
+    "added_date": addedDate,
   };
 }

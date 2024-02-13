@@ -4,7 +4,9 @@ import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firs
 import '../../../../constants/colors.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  final String from;
+  final String gmail;
+  const SignUpScreen({super.key, required this.from,required this.gmail});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -14,9 +16,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return  Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: SafeArea(child: SignupUiwidget1()),
+      body: SafeArea(child: SignupUiwidget1(from: widget.from, gUserMail: widget.gmail,)),
     );
   }
 }
