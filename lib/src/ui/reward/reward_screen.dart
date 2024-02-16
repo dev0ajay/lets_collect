@@ -694,8 +694,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                         onTap: () {
                                                                                           setState(() {
                                                                                             selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                            // selectedFilters[]
-                                                                                          });
+                                                                                            selectedBrandFilters = "";                                                                                          });
                                                                                         },
                                                                                         child: Container(
                                                                                           height: 20,
@@ -828,6 +827,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                         onTap: () {
                                                                                           setState(() {
                                                                                             selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                            selectedCategoryFilters = "";
                                                                                             // selectedFilters[]
                                                                                           });
                                                                                         },
@@ -1530,8 +1530,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                               setState(() {
                                                 selectedBrandVariants =
                                                     <String>[];
+                                                selectedBrandFilters = "";
                                                 selectedCategoryVariants =
                                                     <String>[];
+                                                selectedCategoryFilters = "";
                                               });
                                             }
 
@@ -1719,7 +1721,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                // selectedFilters[]
+                                                                                                selectedBrandFilters = "";
                                                                                               });
                                                                                             },
                                                                                             child: Container(
@@ -1842,7 +1844,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                // selectedFilters[]
+                                                                                                selectedCategoryFilters = "";
                                                                                               });
                                                                                             },
                                                                                             child: Container(
@@ -2533,12 +2535,13 @@ class _RewardScreenState extends State<RewardScreen> {
                                                   setState(() {
                                                     selectedBrandVariants =
                                                         <String>[];
+                                                    selectedBrandFilters = "";
                                                     selectedCategoryVariants =
                                                         <String>[];
+                                                    selectedCategoryFilters = "";
                                                   });
                                                 }
 
-                                                // filterWidgets.clear();
 
                                                 return BlocBuilder<FilterBloc,
                                                     FilterState>(
@@ -2709,7 +2712,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                 onTap: () {
                                                                                                   setState(() {
                                                                                                     selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                    // selectedFilters[]
+                                                                                                    selectedBrandFilters = "";
                                                                                                   });
                                                                                                 },
                                                                                                 child: Container(
@@ -2823,7 +2826,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                 onTap: () {
                                                                                                   setState(() {
                                                                                                     selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                    // selectedFilters[]
+                                                                                                    selectedCategoryFilters = "";
                                                                                                   });
                                                                                                 },
                                                                                                 child: Container(
@@ -3121,13 +3124,11 @@ class _RewardScreenState extends State<RewardScreen> {
                           : null,
               floating: false,
               backgroundColor: AppColors.primaryColor,
-              expandedHeight: getProportionateScreenHeight(330),
+              expandedHeight: 300,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: false,
-                background: Padding(
-                  padding:  EdgeInsets.only(bottom: isRewardTierSelected == false ? 100 : 70),
+                background: SafeArea(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SliverBackgroundWidget(
                         isLetsCollectRewardSelected: isLetsCollectSelected,
@@ -3135,8 +3136,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         isBrandSelected: isBrandSelected,
                         letsCollectTotalPoints: letsCollectTotalPoints,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 30),
+                    isRewardTierSelected ?   Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -3151,7 +3152,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ),
                                     backgroundColor:
-                                        AppColors.primaryWhiteColor,
+                                    AppColors.primaryWhiteColor,
                                     barrierColor: Colors.black38,
                                     elevation: 2,
                                     isScrollControlled: true,
@@ -3183,11 +3184,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       children: [
                                                         Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             Text(
                                                               "Sort by",
@@ -3195,8 +3196,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   .roboto(
                                                                 fontSize: 16,
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                                FontWeight
+                                                                    .w400,
                                                                 color: AppColors
                                                                     .primaryGrayColor,
                                                               ),
@@ -3221,8 +3222,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                               ),
                                               SizedBox(
                                                 height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
+                                                    .size
+                                                    .height /
                                                     2,
                                                 child: SingleChildScrollView(
                                                   child: Column(
@@ -3232,88 +3233,88 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       Column(
                                                         children: List.generate(
                                                           sort.length,
-                                                          (index) => Padding(
+                                                              (index) => Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical:
-                                                                        6),
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                8,
+                                                                vertical:
+                                                                6),
                                                             child: Container(
                                                               padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          10,
-                                                                      vertical:
-                                                                          6),
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                  10,
+                                                                  vertical:
+                                                                  6),
                                                               child: Row(
                                                                 mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
                                                                 mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
+                                                                MainAxisSize
+                                                                    .max,
                                                                 children: <Widget>[
                                                                   Text(
                                                                     sort[index],
                                                                     softWrap:
-                                                                        true,
+                                                                    true,
                                                                     overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                     style: Theme.of(
-                                                                            context)
+                                                                        context)
                                                                         .textTheme
                                                                         .bodyText1!
                                                                         .copyWith(
-                                                                          fontSize:
-                                                                              15,
-                                                                        ),
+                                                                      fontSize:
+                                                                      15,
+                                                                    ),
                                                                   ),
                                                                   selectedSortVariants
-                                                                          .contains(
-                                                                              sort[index])
+                                                                      .contains(
+                                                                      sort[index])
                                                                       ? InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              selectedSortVariants.remove(sort[index]);
-                                                                            });
-                                                                          },
-                                                                          child:
-                                                                              const CustomRoundedButton(enabled: true),
-                                                                        )
+                                                                    onTap:
+                                                                        () {
+                                                                      setState(() {
+                                                                        selectedSortVariants.remove(sort[index]);
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                    const CustomRoundedButton(enabled: true),
+                                                                  )
                                                                       : InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              selectedSortVariants.add(sort[index]);
-                                                                              if (selectedSortVariants.length > 1) {
-                                                                                selectedSortVariants.removeAt(0);
-                                                                              }
-                                                                              selectedSortFilter = selectedSortVariants[0];
-                                                                              if (selectedSortFilter == "Recent") {
-                                                                                sortQuery = "recent";
-                                                                              }
-                                                                              if (selectedSortFilter == "Expiry First") {
-                                                                                sortQuery = "expire_first";
-                                                                              }
-                                                                              if (selectedSortFilter == "Points Low") {
-                                                                                sortQuery = "points_low";
-                                                                              }
-                                                                              if (selectedSortFilter == "Points High") {
-                                                                                sortQuery = "points_high";
-                                                                              }
-                                                                            });
-                                                                          },
-                                                                          child:
-                                                                              const CustomRoundedButton(
-                                                                            enabled:
-                                                                                false,
-                                                                          ),
-                                                                        ),
+                                                                    onTap:
+                                                                        () {
+                                                                      setState(() {
+                                                                        selectedSortVariants.add(sort[index]);
+                                                                        if (selectedSortVariants.length > 1) {
+                                                                          selectedSortVariants.removeAt(0);
+                                                                        }
+                                                                        selectedSortFilter = selectedSortVariants[0];
+                                                                        if (selectedSortFilter == "Recent") {
+                                                                          sortQuery = "recent";
+                                                                        }
+                                                                        if (selectedSortFilter == "Expiry First") {
+                                                                          sortQuery = "expire_first";
+                                                                        }
+                                                                        if (selectedSortFilter == "Points Low") {
+                                                                          sortQuery = "points_low";
+                                                                        }
+                                                                        if (selectedSortFilter == "Points High") {
+                                                                          sortQuery = "points_high";
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                    const CustomRoundedButton(
+                                                                      enabled:
+                                                                      false,
+                                                                    ),
+                                                                  ),
                                                                 ],
                                                               ),
                                                             ),
@@ -3333,30 +3334,30 @@ class _RewardScreenState extends State<RewardScreen> {
                                                 child: SafeArea(
                                                   child: Padding(
                                                     padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20,
-                                                            right: 20,
-                                                            bottom: 10),
+                                                    const EdgeInsets.only(
+                                                        left: 20,
+                                                        right: 20,
+                                                        bottom: 10),
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                       children: [
                                                         TextButton(
                                                           onPressed: () {
                                                             clearFilter();
                                                             context.pop();
                                                             BlocProvider.of<
-                                                                        RewardTierBloc>(
-                                                                    context)
+                                                                RewardTierBloc>(
+                                                                context)
                                                                 .add(
                                                               RewardTierRequestEvent(
                                                                 rewardTierRequest:
-                                                                    RewardTierRequest(
+                                                                RewardTierRequest(
                                                                   sort: "",
                                                                   eligible: "",
                                                                   categoryId:
-                                                                      "",
+                                                                  "",
                                                                   brandId: "",
                                                                 ),
                                                               ),
@@ -3369,8 +3370,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               color: AppColors
                                                                   .primaryColor,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                              FontWeight
+                                                                  .w400,
                                                               fontSize: 14,
                                                             ),
                                                           ),
@@ -3379,34 +3380,34 @@ class _RewardScreenState extends State<RewardScreen> {
                                                           style: ElevatedButton
                                                               .styleFrom(
                                                             fixedSize:
-                                                                const Size(
-                                                                    100, 40),
+                                                            const Size(
+                                                                100, 40),
                                                             shape:
-                                                                RoundedRectangleBorder(
+                                                            RoundedRectangleBorder(
                                                               borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                  8),
                                                             ),
                                                             backgroundColor:
-                                                                AppColors
-                                                                    .secondaryColor,
+                                                            AppColors
+                                                                .secondaryColor,
                                                           ),
                                                           onPressed: () async {
                                                             print(
                                                                 selectedSortFilter);
                                                             BlocProvider.of<
-                                                                        RewardTierBloc>(
-                                                                    context)
+                                                                RewardTierBloc>(
+                                                                context)
                                                                 .add(
                                                               RewardTierRequestEvent(
                                                                 rewardTierRequest:
-                                                                    RewardTierRequest(
+                                                                RewardTierRequest(
                                                                   sort:
-                                                                      sortQuery,
+                                                                  sortQuery,
                                                                   eligible: "",
                                                                   categoryId:
-                                                                      "",
+                                                                  "",
                                                                   brandId: "",
                                                                 ),
                                                               ),
@@ -3420,8 +3421,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               color: AppColors
                                                                   .primaryWhiteColor,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                              FontWeight
+                                                                  .w400,
                                                               fontSize: 14,
                                                             ),
                                                           ),
@@ -3439,7 +3440,7 @@ class _RewardScreenState extends State<RewardScreen> {
                               },
                               child: Container(
                                 padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
+                                const EdgeInsets.only(left: 8, right: 8),
                                 height: 20,
                                 width: 68,
                                 decoration: BoxDecoration(
@@ -3462,7 +3463,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                 ),
                                 child:  Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       "Sort",
@@ -3489,7 +3490,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ),
                                     backgroundColor:
-                                        AppColors.primaryWhiteColor,
+                                    AppColors.primaryWhiteColor,
                                     barrierColor: Colors.black38,
                                     elevation: 2,
                                     isScrollControlled: true,
@@ -3501,9 +3502,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                           void clearFilter() {
                                             setState(() {
                                               selectedBrandVariants =
-                                                  <String>[];
+                                              <String>[];
+                                              selectedBrandFilters = "";
                                               selectedCategoryVariants =
-                                                  <String>[];
+                                              <String>[];
+                                              selectedCategoryFilters = "";
                                             });
                                           }
 
@@ -3525,107 +3528,107 @@ class _RewardScreenState extends State<RewardScreen> {
                                                   children: [
                                                     SizedBox(
                                                       height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              1.6,
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                          1.6,
                                                       child:
-                                                          SingleChildScrollView(
+                                                      SingleChildScrollView(
                                                         child: Column(
                                                           children: [
                                                             const SizedBox(
                                                                 height: 60),
                                                             Padding(
                                                               padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8,
-                                                                      vertical:
-                                                                          6),
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                  8,
+                                                                  vertical:
+                                                                  6),
                                                               child: Container(
                                                                 padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
-                                                                        10,
+                                                                    10,
                                                                     vertical:
-                                                                        6),
+                                                                    6),
                                                                 child: Row(
                                                                   mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                                   mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
+                                                                  MainAxisSize
+                                                                      .max,
                                                                   children: <Widget>[
                                                                     Text(
                                                                       "Eligible",
                                                                       softWrap:
-                                                                          true,
+                                                                      true,
                                                                       overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                       style: Theme.of(
-                                                                              context)
+                                                                          context)
                                                                           .textTheme
                                                                           .bodyText1!
                                                                           .copyWith(
-                                                                            fontSize:
-                                                                                15,
-                                                                          ),
+                                                                        fontSize:
+                                                                        15,
+                                                                      ),
                                                                     ),
                                                                     eligibleFilter ==
-                                                                            "Eligible"
+                                                                        "Eligible"
                                                                         ? InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              setState(() {
-                                                                                eligibleFilter = "";
-                                                                                // selectedFilters[]
-                                                                              });
-                                                                            },
-                                                                            child:
-                                                                                Container(
-                                                                              height: 20,
-                                                                              width: 20,
-                                                                              decoration: const BoxDecoration(
-                                                                                shape: BoxShape.rectangle,
-                                                                                image: DecorationImage(
-                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                  fit: BoxFit.contain,
-                                                                                  scale: 6,
-                                                                                ),
-                                                                                color: AppColors.secondaryColor,
-                                                                                boxShadow: [
-                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          )
-                                                                        : InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              setState(() {
-                                                                                eligibleFilter = "Eligible";
-                                                                              });
-                                                                            },
-                                                                            child:
-                                                                                Container(
-                                                                              height: 20,
-                                                                              width: 20,
-                                                                              decoration: const BoxDecoration(
-                                                                                shape: BoxShape.rectangle,
-                                                                                color: Color(0xFFD9D9D9),
-                                                                                image: DecorationImage(
-                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                  fit: BoxFit.contain,
-                                                                                ),
-                                                                                boxShadow: [
-                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                ],
-                                                                              ),
-                                                                            ),
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(() {
+                                                                          eligibleFilter = "";
+                                                                          // selectedFilters[]
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                      Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          image: DecorationImage(
+                                                                            image: AssetImage(Assets.DISABLED_TICK),
+                                                                            fit: BoxFit.contain,
+                                                                            scale: 6,
                                                                           ),
+                                                                          color: AppColors.secondaryColor,
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                        : InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(() {
+                                                                          eligibleFilter = "Eligible";
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                      Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          color: Color(0xFFD9D9D9),
+                                                                          image: DecorationImage(
+                                                                            image: AssetImage(Assets.DISABLED_TICK),
+                                                                            fit: BoxFit.contain,
+                                                                          ),
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -3634,260 +3637,260 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               onTap: () {
                                                                 setState(() {
                                                                   isBrandFilterTileSelected =
-                                                                      !isBrandFilterTileSelected;
+                                                                  !isBrandFilterTileSelected;
                                                                 });
                                                               },
                                                               child: ListTile(
                                                                 trailing: !isBrandFilterTileSelected ==
-                                                                        true
+                                                                    true
                                                                     ? const ImageIcon(
-                                                                        color: AppColors
-                                                                            .secondaryColor,
-                                                                        AssetImage(
-                                                                            Assets.SIDE_ARROW),
-                                                                      )
+                                                                  color: AppColors
+                                                                      .secondaryColor,
+                                                                  AssetImage(
+                                                                      Assets.SIDE_ARROW),
+                                                                )
                                                                     : const ImageIcon(
-                                                                        color: AppColors
-                                                                            .secondaryColor,
-                                                                        AssetImage(
-                                                                            Assets.DOWN_ARROW),
-                                                                      ),
+                                                                  color: AppColors
+                                                                      .secondaryColor,
+                                                                  AssetImage(
+                                                                      Assets.DOWN_ARROW),
+                                                                ),
                                                                 title:
-                                                                    const Text(
-                                                                        "Brand"),
+                                                                const Text(
+                                                                    "Brand"),
                                                               ),
                                                             ),
                                                             isBrandFilterTileSelected ==
-                                                                    true
+                                                                true
                                                                 ? SingleChildScrollView(
-                                                                    child:
+                                                              child:
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                    .only(
+                                                                    right:
+                                                                    15,
+                                                                    left:
+                                                                    15,
+                                                                    bottom:
+                                                                    5,
+                                                                    top:
+                                                                    5),
+                                                                child:
+                                                                Column(
+                                                                  children:
+                                                                  List.generate(
+                                                                    state
+                                                                        .brandAndCategoryFilterResponse
+                                                                        .data
+                                                                        .brands
+                                                                        .length,
+                                                                        (index) =>
                                                                         Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          right:
-                                                                              15,
-                                                                          left:
-                                                                              15,
-                                                                          bottom:
-                                                                              5,
-                                                                          top:
-                                                                              5),
-                                                                      child:
-                                                                          Column(
-                                                                        children:
-                                                                            List.generate(
-                                                                          state
-                                                                              .brandAndCategoryFilterResponse
-                                                                              .data
-                                                                              .brands
-                                                                              .length,
-                                                                          (index) =>
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                            child:
-                                                                                Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                              child: Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                children: <Widget>[
-                                                                                  Text(
-                                                                                    state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                    softWrap: true,
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                                                                          fontSize: 15,
-                                                                                        ),
+                                                                          padding:
+                                                                          const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                          child:
+                                                                          Container(
+                                                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                            child: Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              mainAxisSize: MainAxisSize.max,
+                                                                              children: <Widget>[
+                                                                                Text(
+                                                                                  state.brandAndCategoryFilterResponse.data.brands[index].brandName,
+                                                                                  softWrap: true,
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                    fontSize: 15,
                                                                                   ),
-                                                                                  selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                      ? InkWell(
-                                                                                          onTap: () {
-                                                                                            setState(() {
-                                                                                              selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                              // selectedFilters[]
-                                                                                            });
-                                                                                          },
-                                                                                          child: Container(
-                                                                                            height: 20,
-                                                                                            width: 20,
-                                                                                            decoration: const BoxDecoration(
-                                                                                              shape: BoxShape.rectangle,
-                                                                                              image: DecorationImage(
-                                                                                                image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                fit: BoxFit.contain,
-                                                                                                scale: 6,
-                                                                                              ),
-                                                                                              color: AppColors.secondaryColor,
-                                                                                              boxShadow: [
-                                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                        )
-                                                                                      : InkWell(
-                                                                                          onTap: () {
-                                                                                            setState(() {
-                                                                                              selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                              if (selectedBrandVariants.length > 1) {
-                                                                                                selectedBrandVariants.removeAt(0);
-                                                                                              }
-                                                                                              selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                            });
-                                                                                          },
-                                                                                          child: Container(
-                                                                                            height: 20,
-                                                                                            width: 20,
-                                                                                            decoration: const BoxDecoration(
-                                                                                              shape: BoxShape.rectangle,
-                                                                                              color: Color(0xFFD9D9D9),
-                                                                                              image: DecorationImage(
-                                                                                                image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                fit: BoxFit.contain,
-                                                                                              ),
-                                                                                              boxShadow: [
-                                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                                    ? InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                      selectedBrandFilters = "";
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                        scale: 6,
+                                                                                      ),
+                                                                                      color: AppColors.secondaryColor,
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                                    : InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                      if (selectedBrandVariants.length > 1) {
+                                                                                        selectedBrandVariants.removeAt(0);
+                                                                                      }
+                                                                                      selectedBrandFilters = selectedBrandVariants[0].toString();
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      color: Color(0xFFD9D9D9),
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                      ),
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
                                                                             ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                  )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
                                                                 : const SizedBox(),
                                                             GestureDetector(
                                                               onTap: () {
                                                                 setState(() {
                                                                   isCategoryFilterTileSelected =
-                                                                      !isCategoryFilterTileSelected;
+                                                                  !isCategoryFilterTileSelected;
                                                                 });
                                                               },
                                                               child: ListTile(
                                                                 trailing: !isCategoryFilterTileSelected ==
-                                                                        true
+                                                                    true
                                                                     ? const ImageIcon(
-                                                                        color: AppColors
-                                                                            .secondaryColor,
-                                                                        AssetImage(
-                                                                            Assets.SIDE_ARROW),
-                                                                      )
+                                                                  color: AppColors
+                                                                      .secondaryColor,
+                                                                  AssetImage(
+                                                                      Assets.SIDE_ARROW),
+                                                                )
                                                                     : const ImageIcon(
-                                                                        color: AppColors
-                                                                            .secondaryColor,
-                                                                        AssetImage(
-                                                                            Assets.DOWN_ARROW),
-                                                                      ),
+                                                                  color: AppColors
+                                                                      .secondaryColor,
+                                                                  AssetImage(
+                                                                      Assets.DOWN_ARROW),
+                                                                ),
                                                                 title: const Text(
                                                                     "Category"),
                                                               ),
                                                             ),
                                                             isCategoryFilterTileSelected ==
-                                                                    true
+                                                                true
                                                                 ? SingleChildScrollView(
-                                                                    child:
+                                                              child:
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                    .only(
+                                                                    right:
+                                                                    15,
+                                                                    left:
+                                                                    15,
+                                                                    bottom:
+                                                                    5,
+                                                                    top:
+                                                                    5),
+                                                                child:
+                                                                Column(
+                                                                  children:
+                                                                  List.generate(
+                                                                    state
+                                                                        .brandAndCategoryFilterResponse
+                                                                        .data
+                                                                        .category
+                                                                        .length,
+                                                                        (index) =>
                                                                         Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          right:
-                                                                              15,
-                                                                          left:
-                                                                              15,
-                                                                          bottom:
-                                                                              5,
-                                                                          top:
-                                                                              5),
-                                                                      child:
-                                                                          Column(
-                                                                        children:
-                                                                            List.generate(
-                                                                          state
-                                                                              .brandAndCategoryFilterResponse
-                                                                              .data
-                                                                              .category
-                                                                              .length,
-                                                                          (index) =>
-                                                                              Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                            child:
-                                                                                Container(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                              child: Row(
-                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                mainAxisSize: MainAxisSize.max,
-                                                                                children: <Widget>[
-                                                                                  Text(
-                                                                                    state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                    softWrap: true,
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                                                                          fontSize: 15,
-                                                                                        ),
+                                                                          padding:
+                                                                          const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                          child:
+                                                                          Container(
+                                                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                            child: Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              mainAxisSize: MainAxisSize.max,
+                                                                              children: <Widget>[
+                                                                                Text(
+                                                                                  state.brandAndCategoryFilterResponse.data.category[index].category,
+                                                                                  softWrap: true,
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                    fontSize: 15,
                                                                                   ),
-                                                                                  selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                      ? InkWell(
-                                                                                          onTap: () {
-                                                                                            setState(() {
-                                                                                              selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                              // selectedFilters[]
-                                                                                            });
-                                                                                          },
-                                                                                          child: Container(
-                                                                                            height: 20,
-                                                                                            width: 20,
-                                                                                            decoration: const BoxDecoration(
-                                                                                              shape: BoxShape.rectangle,
-                                                                                              image: DecorationImage(
-                                                                                                image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                fit: BoxFit.contain,
-                                                                                                scale: 6,
-                                                                                              ),
-                                                                                              color: AppColors.secondaryColor,
-                                                                                              boxShadow: [
-                                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                        )
-                                                                                      : InkWell(
-                                                                                          onTap: () {
-                                                                                            setState(() {
-                                                                                              selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                              if (selectedCategoryVariants.length > 1) {
-                                                                                                selectedCategoryVariants.removeAt(0);
-                                                                                              }
-                                                                                              selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                            });
-                                                                                          },
-                                                                                          child: Container(
-                                                                                            height: 20,
-                                                                                            width: 20,
-                                                                                            decoration: const BoxDecoration(
-                                                                                              shape: BoxShape.rectangle,
-                                                                                              color: Color(0xFFD9D9D9),
-                                                                                              image: DecorationImage(
-                                                                                                image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                fit: BoxFit.contain,
-                                                                                              ),
-                                                                                              boxShadow: [
-                                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                              ],
-                                                                                            ),
-                                                                                          ),
-                                                                                        ),
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                                    ? InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                      selectedCategoryFilters = "";
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                        scale: 6,
+                                                                                      ),
+                                                                                      color: AppColors.secondaryColor,
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                                    : InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                      if (selectedCategoryVariants.length > 1) {
+                                                                                        selectedCategoryVariants.removeAt(0);
+                                                                                      }
+                                                                                      selectedCategoryFilters = selectedCategoryVariants[0].toString();
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      color: Color(0xFFD9D9D9),
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                      ),
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
                                                                             ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                    ),
-                                                                  )
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
                                                                 : const SizedBox(),
                                                             const SizedBox(
                                                                 height: 80),
@@ -3902,7 +3905,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       child: SafeArea(
                                                         child: Container(
                                                           decoration:
-                                                              const BoxDecoration(
+                                                          const BoxDecoration(
                                                             color: AppColors
                                                                 .primaryWhiteColor,
                                                             boxShadow: [
@@ -3918,15 +3921,15 @@ class _RewardScreenState extends State<RewardScreen> {
                                                           ),
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    left: 20,
-                                                                    right: 20,
-                                                                    bottom: 10),
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                bottom: 10),
                                                             child: Row(
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                               children: [
                                                                 TextButton(
                                                                   onPressed:
@@ -3940,10 +3943,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       color: AppColors
                                                                           .underlineColor,
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
+                                                                      FontWeight
+                                                                          .w400,
                                                                       fontSize:
-                                                                          14,
+                                                                      14,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -3951,18 +3954,18 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   style: ElevatedButton
                                                                       .styleFrom(
                                                                     fixedSize:
-                                                                        const Size(
-                                                                            100,
-                                                                            40),
+                                                                    const Size(
+                                                                        100,
+                                                                        40),
                                                                     shape:
-                                                                        RoundedRectangleBorder(
+                                                                    RoundedRectangleBorder(
                                                                       borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              8),
+                                                                      BorderRadius.circular(
+                                                                          8),
                                                                     ),
                                                                     backgroundColor:
-                                                                        AppColors
-                                                                            .secondaryColor,
+                                                                    AppColors
+                                                                        .secondaryColor,
                                                                   ),
                                                                   onPressed:
                                                                       () {
@@ -3972,15 +3975,15 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         "Selected Brand: $selectedBrandFilters");
 
                                                                     BlocProvider.of<RewardTierBloc>(
-                                                                            context)
+                                                                        context)
                                                                         .add(
                                                                       RewardTierRequestEvent(
                                                                         rewardTierRequest:
-                                                                            RewardTierRequest(
+                                                                        RewardTierRequest(
                                                                           sort:
-                                                                              "",
+                                                                          "",
                                                                           eligible:
-                                                                              "",
+                                                                          "",
                                                                           categoryId: selectedCategoryFilters.isEmpty
                                                                               ? ""
                                                                               : selectedCategoryFilters,
@@ -3990,6 +3993,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         ),
                                                                       ),
                                                                     );
+                                                                    context.pop();
                                                                   },
                                                                   child: Text(
                                                                     "Apply",
@@ -3998,10 +4002,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       color: AppColors
                                                                           .primaryWhiteColor,
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
+                                                                      FontWeight
+                                                                          .w400,
                                                                       fontSize:
-                                                                          14,
+                                                                      14,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -4017,25 +4021,25 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       right: 0,
                                                       child: Container(
                                                         decoration:
-                                                            const BoxDecoration(
+                                                        const BoxDecoration(
                                                           color: AppColors
                                                               .primaryWhiteColor,
                                                           borderRadius:
-                                                              BorderRadius.only(
+                                                          BorderRadius.only(
                                                             topLeft:
-                                                                Radius.circular(
-                                                                    20.0),
+                                                            Radius.circular(
+                                                                20.0),
                                                             topRight:
-                                                                Radius.circular(
-                                                                    20.0),
+                                                            Radius.circular(
+                                                                20.0),
                                                           ),
                                                         ),
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15),
                                                           child: Container(
                                                             // height: 40,
                                                             color: Colors.white,
@@ -4043,20 +4047,20 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               children: [
                                                                 Row(
                                                                   mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                                   crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
+                                                                  CrossAxisAlignment
+                                                                      .center,
                                                                   children: [
                                                                     Text(
                                                                       "Filter by",
                                                                       style: GoogleFonts
                                                                           .roboto(
                                                                         fontSize:
-                                                                            16,
+                                                                        16,
                                                                         fontWeight:
-                                                                            FontWeight.w400,
+                                                                        FontWeight.w400,
                                                                         color: AppColors
                                                                             .primaryGrayColor,
                                                                       ),
@@ -4065,7 +4069,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       onPressed:
                                                                           () {},
                                                                       icon:
-                                                                          const Icon(
+                                                                      const Icon(
                                                                         Icons
                                                                             .close,
                                                                         color: AppColors
@@ -4095,7 +4099,7 @@ class _RewardScreenState extends State<RewardScreen> {
                               },
                               child: Container(
                                 padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
+                                const EdgeInsets.only(left: 8, right: 8),
                                 height: 20,
                                 width: 68,
                                 decoration: BoxDecoration(
@@ -4118,7 +4122,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                 ),
                                 child:  Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       "Filter",
@@ -4134,10 +4138,12 @@ class _RewardScreenState extends State<RewardScreen> {
                             ),
                           ],
                         ),
-                      ),
+                      ) : const SizedBox(),
+
                     ],
                   ),
                 ),
+
               ),
               elevation: 0,
               bottom: PreferredSize(
@@ -4145,7 +4151,7 @@ class _RewardScreenState extends State<RewardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    isRewardTierSelected == false ?   Container(
+                    Container(
                       padding: const EdgeInsets.only(top: 10,bottom: 1,left: 15),
                         color: AppColors.primaryWhiteColor,
                         width: MediaQuery.of(context).size.width,
@@ -4155,7 +4161,7 @@ class _RewardScreenState extends State<RewardScreen> {
                         fontSize: 14,
                         color: AppColors.primaryGrayColor
                       ),
-                    ),) : const SizedBox(),
+                    ),),
                     Container(
                       padding: const EdgeInsets.only(top: 9, bottom: 5),
                       height: 50,

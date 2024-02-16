@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const RewardScreen(),
       const SearchScreen(),
       const ProfileScreen(),
-      const ScanScreen(),
+      const ScanScreen(from: 'HomeNav'),
     ];
     return WillPopScope(
       onWillPop: onWillPop,
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //other params
             ),
         body:
-            bottomNavIndex == 4 ? const ScanScreen() : children[bottomNavIndex],
+            bottomNavIndex == 4 ? const ScanScreen(from: 'HomeNav') : children[bottomNavIndex],
       ),
     );
   }

@@ -19,7 +19,15 @@ class ScanScreenCollectButton extends StatelessWidget {
       width: getProportionateScreenWidth(312),
       decoration: BoxDecoration(
         color: AppColors.secondaryColor,
-          borderRadius: BorderRadius.circular(5)
+          borderRadius: BorderRadius.circular(5),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x4F000000),
+            blurRadius: 4.10,
+            offset: Offset(2, 4),
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Center(
         child: Text(

@@ -478,6 +478,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                               .read<GoogleSignInCubit>()
                                               .login(),
                                       child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
                                             Assets.GOOGLE,
@@ -486,12 +487,12 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             fit: BoxFit.cover,
                                           ),
                                           const SizedBox(width: 8),
-                                          state is GoogleSignInLoading
+                                          state is GoogleLoginLoading
                                               ? const Center(
                                                   // widthFactor: 2,
                                                   child: SizedBox(
-                                                    height: 30,
-                                                    width: 30,
+                                                    height: 10,
+                                                    width: 10,
                                                     child:
                                                         CircularProgressIndicator(
                                                       color: AppColors
@@ -547,7 +548,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       Strings.LOGIN_NOTES1,
                                       style: GoogleFonts.openSans(
                                         color: AppColors.primaryWhiteColor,
-                                        fontSize: 12,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -556,7 +557,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       Strings.LOGIN_NOTES2,
                                       style: GoogleFonts.openSans(
                                         color: AppColors.secondaryColor,
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -568,7 +569,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       Strings.LOGIN_NOTES3,
                                       style: GoogleFonts.openSans(
                                         color: AppColors.primaryWhiteColor,
-                                        fontSize: 12,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
@@ -577,7 +578,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       Strings.LOGIN_NOTES4,
                                       style: GoogleFonts.openSans(
                                         color: AppColors.secondaryColor,
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -585,7 +586,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),

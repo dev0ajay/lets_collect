@@ -1,4 +1,5 @@
 /// New Brand Search
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,12 +59,13 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
       child: Scaffold(
         backgroundColor: AppColors.primaryWhiteColor,
         body: NestedScrollView(
-          floatHeaderSlivers: true,
+          floatHeaderSlivers: false,
           physics: const ClampingScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               // SliverAppBar is the header that remains visible while scrolling
               SliverAppBar(
+                elevation: 0,
                 leading: Padding(
                   padding: const EdgeInsets.only(top: 21),
                   child: IconButton(
@@ -88,7 +90,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                     bottomRight: Radius.circular(5),
                   ),
                 ),
-                expandedHeight: 180,
+                expandedHeight: 170,
                 floating: false,
                 backgroundColor: AppColors.primaryColor,
                 pinned: true,
@@ -108,6 +110,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                 flexibleSpace: const FlexibleSpaceBar(
                   // expandedTitleScale: 1,
                   titlePadding: EdgeInsets.zero,
+                  collapseMode: CollapseMode.pin,
                   background: NestedScrollBackgroundWidget(),
                 ),
                 bottom: PreferredSize(
@@ -209,6 +212,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                     height: double.maxFinite,
                     width: MediaQuery.of(context).size.width,
                     child: GridView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -247,10 +252,32 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  state.searchBrandRequestResponse.data[index]
-                                      .brandLogo,
+                                child: CachedNetworkImage(
+                                  imageUrl: state.searchBrandRequestResponse.data[index]
+                                          .brandLogo,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.contain,
+                                  alignment: Alignment.center,
+                                  fadeInCurve: Curves.easeIn,
+                                  fadeInDuration:
+                                  const Duration(milliseconds: 200),
+                                  placeholder: (context, url) => SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: Lottie.asset(
+                                      Assets.JUMBINGDOT,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                  const ImageIcon(
+                                    color: AppColors.hintColor,
+                                    AssetImage(Assets.NO_IMG),
+                                  ),
                                 ),
+                                // Image.network(
+                                //   state.searchBrandRequestResponse.data[index]
+                                //       .brandLogo,
+                                // ),
                               ),
                             ),
                           ),

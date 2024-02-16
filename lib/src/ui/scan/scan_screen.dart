@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
-import 'package:lets_collect/src/model/scan_receipt/scan_receipt_history_request.dart';
 import 'package:lets_collect/src/ui/scan/components/scan_detail_screen_argument.dart';
 import 'package:lets_collect/src/ui/scan/components/widgets/scan_screen_collect_button.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
@@ -18,7 +17,8 @@ import '../../constants/colors.dart';
 import 'package:path/path.dart' as p;
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key});
+  final String from;
+  const ScanScreen({super.key,required this.from});
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();
@@ -41,138 +41,146 @@ class _ScanScreenState extends State<ScanScreen> {
         if (state is ScanLoaded) {}
       },
       builder: (context, state) {
-        return Material(
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  galleryFile == null
-                      ? Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.only(
-                                top: 20, left: 15, right: 15),
-                            height: getProportionateScreenHeight(450),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryWhiteColor,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                  color: AppColors.borderColor, width: 1),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                _showPicker(context: context);
-                              },
-                              child: Center(
-                                child: ImageIcon(
-                                  const AssetImage(Assets.UPLOAD),
-                                  size: getProportionateScreenHeight(100),
-                                ),
-                              ),
-                            ),
-                            // width: getProportionateScreenWidth(360),
-                          ),
-                        )
-                      : Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.only(
-                                top: 20, left: 15, right: 15),
-                            height: getProportionateScreenHeight(450),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryWhiteColor,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(
-                                  color: AppColors.borderColor, width: 1),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                _showPicker(context: context);
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Image.file(
-                                  galleryFile!,
-                                ),
-                              ),
-                            ),
-                            // width: getProportionateScreenWidth(360),
-                          ),
-                        ),
-                  GestureDetector(
-                    onTap: () {
-                      context.push('/long_receipt');
-                      // print(galleryFile!.path.split("/").last);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: DottedBorder(
-                        borderType: BorderType.RRect,
-                        color: AppColors.cardTextColor,
-                        radius: const Radius.circular(10),
-                        child: SizedBox(
-                          height: getProportionateScreenHeight(60),
-                          width: getProportionateScreenWidth(320),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "E-Reciept (or) Reciept too long?",
-                                style: GoogleFonts.roboto(
-                                  color: AppColors.cardTextColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              const SizedBox(width: 20),
-                              const Icon(
-                                Icons.camera_alt,
-                                color: AppColors.cardTextColor,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: InkWell(
-                      splashColor: AppColors.secondaryButtonColor,
-                      splashFactory: InkSplash.splashFactory,
-                      onTap: () {
-                      if(galleryFile != null) {
-                        BlocProvider.of<ScanBloc>(context).add(
-                          ScanReceiptEvent(
-                              data: FormData.fromMap({"file": imageUploadFormated})),
-                        );
-                        _showDialogBox(context: context);
-                      }else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: AppColors.secondaryColor,
-                            content: Text(
-                              "Please choose a file.",
-                              style: GoogleFonts.roboto(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
+        return GestureDetector(
+          onHorizontalDragUpdate: (details) {
+            if (widget.from == "Home" && details.delta.direction <= 0) {
+              context.pop();
+            }
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    galleryFile == null
+                        ? Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 15, right: 15),
+                              height: getProportionateScreenHeight(450),
+                              decoration: BoxDecoration(
                                 color: AppColors.primaryWhiteColor,
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: AppColors.borderColor, width: 1),
                               ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showPicker(context: context);
+                                },
+                                child: Center(
+                                  child: ImageIcon(
+                                    const AssetImage(Assets.UPLOAD),
+                                    size: getProportionateScreenHeight(100),
+                                  ),
+                                ),
+                              ),
+                              // width: getProportionateScreenWidth(360),
+                            ),
+                          )
+                        : Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 15, right: 15),
+                              height: getProportionateScreenHeight(450),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryWhiteColor,
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                    color: AppColors.borderColor, width: 1),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showPicker(context: context);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.file(
+                                    galleryFile!,
+                                  ),
+                                ),
+                              ),
+                              // width: getProportionateScreenWidth(360),
                             ),
                           ),
-                        );
-                      }
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/long_receipt');
+                        // print(galleryFile!.path.split("/").last);
                       },
-                      child: const SizedBox(
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: ScanScreenCollectButton(text: 'Collect'),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: DottedBorder(
+                          borderType: BorderType.RRect,
+                          color: AppColors.cardTextColor,
+                          radius: const Radius.circular(10),
+                          child: SizedBox(
+                            height: getProportionateScreenHeight(60),
+                            width: getProportionateScreenWidth(320),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "E-Reciept (or) Reciept too long?",
+                                  style: GoogleFonts.roboto(
+                                    color: AppColors.cardTextColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                const Icon(
+                                  Icons.camera_alt,
+                                  color: AppColors.cardTextColor,
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      child: InkWell(
+                        splashColor: AppColors.secondaryButtonColor,
+                        splashFactory: InkSplash.splashFactory,
+                        onTap: () {
+                        if(galleryFile != null) {
+                          BlocProvider.of<ScanBloc>(context).add(
+                            ScanReceiptEvent(
+                                data: FormData.fromMap({"file": imageUploadFormated})),
+                          );
+                          _showDialogBox(context: context);
+                        }else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppColors.secondaryColor,
+                              content: Text(
+                                "Please choose a file.",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primaryWhiteColor,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        },
+                        child: const SizedBox(
+                          child: Padding(
+                            padding: EdgeInsets.all(3.0),
+                            child: ScanScreenCollectButton(text: 'Collect'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -401,7 +401,6 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                           void clearFilter() {
                             setState(() {
                               eligibleFilter = "";
-
                             });
                           }
 
@@ -581,6 +580,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                                   redemptionTier: "2",
                                                 )),
                                               );
+                                              context.pop();
                                             },
                                             child: Text(
                                               "Apply",
@@ -634,7 +634,9 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                                 ),
                                               ),
                                               IconButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  context.pop();
+                                                },
                                                 icon: const Icon(
                                                   Icons.close,
                                                   color: AppColors

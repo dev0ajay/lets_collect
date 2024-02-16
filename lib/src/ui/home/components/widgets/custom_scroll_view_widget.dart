@@ -41,6 +41,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRudtbxCfi5rEfivx9St1HyF5bAaZ4ELtTAReUredMIfL98B1hcJMY1kjQo_UJXDUpdS7s&usqp=CAU",
   ];
   int carouselIndex = 0;
+  bool networkSuccess = false;
 
   @override
   void initState() {
@@ -65,7 +66,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return BlocBuilder<NetworkBloc, NetworkState>(
+    return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
         if (state is NetworkSuccess) {
           return BlocConsumer<HomeBloc, HomeState>(
@@ -79,7 +80,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   ),
                 );
               }
-              if(state is HomeErrorState) {
+              if (state is HomeErrorState) {
                 return Center(
                   child: Column(
                     children: [
@@ -143,7 +144,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: AppColors.borderColor,width: 1),
+                                  border: Border.all(
+                                      color: AppColors.borderColor, width: 1),
                                   boxShadow: const [
                                     BoxShadow(
                                       color: AppColors.boxShadow,
@@ -209,8 +211,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               padding: const EdgeInsets.only(left: 0),
                               child: GestureDetector(
                                 onTap: () {
-                                  context.push('/scan');
-                                  },
+                                  context.push('/scan', extra: "Home");
+                                },
                                 child: Container(
                                   height: getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
@@ -354,11 +356,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         state.homeResponse.data!.brands!.length,
                                         (index) => GestureDetector(
                                               onTap: () {
-                                                _launchInBrowser(state
-                                                    .homeResponse
-                                                    .data!
-                                                    .brands![index]
-                                                    .brandLink!,
+                                                _launchInBrowser(
+                                                  state
+                                                      .homeResponse
+                                                      .data!
+                                                      .brands![index]
+                                                      .brandLink!,
                                                 );
                                               },
                                               child: Padding(
@@ -385,11 +388,34 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     ],
                                                   ),
                                                   child: CachedNetworkImage(
-                                                      imageUrl: state
-                                                          .homeResponse
-                                                          .data!
-                                                          .brands![index]
-                                                          .brandLogo!,),
+                                                    fadeInCurve: Curves.easeIn,
+                                                    fadeInDuration:
+                                                        const Duration(
+                                                            milliseconds: 200),
+                                                    imageUrl: state
+                                                        .homeResponse
+                                                        .data!
+                                                        .brands![index]
+                                                        .brandLogo!,
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            SizedBox(
+                                                      height: 35,
+                                                      width: 35,
+                                                      child: Lottie.asset(
+                                                        Assets.JUMBINGDOT,
+                                                        // height: 10,
+                                                        // width: 10,
+                                                      ),
+                                                    ),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            const ImageIcon(
+                                                      color:
+                                                          AppColors.hintColor,
+                                                      AssetImage(Assets.NO_IMG),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -494,92 +520,127 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, index) {
                             return Column(
-                                children: AnimateList(
-                                    effects: [
+                              children: AnimateList(
+                                effects: [
                                   FadeEffect(delay: 300.ms),
                                 ],
-                                    children: List.generate(
-                                      state.homeResponse.data!.offers!.length,
-                                      (index) => Padding(
-                                        padding: const EdgeInsets.all(15),
-                                        child: GestureDetector(
-                                            onTap: () {
-                                              context.push('/special_offer_details',
-                                                extra: OfferDetailsArguments(
-                                                offerHeading: state.homeResponse.data!.offers![index].offerHeading!,
-                                                endDate: state.homeResponse.data!.offers![index].endDate!,
-                                                offerDetailText: state.homeResponse.data!.offers![index].offerDetails!,
-                                                offerImgUrl: state.homeResponse.data!.offers![index].offerImage!,
-                                                startDate: state.homeResponse.data!.offers![index].startDate!,
-                                                storeList: state.homeResponse.data!.offers![index].superMartketName!,
+                                children: List.generate(
+                                  state.homeResponse.data!.offers!.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.push(
+                                          '/special_offer_details',
+                                          extra: OfferDetailsArguments(
+                                            offerHeading: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerHeading!,
+                                            endDate: state.homeResponse.data!
+                                                .offers![index].endDate!,
+                                            offerDetailText: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerDetails!,
+                                            offerImgUrl: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerImage!,
+                                            startDate: state.homeResponse.data!
+                                                .offers![index].startDate!,
+                                            storeList: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .superMartketName!,
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        height:
+                                            getProportionateScreenHeight(170),
+                                        // padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: AppColors.shadow,
+                                              blurRadius: 1.0,
+                                              // soften the shadow
+                                              spreadRadius: 0.0,
+                                              //extend the shadow
+                                              offset: Offset(
+                                                1.0,
+                                                // Move to right 10  horizontally
+                                                1.0, // Move to bottom 10 Vertically
                                               ),
-                                              );
-                                            },
-                                          child: Container(
-                                            height:
-                                                getProportionateScreenHeight(170),
-                                            // padding: const EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: AppColors.shadow,
-                                                  blurRadius: 1.0,
-                                                  // soften the shadow
-                                                  spreadRadius: 0.0,
-                                                  //extend the shadow
-                                                  offset: Offset(
-                                                    1.0,
-                                                    // Move to right 10  horizontally
-                                                    1.0, // Move to bottom 10 Vertically
-                                                  ),
-                                                ),
-                                                BoxShadow(
-                                                  color: AppColors.shadow,
-                                                  blurRadius: 1.0,
-                                                  // soften the shadow
-                                                  spreadRadius: 0.0,
-                                                  //extend the shadow
-                                                  offset: Offset(
-                                                    -1.0,
-                                                    // Move to right 10  horizontally
-                                                    -1.0, // Move to bottom 10 Vertically
-                                                  ),
-                                                ),
-                                              ],
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                imageUrl: state.homeResponse.data!
-                                                    .offers![index].offerImage!,
-                                                imageBuilder:
-                                                    (context, imageProvider) =>
-                                                        Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                // placeholder: (context, url) => CircularProgressIndicator(),
-                                                // errorWidget: (context, url, error) => Icon(Icons.error),
+                                            BoxShadow(
+                                              color: AppColors.shadow,
+                                              blurRadius: 1.0,
+                                              // soften the shadow
+                                              spreadRadius: 0.0,
+                                              //extend the shadow
+                                              offset: Offset(
+                                                -1.0,
+                                                // Move to right 10  horizontally
+                                                -1.0, // Move to bottom 10 Vertically
                                               ),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: state.homeResponse.data!
+                                                .offers![index].offerImage!,
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            placeholder: (context, url) =>
+                                                SizedBox(
+                                              height: 35,
+                                              width: 35,
+                                              child: Lottie.asset(
+                                                Assets.JUMBINGDOT,
+                                                // height: 10,
+                                                // width: 10,
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const ImageIcon(
+                                              color: AppColors.hintColor,
+                                              AssetImage(Assets.NO_IMG),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    )));
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
                           },
                           childCount: 1,
                         ),
                       ),
                       padding: const EdgeInsets.only(
-                          bottom: 100, left: 10, right: 10),
+                          bottom: 120, left: 10, right: 10),
                     ),
                   ],
                 );
@@ -590,7 +651,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     leading: const SizedBox(),
                     pinned: true,
                     stretch: true,
-                    // collapsedHeight: getProportionateScreenHeight(60),
                     backgroundColor: AppColors.primaryColor,
                     expandedHeight: getProportionateScreenHeight(80),
                     shape: const RoundedRectangleBorder(
@@ -979,12 +1039,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         } else if (state is NetworkFailure) {
           return Center(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
                   "You are not connected to the internet",
                   style: GoogleFonts.openSans(
-                    color: AppColors.primaryWhiteColor,
+                    color: AppColors.primaryGrayColor,
                     fontSize: 20,
                   ),
                 ).animate().scale(delay: 200.ms, duration: 300.ms),
@@ -993,6 +1054,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
           );
         }
         return const SizedBox();
+      },
+      listener: (BuildContext context, NetworkState state) {
+        if (state is NetworkSuccess) {
+          networkSuccess = true;
+        }
       },
     );
   }

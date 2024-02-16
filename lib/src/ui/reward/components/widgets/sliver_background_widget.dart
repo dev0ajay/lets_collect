@@ -25,78 +25,74 @@ class SliverBackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            height: getProportionateScreenHeight(133),
-            width: getProportionateScreenWidth(320),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(9),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0, //extend the shadow
-                ),
-
-              ],
+        // const SizedBox(
+        //   height: 170,
+        //   width: 400,
+        // ),
+        Padding(
+          padding: const EdgeInsets.only(top: 28),
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              // height: getProportionateScreenHeight(183),
+              // width: getProportionateScreenWidth(350),
+              decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x4F000000),
+                      blurRadius: 4.10,
+                      offset: Offset(2, 4),
+                      spreadRadius: 0,
+                    ),
+                  ]
+              ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(9),
+                  child: SvgPicture.asset(Assets.CONTAINER_SVG,fit: BoxFit.cover,)),
             ),
-            child: SvgPicture.asset(Assets.CONTAINER_SVG),
           ),
+        ),
+        Positioned(
+          top: 25,
+          left: 0,
+          bottom: 15,
+          child: Image.asset(Assets.WALLET),
         ),
         Align(
           alignment: Alignment.center,
-          child: SizedBox(
-            height: 140,
-            width: 400,
-            // color: Colors.cyan,
-            child: Stack(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20,top: 60),
+            child:  isLetsCollectRewardSelected ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Positioned(
-                  top: 10,
-                  left: 20,
-                  bottom: 15,
-                  child: Image.asset(Assets.WALLET),
+                Text(
+                  letsCollectTotalPoints,
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryWhiteColor,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child:  isLetsCollectRewardSelected ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          letsCollectTotalPoints,
-                          style: GoogleFonts.openSans(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                         Text(
-                          "Lets Collect Points",
-                          style: GoogleFonts.roboto(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ) :    Text(
-                      "Wallet",
-                      style: GoogleFonts.openSans(
-                        color: AppColors.primaryWhiteColor,
-                        fontSize: 36,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                Text(
+                  "Lets Collect Points",
+                  style: GoogleFonts.roboto(
+                    color: AppColors.primaryWhiteColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
+            ) :    Text(
+              "Wallet",
+              style: GoogleFonts.openSans(
+                color: AppColors.primaryWhiteColor,
+                fontSize: 36,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
+
       ],
     );
   }

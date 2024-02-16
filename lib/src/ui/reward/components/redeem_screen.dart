@@ -51,7 +51,8 @@ class _RedeemScreenState extends State<RedeemScreen> {
         title: Text(
           "Redeem",
           style: GoogleFonts.roboto(
-            fontSize: 16,
+            color: AppColors.primaryWhiteColor,
+            fontSize: 23,
             fontWeight: FontWeight.w600,
           ),
         ),

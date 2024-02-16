@@ -273,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]),
           ),
           padding:
-              const EdgeInsets.only(top: 25, left: 15, right: 15, bottom: 110),
+              const EdgeInsets.only(top: 25, left: 15, right: 15, bottom: 130),
         ),
       ],
     );

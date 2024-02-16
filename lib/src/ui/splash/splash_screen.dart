@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _loadWidget() async {
     var _duration = Duration(seconds: splashDelay);
-
+    registerNotification();
     return Timer(_duration, navigationPage);
   }
 
@@ -52,7 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    registerNotification();
     _loadWidget();
     super.initState();
   }

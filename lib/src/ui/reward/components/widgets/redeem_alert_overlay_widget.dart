@@ -64,7 +64,7 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
     super.initState();
 
     controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 450));
+        vsync: this, duration: const Duration(milliseconds: 750));
     scaleAnimation =
         CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
 

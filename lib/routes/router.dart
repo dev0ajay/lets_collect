@@ -178,7 +178,7 @@ class AppRouter {
           GoRoute(
             path: 'scan',
             builder: (BuildContext context, GoRouterState state) =>
-                const ScanScreen(),
+                 ScanScreen(from: state.extra as String),
           ),
           GoRoute(
               path: 'long_receipt',

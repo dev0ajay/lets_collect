@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/ui/special_offer/components/offer_details_arguments.dart';
+import 'package:lottie/lottie.dart';
 
+import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 
 class SpecialOfferScreenDetails extends StatefulWidget {
@@ -79,26 +81,42 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                       imageUrl: widget.offerDetailsArguments.offerImgUrl,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      fadeInCurve: Curves.easeIn,
+                      fadeInDuration:
+                      const Duration(milliseconds: 200),
+                      placeholder: (context, url) => SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: Lottie.asset(
+                          Assets.JUMBINGDOT,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                      const ImageIcon(
+                        color: AppColors.hintColor,
+                        AssetImage(Assets.NO_IMG),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 30),
-            Expanded(
-              // flex: 2,
+            Flexible(
+              flex: 3,
               child: Text(
                 widget.offerDetailsArguments.offerHeading,
-                maxLines: 3,
+                maxLines: 5,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: AppColors.primaryColor,
-                  fontSize: 30,
+                  fontSize: 28,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            // const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
             Flexible(
               // flex: 2,
