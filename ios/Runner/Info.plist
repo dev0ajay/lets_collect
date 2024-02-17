@@ -42,8 +42,14 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>NSDocumentsFolderUsageDescription</key>
+    <string>Allow access to the documents folder to select files.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>This app requires access to the photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Lets Collect need access to photo library so that photos can be selected</string>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the camera.</string>
+	<string>To capture photos Lets Collect needs access to your device's camera.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

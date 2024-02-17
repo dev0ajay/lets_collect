@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/search/category/search_category_request.dart';
-import 'package:lets_collect/src/ui/search/components/search_details_screen.dart';
 import 'package:lets_collect/src/ui/search/search_screen_arguments.dart';
 import 'package:lottie/lottie.dart';
 import '../../constants/assets.dart';

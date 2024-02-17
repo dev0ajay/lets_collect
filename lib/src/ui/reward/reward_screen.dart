@@ -68,13 +68,13 @@ class _RewardScreenState extends State<RewardScreen> {
   }
 
   void _scrollListener() {
-    if (_scrollController.offset > 200 &&
+    if (_scrollController.offset > 400 &&
         _scrollController.position.userScrollDirection ==
             ScrollDirection.reverse) {
       setState(() {
         _isAppBarVisible = true;
       });
-    } else if (_scrollController.offset < 150 &&
+    } else if (_scrollController.offset < 350 &&
         _scrollController.position.userScrollDirection ==
             ScrollDirection.forward) {
       setState(() {
@@ -382,8 +382,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                             RewardTierRequestEvent(
                                                               rewardTierRequest:
                                                                   RewardTierRequest(
-                                                                sort:
-                                                                    sortQuery,
+                                                                sort: sortQuery,
                                                                 eligible: "",
                                                                 categoryId: "",
                                                                 brandId: "",
@@ -437,7 +436,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                   ),
                                 ],
                               ),
-                              child:  Row(
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -448,8 +447,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                       fontSize: 13,
                                     ),
                                   ),
-                                  SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
-
+                                  SvgPicture.asset(
+                                    Assets.SORT_SVG,
+                                    height: 10,
+                                    width: 10,
+                                  ),
                                 ],
                               ),
                             ),
@@ -694,7 +696,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                         onTap: () {
                                                                                           setState(() {
                                                                                             selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                            selectedBrandFilters = "";                                                                                          });
+                                                                                            selectedBrandFilters = "";
+                                                                                          });
                                                                                         },
                                                                                         child: Container(
                                                                                           height: 20,
@@ -973,9 +976,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           RewardTierRequest(
                                                                         sort:
                                                                             "",
-                                                                        eligible:
-                                                                        eligibleFilter ==
-                                                                            "Eligible"
+                                                                        eligible: eligibleFilter ==
+                                                                                "Eligible"
                                                                             ? "1"
                                                                             : "",
                                                                         categoryId: selectedCategoryFilters.isEmpty
@@ -1063,8 +1065,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   IconButton(
                                                                     onPressed:
                                                                         () {
-                                                                      context.pop();
-                                                                        },
+                                                                      context
+                                                                          .pop();
+                                                                    },
                                                                     icon:
                                                                         const Icon(
                                                                       Icons
@@ -1116,7 +1119,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                   ),
                                 ],
                               ),
-                              child:  Row(
+                              child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -1127,15 +1130,18 @@ class _RewardScreenState extends State<RewardScreen> {
                                       fontSize: 13,
                                     ),
                                   ),
-                                  SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
-
+                                  SvgPicture.asset(
+                                    Assets.FILTER_SVG,
+                                    height: 10,
+                                    width: 10,
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                         ),
                         const Spacer(flex: 1),
-                         Flexible(
+                        Flexible(
                           flex: 1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -1485,7 +1491,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ],
                                   ),
-                                  child:  Row(
+                                  child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
@@ -1496,8 +1502,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                           fontSize: 13,
                                         ),
                                       ),
-                                      SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
-
+                                      SvgPicture.asset(
+                                        Assets.SORT_SVG,
+                                        height: 10,
+                                        width: 10,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1990,9 +1999,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                               RewardTierRequest(
                                                                             sort:
                                                                                 "",
-                                                                            eligible:
-                                                                            eligibleFilter ==
-                                                                                "Eligible"
+                                                                            eligible: eligibleFilter == "Eligible"
                                                                                 ? "1"
                                                                                 : "",
                                                                             categoryId: selectedCategoryFilters.isEmpty
@@ -2004,7 +2011,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           ),
                                                                         ),
                                                                       );
-                                                                      context.pop();
+                                                                      context
+                                                                          .pop();
                                                                     },
                                                                     child: Text(
                                                                       "Apply",
@@ -2080,8 +2088,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       IconButton(
                                                                         onPressed:
                                                                             () {
-                                                                          context.pop();
-                                                                            },
+                                                                          context
+                                                                              .pop();
+                                                                        },
                                                                         icon:
                                                                             const Icon(
                                                                           Icons
@@ -2134,7 +2143,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                       ),
                                     ],
                                   ),
-                                  child:  Row(
+                                  child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
@@ -2145,7 +2154,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                           fontSize: 13,
                                         ),
                                       ),
-                                      SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
+                                      SvgPicture.asset(
+                                        Assets.FILTER_SVG,
+                                        height: 10,
+                                        width: 10,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -2490,7 +2503,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                           ),
                                         ],
                                       ),
-                                      child:  Row(
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
@@ -2501,8 +2514,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                               fontSize: 13,
                                             ),
                                           ),
-                                          SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
-
+                                          SvgPicture.asset(
+                                            Assets.SORT_SVG,
+                                            height: 10,
+                                            width: 10,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -2538,10 +2554,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                     selectedBrandFilters = "";
                                                     selectedCategoryVariants =
                                                         <String>[];
-                                                    selectedCategoryFilters = "";
+                                                    selectedCategoryFilters =
+                                                        "";
                                                   });
                                                 }
-
 
                                                 return BlocBuilder<FilterBloc,
                                                     FilterState>(
@@ -2970,16 +2986,14 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             RewardTierRequestEvent(
                                                                               rewardTierRequest: RewardTierRequest(
                                                                                 sort: "",
-                                                                                eligible: eligibleFilter ==
-                                                                                    "Eligible"
-                                                                                    ? "1"
-                                                                                    : "",
+                                                                                eligible: eligibleFilter == "Eligible" ? "1" : "",
                                                                                 categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
                                                                                 brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
                                                                               ),
                                                                             ),
                                                                           );
-                                                                          context.pop();
+                                                                          context
+                                                                              .pop();
                                                                         },
                                                                         child:
                                                                             Text(
@@ -3101,7 +3115,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                           ),
                                         ],
                                       ),
-                                      child:  Row(
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
@@ -3112,8 +3126,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                               fontSize: 13,
                                             ),
                                           ),
-                                          SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
-
+                                          SvgPicture.asset(
+                                            Assets.FILTER_SVG,
+                                            height: 10,
+                                            width: 10,
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -3136,762 +3153,195 @@ class _RewardScreenState extends State<RewardScreen> {
                         isBrandSelected: isBrandSelected,
                         letsCollectTotalPoints: letsCollectTotalPoints,
                       ),
-                    isRewardTierSelected ?   Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20.0),
-                                        topRight: Radius.circular(20.0),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                    AppColors.primaryWhiteColor,
-                                    barrierColor: Colors.black38,
-                                    elevation: 2,
-                                    isScrollControlled: true,
-                                    isDismissible: true,
-                                    builder: (BuildContext bc) {
-                                      return StatefulBuilder(
-                                        builder:
-                                            (BuildContext context, setState) {
-                                          void clearFilter() {
-                                            setState(() {
-                                              selectedSortVariants = <String>[];
-                                            });
-                                          }
+                      isRewardTierSelected
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 20, top: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20.0),
+                                              topRight: Radius.circular(20.0),
+                                            ),
+                                          ),
+                                          backgroundColor:
+                                              AppColors.primaryWhiteColor,
+                                          barrierColor: Colors.black38,
+                                          elevation: 2,
+                                          isScrollControlled: true,
+                                          isDismissible: true,
+                                          builder: (BuildContext bc) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  setState) {
+                                                void clearFilter() {
+                                                  setState(() {
+                                                    selectedSortVariants =
+                                                        <String>[];
+                                                  });
+                                                }
 
-                                          // filterWidgets.clear();
-                                          return Stack(
-                                            children: [
-                                              Positioned(
-                                                top: 0,
-                                                left: 0,
-                                                right: 0,
-                                                // bottom: 20,
-                                                child: SafeArea(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 15),
-                                                    child: Column(
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Text(
-                                                              "Sort by",
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w400,
-                                                                color: AppColors
-                                                                    .primaryGrayColor,
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                              onPressed: () {},
-                                                              icon: const Icon(
-                                                                Icons.close,
-                                                                color: AppColors
-                                                                    .primaryGrayColor,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        const Divider(
-                                                            color: AppColors
-                                                                .primaryGrayColor),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
-                                                    2,
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      const SizedBox(
-                                                          height: 60),
-                                                      Column(
-                                                        children: List.generate(
-                                                          sort.length,
-                                                              (index) => Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                8,
-                                                                vertical:
-                                                                6),
-                                                            child: Container(
-                                                              padding:
+                                                // filterWidgets.clear();
+                                                return Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      // bottom: 20,
+                                                      child: SafeArea(
+                                                        child: Padding(
+                                                          padding:
                                                               const EdgeInsets
                                                                   .symmetric(
                                                                   horizontal:
-                                                                  10,
-                                                                  vertical:
-                                                                  6),
-                                                              child: Row(
+                                                                      15),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                                mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                                children: <Widget>[
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
                                                                   Text(
-                                                                    sort[index],
-                                                                    softWrap:
-                                                                    true,
-                                                                    overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                    style: Theme.of(
-                                                                        context)
-                                                                        .textTheme
-                                                                        .bodyText1!
-                                                                        .copyWith(
+                                                                    "Sort by",
+                                                                    style: GoogleFonts
+                                                                        .roboto(
                                                                       fontSize:
-                                                                      15,
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
                                                                     ),
                                                                   ),
-                                                                  selectedSortVariants
-                                                                      .contains(
-                                                                      sort[index])
-                                                                      ? InkWell(
-                                                                    onTap:
+                                                                  IconButton(
+                                                                    onPressed:
                                                                         () {
-                                                                      setState(() {
-                                                                        selectedSortVariants.remove(sort[index]);
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                    const CustomRoundedButton(enabled: true),
+                                                                      context.pop();
+                                                                        },
+                                                                    icon:
+                                                                        const Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
                                                                   )
-                                                                      : InkWell(
-                                                                    onTap:
-                                                                        () {
-                                                                      setState(() {
-                                                                        selectedSortVariants.add(sort[index]);
-                                                                        if (selectedSortVariants.length > 1) {
-                                                                          selectedSortVariants.removeAt(0);
-                                                                        }
-                                                                        selectedSortFilter = selectedSortVariants[0];
-                                                                        if (selectedSortFilter == "Recent") {
-                                                                          sortQuery = "recent";
-                                                                        }
-                                                                        if (selectedSortFilter == "Expiry First") {
-                                                                          sortQuery = "expire_first";
-                                                                        }
-                                                                        if (selectedSortFilter == "Points Low") {
-                                                                          sortQuery = "points_low";
-                                                                        }
-                                                                        if (selectedSortFilter == "Points High") {
-                                                                          sortQuery = "points_high";
-                                                                        }
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                    const CustomRoundedButton(
-                                                                      enabled:
-                                                                      false,
-                                                                    ),
-                                                                  ),
                                                                 ],
                                                               ),
-                                                            ),
+                                                              const Divider(
+                                                                  color: AppColors
+                                                                      .primaryGrayColor),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                          height: 80),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: 0,
-                                                right: 0,
-                                                left: 0,
-                                                child: SafeArea(
-                                                  child: Padding(
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        left: 20,
-                                                        right: 20,
-                                                        bottom: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            clearFilter();
-                                                            context.pop();
-                                                            BlocProvider.of<
-                                                                RewardTierBloc>(
-                                                                context)
-                                                                .add(
-                                                              RewardTierRequestEvent(
-                                                                rewardTierRequest:
-                                                                RewardTierRequest(
-                                                                  sort: "",
-                                                                  eligible: "",
-                                                                  categoryId:
-                                                                  "",
-                                                                  brandId: "",
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          child: Text(
-                                                            "Clear All",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              color: AppColors
-                                                                  .primaryColor,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w400,
-                                                              fontSize: 14,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            fixedSize:
-                                                            const Size(
-                                                                100, 40),
-                                                            shape:
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  8),
-                                                            ),
-                                                            backgroundColor:
-                                                            AppColors
-                                                                .secondaryColor,
-                                                          ),
-                                                          onPressed: () async {
-                                                            print(
-                                                                selectedSortFilter);
-                                                            BlocProvider.of<
-                                                                RewardTierBloc>(
-                                                                context)
-                                                                .add(
-                                                              RewardTierRequestEvent(
-                                                                rewardTierRequest:
-                                                                RewardTierRequest(
-                                                                  sort:
-                                                                  sortQuery,
-                                                                  eligible: "",
-                                                                  categoryId:
-                                                                  "",
-                                                                  brandId: "",
-                                                                ),
-                                                              ),
-                                                            );
-                                                            context.pop();
-                                                          },
-                                                          child: Text(
-                                                            "Apply",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              color: AppColors
-                                                                  .primaryWhiteColor,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w400,
-                                                              fontSize: 14,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    });
-                              },
-                              child: Container(
-                                padding:
-                                const EdgeInsets.only(left: 8, right: 8),
-                                height: 20,
-                                width: 68,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryWhiteColor,
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(4, 2),
-                                      spreadRadius: 0,
-                                    ),
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(-4, -2),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                child:  Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      "Sort",
-                                      style: TextStyle(
-                                        color: AppColors.iconGreyColor,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10,),
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20.0),
-                                        topRight: Radius.circular(20.0),
-                                      ),
-                                    ),
-                                    backgroundColor:
-                                    AppColors.primaryWhiteColor,
-                                    barrierColor: Colors.black38,
-                                    elevation: 2,
-                                    isScrollControlled: true,
-                                    isDismissible: true,
-                                    builder: (BuildContext bc) {
-                                      return StatefulBuilder(
-                                        builder:
-                                            (BuildContext context, setState) {
-                                          void clearFilter() {
-                                            setState(() {
-                                              selectedBrandVariants =
-                                              <String>[];
-                                              selectedBrandFilters = "";
-                                              selectedCategoryVariants =
-                                              <String>[];
-                                              selectedCategoryFilters = "";
-                                            });
-                                          }
-
-                                          // filterWidgets.clear();
-
-                                          return BlocBuilder<FilterBloc,
-                                              FilterState>(
-                                            builder: (context, state) {
-                                              if (state is BrandLoading) {
-                                                return Center(
-                                                  child: Lottie.asset(
-                                                      Assets.JUMBINGDOT,
-                                                      height: 100,
-                                                      width: 100),
-                                                );
-                                              }
-                                              if (state is BrandLoaded) {
-                                                return Stack(
-                                                  children: [
                                                     SizedBox(
                                                       height:
-                                                      MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                          1.6,
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              2,
                                                       child:
-                                                      SingleChildScrollView(
+                                                          SingleChildScrollView(
                                                         child: Column(
                                                           children: [
                                                             const SizedBox(
                                                                 height: 60),
-                                                            Padding(
-                                                              padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                  8,
-                                                                  vertical:
-                                                                  6),
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                    10,
-                                                                    vertical:
-                                                                    6),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                                  mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                                  children: <Widget>[
-                                                                    Text(
-                                                                      "Eligible",
-                                                                      softWrap:
-                                                                      true,
-                                                                      overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                      style: Theme.of(
-                                                                          context)
-                                                                          .textTheme
-                                                                          .bodyText1!
-                                                                          .copyWith(
-                                                                        fontSize:
-                                                                        15,
-                                                                      ),
-                                                                    ),
-                                                                    eligibleFilter ==
-                                                                        "Eligible"
-                                                                        ? InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        setState(() {
-                                                                          eligibleFilter = "";
-                                                                          // selectedFilters[]
-                                                                        });
-                                                                      },
-                                                                      child:
-                                                                      Container(
-                                                                        height: 20,
-                                                                        width: 20,
-                                                                        decoration: const BoxDecoration(
-                                                                          shape: BoxShape.rectangle,
-                                                                          image: DecorationImage(
-                                                                            image: AssetImage(Assets.DISABLED_TICK),
-                                                                            fit: BoxFit.contain,
-                                                                            scale: 6,
-                                                                          ),
-                                                                          color: AppColors.secondaryColor,
-                                                                          boxShadow: [
-                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                        : InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        setState(() {
-                                                                          eligibleFilter = "Eligible";
-                                                                        });
-                                                                      },
-                                                                      child:
-                                                                      Container(
-                                                                        height: 20,
-                                                                        width: 20,
-                                                                        decoration: const BoxDecoration(
-                                                                          shape: BoxShape.rectangle,
-                                                                          color: Color(0xFFD9D9D9),
-                                                                          image: DecorationImage(
-                                                                            image: AssetImage(Assets.DISABLED_TICK),
-                                                                            fit: BoxFit.contain,
-                                                                          ),
-                                                                          boxShadow: [
-                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  isBrandFilterTileSelected =
-                                                                  !isBrandFilterTileSelected;
-                                                                });
-                                                              },
-                                                              child: ListTile(
-                                                                trailing: !isBrandFilterTileSelected ==
-                                                                    true
-                                                                    ? const ImageIcon(
-                                                                  color: AppColors
-                                                                      .secondaryColor,
-                                                                  AssetImage(
-                                                                      Assets.SIDE_ARROW),
-                                                                )
-                                                                    : const ImageIcon(
-                                                                  color: AppColors
-                                                                      .secondaryColor,
-                                                                  AssetImage(
-                                                                      Assets.DOWN_ARROW),
-                                                                ),
-                                                                title:
-                                                                const Text(
-                                                                    "Brand"),
-                                                              ),
-                                                            ),
-                                                            isBrandFilterTileSelected ==
-                                                                true
-                                                                ? SingleChildScrollView(
-                                                              child:
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(
-                                                                    right:
-                                                                    15,
-                                                                    left:
-                                                                    15,
-                                                                    bottom:
-                                                                    5,
-                                                                    top:
-                                                                    5),
-                                                                child:
-                                                                Column(
-                                                                  children:
+                                                            Column(
+                                                              children:
                                                                   List.generate(
-                                                                    state
-                                                                        .brandAndCategoryFilterResponse
-                                                                        .data
-                                                                        .brands
-                                                                        .length,
-                                                                        (index) =>
-                                                                        Padding(
-                                                                          padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                          child:
-                                                                          Container(
-                                                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              mainAxisSize: MainAxisSize.max,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                  softWrap: true,
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                                                                    fontSize: 15,
-                                                                                  ),
-                                                                                ),
-                                                                                selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                    ? InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                      selectedBrandFilters = "";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                        scale: 6,
-                                                                                      ),
-                                                                                      color: AppColors.secondaryColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                )
-                                                                                    : InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                      if (selectedBrandVariants.length > 1) {
-                                                                                        selectedBrandVariants.removeAt(0);
-                                                                                      }
-                                                                                      selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
+                                                                sort.length,
+                                                                (index) =>
+                                                                    Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8,
+                                                                      vertical:
+                                                                          6),
+                                                                  child:
+                                                                      Container(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            10,
+                                                                        vertical:
+                                                                            6),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .max,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          sort[
+                                                                              index],
+                                                                          softWrap:
+                                                                              true,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          style: Theme.of(context)
+                                                                              .textTheme
+                                                                              .bodyText1!
+                                                                              .copyWith(
+                                                                                fontSize: 15,
+                                                                              ),
                                                                         ),
+                                                                        selectedSortVariants.contains(sort[index])
+                                                                            ? InkWell(
+                                                                                onTap: () {
+                                                                                  setState(() {
+                                                                                    selectedSortVariants.remove(sort[index]);
+                                                                                  });
+                                                                                },
+                                                                                child: const CustomRoundedButton(enabled: true),
+                                                                              )
+                                                                            : InkWell(
+                                                                                onTap: () {
+                                                                                  setState(() {
+                                                                                    selectedSortVariants.add(sort[index]);
+                                                                                    if (selectedSortVariants.length > 1) {
+                                                                                      selectedSortVariants.removeAt(0);
+                                                                                    }
+                                                                                    selectedSortFilter = selectedSortVariants[0];
+                                                                                    if (selectedSortFilter == "Recent") {
+                                                                                      sortQuery = "recent";
+                                                                                    }
+                                                                                    if (selectedSortFilter == "Expiry First") {
+                                                                                      sortQuery = "expire_first";
+                                                                                    }
+                                                                                    if (selectedSortFilter == "Points Low") {
+                                                                                      sortQuery = "points_low";
+                                                                                    }
+                                                                                    if (selectedSortFilter == "Points High") {
+                                                                                      sortQuery = "points_high";
+                                                                                    }
+                                                                                  });
+                                                                                },
+                                                                                child: const CustomRoundedButton(
+                                                                                  enabled: false,
+                                                                                ),
+                                                                              ),
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            )
-                                                                : const SizedBox(),
-                                                            GestureDetector(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  isCategoryFilterTileSelected =
-                                                                  !isCategoryFilterTileSelected;
-                                                                });
-                                                              },
-                                                              child: ListTile(
-                                                                trailing: !isCategoryFilterTileSelected ==
-                                                                    true
-                                                                    ? const ImageIcon(
-                                                                  color: AppColors
-                                                                      .secondaryColor,
-                                                                  AssetImage(
-                                                                      Assets.SIDE_ARROW),
-                                                                )
-                                                                    : const ImageIcon(
-                                                                  color: AppColors
-                                                                      .secondaryColor,
-                                                                  AssetImage(
-                                                                      Assets.DOWN_ARROW),
-                                                                ),
-                                                                title: const Text(
-                                                                    "Category"),
-                                                              ),
                                                             ),
-                                                            isCategoryFilterTileSelected ==
-                                                                true
-                                                                ? SingleChildScrollView(
-                                                              child:
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(
-                                                                    right:
-                                                                    15,
-                                                                    left:
-                                                                    15,
-                                                                    bottom:
-                                                                    5,
-                                                                    top:
-                                                                    5),
-                                                                child:
-                                                                Column(
-                                                                  children:
-                                                                  List.generate(
-                                                                    state
-                                                                        .brandAndCategoryFilterResponse
-                                                                        .data
-                                                                        .category
-                                                                        .length,
-                                                                        (index) =>
-                                                                        Padding(
-                                                                          padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                          child:
-                                                                          Container(
-                                                                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              mainAxisSize: MainAxisSize.max,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                  softWrap: true,
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                                                                    fontSize: 15,
-                                                                                  ),
-                                                                                ),
-                                                                                selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                    ? InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                      selectedCategoryFilters = "";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                        scale: 6,
-                                                                                      ),
-                                                                                      color: AppColors.secondaryColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                )
-                                                                                    : InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                      if (selectedCategoryVariants.length > 1) {
-                                                                                        selectedCategoryVariants.removeAt(0);
-                                                                                      }
-                                                                                      selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                                : const SizedBox(),
                                                             const SizedBox(
                                                                 height: 80),
                                                           ],
@@ -3903,247 +3353,786 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       right: 0,
                                                       left: 0,
                                                       child: SafeArea(
-                                                        child: Container(
-                                                          decoration:
-                                                          const BoxDecoration(
-                                                            color: AppColors
-                                                                .primaryWhiteColor,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: AppColors
-                                                                    .boxShadow,
-                                                                blurRadius: 4,
-                                                                offset: Offset(
-                                                                    4, 2),
-                                                                spreadRadius: 0,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                left: 20,
-                                                                right: 20,
-                                                                bottom: 10),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                              children: [
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    clearFilter();
-                                                                  },
-                                                                  child: Text(
-                                                                    "Clear All",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      color: AppColors
-                                                                          .underlineColor,
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                      fontSize:
-                                                                      14,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                ElevatedButton(
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    fixedSize:
-                                                                    const Size(
-                                                                        100,
-                                                                        40),
-                                                                    shape:
-                                                                    RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                      BorderRadius.circular(
-                                                                          8),
-                                                                    ),
-                                                                    backgroundColor:
-                                                                    AppColors
-                                                                        .secondaryColor,
-                                                                  ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    print(
-                                                                        "Selected Category: $selectedCategoryFilters");
-                                                                    print(
-                                                                        "Selected Brand: $selectedBrandFilters");
-
-                                                                    BlocProvider.of<RewardTierBloc>(
-                                                                        context)
-                                                                        .add(
-                                                                      RewardTierRequestEvent(
-                                                                        rewardTierRequest:
-                                                                        RewardTierRequest(
-                                                                          sort:
-                                                                          "",
-                                                                          eligible:
-                                                                          "",
-                                                                          categoryId: selectedCategoryFilters.isEmpty
-                                                                              ? ""
-                                                                              : selectedCategoryFilters,
-                                                                          brandId: selectedBrandFilters.isEmpty
-                                                                              ? ""
-                                                                              : selectedBrandFilters,
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                    context.pop();
-                                                                  },
-                                                                  child: Text(
-                                                                    "Apply",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      color: AppColors
-                                                                          .primaryWhiteColor,
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                      fontSize:
-                                                                      14,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      child: Container(
-                                                        decoration:
-                                                        const BoxDecoration(
-                                                          color: AppColors
-                                                              .primaryWhiteColor,
-                                                          borderRadius:
-                                                          BorderRadius.only(
-                                                            topLeft:
-                                                            Radius.circular(
-                                                                20.0),
-                                                            topRight:
-                                                            Radius.circular(
-                                                                20.0),
-                                                          ),
-                                                        ),
                                                         child: Padding(
                                                           padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal:
-                                                              15),
-                                                          child: Container(
-                                                            // height: 40,
-                                                            color: Colors.white,
-                                                            child: Column(
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                                  crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .center,
-                                                                  children: [
-                                                                    Text(
-                                                                      "Filter by",
-                                                                      style: GoogleFonts
-                                                                          .roboto(
-                                                                        fontSize:
-                                                                        16,
-                                                                        fontWeight:
-                                                                        FontWeight.w400,
-                                                                        color: AppColors
-                                                                            .primaryGrayColor,
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 20,
+                                                                  right: 20,
+                                                                  bottom: 10),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  clearFilter();
+                                                                  context.pop();
+                                                                  BlocProvider.of<
+                                                                              RewardTierBloc>(
+                                                                          context)
+                                                                      .add(
+                                                                    RewardTierRequestEvent(
+                                                                      rewardTierRequest:
+                                                                          RewardTierRequest(
+                                                                        sort:
+                                                                            "",
+                                                                        eligible:
+                                                                            "",
+                                                                        categoryId:
+                                                                            "",
+                                                                        brandId:
+                                                                            "",
                                                                       ),
                                                                     ),
-                                                                    IconButton(
-                                                                      onPressed:
-                                                                          () {},
-                                                                      icon:
-                                                                      const Icon(
-                                                                        Icons
-                                                                            .close,
-                                                                        color: AppColors
-                                                                            .primaryGrayColor,
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                const Divider(
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                  "Clear All",
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .roboto(
                                                                     color: AppColors
-                                                                        .primaryGrayColor),
-                                                              ],
-                                                            ),
+                                                                        .primaryColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  fixedSize:
+                                                                      const Size(
+                                                                          100,
+                                                                          40),
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                  ),
+                                                                  backgroundColor:
+                                                                      AppColors
+                                                                          .secondaryColor,
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  print(
+                                                                      selectedSortFilter);
+                                                                  BlocProvider.of<
+                                                                              RewardTierBloc>(
+                                                                          context)
+                                                                      .add(
+                                                                    RewardTierRequestEvent(
+                                                                      rewardTierRequest:
+                                                                          RewardTierRequest(
+                                                                        sort:
+                                                                            sortQuery,
+                                                                        eligible:
+                                                                            "",
+                                                                        categoryId:
+                                                                            "",
+                                                                        brandId:
+                                                                            "",
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                  context.pop();
+                                                                },
+                                                                child: Text(
+                                                                  "Apply",
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .roboto(
+                                                                    color: AppColors
+                                                                        .primaryWhiteColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
                                                     ),
                                                   ],
                                                 );
-                                              }
-                                              return const SizedBox();
-                                            },
-                                          );
-                                        },
-                                      );
-                                    });
-                              },
-                              child: Container(
-                                padding:
-                                const EdgeInsets.only(left: 8, right: 8),
-                                height: 20,
-                                width: 68,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryWhiteColor,
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(4, 2),
-                                      spreadRadius: 0,
-                                    ),
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(-4, -2),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                child:  Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      "Filter",
-                                      style: TextStyle(
-                                        color: AppColors.iconGreyColor,
-                                        fontSize: 13,
+                                              },
+                                            );
+                                          });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      height: 20,
+                                      width: 68,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryWhiteColor,
+                                        borderRadius: BorderRadius.circular(5),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(4, 2),
+                                            spreadRadius: 0,
+                                          ),
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(-4, -2),
+                                            spreadRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            "Sort",
+                                            style: TextStyle(
+                                              color: AppColors.iconGreyColor,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            Assets.SORT_SVG,
+                                            height: 10,
+                                            width: 10,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ) : const SizedBox(),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20.0),
+                                              topRight: Radius.circular(20.0),
+                                            ),
+                                          ),
+                                          backgroundColor:
+                                              AppColors.primaryWhiteColor,
+                                          barrierColor: Colors.black38,
+                                          elevation: 2,
+                                          isScrollControlled: true,
+                                          isDismissible: true,
+                                          builder: (BuildContext bc) {
+                                            return StatefulBuilder(
+                                              builder: (BuildContext context,
+                                                  setState) {
+                                                void clearFilter() {
+                                                  setState(() {
+                                                    selectedBrandVariants =
+                                                        <String>[];
+                                                    selectedBrandFilters = "";
+                                                    selectedCategoryVariants =
+                                                        <String>[];
+                                                    selectedCategoryFilters =
+                                                        "";
+                                                  });
+                                                }
 
+                                                // filterWidgets.clear();
+
+                                                return BlocBuilder<FilterBloc,
+                                                    FilterState>(
+                                                  builder: (context, state) {
+                                                    if (state is BrandLoading) {
+                                                      return Center(
+                                                        child: Lottie.asset(
+                                                            Assets.JUMBINGDOT,
+                                                            height: 100,
+                                                            width: 100),
+                                                      );
+                                                    }
+                                                    if (state is BrandLoaded) {
+                                                      return Stack(
+                                                        children: [
+                                                          SizedBox(
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                1.6,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          60),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            8,
+                                                                        vertical:
+                                                                            6),
+                                                                    child:
+                                                                        Container(
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal:
+                                                                              10,
+                                                                          vertical:
+                                                                              6),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        children: <Widget>[
+                                                                          Text(
+                                                                            "Eligible",
+                                                                            softWrap:
+                                                                                true,
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                  fontSize: 15,
+                                                                                ),
+                                                                          ),
+                                                                          eligibleFilter == "Eligible"
+                                                                              ? InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      eligibleFilter = "";
+                                                                                      // selectedFilters[]
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                        scale: 6,
+                                                                                      ),
+                                                                                      color: AppColors.secondaryColor,
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                              : InkWell(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      eligibleFilter = "Eligible";
+                                                                                    });
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    height: 20,
+                                                                                    width: 20,
+                                                                                    decoration: const BoxDecoration(
+                                                                                      shape: BoxShape.rectangle,
+                                                                                      color: Color(0xFFD9D9D9),
+                                                                                      image: DecorationImage(
+                                                                                        image: AssetImage(Assets.DISABLED_TICK),
+                                                                                        fit: BoxFit.contain,
+                                                                                      ),
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        isBrandFilterTileSelected =
+                                                                            !isBrandFilterTileSelected;
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        ListTile(
+                                                                      trailing: !isBrandFilterTileSelected ==
+                                                                              true
+                                                                          ? const ImageIcon(
+                                                                              color: AppColors.secondaryColor,
+                                                                              AssetImage(Assets.SIDE_ARROW),
+                                                                            )
+                                                                          : const ImageIcon(
+                                                                              color: AppColors.secondaryColor,
+                                                                              AssetImage(Assets.DOWN_ARROW),
+                                                                            ),
+                                                                      title: const Text(
+                                                                          "Brand"),
+                                                                    ),
+                                                                  ),
+                                                                  isBrandFilterTileSelected ==
+                                                                          true
+                                                                      ? SingleChildScrollView(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                                right: 15,
+                                                                                left: 15,
+                                                                                bottom: 5,
+                                                                                top: 5),
+                                                                            child:
+                                                                                Column(
+                                                                              children: List.generate(
+                                                                                state.brandAndCategoryFilterResponse.data.brands.length,
+                                                                                (index) => Padding(
+                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                                  child: Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          state.brandAndCategoryFilterResponse.data.brands[index].brandName,
+                                                                                          softWrap: true,
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                                fontSize: 15,
+                                                                                              ),
+                                                                                        ),
+                                                                                        selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                                            ? InkWell(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                                    selectedBrandFilters = "";
+                                                                                                  });
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  height: 20,
+                                                                                                  width: 20,
+                                                                                                  decoration: const BoxDecoration(
+                                                                                                    shape: BoxShape.rectangle,
+                                                                                                    image: DecorationImage(
+                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
+                                                                                                      fit: BoxFit.contain,
+                                                                                                      scale: 6,
+                                                                                                    ),
+                                                                                                    color: AppColors.secondaryColor,
+                                                                                                    boxShadow: [
+                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                ),
+                                                                                              )
+                                                                                            : InkWell(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                                    if (selectedBrandVariants.length > 1) {
+                                                                                                      selectedBrandVariants.removeAt(0);
+                                                                                                    }
+                                                                                                    selectedBrandFilters = selectedBrandVariants[0].toString();
+                                                                                                  });
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  height: 20,
+                                                                                                  width: 20,
+                                                                                                  decoration: const BoxDecoration(
+                                                                                                    shape: BoxShape.rectangle,
+                                                                                                    color: Color(0xFFD9D9D9),
+                                                                                                    image: DecorationImage(
+                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
+                                                                                                      fit: BoxFit.contain,
+                                                                                                    ),
+                                                                                                    boxShadow: [
+                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      : const SizedBox(),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      setState(
+                                                                          () {
+                                                                        isCategoryFilterTileSelected =
+                                                                            !isCategoryFilterTileSelected;
+                                                                      });
+                                                                    },
+                                                                    child:
+                                                                        ListTile(
+                                                                      trailing: !isCategoryFilterTileSelected ==
+                                                                              true
+                                                                          ? const ImageIcon(
+                                                                              color: AppColors.secondaryColor,
+                                                                              AssetImage(Assets.SIDE_ARROW),
+                                                                            )
+                                                                          : const ImageIcon(
+                                                                              color: AppColors.secondaryColor,
+                                                                              AssetImage(Assets.DOWN_ARROW),
+                                                                            ),
+                                                                      title: const Text(
+                                                                          "Category"),
+                                                                    ),
+                                                                  ),
+                                                                  isCategoryFilterTileSelected ==
+                                                                          true
+                                                                      ? SingleChildScrollView(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding: const EdgeInsets.only(
+                                                                                right: 15,
+                                                                                left: 15,
+                                                                                bottom: 5,
+                                                                                top: 5),
+                                                                            child:
+                                                                                Column(
+                                                                              children: List.generate(
+                                                                                state.brandAndCategoryFilterResponse.data.category.length,
+                                                                                (index) => Padding(
+                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                                  child: Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                                    child: Row(
+                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                      mainAxisSize: MainAxisSize.max,
+                                                                                      children: <Widget>[
+                                                                                        Text(
+                                                                                          state.brandAndCategoryFilterResponse.data.category[index].category,
+                                                                                          softWrap: true,
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                                fontSize: 15,
+                                                                                              ),
+                                                                                        ),
+                                                                                        selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                                            ? InkWell(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                                    selectedCategoryFilters = "";
+                                                                                                  });
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  height: 20,
+                                                                                                  width: 20,
+                                                                                                  decoration: const BoxDecoration(
+                                                                                                    shape: BoxShape.rectangle,
+                                                                                                    image: DecorationImage(
+                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
+                                                                                                      fit: BoxFit.contain,
+                                                                                                      scale: 6,
+                                                                                                    ),
+                                                                                                    color: AppColors.secondaryColor,
+                                                                                                    boxShadow: [
+                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                ),
+                                                                                              )
+                                                                                            : InkWell(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                                    if (selectedCategoryVariants.length > 1) {
+                                                                                                      selectedCategoryVariants.removeAt(0);
+                                                                                                    }
+                                                                                                    selectedCategoryFilters = selectedCategoryVariants[0].toString();
+                                                                                                  });
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  height: 20,
+                                                                                                  width: 20,
+                                                                                                  decoration: const BoxDecoration(
+                                                                                                    shape: BoxShape.rectangle,
+                                                                                                    color: Color(0xFFD9D9D9),
+                                                                                                    image: DecorationImage(
+                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
+                                                                                                      fit: BoxFit.contain,
+                                                                                                    ),
+                                                                                                    boxShadow: [
+                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      : const SizedBox(),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          80),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Positioned(
+                                                            bottom: 0,
+                                                            right: 0,
+                                                            left: 0,
+                                                            child: SafeArea(
+                                                              child: Container(
+                                                                decoration:
+                                                                    const BoxDecoration(
+                                                                  color: AppColors
+                                                                      .primaryWhiteColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: AppColors
+                                                                          .boxShadow,
+                                                                      blurRadius:
+                                                                          4,
+                                                                      offset:
+                                                                          Offset(
+                                                                              4,
+                                                                              2),
+                                                                      spreadRadius:
+                                                                          0,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .only(
+                                                                      left: 20,
+                                                                      right: 20,
+                                                                      bottom:
+                                                                          10),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      TextButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          clearFilter();
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          "Clear All",
+                                                                          style:
+                                                                              GoogleFonts.roboto(
+                                                                            color:
+                                                                                AppColors.underlineColor,
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                            fontSize:
+                                                                                14,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      ElevatedButton(
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          fixedSize: const Size(
+                                                                              100,
+                                                                              40),
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(8),
+                                                                          ),
+                                                                          backgroundColor:
+                                                                              AppColors.secondaryColor,
+                                                                        ),
+                                                                        onPressed:
+                                                                            () {
+                                                                          print(
+                                                                              "Selected Category: $selectedCategoryFilters");
+                                                                          print(
+                                                                              "Selected Brand: $selectedBrandFilters");
+
+                                                                          BlocProvider.of<RewardTierBloc>(context)
+                                                                              .add(
+                                                                            RewardTierRequestEvent(
+                                                                              rewardTierRequest: RewardTierRequest(
+                                                                                sort: "",
+                                                                                eligible: "",
+                                                                                categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
+                                                                                brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                          context
+                                                                              .pop();
+                                                                        },
+                                                                        child:
+                                                                            Text(
+                                                                          "Apply",
+                                                                          style:
+                                                                              GoogleFonts.roboto(
+                                                                            color:
+                                                                                AppColors.primaryWhiteColor,
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                            fontSize:
+                                                                                14,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Positioned(
+                                                            top: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            child: Container(
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                color: AppColors
+                                                                    .primaryWhiteColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          20.0),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20.0),
+                                                                ),
+                                                              ),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        15),
+                                                                child:
+                                                                    Container(
+                                                                  // height: 40,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Filter by",
+                                                                            style:
+                                                                                GoogleFonts.roboto(
+                                                                              fontSize: 16,
+                                                                              fontWeight: FontWeight.w400,
+                                                                              color: AppColors.primaryGrayColor,
+                                                                            ),
+                                                                          ),
+                                                                          IconButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              context.pop();
+                                                                                },
+                                                                            icon:
+                                                                                const Icon(
+                                                                              Icons.close,
+                                                                              color: AppColors.primaryGrayColor,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(
+                                                                          color:
+                                                                              AppColors.primaryGrayColor),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    return const SizedBox();
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 8, right: 8),
+                                      height: 20,
+                                      width: 68,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryWhiteColor,
+                                        borderRadius: BorderRadius.circular(5),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(4, 2),
+                                            spreadRadius: 0,
+                                          ),
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(-4, -2),
+                                            spreadRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            "Filter",
+                                            style: TextStyle(
+                                              color: AppColors.iconGreyColor,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            Assets.FILTER_SVG,
+                                            height: 10,
+                                            width: 10,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),
-
               ),
               elevation: 0,
               bottom: PreferredSize(
@@ -4152,16 +4141,19 @@ class _RewardScreenState extends State<RewardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(top: 10,bottom: 1,left: 15),
-                        color: AppColors.primaryWhiteColor,
-                        width: MediaQuery.of(context).size.width,
-                        height: 30, child:  Text("Please choose a reward tier",
-                      style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: AppColors.primaryGrayColor
+                      padding:
+                          const EdgeInsets.only(top: 10, bottom: 1, left: 15),
+                      color: AppColors.primaryWhiteColor,
+                      width: MediaQuery.of(context).size.width,
+                      height: 30,
+                      child: Text(
+                        "Please choose a reward tier",
+                        style: GoogleFonts.openSans(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: AppColors.primaryGrayColor),
                       ),
-                    ),),
+                    ),
                     Container(
                       padding: const EdgeInsets.only(top: 9, bottom: 5),
                       height: 50,
@@ -4358,11 +4350,11 @@ class _RewardScreenState extends State<RewardScreen> {
                             ? buildBrandRewardTierMethod()
                             : isPartnerSelected == true
                                 ? buildPartnerRewardTierMethod()
-                                :  SizedBox(
-                        child: Center(
-                            child: Lottie.asset(Assets.CHOOSE),
-                        ),
-                    ),
+                                : SizedBox(
+                                    child: Center(
+                                      child: Lottie.asset(Assets.CHOOSE),
+                                    ),
+                                  ),
                   ],
                 ),
               ),
@@ -4423,7 +4415,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         '/lets_collect_redeem',
                         extra: LetCollectRedeemScreenArguments(
                           totalPoint: letsCollectTotalPoints,
-                          rewardId: state.rewardTierRequestResponse.data!.letsCollect![index].rewardId,
+                          rewardId: state.rewardTierRequestResponse.data!
+                              .letsCollect![index].rewardId,
                           requiredPoint: state.rewardTierRequestResponse.data!
                               .letsCollect![index].requiredPoints!
                               .toString(),
@@ -4462,21 +4455,23 @@ class _RewardScreenState extends State<RewardScreen> {
                                   fadeInDuration:
                                       const Duration(milliseconds: 200),
                                   fit: BoxFit.contain,
-                                  imageUrl: state.rewardTierRequestResponse.data!
-                                      .letsCollect![index].productImage!,
+                                  imageUrl: state.rewardTierRequestResponse
+                                      .data!.letsCollect![index].productImage!,
                                   width: MediaQuery.of(context).size.width,
                                   placeholder: (context, url) => SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: Lottie.asset(
+                                    // height: getProportionateScreenHeight(170),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: Lottie.asset(
                                         Assets.JUMBINGDOT,
-                                        // height: 10,
-                                        // width: 10,
+                                        height: 45,
+                                        width: 45,
+                                      ),
                                     ),
                                   ),
                                   errorWidget: (context, url, error) =>
                                       const ImageIcon(
-                                        color: AppColors.hintColor,
+                                    color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),
                                 ),
@@ -4565,7 +4560,8 @@ class _RewardScreenState extends State<RewardScreen> {
                     context.push(
                       '/brand_products',
                       extra: LetCollectRedeemScreenArguments(
-                        rewardId: state.rewardTierRequestResponse.data!.brand![index].rewardId,
+                        rewardId: state.rewardTierRequestResponse.data!
+                            .brand![index].rewardId,
                         requiredPoint: state.rewardTierRequestResponse.data!
                             .brand![index].requiredPoints
                             .toString(),
@@ -4573,7 +4569,9 @@ class _RewardScreenState extends State<RewardScreen> {
                             .brand![index].productImage!,
                         wereToRedeem: state.rewardTierRequestResponse.data!
                             .brand![index].reedemStores!,
-                        iD: state.rewardTierRequestResponse.data!.brand![index].brandId.toString(),
+                        iD: state.rewardTierRequestResponse.data!.brand![index]
+                            .brandId
+                            .toString(),
                       ),
                     );
                   },
@@ -4612,12 +4610,15 @@ class _RewardScreenState extends State<RewardScreen> {
                               .brand![index].brandLogo!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: Lottie.asset(
+                            // height: getProportionateScreenHeight(170),
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: Lottie.asset(
                                 Assets.JUMBINGDOT,
-                                height: 10,
-                                width: 10),
+                                height: 45,
+                                width: 45,
+                              ),
+                            ),
                           ),
                           errorWidget: (context, url, error) => const ImageIcon(
                             color: AppColors.hintColor,
@@ -4687,7 +4688,8 @@ class _RewardScreenState extends State<RewardScreen> {
                     context.push(
                       '/partner_products',
                       extra: LetCollectRedeemScreenArguments(
-                        rewardId: state.rewardTierRequestResponse.data!.partner![index].rewardId,
+                        rewardId: state.rewardTierRequestResponse.data!
+                            .partner![index].rewardId,
                         requiredPoint: state.rewardTierRequestResponse.data!
                             .partner![index].requiredPoints
                             .toString(),
@@ -4695,7 +4697,9 @@ class _RewardScreenState extends State<RewardScreen> {
                             .partner![index].productImage!,
                         wereToRedeem: state.rewardTierRequestResponse.data!
                             .partner![index].reedemStores!,
-                        iD: state.rewardTierRequestResponse.data!.partner![index].brandId.toString(),
+                        iD: state.rewardTierRequestResponse.data!
+                            .partner![index].brandId
+                            .toString(),
                       ),
                     );
                   },
@@ -4732,10 +4736,17 @@ class _RewardScreenState extends State<RewardScreen> {
                           imageUrl: state.rewardTierRequestResponse.data!
                               .partner![index].partnerLogo!,
                           width: MediaQuery.of(context).size.width,
-                          placeholder: (context, url) => Lottie.asset(
-                              Assets.JUMBINGDOT,
-                              height: 10,
-                              width: 10),
+                          placeholder: (context, url) => SizedBox(
+                            // height: getProportionateScreenHeight(170),
+                            width: MediaQuery.of(context).size.width,
+                            child: Center(
+                              child: Lottie.asset(
+                                Assets.JUMBINGDOT,
+                                height: 45,
+                                width: 45,
+                              ),
+                            ),
+                          ),
                           errorWidget: (context, url, error) => const ImageIcon(
                             color: AppColors.hintColor,
                             AssetImage(Assets.NO_IMG),

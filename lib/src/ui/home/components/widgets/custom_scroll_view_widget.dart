@@ -400,20 +400,27 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     placeholder:
                                                         (context, url) =>
                                                             SizedBox(
-                                                      height: 35,
-                                                      width: 35,
-                                                      child: Lottie.asset(
-                                                        Assets.JUMBINGDOT,
-                                                        // height: 10,
-                                                        // width: 10,
+                                                      // height: getProportionateScreenHeight(170),
+                                                      // width: MediaQuery.of(context).size.width,
+                                                      child: Center(
+                                                        child: Lottie.asset(
+                                                          Assets.JUMBINGDOT,
+                                                          height: 35,
+                                                          width: 35,
+                                                        ),
                                                       ),
                                                     ),
                                                     errorWidget:
                                                         (context, url, error) =>
-                                                            const ImageIcon(
-                                                      color:
-                                                          AppColors.hintColor,
-                                                      AssetImage(Assets.NO_IMG),
+                                                            const SizedBox(
+                                                      child: Center(
+                                                        child: ImageIcon(
+                                                          color: AppColors
+                                                              .hintColor,
+                                                          AssetImage(
+                                                              Assets.NO_IMG),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -563,6 +570,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       child: Container(
                                         height:
                                             getProportionateScreenHeight(170),
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         // padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -598,7 +607,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
                                             imageUrl: state.homeResponse.data!
                                                 .offers![index].offerImage!,
                                             imageBuilder:
@@ -607,18 +615,24 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   image: imageProvider,
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.fill,
                                                 ),
                                               ),
                                             ),
                                             placeholder: (context, url) =>
                                                 SizedBox(
-                                              height: 35,
-                                              width: 35,
-                                              child: Lottie.asset(
-                                                Assets.JUMBINGDOT,
-                                                // height: 10,
-                                                // width: 10,
+                                              height:
+                                                  getProportionateScreenHeight(
+                                                      170),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Center(
+                                                child: Lottie.asset(
+                                                  Assets.JUMBINGDOT,
+                                                  height: 55,
+                                                  width: 55,
+                                                ),
                                               ),
                                             ),
                                             errorWidget:

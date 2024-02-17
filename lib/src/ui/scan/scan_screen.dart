@@ -78,7 +78,6 @@ class _ScanScreenState extends State<ScanScreen> {
                                   ),
                                 ),
                               ),
-                              // width: getProportionateScreenWidth(360),
                             ),
                           )
                         : Center(

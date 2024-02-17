@@ -826,22 +826,26 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                   fadeInCurve: Curves.easeIn,
                                   fadeInDuration:
                                       const Duration(milliseconds: 200),
-                                  fit: BoxFit.contain,
-                                  imageUrl: state
+                                  fit: BoxFit.fill,
+                                  imageUrl:
+                                  state
                                       .brandAndPartnerProductRequestResponse
                                       .data!
                                       .rewards![index]
                                       .productImage!,
                                   width: MediaQuery.of(context).size.width,
-                                  placeholder: (context, url) => SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: Lottie.asset(
-                                      Assets.JUMBINGDOT,
-                                      // height: 10,
-                                      // width: 10,
-                                    ),
-                                  ),
+                                  placeholder: (context, url) =>
+                                      SizedBox(
+                                        // height: getProportionateScreenHeight(170),
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Center(
+                                          child: Lottie.asset(
+                                            Assets.JUMBINGDOT,
+                                            height: 45,
+                                            width: 45,
+                                          ),
+                                        ),
+                                      ),
                                   errorWidget: (context, url, error) =>
                                       const ImageIcon(
                                         color: AppColors.hintColor,

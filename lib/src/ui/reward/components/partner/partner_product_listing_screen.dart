@@ -836,17 +836,23 @@ class _PartnerProductListingScreenState
                                 fadeInCurve: Curves.easeIn,
                                 fadeInDuration:
                                     const Duration(milliseconds: 200),
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fill,
                                 imageUrl: state
                                     .brandAndPartnerProductRequestResponse
                                     .data!
                                     .rewards![index]
                                     .productImage!,
                                 width: MediaQuery.of(context).size.width,
-                                placeholder: (context, url) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Lottie.asset(Assets.JUMBINGDOT,
-                                      height: 10, width: 10),
+                                placeholder: (context, url) =>  SizedBox(
+                                  // height: getProportionateScreenHeight(170),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center(
+                                    child: Lottie.asset(
+                                      Assets.JUMBINGDOT,
+                                      height: 45,
+                                      width: 45,
+                                    ),
+                                  ),
                                 ),
                                 errorWidget: (context, url, error) =>
                                     const ImageIcon(
