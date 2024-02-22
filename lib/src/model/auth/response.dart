@@ -21,11 +21,11 @@ class SignUpRequestResponse {
   });
 
   factory SignUpRequestResponse.fromJson(Map<String, dynamic> json) => SignUpRequestResponse(
-    success: json["success"] == null ? false : json["success"],
-    statusCode: json["status_code"] == null ? null : json["status_code"],
-    message: json["message"] == null ? null : json["message"],
+    success: json["success"] ?? false,
+    statusCode: json["status_code"],
+    message: json["message"],
     data: Data.fromJson(json["data"]),
-    token: json["token"] == null ? null : json["token"],
+    token: json["token"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -68,33 +68,33 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     // id: json["id"] == null ? null : json["id"],
-    firstName: json["first_name"] == null ? "null" : json["first_name"],
-    lastName: json["last_name"] == null ? "null" : json["last_name"],
-    email: json["email"] == null ? "null" : json["email"],
-    mobileNo: json["mobile_no"] == null ? "null" : json["mobile_no"],
-    userName: json["user_name"] == null ? "null" : json["user_name"],
-    gender: json["gender"] == null ? "null" : json["gender"],
-    dob: json["dob"] == null ? "null" : json["dob"],
-    nationalityId: json["nationality_id"] == null ? "null" : json["nationality_id"],
-    city: json["city"] == null ? "null" : json["city"],
-    countryId: json["country_id"] == null ? "null" : json["country_id"],
-    createdAt: json["created_at"] == null ? "null" : json["created_at"],
-    status: json["status"] == null ? 0 : json["status"],
+    firstName: json["first_name"] ?? "null",
+    lastName: json["last_name"] ?? "null",
+    email: json["email"] ?? "null",
+    mobileNo: json["mobile_no"] ?? "null",
+    userName: json["user_name"] ?? "null",
+    gender: json["gender"] ?? "null",
+    dob: json["dob"] ?? "null",
+    nationalityId: json["nationality_id"] ?? "null",
+    city: json["city"] ?? "null",
+    countryId: json["country_id"] ?? "null",
+    createdAt: json["created_at"] ?? "null",
+    status: json["status"] ?? 0,
   );
 
   Map<String, dynamic> toJson() => {
     // "id": id == null ? null : id,
-    "first_name": firstName == null ? null : firstName,
-    "last_name": lastName == null ? null : lastName,
-    "email": email == null ? null : email,
-    "mobile_no": mobileNo == null ? null : mobileNo,
-    "user_name": userName == null ? null : userName,
-    "gender": gender == null ? null : gender,
-    "dob": dob == null ? null : dob,
-    "nationality_id": nationalityId == null ? null : nationalityId,
-    "city": city == null ? null : city,
-    "country_id": countryId == null ? null : countryId,
-    "created_at": createdAt == null ? null : createdAt,
-    "status": status == null ? null : status,
+    "first_name": firstName,
+    "last_name": lastName,
+    "email": email,
+    "mobile_no": mobileNo,
+    "user_name": userName,
+    "gender": gender,
+    "dob": dob,
+    "nationality_id": nationalityId,
+    "city": city,
+    "country_id": countryId,
+    "created_at": createdAt,
+    "status": status,
   };
 }

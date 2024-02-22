@@ -29,6 +29,7 @@ class _Login_screenState extends State<Login_screen> {
           if(state is NetworkFailure) {
             return  Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                    Text("You are not connected to the internet",

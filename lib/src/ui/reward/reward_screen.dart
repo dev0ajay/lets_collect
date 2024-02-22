@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
@@ -30,7 +32,8 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isPartnerSelected = false;
   bool isScrolledToExtend = false;
   bool isRewardTierSelected = false;
-  final ScrollController _scrollController = ScrollController();
+
+   ScrollController _scrollController = ScrollController();
   bool _isAppBarVisible = false;
   String? sortOption;
   bool isBrandFilterTileSelected = false;
@@ -53,11 +56,37 @@ class _RewardScreenState extends State<RewardScreen> {
 
   // int selected = 0;
   String letsCollectTotalPoints = "";
+  bool lastStatus = true;
+  double height = 250;
+
+  void _scrollListener() {
+    if (_isShrink != lastStatus) {
+      setState(() {
+        lastStatus = _isShrink;
+      });
+    }
+  }
+
+  bool get _isShrink {
+    return _scrollController != null &&
+        _scrollController.hasClients &&
+        _scrollController.offset > (height - kToolbarHeight);
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(_scrollController.position.minScrollExtent,
+          duration: const Duration(milliseconds: 300), curve: Curves.elasticOut);
+    } else {
+      Timer(const Duration(milliseconds: 400), () => _scrollToBottom());
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
+    _scrollController = ScrollController()..addListener(_scrollListener);
+    // _scrollController.addListener(_scrollListener);
     BlocProvider.of<FilterBloc>(context).add(GetBrandAndCategoryFilterList());
     BlocProvider.of<RewardTierBloc>(context).add(
       RewardTierRequestEvent(
@@ -67,21 +96,28 @@ class _RewardScreenState extends State<RewardScreen> {
     );
   }
 
-  void _scrollListener() {
-    if (_scrollController.offset > 400 &&
-        _scrollController.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-      setState(() {
-        _isAppBarVisible = true;
-      });
-    } else if (_scrollController.offset < 350 &&
-        _scrollController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-      setState(() {
-        _isAppBarVisible = false;
-      });
-    }
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
+
+  // void _scrollListener() {
+  //   if (_scrollController.offset > 100 &&
+  //       _scrollController.position.userScrollDirection ==
+  //           ScrollDirection.reverse) {
+  //     setState(() {
+  //       _isAppBarVisible = true;
+  //     });
+  //   } else if (
+  //       _scrollController.position.userScrollDirection ==
+  //           ScrollDirection.forward) {
+  //     setState(() {
+  //       _isAppBarVisible = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +143,7 @@ class _RewardScreenState extends State<RewardScreen> {
       builder: (context, state) {
         return CustomScrollView(
           controller: _scrollController,
+          physics: const ClampingScrollPhysics(),
           slivers: [
             SliverAppBar(
               leading: const SizedBox(),
@@ -114,7 +151,7 @@ class _RewardScreenState extends State<RewardScreen> {
               centerTitle: false,
               titleSpacing: 0,
               titleTextStyle: const TextStyle(fontSize: 18),
-              title: _isAppBarVisible && isLetsCollectSelected == true
+              title: _isShrink && isLetsCollectSelected == true
                   ? Row(
                       children: [
                         Flexible(
@@ -241,7 +278,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   style: Theme.of(
                                                                           context)
                                                                       .textTheme
-                                                                      .bodyText1!
+                                                                      .bodyLarge!
                                                                       .copyWith(
                                                                         fontSize:
                                                                             15,
@@ -549,7 +586,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                     style: Theme.of(
                                                                             context)
                                                                         .textTheme
-                                                                        .bodyText1!
+                                                                        .bodyLarge!
                                                                         .copyWith(
                                                                           fontSize:
                                                                               15,
@@ -602,11 +639,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             decoration:
                                                                                 const BoxDecoration(
                                                                               shape: BoxShape.rectangle,
-                                                                              color: Color(0xFFD9D9D9),
-                                                                              image: DecorationImage(
-                                                                                image: AssetImage(Assets.DISABLED_TICK),
-                                                                                fit: BoxFit.contain,
-                                                                              ),
+                                                                              color: AppColors.primaryWhiteColor,
                                                                               boxShadow: [
                                                                                 BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                               ],
@@ -687,7 +720,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                   state.brandAndCategoryFilterResponse.data.brands[index].brandName,
                                                                                   softWrap: true,
                                                                                   overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                         fontSize: 15,
                                                                                       ),
                                                                                 ),
@@ -731,11 +764,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           width: 20,
                                                                                           decoration: const BoxDecoration(
                                                                                             shape: BoxShape.rectangle,
-                                                                                            color: Color(0xFFD9D9D9),
-                                                                                            image: DecorationImage(
-                                                                                              image: AssetImage(Assets.DISABLED_TICK),
-                                                                                              fit: BoxFit.contain,
-                                                                                            ),
+                                                                                            color: AppColors.primaryWhiteColor,
                                                                                             boxShadow: [
                                                                                               BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                             ],
@@ -821,7 +850,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                   state.brandAndCategoryFilterResponse.data.category[index].category,
                                                                                   softWrap: true,
                                                                                   overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                         fontSize: 15,
                                                                                       ),
                                                                                 ),
@@ -866,11 +895,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           width: 20,
                                                                                           decoration: const BoxDecoration(
                                                                                             shape: BoxShape.rectangle,
-                                                                                            color: Color(0xFFD9D9D9),
-                                                                                            image: DecorationImage(
-                                                                                              image: AssetImage(Assets.DISABLED_TICK),
-                                                                                              fit: BoxFit.contain,
-                                                                                            ),
+                                                                                            color: AppColors.primaryWhiteColor,
                                                                                             boxShadow: [
                                                                                               BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                             ],
@@ -990,6 +1015,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                     ),
                                                                   );
                                                                   context.pop();
+                                                                  _scrollToBottom();
                                                                 },
                                                                 child: Text(
                                                                   "Apply",
@@ -1159,7 +1185,7 @@ class _RewardScreenState extends State<RewardScreen> {
                         ),
                       ],
                     )
-                  : _isAppBarVisible && isBrandSelected == true
+                  : _isShrink && isBrandSelected == true
                       ? Row(
                           children: [
                             Flexible(
@@ -1295,7 +1321,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       style: Theme.of(
                                                                               context)
                                                                           .textTheme
-                                                                          .bodyText1!
+                                                                          .bodyLarge!
                                                                           .copyWith(
                                                                             fontSize:
                                                                                 15,
@@ -1605,7 +1631,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             TextOverflow.ellipsis,
                                                                         style: Theme.of(context)
                                                                             .textTheme
-                                                                            .bodyText1!
+                                                                            .bodyLarge!
                                                                             .copyWith(
                                                                               fontSize: 15,
                                                                             ),
@@ -1647,11 +1673,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 width: 20,
                                                                                 decoration: const BoxDecoration(
                                                                                   shape: BoxShape.rectangle,
-                                                                                  color: Color(0xFFD9D9D9),
-                                                                                  image: DecorationImage(
-                                                                                    image: AssetImage(Assets.DISABLED_TICK),
-                                                                                    fit: BoxFit.contain,
-                                                                                  ),
+                                                                                  color: AppColors.primaryWhiteColor,
                                                                                   boxShadow: [
                                                                                     BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                   ],
@@ -1721,7 +1743,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                       state.brandAndCategoryFilterResponse.data.brands[index].brandName,
                                                                                       softWrap: true,
                                                                                       overflow: TextOverflow.ellipsis,
-                                                                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                             fontSize: 15,
                                                                                           ),
                                                                                     ),
@@ -1765,11 +1787,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                               width: 20,
                                                                                               decoration: const BoxDecoration(
                                                                                                 shape: BoxShape.rectangle,
-                                                                                                color: Color(0xFFD9D9D9),
-                                                                                                image: DecorationImage(
-                                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                  fit: BoxFit.contain,
-                                                                                                ),
+                                                                                                color: AppColors.primaryWhiteColor,
                                                                                                 boxShadow: [
                                                                                                   BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                 ],
@@ -1844,7 +1862,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                       state.brandAndCategoryFilterResponse.data.category[index].category,
                                                                                       softWrap: true,
                                                                                       overflow: TextOverflow.ellipsis,
-                                                                                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                             fontSize: 15,
                                                                                           ),
                                                                                     ),
@@ -1888,11 +1906,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                               width: 20,
                                                                                               decoration: const BoxDecoration(
                                                                                                 shape: BoxShape.rectangle,
-                                                                                                color: Color(0xFFD9D9D9),
-                                                                                                image: DecorationImage(
-                                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                  fit: BoxFit.contain,
-                                                                                                ),
+                                                                                                color: AppColors.primaryWhiteColor,
                                                                                                 boxShadow: [
                                                                                                   BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                 ],
@@ -2013,6 +2027,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       );
                                                                       context
                                                                           .pop();
+                                                                      _scrollToBottom();
+
                                                                     },
                                                                     child: Text(
                                                                       "Apply",
@@ -2166,7 +2182,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             ),
                           ],
                         )
-                      : _isAppBarVisible && isPartnerSelected == true
+                      : _isShrink && isPartnerSelected == true
                           ? Row(
                               children: [
                                 Flexible(
@@ -2306,7 +2322,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                               TextOverflow.ellipsis,
                                                                           style: Theme.of(context)
                                                                               .textTheme
-                                                                              .bodyText1!
+                                                                              .bodyLarge!
                                                                               .copyWith(
                                                                                 fontSize: 15,
                                                                               ),
@@ -2614,7 +2630,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 true,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                   fontSize: 15,
                                                                                 ),
                                                                           ),
@@ -2654,11 +2670,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                     width: 20,
                                                                                     decoration: const BoxDecoration(
                                                                                       shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
+                                                                                      color: AppColors.primaryWhiteColor,
                                                                                       boxShadow: [
                                                                                         BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                       ],
@@ -2719,7 +2731,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           state.brandAndCategoryFilterResponse.data.brands[index].brandName,
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -2763,11 +2775,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   width: 20,
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
-                                                                                                    color: Color(0xFFD9D9D9),
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                    ),
+                                                                                                    color: AppColors.primaryWhiteColor,
+
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -2833,7 +2842,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           state.brandAndCategoryFilterResponse.data.category[index].category,
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -2877,11 +2886,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   width: 20,
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
-                                                                                                    color: Color(0xFFD9D9D9),
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                    ),
+                                                                                                    color: AppColors.primaryWhiteColor,
+
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -2994,6 +3000,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           );
                                                                           context
                                                                               .pop();
+                                                                          _scrollToBottom();
+
                                                                         },
                                                                         child:
                                                                             Text(
@@ -3153,9 +3161,9 @@ class _RewardScreenState extends State<RewardScreen> {
                         isBrandSelected: isBrandSelected,
                         letsCollectTotalPoints: letsCollectTotalPoints,
                       ),
-                      isRewardTierSelected
+                      isRewardTierSelected && !_isShrink
                           ? Padding(
-                              padding: const EdgeInsets.only(left: 20, top: 20),
+                              padding: const EdgeInsets.only(left: 20, top: 25),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -3296,7 +3304,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                               TextOverflow.ellipsis,
                                                                           style: Theme.of(context)
                                                                               .textTheme
-                                                                              .bodyText1!
+                                                                              .bodyLarge!
                                                                               .copyWith(
                                                                                 fontSize: 15,
                                                                               ),
@@ -3603,7 +3611,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 true,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                   fontSize: 15,
                                                                                 ),
                                                                           ),
@@ -3643,11 +3651,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                     width: 20,
                                                                                     decoration: const BoxDecoration(
                                                                                       shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
+                                                                                      color: AppColors.primaryWhiteColor,
                                                                                       boxShadow: [
                                                                                         BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                       ],
@@ -3708,7 +3712,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           state.brandAndCategoryFilterResponse.data.brands[index].brandName,
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -3752,11 +3756,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   width: 20,
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
-                                                                                                    color: Color(0xFFD9D9D9),
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                    ),
+                                                                                                    color: AppColors.primaryWhiteColor,
+
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -3822,7 +3823,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                           state.brandAndCategoryFilterResponse.data.category[index].category,
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -3866,11 +3867,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   width: 20,
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
-                                                                                                    color: Color(0xFFD9D9D9),
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                    ),
+                                                                                                    color: AppColors.primaryWhiteColor,
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -3983,6 +3980,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           );
                                                                           context
                                                                               .pop();
+                                                                          _scrollToBottom();
                                                                         },
                                                                         child:
                                                                             Text(
@@ -4134,9 +4132,9 @@ class _RewardScreenState extends State<RewardScreen> {
                   ),
                 ),
               ),
-              elevation: 0,
+              elevation: 5,
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(50),
+                preferredSize: const Size.fromHeight(70),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -4168,6 +4166,7 @@ class _RewardScreenState extends State<RewardScreen> {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              _scrollToBottom();
                               setState(() {
                                 isRewardTierSelected = true;
                                 isLetsCollectSelected = true;
@@ -4225,6 +4224,7 @@ class _RewardScreenState extends State<RewardScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              _scrollToBottom();
                               setState(() {
                                 isLetsCollectSelected = false;
                                 isBrandSelected = true;
@@ -4280,6 +4280,8 @@ class _RewardScreenState extends State<RewardScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              _scrollToBottom();
+
                               setState(() {
                                 isLetsCollectSelected = false;
                                 isBrandSelected = false;
@@ -4456,7 +4458,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                       const Duration(milliseconds: 200),
                                   fit: BoxFit.contain,
                                   imageUrl: state.rewardTierRequestResponse
-                                      .data!.letsCollect![index].productImage!,
+                                      .data!.letsCollect![index].rewardImage!,
                                   width: MediaQuery.of(context).size.width,
                                   placeholder: (context, url) => SizedBox(
                                     // height: getProportionateScreenHeight(170),
@@ -4607,7 +4609,7 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .brand![index].brandLogo!,
+                              .brand![index].rewardImage!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
                             // height: getProportionateScreenHeight(170),
@@ -4734,7 +4736,7 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .partner![index].partnerLogo!,
+                              .partner![index].rewardImage!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
                             // height: getProportionateScreenHeight(170),
@@ -4759,7 +4761,7 @@ class _RewardScreenState extends State<RewardScreen> {
               },
             );
           } else {
-            return Lottie.asset(Assets.NO_DATA);
+            return Lottie.asset(Assets.OOPS);
           }
         }
         return const SizedBox();

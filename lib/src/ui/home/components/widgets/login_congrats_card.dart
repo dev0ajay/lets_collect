@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
+import 'package:lets_collect/src/utils/data/object_factory.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 
 class LoginCongratsCard extends StatefulWidget {
-   LoginCongratsCard(
-      {super.key, required this.isDone, required this.emailVerifiedPoints});
+  final bool isDone;
 
-   late  bool isDone;
-   // late bool isOneTime;
-  final String emailVerifiedPoints;
+  const LoginCongratsCard({super.key, required this.isDone});
 
   @override
   State<LoginCongratsCard> createState() => _LoginCongratsCardState();
@@ -25,11 +25,11 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
       top: widget.isDone ? MediaQuery.of(context).size.height / 3 : -420,
       duration: const Duration(milliseconds: 400),
       child: RepaintBoundary(
-
         child: Card(
           color: AppColors.primaryWhiteColor,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           elevation: 12,
           child: Column(
             children: [
@@ -38,16 +38,14 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      widget.isDone = false;
+                      ObjectFactory().prefs.setIsEmailVerified(true);
+                      ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
                     });
                   },
                   icon: const Icon(Icons.close),
                 ),
               ),
-              CardContent(
-                isDone: widget.isDone,
-                emailVerifiedPoints: widget.emailVerifiedPoints,
-              ),
+              CardContent(isDone: widget.isDone),
             ],
           ),
         ),
@@ -57,11 +55,9 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
 }
 
 class CardContent extends StatefulWidget {
-  const CardContent(
-      {super.key, required this.isDone, required this.emailVerifiedPoints});
+  const CardContent({super.key, required this.isDone});
 
   final bool isDone;
-  final String emailVerifiedPoints;
 
   @override
   State<CardContent> createState() => _CardContentState();
@@ -79,7 +75,6 @@ class _CardContentState extends State<CardContent>
     super.initState();
   }
 
-
   @override
   void didUpdateWidget(covariant CardContent oldWidget) {
     // TODO: implement didUpdateWidget
@@ -91,12 +86,12 @@ class _CardContentState extends State<CardContent>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
+
     return Column(
       children: [
         // const SizedBox(height: 40),
         ScaleTransition(
-
           scale: CurvedAnimation(
               parent: animationController, curve: Curves.elasticOut),
           child:
@@ -121,7 +116,7 @@ class _CardContentState extends State<CardContent>
           ),
         ),
         Text(
-          widget.emailVerifiedPoints,
+          ObjectFactory().prefs.getEmailVerifiedPoints().toString(),
           style: GoogleFonts.openSans(
             color: AppColors.cardTextColor,
             fontSize: 44,
@@ -139,17 +134,24 @@ class _CardContentState extends State<CardContent>
         const SizedBox(height: 8),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
             fixedSize: const Size(121, 36),
             backgroundColor: AppColors.secondaryColor,
-
           ),
-          onPressed: () {},
-          child: Text("Yay!",style: GoogleFonts.roboto(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: AppColors.primaryWhiteColor,
-          ),),
+          onPressed: () {
+            ObjectFactory().prefs.setIsEmailVerified(true);
+            ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
+          },
+          child: Text(
+            "Yay!",
+            style: GoogleFonts.roboto(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColors.primaryWhiteColor,
+            ),
+          ),
         ),
         const SizedBox(height: 20),
       ],

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/constants/assets.dart';
-import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../../constants/colors.dart';
 

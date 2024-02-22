@@ -12,17 +12,12 @@ class HomeDataProvider {
     try {
 
       final response = await ObjectFactory().apiClient.getHomeData();
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<HomeResponse>.success(
-              HomeResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<HomeResponse>.success(
+            HomeResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    } on DioException catch (e) {
+      }    } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
@@ -38,6 +33,7 @@ class HomeDataProvider {
       }
       // return e;
     }
+    return null;
 
   }
 
@@ -47,18 +43,13 @@ class HomeDataProvider {
     try {
 
       final response = await ObjectFactory().apiClient.getOfferList(offerListRequest);
-      if(response!=null){
-        print(response.toString());
-        if (response.statusCode == 200) {
-          return StateModel<OfferListRequestResponse>.success(
-              OfferListRequestResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      print(response.toString());
+      if (response.statusCode == 200) {
+        return StateModel<OfferListRequestResponse>.success(
+            OfferListRequestResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    } on DioException catch (e) {
+      }    } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
@@ -74,6 +65,7 @@ class HomeDataProvider {
       }
       // return e;
     }
+    return null;
 
 
 

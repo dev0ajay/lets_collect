@@ -1,4 +1,5 @@
 /// Password View/Hide
+library;
 
 
 import 'package:flutter/material.dart';

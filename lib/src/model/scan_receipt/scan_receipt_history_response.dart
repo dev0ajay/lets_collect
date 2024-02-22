@@ -47,7 +47,7 @@ class Datum {
     productName: json["product_name"],
     brandName: json["brand_name"],
     points: json["points"],
-    addedDate: json["added_date"] == null ? null : json["added_date"],
+    addedDate: json["added_date"],
   );
 
   Map<String, dynamic> toJson() => {

@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,15 +8,11 @@ import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_p
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
-import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../bloc/filter_bloc/filter_bloc.dart';
-import '../../../../bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
-import '../../../../model/reward_tier/reward_tier_request.dart';
 import '../widgets/custome_rounded_button.dart';
 
 class BrandProductListingScreen extends StatefulWidget {
@@ -183,7 +178,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1!
+                                                        .bodyLarge!
                                                         .copyWith(
                                                           fontSize: 15,
                                                         ),
@@ -431,7 +426,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodyText1!
+                                                    .bodyLarge!
                                                     .copyWith(
                                                       fontSize: 15,
                                                     ),
@@ -832,7 +827,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                       .brandAndPartnerProductRequestResponse
                                       .data!
                                       .rewards![index]
-                                      .productImage!,
+                                      .rewardImage!,
                                   width: MediaQuery.of(context).size.width,
                                   placeholder: (context, url) =>
                                       SizedBox(

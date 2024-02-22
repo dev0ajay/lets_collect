@@ -22,9 +22,9 @@ class ForgetPasswordOtpScreen extends StatefulWidget {
 
 
    const ForgetPasswordOtpScreen({
-    Key? key,required this.forgotPasswordArguments
+    super.key,required this.forgotPasswordArguments
 
-  }) : super(key: key);
+  });
 
   @override
   State<ForgetPasswordOtpScreen> createState() =>
@@ -39,9 +39,9 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
 
   @override
   void dispose() {
+    super.dispose();
     pinController.dispose();
     focusNode.dispose();
-    super.dispose();
   }
 
   @override
@@ -63,291 +63,279 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
     SizeConfig().init(context);
     return Form(
       key: formKey,
-      child: SafeArea(
-        child: Scaffold(
+      child: Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        appBar: AppBar(
+          elevation: 0,
           backgroundColor: AppColors.primaryColor,
-          body: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
-              listener: (context, state) {
-                if (state is ForgotPasswordOtpLoaded) {
-                  if (state.forgotPasswordOtpRequestResponse.success == true) {
-                   if(state.forgotPasswordOtpRequestResponse.token.isNotEmpty) {
-                     ObjectFactory().prefs.setAuthToken(token: state.forgotPasswordOtpRequestResponse.token);
-                   }
-                    context.go('/forgot_password_reset');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            state.forgotPasswordOtpRequestResponse.message,
-                          style: const TextStyle(
-                            color: AppColors.secondaryColor,
-                          ),
-                        ),
-                        backgroundColor: AppColors.primaryColor,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
+          leading:  IconButton(
+            color: Colors.white,
+            iconSize: 20,
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+            ),
+            onPressed: () {
+              context.pop();
+            },
+          ),
+          title:   Text(
+            Strings.FORGET_REST_PASSWORTD,
+            style: GoogleFonts.openSans(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.primaryWhiteColor,
+            ),
+          ),
+          actions: const [
+            Image(
+              image: AssetImage(Assets.APP_LOGO),
+              width: 40,
+              height: 40,
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
+            listener: (context, state) {
+              if (state is ForgotPasswordOtpLoaded) {
+                if (state.forgotPasswordOtpRequestResponse.success == true) {
+                 if(state.forgotPasswordOtpRequestResponse.token.isNotEmpty) {
+                   ObjectFactory().prefs.setAuthToken(token: state.forgotPasswordOtpRequestResponse.token);
+                 }
+                  context.go('/forgot_password_reset');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          state.forgotPasswordOtpRequestResponse.message,
+                        style: const TextStyle(
+                          color: AppColors.secondaryColor,
                         ),
                       ),
-                    );
-                  } else if (state.forgotPasswordOtpRequestResponse.success ==
-                      false) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            state.forgotPasswordOtpRequestResponse.message,
-                          style: const TextStyle(
-                            color: AppColors.secondaryColor,
-                          ),
-                        ),
-                        backgroundColor: AppColors.primaryColor,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
+                      backgroundColor: AppColors.primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
                         ),
                       ),
-                    );
-                  }
+                    ),
+                  );
+                } else if (state.forgotPasswordOtpRequestResponse.success ==
+                    false) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          state.forgotPasswordOtpRequestResponse.message,
+                        style: const TextStyle(
+                          color: AppColors.secondaryColor,
+                        ),
+                      ),
+                      backgroundColor: AppColors.primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                  );
                 }
-              },
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: getProportionateScreenHeight(30),
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: getProportionateScreenHeight(30),
+                    ),
+                     Center(
+                      child: Lottie.asset(Assets.OTP,height: 150,width: 150,fit: BoxFit.cover),
+                    ).animate().then(delay: 200.ms).slideX(),
+                    const SizedBox(
+                      height: 20
+                    ),
+                     Center(
+                      child: Text(
+                        Strings.ALMOST_DONE,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.openSans(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryWhiteColor,
+                        )
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            color: Colors.white,
-                            iconSize: 20,
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                            ),
-                            // the method which is called
-                            // when button is pressed
-                            onPressed: () {
-                              context.pop();
-                            },
-                          ),
-                          Text(
-                            Strings.FORGET_REST_PASSWORTD,
-                            style: GoogleFonts.openSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primaryWhiteColor,
-                            ),
-                          ),
-                          const Image(
-                            image: AssetImage(Assets.APP_LOGO),
-                            width: 40,
-                            height: 40,
-                          ),
-                        ],
-                      ).animate().then(delay: 200.ms).slideX(),
-                      SizedBox(
-                        height: getProportionateScreenHeight(30),
+                    ).animate().then(delay: 200.ms).slideX(),
+                    SizedBox(
+                      height: getProportionateScreenHeight(20),
+                    ),
+                     Center(
+                      child: Text(
+                       "A One-Time password has been send to ${widget.forgotPasswordArguments!.email}. ",
+                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                        textAlign: TextAlign.center,
                       ),
-                      // Center(
-                      //   child: Text(
-                      //     Strings.LOGIN_LETS_COLLECT,
-                      //     style: TextStyle(color: Colors.white, fontSize: 40, fontFamily: "Fonarto"),
-                      //   ),
-                      // ).animate().then(delay: 200.ms).slideX(),
-                       Center(
-                        child: Lottie.asset(Assets.OTP,height: 150,width: 150,fit: BoxFit.cover),
-                      ).animate().then(delay: 200.ms).slideX(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                       Center(
-                        child: Text(
-                          Strings.ALMOST_DONE,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.openSans(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryWhiteColor,
-                          )
-                        ),
-                      ).animate().then(delay: 200.ms).slideX(),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                       Center(
-                        child: Text(
-                         "A One-Time password has been send to ${widget.forgotPasswordArguments!.email}. ",
-                          style: const TextStyle(color: Colors.white, fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
-                      ).animate().then(delay: 200.ms).slideX(),
+                    ).animate().then(delay: 200.ms).slideX(),
 
-                      SizedBox(
-                        height: getProportionateScreenHeight(30),
-                      ),
+                    SizedBox(
+                      height: getProportionateScreenHeight(30),
+                    ),
 
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Container(
-                            height: getProportionateScreenHeight(230),
-                            width: getProportionateScreenWidth(320),
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                const Flexible(
-                                  flex: 1,
-                                  child: Center(
-                                    child: Text(
-                                      "OTP Number",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Container(
+                          height: getProportionateScreenHeight(230),
+                          width: getProportionateScreenWidth(320),
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              const Flexible(
+                                flex: 1,
+                                child: Center(
+                                  child: Text(
+                                    "OTP Number",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              Flexible(
+                                flex: 3,
+                                child: Directionality(
+                                  // Specify direction if desired
+                                  textDirection: TextDirection.ltr,
+                                  child: Pinput(
+                                    keyboardType: TextInputType.number,
+                                    controller: pinController,
+                                    focusNode: focusNode,
+                                    androidSmsAutofillMethod:
+                                        AndroidSmsAutofillMethod
+                                            .smsUserConsentApi,
+                                    listenForMultipleSmsOnAndroid: true,
+                                    defaultPinTheme: defaultPinTheme,
+                                    separatorBuilder: (index) =>
+                                        const SizedBox(width: 10),
+                                    // validator: (value) {
+                                    // return value!.isEmpty ?
+                                    //     "The fields are empty" : "";
+                                    // },
+                                    // onClipboardFound: (value) {
+                                    //   debugPrint('onClipboardFound: $value');
+                                    //   pinController.setText(value);
+                                    // },
+                                    hapticFeedbackType:
+                                        HapticFeedbackType.lightImpact,
+                                    onCompleted: (pin) {
+                                      debugPrint('onCompleted: $pin');
+                                    },
+                                    onChanged: (value) {
+                                      debugPrint('onChanged: $value');
+                                    },
+                                    cursor: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                              bottom: 9),
+                                          width: 22,
+                                          height: 1,
+                                          color: focusedBorderColor,
+                                        ),
+                                      ],
+                                    ),
+
+                                    focusedPinTheme: defaultPinTheme.copyWith(
+                                      decoration: defaultPinTheme.decoration!
+                                          .copyWith(
+                                        color: fillColor,
+                                        borderRadius:
+                                            BorderRadius.circular(6),
+                                        border: Border.all(
+                                            color: focusedBorderColor),
+                                      ),
+                                    ),
+                                    submittedPinTheme:
+                                        defaultPinTheme.copyWith(
+                                      decoration: defaultPinTheme.decoration!
+                                          .copyWith(
+                                        color: fillColor,
+                                        borderRadius:
+                                            BorderRadius.circular(5),
+                                        border: Border.all(
+                                            color: focusedBorderColor),
+                                      ),
+                                    ),
+                                    errorPinTheme:
+                                        defaultPinTheme.copyBorderWith(
+                                      border:
+                                          Border.all(color: Colors.redAccent),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 15),
-                                Flexible(
-                                  flex: 3,
-                                  child: Directionality(
-                                    // Specify direction if desired
-                                    textDirection: TextDirection.ltr,
-                                    child: Pinput(
-                                      keyboardType: TextInputType.number,
-                                      controller: pinController,
-                                      focusNode: focusNode,
-                                      androidSmsAutofillMethod:
-                                          AndroidSmsAutofillMethod
-                                              .smsUserConsentApi,
-                                      listenForMultipleSmsOnAndroid: true,
-                                      defaultPinTheme: defaultPinTheme,
-                                      separatorBuilder: (index) =>
-                                          const SizedBox(width: 10),
-                                      // validator: (value) {
-                                      // return value!.isEmpty ?
-                                      //     "The fields are empty" : "";
-                                      // },
-                                      // onClipboardFound: (value) {
-                                      //   debugPrint('onClipboardFound: $value');
-                                      //   pinController.setText(value);
-                                      // },
-                                      hapticFeedbackType:
-                                          HapticFeedbackType.lightImpact,
-                                      onCompleted: (pin) {
-                                        debugPrint('onCompleted: $pin');
-                                      },
-                                      onChanged: (value) {
-                                        debugPrint('onChanged: $value');
-                                      },
-                                      cursor: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.only(
-                                                bottom: 9),
-                                            width: 22,
-                                            height: 1,
-                                            color: focusedBorderColor,
-                                          ),
-                                        ],
-                                      ),
-
-                                      focusedPinTheme: defaultPinTheme.copyWith(
-                                        decoration: defaultPinTheme.decoration!
-                                            .copyWith(
-                                          color: fillColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: focusedBorderColor),
-                                        ),
-                                      ),
-                                      submittedPinTheme:
-                                          defaultPinTheme.copyWith(
-                                        decoration: defaultPinTheme.decoration!
-                                            .copyWith(
-                                          color: fillColor,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          border: Border.all(
-                                              color: focusedBorderColor),
-                                        ),
-                                      ),
-                                      errorPinTheme:
-                                          defaultPinTheme.copyBorderWith(
-                                        border:
-                                            Border.all(color: Colors.redAccent),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: BlocBuilder<ForgotPasswordBloc,
-                                      ForgotPasswordState>(
-                                    builder: (context, state) {
-                                      if (state is ForgotPasswordOtpLoading) {
-                                        return const Center(
-                                          child: RefreshProgressIndicator(
-                                            color: AppColors.primaryWhiteColor,
-                                            backgroundColor:
-                                                AppColors.secondaryButtonColor,
-                                          ),
-                                        );
-                                      }
-                                      return Center(
-                                        child: MyButton(
-                                          Textfontsize: 16,
-                                          TextColors: Colors.white,
-                                          text: Strings.OTP_BUTTON_VERIFY,
-                                          color: AppColors.secondaryColor,
-                                          width: 340,
-                                          height: 40,
-                                          onTap: () {
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              BlocProvider.of<
-                                                          ForgotPasswordBloc>(
-                                                      context)
-                                                  .add(
-                                                      ForgotPasswordOtpRequestEvent(
-                                                          forgotPasswordOtpRequest:
-                                                              ForgotPasswordOtpRequest(
-                                                email: widget.forgotPasswordArguments!.email,
-                                                otp: pinController.text,
-                                              )));
-                                            }
-                                          },
-                                          showImage: false,
-                                          imagePath: '',
-                                          imagewidth: 0,
-                                          imageheight: 0,
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: BlocBuilder<ForgotPasswordBloc,
+                                    ForgotPasswordState>(
+                                  builder: (context, state) {
+                                    if (state is ForgotPasswordOtpLoading) {
+                                      return const Center(
+                                        child: RefreshProgressIndicator(
+                                          color: AppColors.primaryWhiteColor,
+                                          backgroundColor:
+                                              AppColors.secondaryButtonColor,
                                         ),
                                       );
-                                    },
-                                  ),
+                                    }
+                                    return Center(
+                                      child: MyButton(
+                                        Textfontsize: 16,
+                                        TextColors: Colors.white,
+                                        text: Strings.OTP_BUTTON_VERIFY,
+                                        color: AppColors.secondaryColor,
+                                        width: 340,
+                                        height: 40,
+                                        onTap: () {
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            BlocProvider.of<
+                                                        ForgotPasswordBloc>(
+                                                    context)
+                                                .add(
+                                                    ForgotPasswordOtpRequestEvent(
+                                                        forgotPasswordOtpRequest:
+                                                            ForgotPasswordOtpRequest(
+                                              email: widget.forgotPasswordArguments!.email,
+                                              otp: pinController.text,
+                                            )));
+                                          }
+                                        },
+                                        showImage: false,
+                                        imagePath: '',
+                                        imagewidth: 0,
+                                        imageheight: 0,
+                                      ),
+                                    );
+                                  },
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ).animate().then(delay: 200.ms).slideX(),
-                    ],
-                  ),
-                );
-              },
-            ),
+                      ),
+                    ).animate().then(delay: 200.ms).slideX(),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

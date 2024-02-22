@@ -15,7 +15,7 @@ class MyButton extends StatelessWidget {
   final double imageheight;
 
   const MyButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
     required this.width,
@@ -27,7 +27,7 @@ class MyButton extends StatelessWidget {
     required this.imagePath,
     required this.imagewidth,
     required this.imageheight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

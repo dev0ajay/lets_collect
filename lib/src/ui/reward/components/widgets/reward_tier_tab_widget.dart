@@ -5,7 +5,7 @@ import '../../../../constants/colors.dart';
 class RewardTierTabWidget extends StatefulWidget {
   final Function(int) onTabChanged;
 
-  const RewardTierTabWidget({Key? key, required this.onTabChanged}) : super(key: key);
+  const RewardTierTabWidget({super.key, required this.onTabChanged});
 
   @override
   State<RewardTierTabWidget> createState() => _RewardTierTabWidgetState();

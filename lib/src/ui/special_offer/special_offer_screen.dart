@@ -208,7 +208,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .copyWith(
                                                                   fontSize: 15,
                                                                 ),
@@ -536,7 +536,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                 true,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                   fontSize: 15,
                                                                                 ),
                                                                           ),
@@ -677,7 +677,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                 true,
                                                                             overflow:
                                                                                 TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                   fontSize: 15,
                                                                                 ),
                                                                           ),

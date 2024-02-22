@@ -10,33 +10,23 @@ class ProfileDataProvider {
   Future<StateModel?> getTermsAndConditions() async {
     final response = await ObjectFactory().apiClient.getTermsAndConditions();
     print(response.toString());
-    if(response!=null){
-      if (response.statusCode == 200) {
-        return StateModel<TermsAndConditionResponse>.success(
-            TermsAndConditionResponse.fromJson(response.data));
-      } else {
-        return null;
-      }}
-    else{
+    if (response.statusCode == 200) {
+      return StateModel<TermsAndConditionResponse>.success(
+          TermsAndConditionResponse.fromJson(response.data));
+    } else {
       return null;
-    }
-  }
+    }  }
 
   ///Privacy policies
   Future<StateModel?> getPrivacyPolicies() async {
     final response = await ObjectFactory().apiClient.getPrivacyPolicies();
     print(response.toString());
-    if(response!=null){
-      if (response.statusCode == 200) {
-        return StateModel<PrivacyPoliciesResponse>.success(
-            PrivacyPoliciesResponse.fromJson(response.data));
-      } else {
-        return null;
-      }}
-    else{
+    if (response.statusCode == 200) {
+      return StateModel<PrivacyPoliciesResponse>.success(
+          PrivacyPoliciesResponse.fromJson(response.data));
+    } else {
       return null;
-    }
-  }
+    }  }
 
 
 }

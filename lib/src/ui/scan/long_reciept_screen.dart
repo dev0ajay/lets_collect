@@ -665,17 +665,8 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
     List<XFile>? xfilePick = pickedFile;
     setState(
       () {
-        if (xfilePick != null) {
-          galleryFile = pickedFile;
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            // is this context <<<
-            const SnackBar(
-              content: Text('Nothing is selected'),
-            ),
-          );
-        }
-      },
+        galleryFile = pickedFile;
+            },
     );
   }
 }

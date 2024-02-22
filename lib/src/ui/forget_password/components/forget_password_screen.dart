@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
+import '../../../constants/strings.dart';
 import 'widget/froget_password_email_screen.dart';
 
-class Forget_password_screen extends StatefulWidget {
-  const Forget_password_screen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
-  State<Forget_password_screen> createState() => _Forget_password_screenState();
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
-class _Forget_password_screenState extends State<Forget_password_screen> {
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
+        leading: IconButton(
+          color: Colors.white,
+          iconSize: 20,
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+          ),
+          onPressed: () {
+            context.pop();
+          },
+        ),
+        title: Text(
+          Strings.FORGET_REST_PASSWORTD,
+          style: GoogleFonts.openSans(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: AppColors.primaryWhiteColor,
+          ),
+        ).animate().then(delay: 200.ms).slideX(),
+        actions:  [
+          const Image(
+            image: AssetImage(Assets.APP_LOGO),
+            width: 40,
+            height: 40,
+// fit: BoxFit.cover,
+          ).animate().then(delay: 200.ms).slideX(),
+        ],
+      ),
       backgroundColor: AppColors.primaryColor,
-      body: ForgetPasswordEmailWidget(),
+      body: const ForgetPasswordEmailWidget(),
     );
   }
 }
+

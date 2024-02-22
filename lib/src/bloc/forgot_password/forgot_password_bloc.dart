@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,6 +24,12 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
       final StateModel? stateModel = await authProvider.forgotPassword(event.forgotPasswordEmailRequest);
       if(stateModel is SuccessState) {
         emit(ForgotPasswordLoaded(forgotPasswordEmailRequestResponse: stateModel.value));
+      }
+      if(stateModel is ErrorState) {
+        emit(ForgotPasswordLoadingError(errorMsg: stateModel.msg));
+        emit(ForgotPasswordLoadingTimeOutError(errorMsg: stateModel.msg));
+        emit(ForgotPasswordLoadingBadRequest(errorMsg: stateModel.msg));
+        emit(ForgotPasswordLoadingNotFound(errorMsg: stateModel.msg));
       }
     });
 ///Forgot Password Otp event

@@ -59,7 +59,7 @@ class ApiClient {
     //     'Basic ' + base64Encode(utf8.encode('$usernameMyg:$passwordMygDev'));
     _baseOptionsLetsCollect = BaseOptions(
       baseUrl: UrlsLetsCollect.baseUrl,
-      connectTimeout: const Duration(milliseconds: 30000),
+      connectTimeout: const Duration(milliseconds: 300000),
       receiveTimeout: const Duration(milliseconds: 300000),
       followRedirects: true,
       headers: {

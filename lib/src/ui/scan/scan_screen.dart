@@ -453,7 +453,7 @@ class _ScanScreenState extends State<ScanScreen> {
                           Flexible(
                             flex: 2,
                             child: Text(
-                              "Oops Something went wrong!.",
+                              state.errorMsg,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.openSans(
                                 fontSize: 16,

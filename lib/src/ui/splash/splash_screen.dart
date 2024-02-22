@@ -4,8 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lets_collect/src/ui/authentication/login/components/login_screen.dart';
-import 'package:lets_collect/src/ui/home/home_screen.dart';
 
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -28,9 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   _loadWidget() async {
-    var _duration = Duration(seconds: splashDelay);
+    var duration = Duration(seconds: splashDelay);
     registerNotification();
-    return Timer(_duration, navigationPage);
+    return Timer(duration, navigationPage);
   }
 
   void registerNotification() {

@@ -10,10 +10,10 @@ class Strings {
   static const String SEARCH_SCREEN_HINT = "Search Category";
   static const String SEARCH_DETAIL_HINT = "Search Brand";
 
-  static const String FORGET_EMAIL_HINT = "Enter you email";
-  static const String FORGET_EMAIL_TEXT = "Please provide us your email.";
+  static const String FORGET_EMAIL_HINT = "Enter your email";
+  static const String FORGET_EMAIL_TEXT = "Email Address";
   static const String OTP_BUTTON_VERIFY = "Verify OTP";
-  static const String OTP_BUTTON_SEND = "Send OTP";
+  static const String OTP_BUTTON_SEND = "Reset";
 
   static const String OTP_DISCRIPTION = "A One-Time password has been send to your email. ";
   static const String BUTTON_VERIFICATION = "Verify";
@@ -29,11 +29,11 @@ static const String FIND_YOUR_FAVOURITE = "Find Your Favourite";
   static const String LOGIN_LETS_COLLECT = "Let's Collect";
   static const String LOGIN_WELCOME_BACK = "Welcome Back !";
   static const String LOGIN_EMAIL_LABEL_TEXT = "E-mail";
-  static const String LOGIN_EMAIL_HINT_TEXT = "Enter email";
+  static const String LOGIN_EMAIL_HINT_TEXT = "Enter your email";
   static const String LOGIN_EMAIL_VALIDATOR_TEXT = "Please enter email";
   static const String LOGIN_PASSWORD_LABEL_TEXT = "Password";
-  static const String LOGIN_PASSWORD_HINT_TEXT = "Enter password";
-  static const String LOGIN_PASSWORD_VALIDATOR_TEXT = "Please enter password";
+  static const String LOGIN_PASSWORD_HINT_TEXT = "Enter your password";
+  static const String LOGIN_PASSWORD_VALIDATOR_TEXT = "Please enter a password";
   static const String LOGIN_CONFIRMATION_TEXT = "Do you really want to logout?";
   static const String LOGIN_FORGET_PASSWORD_TEXT = "Forget password?";
   static const String LOGIN_BUTTON_TEXT = "Login";
@@ -41,12 +41,16 @@ static const String FIND_YOUR_FAVOURITE = "Find Your Favourite";
   static const String EMAIL_SINGUP = "Email Sign up";
   static const String Google_singup = "Sign up";
   static const String Google_login = "Login";
-  static const String FACEBOOK_SIGNUP = "Sign up";
+  static const String FACEBOOK_SIGNUP = "Sign up/Login";
   static const String FACEBOOK_LOGIN = "Login";
   static const String LOGIN_NOTES1 = "By signing up, you agree to the";
   static const String LOGIN_NOTES2 = "Terms and Conditions";
   static const String LOGIN_NOTES3 = "and our";
   static const String LOGIN_NOTES4 = "Privacy Policy";
+  static const String TERMS_AND_CONDITION_URL = "http://letscollect.demoatcrayotech.com/terms-and-conditions";
+  static const String PRIVACY_POLICY_URL = "http://letscollect.demoatcrayotech.com/privacy-policy";
+
+
 
   ///signup
   static const String SINGUP_BUTTON_TEXT = "Next";

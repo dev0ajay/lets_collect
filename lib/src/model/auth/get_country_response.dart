@@ -8,7 +8,7 @@ String countryResponseToJson(CountryResponse data) => json.encode(data.toJson())
 class CountryResponse {
   final bool success;
   final int statusCode;
-  final List<Datum> data;
+  final List<CountryData> data;
 
   CountryResponse({
     required this.success,
@@ -19,7 +19,7 @@ class CountryResponse {
   factory CountryResponse.fromJson(Map<String, dynamic> json) => CountryResponse(
     success: json["success"],
     statusCode: json["status_code"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<CountryData>.from(json["data"].map((x) => CountryData.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -29,20 +29,20 @@ class CountryResponse {
   };
 }
 
-class Datum {
+class CountryData {
   final int countriesId;
   final String countryCode;
   final String name;
   final String nameArabic;
 
-  Datum({
+  CountryData({
     required this.countriesId,
     required this.countryCode,
     required this.name,
     required this.nameArabic,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory CountryData.fromJson(Map<String, dynamic> json) => CountryData(
     countriesId: json["countries_id"],
     countryCode: json["country_code"],
     name: json["name"],

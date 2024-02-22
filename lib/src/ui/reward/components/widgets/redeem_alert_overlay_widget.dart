@@ -9,7 +9,6 @@ import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
@@ -225,7 +224,7 @@ class RedeemAlertOverlayWidgetState extends State<RedeemAlertOverlayWidget>
                                         qrStatus: qrStatus, qrUrl: qrUrl));
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                         backgroundColor:
                                             AppColors.secondaryColor,
                                         content: Text(

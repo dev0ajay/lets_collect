@@ -9,10 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
+
+import '../../constants/assets.dart';
 
 class ProfileScreen extends StatefulWidget {
-
-
   const ProfileScreen({super.key});
 
   @override
@@ -72,54 +73,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                           child: _pickedFile != null
                               ? Container(
-                            alignment: Alignment.center,
-                            width: 130,
-                            height: 130,
-                            // color: Colors.grey[300],
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              // borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.file(
-                                File(_pickedFile!.path),
-                                width: 130,
-                                height: 130,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                              : Container(
-                            alignment: Alignment.center,
-                            width: 130,
-                            height: 130,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.shadow,
-                              // borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: const Stack(
-                              children: [
-                                Align(
                                   alignment: Alignment.center,
-                                  child: Text("Add"),
-                                ),
-                                Positioned(
-                                    bottom: 8,
-                                    right: 8,
-                                    child: Icon(
-                                      Icons.add_a_photo_outlined,
-                                      color: AppColors.secondaryColor,
-                                    )
-                                  // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                ),
-                              ],
-                            ),
-                          )),
+                                  width: 130,
+                                  height: 130,
+                                  // color: Colors.grey[300],
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    // borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.file(
+                                      File(_pickedFile!.path),
+                                      width: 130,
+                                      height: 130,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  alignment: Alignment.center,
+                                  width: 130,
+                                  height: 130,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.shadow,
+                                    // borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: const Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text("Add"),
+                                      ),
+                                      Positioned(
+                                          bottom: 8,
+                                          right: 8,
+                                          child: Icon(
+                                            Icons.add_a_photo_outlined,
+                                            color: AppColors.secondaryColor,
+                                          )
+                                          // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                          ),
+                                    ],
+                                  ),
+                                )),
                     ),
                     const SizedBox(height: 10),
-
                     Flexible(
                         flex: 1,
                         child: Text(
@@ -139,7 +139,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
-
           ),
         ),
         SliverPadding(
@@ -166,40 +165,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
-                    child: ProfileDetailsListTileWidget(
-                      labelText: 'Point Tracker',
-                      textStyle: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        letterSpacing:
-                            0, // This is the default value for normal line height
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              content: SizedBox(
+                                height: getProportionateScreenHeight(260),
+                                width: getProportionateScreenWidth(320),
+                                child: Lottie.asset(Assets.SOON),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: ProfileDetailsListTileWidget(
+                        labelText: 'Point Tracker',
+                        textStyle: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing:
+                              0, // This is the default value for normal line height
+                        ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18),
-                    child: ProfileDetailsListTileWidget(
-                      labelText: 'Redmeption Tracker',
-                      textStyle: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        letterSpacing:
-                            0, // This is the default value for normal line height
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              content: SizedBox(
+                                height: getProportionateScreenHeight(260),
+                                width: getProportionateScreenWidth(320),
+                                child: Lottie.asset(Assets.SOON),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: ProfileDetailsListTileWidget(
+                        labelText: 'Redmeption Tracker',
+                        textStyle: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing:
+                              0, // This is the default value for normal line height
+                        ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18.0),
-                    child: ProfileDetailsListTileWidget(
-                      labelText: 'Purchase History',
-                      textStyle: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        letterSpacing:
-                            0, // This is the default value for normal line height
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              content: SizedBox(
+                                height: getProportionateScreenHeight(260),
+                                width: getProportionateScreenWidth(320),
+                                child: Lottie.asset(Assets.SOON),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: ProfileDetailsListTileWidget(
+                        labelText: 'Purchase History',
+                        textStyle: GoogleFonts.roboto(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          letterSpacing:
+                              0, // This is the default value for normal line height
+                        ),
                       ),
                     ),
                   ),
@@ -236,28 +289,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 18.0),
-                    child: ProfileDetailsListTileWidget(
-                      labelText: 'Refer a Friend',
-                      textStyle: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        letterSpacing:
-                            0, // This is the default value for normal line height
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 18.0),
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () {
-                        ObjectFactory().prefs.setIsLoggedIn(false);
-                        ObjectFactory().prefs.clearPrefs();
-                        _signOut();
-                        context.go('/login');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              content: SizedBox(
+                                height: getProportionateScreenHeight(260),
+                                width: getProportionateScreenWidth(320),
+                                child: Lottie.asset(Assets.SOON),
+                              ),
+                            );
+                          },
+                        );
                       },
                       child: ProfileDetailsListTileWidget(
-                        labelText: 'Log Out',
+                        labelText: 'Refer a Friend',
                         textStyle: GoogleFonts.roboto(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -266,6 +316,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               0, // This is the default value for normal line height
                         ),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(300, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor: AppColors.secondaryColor,
+                      ),
+                      onPressed: () {
+                              ObjectFactory().prefs.setIsLoggedIn(false);
+                              ObjectFactory().prefs.clearPrefs();
+                              _signOut();
+                              context.go('/login');
+                      },
+                      child: const Text("Log out",style: TextStyle(
+                        color: AppColors.primaryWhiteColor,
+                      ),),
                     ),
                   ),
                 ],
@@ -278,6 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
+
   Future<void> _signOut() async {
     GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
@@ -291,11 +363,11 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ProfileDetailsListTileWidget({
-    Key? key,
+    super.key,
     this.textStyle,
     required this.labelText,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -319,16 +391,12 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
           padding: const EdgeInsets.only(
               top: 8.0, bottom: 8.0, right: 8.0, left: 13.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 labelText,
                 style: textStyle,
               ),
-              const Icon(
-                Icons.arrow_forward_ios_sharp,
-                size: 19,
-              )
             ],
           ),
         ),

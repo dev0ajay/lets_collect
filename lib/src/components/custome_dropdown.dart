@@ -6,13 +6,13 @@ import '../constants/colors.dart';
 
 class CustomDropdown extends StatefulWidget {
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.items,
     required this.width,
     required this.height,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   final String hintText;
   final List<String> items;

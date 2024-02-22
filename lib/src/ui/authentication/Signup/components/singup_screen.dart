@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/singup_first_last_screen.dart';
+import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/singup_first_screen.dart';
 
 import '../../../../constants/colors.dart';
 
@@ -18,7 +18,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: SafeArea(child: SignupUiwidget1(from: widget.from, gUserMail: widget.gmail,)),
+      body: SafeArea(child: SignUpFirstScreen(from: widget.from, gUserMail: widget.gmail,)),
     );
   }
 }

@@ -6,14 +6,14 @@ SignUpRequestErrorResponse signUpRequestErrorResponseFromJson(String str) => Sig
 String signUpRequestErrorResponseToJson(SignUpRequestErrorResponse data) => json.encode(data.toJson());
 
 class SignUpRequestErrorResponse {
-  final bool status;
+  final bool success;
   final int statusCode;
   final String message;
   final Data data;
   final String token;
 
   SignUpRequestErrorResponse({
-    required this.status,
+    required this.success,
     required this.statusCode,
     required this.message,
     required this.data,
@@ -21,7 +21,7 @@ class SignUpRequestErrorResponse {
   });
 
   factory SignUpRequestErrorResponse.fromJson(Map<String, dynamic> json) => SignUpRequestErrorResponse(
-    status: json["status"],
+    success: json["success"],
     statusCode: json["status_code"],
     message: json["message"],
     data: Data.fromJson(json["data"]),
@@ -29,7 +29,7 @@ class SignUpRequestErrorResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
+    "status": success,
     "status_code": statusCode,
     "message": message,
     "data": data.toJson(),

@@ -14,8 +14,6 @@ import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../utils/data/object_factory.dart';
-import '../../../authentication/login/components/login_screen.dart';
-import 'forget_password_otp_screen.dart';
 
 class ForgetPasswordConfirmScreen extends StatefulWidget {
   const ForgetPasswordConfirmScreen({super.key});
@@ -31,8 +29,8 @@ class _ForgetPasswordConfirmScreenState
 
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  FocusNode _passFocus = FocusNode();
-  FocusNode _repassFocus = FocusNode();
+  final FocusNode _passFocus = FocusNode();
+  final FocusNode _repassFocus = FocusNode();
 
   String? validatePassword(String? value) {
     String pattern =

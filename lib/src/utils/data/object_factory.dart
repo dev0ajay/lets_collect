@@ -14,7 +14,7 @@ class ObjectFactory {
   factory ObjectFactory() => _objectFactory;
 
   ///Initialisation of Objects
-  Prefs _prefs = Prefs();
+  final Prefs _prefs = Prefs();
   final ApiClient _apiClient = ApiClient();
   // ApiClientDev _apiClientDev = ApiClientDev();
   // ApiClientPostServer _apiClientPostServer = ApiClientPostServer();

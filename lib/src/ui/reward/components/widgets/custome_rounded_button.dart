@@ -4,9 +4,9 @@ class CustomRoundedButton extends StatelessWidget {
   final bool enabled;
 
   const CustomRoundedButton({
-    Key? key,
+    super.key,
     required this.enabled,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

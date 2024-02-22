@@ -16,9 +16,12 @@ import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
+import 'alert_overlay_widget.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
-  const CustomScrollViewWidget({super.key});
+  final Function(int) onIndexChanged;
+
+  const CustomScrollViewWidget({super.key, required this.onIndexChanged});
 
   @override
   State<CustomScrollViewWidget> createState() => _CustomScrollViewWidgetState();
@@ -32,7 +35,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkZwedb3OKxvYwv_-Xq8EZY5tXaTj4bGcKhA&usqp=CAU",
     "https://www.shutterstock.com/image-vector/collection-food-sale-vertical-banner-260nw-1978888238.jpg",
   ];
-
   final List<String> brandList = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkXn-ER1y5GoZMhdpJbNDFwmVcF6EgNnKx2L0HLIUl4Z6FOMAKNjuFFyn-8t7Irm4VaTg&usqp=CAU",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeBSJV5_fHf8lK_P-qzwrrSknGjOLp2tiRUFdKRlEJnIoj3aTWK2N2TVeVIwGhh35qKgY&usqp=CAU",
@@ -46,9 +48,10 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
   @override
   void initState() {
     BlocProvider.of<HomeBloc>(context).add(GetHomeData());
+    print(ObjectFactory().prefs.getEmailVerifiedPoints());
+    print("IS EMAIL VERIFIED: ${ObjectFactory().prefs.isEmailVerified()}");
     print(
-      ObjectFactory().prefs.getAuthToken(),
-    );
+        "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
     super.initState();
   }
 
@@ -65,12 +68,18 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     SizeConfig().init(context);
     return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
         if (state is NetworkSuccess) {
           return BlocConsumer<HomeBloc, HomeState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              ///If and only if Network success
+              // if(state is NetworkSuccess) {
+              //   BlocProvider.of<HomeBloc>(context).add(GetHomeData());
+              // }
+            },
             builder: (context, state) {
               if (state is HomeLoading) {
                 return const Center(
@@ -92,6 +101,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
               }
 
               if (state is HomeLoaded) {
+                if (state.homeResponse.emailVerified == 1) {
+                  ObjectFactory().prefs.setIsEmailVerified(true);
+                  ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                  ObjectFactory().prefs.setEmailVerifiedPoints(
+                      verifiedPoints: state.homeResponse.emailVerificationPoints
+                          .toString());
+                }
                 return CustomScrollView(
                   slivers: [
                     SliverAppBar(
@@ -209,9 +225,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 0),
-                              child: GestureDetector(
+                              child: InkWell(
+                                splashFactory: InkSplash.splashFactory,
+                                splashColor: AppColors.borderColor,
                                 onTap: () {
-                                  context.push('/scan', extra: "Home");
+                                  print("INDEX::4}");
+                                  widget.onIndexChanged(4);
                                 },
                                 child: Container(
                                   height: getProportionateScreenHeight(160),
@@ -261,49 +280,55 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 0),
-                              child: Container(
-                                height: getProportionateScreenHeight(160),
-                                width: getProportionateScreenWidth(150),
-                                decoration: BoxDecoration(
-                                  // color: AppColors.primaryColor,
-                                  gradient: const RadialGradient(
-                                    center: Alignment(0, 1),
-                                    radius: 0,
-                                    colors: [
-                                      Color(0xFF6B78A3),
-                                      Color(0xFF111B3E)
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Flexible(
-                                      flex: 3,
-                                      child: Center(
-                                        child:
-                                            Image.asset(Assets.WALLET, scale: 9)
-                                                .animate()
-                                                .shake(
-                                                  duration: const Duration(
-                                                      milliseconds: 400),
-                                                ),
-                                      ),
+                              child: InkWell(
+                                onTap: () {
+                                  print("INDEX::1}");
+                                  widget.onIndexChanged(1);
+                                },
+                                child: Container(
+                                  height: getProportionateScreenHeight(160),
+                                  width: getProportionateScreenWidth(150),
+                                  decoration: BoxDecoration(
+                                    // color: AppColors.primaryColor,
+                                    gradient: const RadialGradient(
+                                      center: Alignment(0, 1),
+                                      radius: 0,
+                                      colors: [
+                                        Color(0xFF6B78A3),
+                                        Color(0xFF111B3E)
+                                      ],
                                     ),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Text(
-                                        "Total points \n ${state.homeResponse.totalPoints} pts",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.primaryWhiteColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Flexible(
+                                        flex: 3,
+                                        child: Center(
+                                          child: Image.asset(Assets.WALLET,
+                                                  scale: 9)
+                                              .animate()
+                                              .shake(
+                                                duration: const Duration(
+                                                    milliseconds: 400),
+                                              ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      Flexible(
+                                        flex: 1,
+                                        child: Text(
+                                          "Total points \n ${state.homeResponse.totalPoints} pts",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primaryWhiteColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -325,9 +350,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                GestureDetector(
+                                InkWell(
+                                  splashColor: AppColors.borderColor,
+                                  splashFactory: InkSparkle.splashFactory,
                                   onTap: () {
-                                    context.push('/search');
+                                    print("INDEX::2}");
+                                    widget.onIndexChanged(2);
                                   },
                                   child: SizedBox(
                                     height: 25,

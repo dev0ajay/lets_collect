@@ -74,112 +74,136 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
               }
               if (state is ScanReceiptHistoryLoaded) {
                 if (state.scanReceiptHistoryResponse.data!.isNotEmpty) {
-                  return CustomScrollView(
-                    slivers: [
-                      SliverPadding(
-                        padding: const EdgeInsets.only(top: 20),
-                        sliver: SliverToBoxAdapter(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
+                  return Stack(
+                    children: [
+                      CustomScrollView(
+                        slivers: [
+                          SliverPadding(
+                            padding: const EdgeInsets.only(top: 20),
+                            sliver: SliverToBoxAdapter(
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Text(
-                                    "Total Points",
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    widget.scanDetailsScreenArgument.totalPoint
-                                        .toString(),
-                                    style: const TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Total Points",
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      Text(
+                                        widget.scanDetailsScreenArgument
+                                            .totalPoint
+                                            .toString(),
+                                        style: const TextStyle(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: const EdgeInsets.only(top: 20),
-                        sliver: SliverToBoxAdapter(
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                padding: const EdgeInsets.only(top: 10),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: state
-                                    .scanReceiptHistoryResponse.data!.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    padding: const EdgeInsets.all(20),
-                                    margin: const EdgeInsets.only(
-                                        left: 30,
-                                        right: 30,
-                                        bottom: 10,
-                                        top: 0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: AppColors.boxShadow,
-                                          blurRadius: 4,
-                                          offset: Offset(4, 2),
-                                          spreadRadius: 0,
-                                        ),
-                                        BoxShadow(
-                                          color: AppColors.boxShadow,
-                                          blurRadius: 4,
-                                          offset: Offset(-4, -2),
-                                          spreadRadius: 0,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(state
-                                                .scanReceiptHistoryResponse
-                                                .data![index]
-                                                .brandName!),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 3.0),
-                                              child: Text(state
-                                                  .scanReceiptHistoryResponse
-                                                  .data![index]
-                                                  .productName!),
+                          SliverPadding(
+                            padding: const EdgeInsets.only(top: 20),
+                            sliver: SliverToBoxAdapter(
+                              child: Column(
+                                children: [
+                                  ListView.builder(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: state.scanReceiptHistoryResponse
+                                        .data!.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(20),
+                                        margin: const EdgeInsets.only(
+                                            left: 30,
+                                            right: 30,
+                                            bottom: 10,
+                                            top: 0),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryWhiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: AppColors.boxShadow,
+                                              blurRadius: 4,
+                                              offset: Offset(4, 2),
+                                              spreadRadius: 0,
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 3.0),
-                                              child: Text(
-                                                  "Points: ${state.scanReceiptHistoryResponse.data![index].points.toString()}"),
+                                            BoxShadow(
+                                              color: AppColors.boxShadow,
+                                              blurRadius: 4,
+                                              offset: Offset(-4, -2),
+                                              spreadRadius: 0,
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(state
+                                                    .scanReceiptHistoryResponse
+                                                    .data![index]
+                                                    .brandName!),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 3.0),
+                                                  child: Text(state
+                                                      .scanReceiptHistoryResponse
+                                                      .data![index]
+                                                      .productName!),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 3.0),
+                                                  child: Text(
+                                                      "Points: ${state.scanReceiptHistoryResponse.data![index].points.toString()}"),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
+                        ],
+                      ),
+                      Positioned(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.secondaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            fixedSize: Size(MediaQuery.of(context).size.width, 50)
+                          ),
+                          onPressed: () {
+
+                          },
+                          child: const Text("Done"),
                         ),
                       ),
                     ],

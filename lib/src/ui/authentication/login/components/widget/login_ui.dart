@@ -17,12 +17,13 @@ import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../../components/Custome_Textfiled.dart';
 import '../../../../../components/my_button.dart';
 import '../../../../../constants/colors.dart';
 import '../../../../forget_password/components/forget_password_screen.dart';
 import '../../../Signup/components/singup_screen.dart';
-import '../../../Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 
 class LoginUiwidget extends StatefulWidget {
   const LoginUiwidget({super.key});
@@ -76,6 +77,17 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   String gUsername = "";
   String gUserEmail = "";
 
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -108,42 +120,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
     }
   }
 
-  // Future<User?> signInWithGoogle({required BuildContext context}) async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   User? user;
-  //
-  //   final GoogleSignIn googleSignIn = GoogleSignIn();
-  //
-  //   final GoogleSignInAccount? googleSignInAccount =
-  //       await googleSignIn.signIn();
-  //
-  //   if (googleSignInAccount != null) {
-  //     final GoogleSignInAuthentication googleSignInAuthentication =
-  //         await googleSignInAccount.authentication;
-  //
-  //     final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleSignInAuthentication.accessToken,
-  //       idToken: googleSignInAuthentication.idToken,
-  //     );
-  //
-  //     try {
-  //       final UserCredential userCredential =
-  //           await auth.signInWithCredential(credential);
-  //
-  //       user = userCredential.user;
-  //     } on FirebaseAuthException catch (e) {
-  //       if (e.code == 'account-exists-with-different-credential') {
-  //         // handle the error here
-  //       } else if (e.code == 'invalid-credential') {
-  //         // handle the error here
-  //       }
-  //     } catch (e) {
-  //       // handle the error here
-  //     }
-  //   }
-  //
-  //   return user;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -204,22 +180,24 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                     ),
                   ),
                 );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>  SignUpScreen(
-                      from: 'Google', gmail: gUserEmail,
-                    ),
+                Navigator.of(context).push(PageRouteBuilder(
+                  reverseTransitionDuration: const Duration(seconds: 5),
+                  transitionDuration: const Duration(seconds: 3),
+                  pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(
+                    from: 'Google', gmail: gUserEmail,
                   ),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(0.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.ease;
+                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                ),
                 );
-                //   extra:
-                // SignUpArgumentClass(
-                //   firsname: gUsername,
-                //   lastName: "",
-                //   email: gUserEmail,
-                //   password: "",
-                //   confirmPassword: "",
-                // ),);
               }
             }
           },
@@ -252,7 +230,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             ),
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 10
                           ),
                           Center(
                             child: Text(
@@ -328,11 +306,21 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Forget_password_screen(),
+                                  Navigator.of(context).push(
+                                    PageRouteBuilder(
+                                      reverseTransitionDuration: const Duration(milliseconds: 750),
+                                      transitionDuration: const Duration(milliseconds: 750),
+                                      pageBuilder: (context, animation, secondaryAnimation) => const ForgetPasswordScreen(),
+                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                        const begin = Offset(1.0, 0.0);
+                                        const end = Offset.zero;
+                                        const curve = Curves.decelerate;
+                                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                        return SlideTransition(
+                                          position: animation.drive(tween),
+                                          child: child,
+                                        );
+                                      },
                                     ),
                                   );
                                 },
@@ -420,13 +408,24 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               width: 160,
                               height: 40,
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUpScreen(
-                                      from: 'Email', gmail: '',
-                                    ),
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                  reverseTransitionDuration: const Duration(milliseconds: 750),
+                                  transitionDuration: const Duration(milliseconds: 750),
+                                  pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(
+                                    from: 'Email', gmail: '',
                                   ),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    const begin = Offset(0.0, 1.0);
+                                    const end = Offset.zero;
+                                    const curve = Curves.decelerate;
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                                ),
                                 );
                               },
                               showImage: true,
@@ -502,10 +501,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                   ),
                                                 )
                                               : Text(
-                                                  state is GoogleSignInSuccess
-                                                      ? Strings.Google_login
-                                                      : state is GoogleSignInLoggedOut ?
-                                                  Strings.Google_singup : "Sign up/Login",
+                                                   "Sign up/Login",
                                                   style: GoogleFonts.roboto(
                                                     color: AppColors
                                                         .primaryGrayColor,
@@ -529,7 +525,24 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                   color: AppColors.primaryWhiteColor,
                                   width: 160,
                                   height: 40,
-                                  onTap: () {},
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          content: SizedBox(
+                                            height: getProportionateScreenHeight(260),
+                                            width: getProportionateScreenWidth(320),
+                                            child: Lottie.asset(Assets.SOON),
+                                          ),
+
+                                        );
+                                      },
+                                    );
+                                  },
                                   showImage: true,
                                   imagewidth: 8,
                                   imageheight: 20,
@@ -553,12 +566,19 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       ),
                                     ),
                                     const SizedBox(width: 6),
-                                    Text(
-                                      Strings.LOGIN_NOTES2,
-                                      style: GoogleFonts.openSans(
-                                        color: AppColors.secondaryColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
+                                    InkWell(
+                                      splashColor: AppColors.borderColor,
+                                      splashFactory: InkRipple.splashFactory,
+                                      onTap: () {
+                                        _launchInBrowser(Strings.TERMS_AND_CONDITION_URL);
+                                      },
+                                      child: Text(
+                                        Strings.LOGIN_NOTES2,
+                                        style: GoogleFonts.openSans(
+                                          color: AppColors.secondaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -574,12 +594,19 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       ),
                                     ),
                                     const SizedBox(width: 6),
-                                    Text(
-                                      Strings.LOGIN_NOTES4,
-                                      style: GoogleFonts.openSans(
-                                        color: AppColors.secondaryColor,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
+                                    InkWell(
+                                      splashColor: AppColors.borderColor,
+                                      splashFactory: InkRipple.splashFactory,
+                                      onTap: () {
+                                        _launchInBrowser(Strings.PRIVACY_POLICY_URL);
+                                      },
+                                      child: Text(
+                                        Strings.LOGIN_NOTES4,
+                                        style: GoogleFonts.openSans(
+                                          color: AppColors.secondaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                     ),
                                   ],

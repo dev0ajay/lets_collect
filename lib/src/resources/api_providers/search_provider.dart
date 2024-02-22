@@ -16,13 +16,11 @@ class SearchProvider {
       final response = await ObjectFactory()
           .apiClient
           .searchCategoryRequest(searchCategoryRequest);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<SearchCategoryRequestResponse>.success(
-              SearchCategoryRequestResponse.fromJson(response.data));
-        } else {}
-      }
-      print(response.toString());
+      if (response.statusCode == 200) {
+        return StateModel<SearchCategoryRequestResponse>.success(
+            SearchCategoryRequestResponse.fromJson(response.data));
+      } else {}
+          print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -39,6 +37,7 @@ class SearchProvider {
       }
       // return e;
     }
+    return null;
   }
 
   /// Brand
@@ -50,13 +49,11 @@ class SearchProvider {
       final response = await ObjectFactory()
           .apiClient
           .searchBrandRequest(searchBrandRequest);
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<SearchBrandRequestResponse>.success(
-              SearchBrandRequestResponse.fromJson(response.data));
-        } else {}
-      }
-      print(response.toString());
+      if (response.statusCode == 200) {
+        return StateModel<SearchBrandRequestResponse>.success(
+            SearchBrandRequestResponse.fromJson(response.data));
+      } else {}
+          print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -73,5 +70,6 @@ class SearchProvider {
       }
       // return e;
     }
+    return null;
   }
 }

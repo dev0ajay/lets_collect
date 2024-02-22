@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../../constants/colors.dart';
@@ -16,6 +17,7 @@ class AlertOverlayState extends State<AlertOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
+  bool isEmailNotVerifyExecuted = false;
 
   @override
   void initState() {
@@ -105,6 +107,9 @@ class AlertOverlayState extends State<AlertOverlay>
                                 ),
                               ),
                               onPressed: () {
+                                setState(() {
+                                  ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
+                                });
                                 context.pop();
                               },
                             ),

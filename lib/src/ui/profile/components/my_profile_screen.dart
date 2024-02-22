@@ -37,7 +37,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   }
 
 
-  FocusNode _countrynumber = FocusNode();
+  final FocusNode _countrynumber = FocusNode();
 
   String? validatePhoneNumber(String? value) {
     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
@@ -436,7 +436,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
         backgroundColor: AppColors.primaryWhiteColor,
         elevation: 5,
         alignment: Alignment.center,
-        title: Text(
+        title: const Text(
           "Are you sure?"
         ),
         content: SizedBox(
@@ -492,12 +492,12 @@ class DatePickerTextField extends StatelessWidget {
  final String hintText;
 
   const DatePickerTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.onDateIconTap,
     required this.hintText,
 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

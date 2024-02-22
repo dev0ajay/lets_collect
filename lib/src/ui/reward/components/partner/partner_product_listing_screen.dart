@@ -178,7 +178,7 @@ class _PartnerProductListingScreenState
                                                         TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1!
+                                                        .bodyLarge!
                                                         .copyWith(
                                                           fontSize: 15,
                                                         ),
@@ -424,7 +424,7 @@ class _PartnerProductListingScreenState
                                                 overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodyText1!
+                                                    .bodyLarge!
                                                     .copyWith(
                                                       fontSize: 15,
                                                     ),
@@ -841,7 +841,7 @@ class _PartnerProductListingScreenState
                                     .brandAndPartnerProductRequestResponse
                                     .data!
                                     .rewards![index]
-                                    .productImage!,
+                                    .rewardImage!,
                                 width: MediaQuery.of(context).size.width,
                                 placeholder: (context, url) =>  SizedBox(
                                   // height: getProportionateScreenHeight(170),

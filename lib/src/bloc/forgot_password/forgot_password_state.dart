@@ -21,6 +21,31 @@ class ForgotPasswordLoaded extends ForgotPasswordState {
   List<Object> get props => [forgotPasswordEmailRequestResponse];
 }
 
+class ForgotPasswordLoadingError extends ForgotPasswordState {
+  final String errorMsg;
+  const ForgotPasswordLoadingError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+class ForgotPasswordLoadingTimeOutError extends ForgotPasswordState {
+  final String errorMsg;
+  const ForgotPasswordLoadingTimeOutError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+class ForgotPasswordLoadingBadRequest extends ForgotPasswordState {
+  final String errorMsg;
+  const ForgotPasswordLoadingBadRequest({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+class ForgotPasswordLoadingNotFound extends ForgotPasswordState {
+  final String errorMsg;
+  const ForgotPasswordLoadingNotFound({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
 ///Forgot password otp state
 
 class ForgotPasswordOtpLoading extends ForgotPasswordState {

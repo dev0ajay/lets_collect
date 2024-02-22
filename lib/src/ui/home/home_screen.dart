@@ -14,14 +14,14 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import '../../constants/assets.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+   const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int bottomNavIndex = 0;
+  int selectedNavIndex = 0;
   List<Widget> children = [];
   List iconList = [
     Assets.HOME,
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Fluttertoast.showToast(
         backgroundColor: AppColors.secondaryColor,
           textColor: AppColors.primaryWhiteColor,
-          gravity: ToastGravity.TOP,
+          gravity: ToastGravity.BOTTOM,
           msg: "Press again to exit the app.",
       );
       return Future.value(false);
@@ -51,16 +51,27 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   bool isSortTapped = true;
 
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedNavIndex = index;
+      print("Index: $selectedNavIndex");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    children = [
-      const HomeScreenNavigation(),
-      const RewardScreen(),
-      const SearchScreen(),
-      const ProfileScreen(),
-      const ScanScreen(from: 'HomeNav'),
-    ];
+    // children = [
+    //   const RewardScreen(),
+    //   const SearchScreen(),
+    //   const ProfileScreen(),
+    //   const ScanScreen(from: 'HomeNav'),
+    // ];
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
@@ -79,15 +90,15 @@ class _HomeScreenState extends State<HomeScreen> {
               shape: const CircleBorder(),
               onPressed: () {
                 setState(() {
-                  bottomNavIndex = 4;
-                  print("bottomNavindex: $bottomNavIndex");
+                  selectedNavIndex= 4;
+                  print("bottomNavindex: ${selectedNavIndex}");
                 });
                 // context.go('/scan');
               },
               child: ImageIcon(
                 const AssetImage(Assets.SCAN_ICON),
-                size: bottomNavIndex == 4 ? 29 : 25,
-                color: bottomNavIndex == 4
+                size: selectedNavIndex == 4 ? 29 : 25,
+                color: selectedNavIndex == 4
                     ? AppColors.secondaryColor
                     : AppColors.primaryWhiteColor,
               ),
@@ -103,20 +114,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       isActive ? AppColors.secondaryButtonColor : Colors.black,
                   AssetImage(iconList[index]));
             },
-            activeIndex: bottomNavIndex,
+            activeIndex: selectedNavIndex,
             gapLocation: GapLocation.center,
-            elevation: 10,
+            elevation: 20,
             notchSmoothness: NotchSmoothness.defaultEdge,
-            onTap: (index) {
-              print("Index: ${index}");
-              setState(
-                () => bottomNavIndex = index,
-              );
-            }
+            onTap: _onItemTapped,
             //other params
             ),
         body:
-            bottomNavIndex == 4 ? const ScanScreen(from: 'HomeNav') : children[bottomNavIndex],
+        selectedNavIndex == 0 ?
+        HomeScreenNavigation(onIndexChanged: (index) {
+          _onItemTapped(index);
+        },) :
+        // selectedNavIndex == 4 ? const ScanScreen(from: 'HomeNav') :
+        selectedNavIndex == 1 ? const RewardScreen() :
+        selectedNavIndex == 2 ? const SearchScreen() :
+        selectedNavIndex == 4 ? const ScanScreen(from: "HomeNav"):
+        const ProfileScreen()
+            // children[
+            // selectedNavIndex
+            // ],
       ),
     );
   }
