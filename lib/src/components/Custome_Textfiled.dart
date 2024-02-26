@@ -47,7 +47,7 @@ class _MyTextFieldState extends State<MyTextField> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return SizedBox(
-      // height: getProportionateScreenHeight(55),
+      // height: 55,
       child: TextFormField(
         enabled: widget.enable,
         inputFormatters: widget.inputFormatter,

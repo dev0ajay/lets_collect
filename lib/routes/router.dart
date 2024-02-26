@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/countryscreen/signup_country_screen.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
+import 'package:lets_collect/src/ui/profile/components/purchase_history_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
@@ -51,7 +52,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const Login_screen(),
-                  transitionDuration: const Duration(milliseconds: 950),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -59,7 +60,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -73,7 +74,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: NumberVerificationScreen(
                       signUpArgumentClass: state.extra as SignUpArgumentClass),
-                  transitionDuration: const Duration(milliseconds: 950),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -82,7 +83,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.linear).animate(animation),
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -95,7 +96,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: SignupCalenderScreen(
                       signUpArgumentClass: state.extra as SignUpArgumentClass),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -103,7 +104,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.elasticIn)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -119,7 +120,7 @@ class AppRouter {
                     from: state.extra as String,
                     gUserMail: state.extra as String,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -127,7 +128,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.decelerate)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -140,7 +141,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const HomeScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -148,7 +149,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -161,7 +162,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const RewardScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -169,7 +170,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -185,7 +186,7 @@ class AppRouter {
                     redeemScreenArguments:
                         state.extra as LetCollectRedeemScreenArguments,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -193,7 +194,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -209,7 +210,7 @@ class AppRouter {
                     redeemScreenArguments:
                         state.extra as LetCollectRedeemScreenArguments,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -217,7 +218,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -233,7 +234,7 @@ class AppRouter {
                     redeemScreenArguments:
                         state.extra as LetCollectRedeemScreenArguments,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -241,7 +242,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -254,7 +255,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const SearchScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -262,7 +263,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -275,7 +276,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: ScanScreen(from: state.extra as String),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -283,7 +284,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -296,7 +297,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const LongRecieptScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -304,7 +305,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -319,7 +320,7 @@ class AppRouter {
                   child: SearchDetailsScreen(
                       searchScreenArguments:
                           state.extra as SearchScreenArguments),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -327,7 +328,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -340,7 +341,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const ProfileScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -348,7 +349,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -361,7 +362,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const ForgetPasswordScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -369,7 +370,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -384,7 +385,7 @@ class AppRouter {
                   child: ForgetPasswordOtpScreen(
                       forgotPasswordArguments:
                           state.extra as ForgotPasswordArguments),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -392,7 +393,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -405,7 +406,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const ForgetPasswordConfirmScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -413,7 +414,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -426,7 +427,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const MyProfileScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -434,7 +435,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -447,7 +448,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const HelpScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -455,7 +456,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -468,7 +469,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const TermsAndConditionsScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -476,7 +477,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -489,7 +490,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const PrivacyPoliciesScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -497,7 +498,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -510,7 +511,7 @@ class AppRouter {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
                   child: const SpecialOfferScreen(),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -518,7 +519,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -533,7 +534,7 @@ class AppRouter {
                   child: SpecialOfferScreenDetails(
                     offerDetailsArguments: state.extra as OfferDetailsArguments,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -541,7 +542,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -557,7 +558,7 @@ class AppRouter {
                     brandAndPartnerRedeemArguments:
                         state.extra as BrandAndPartnerRedeemArguments,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -565,7 +566,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -581,7 +582,7 @@ class AppRouter {
                     scanDetailsScreenArgument:
                         state.extra as ScanDetailsScreenArgument,
                   ),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -589,7 +590,7 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );
@@ -604,7 +605,7 @@ class AppRouter {
                   child: QrCodeGenerationScreen(
                       qrCodeScreenArguments:
                           state.extra as QrCodeScreenArguments),
-                  transitionDuration: const Duration(milliseconds: 750),
+                  transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation,
@@ -612,7 +613,28 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeInOut)
+                      opacity: CurveTween(curve: Curves.easeIn)
+                          .animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'purchase_history',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const PurchaseHistoryScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity: CurveTween(curve: Curves.easeIn)
                           .animate(animation),
                       child: child,
                     );

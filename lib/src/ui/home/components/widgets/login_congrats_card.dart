@@ -38,7 +38,7 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
                 child: IconButton(
                   onPressed: () {
                     setState(() {
-                      ObjectFactory().prefs.setIsEmailVerified(true);
+                      // ObjectFactory().prefs.setIsEmailVerified(true);
                       ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
                     });
                   },
@@ -141,7 +141,7 @@ class _CardContentState extends State<CardContent>
             backgroundColor: AppColors.secondaryColor,
           ),
           onPressed: () {
-            ObjectFactory().prefs.setIsEmailVerified(true);
+            // ObjectFactory().prefs.setIsEmailVerified(true);
             ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
           },
           child: Text(

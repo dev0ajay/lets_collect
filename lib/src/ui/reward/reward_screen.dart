@@ -4423,7 +4423,7 @@ class _RewardScreenState extends State<RewardScreen> {
                               .letsCollect![index].requiredPoints!
                               .toString(),
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .letsCollect![index].productImage!,
+                              .letsCollect![index].rewardImage!,
                           wereToRedeem: state.rewardTierRequestResponse.data!
                               .letsCollect![index].reedemStores!,
                         ),
@@ -4568,7 +4568,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             .brand![index].requiredPoints
                             .toString(),
                         imageUrl: state.rewardTierRequestResponse.data!
-                            .brand![index].productImage!,
+                            .brand![index].rewardImage!,
                         wereToRedeem: state.rewardTierRequestResponse.data!
                             .brand![index].reedemStores!,
                         iD: state.rewardTierRequestResponse.data!.brand![index]
@@ -4696,7 +4696,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             .partner![index].requiredPoints
                             .toString(),
                         imageUrl: state.rewardTierRequestResponse.data!
-                            .partner![index].productImage!,
+                            .partner![index].rewardImage!,
                         wereToRedeem: state.rewardTierRequestResponse.data!
                             .partner![index].reedemStores!,
                         iD: state.rewardTierRequestResponse.data!

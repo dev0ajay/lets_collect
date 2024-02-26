@@ -30,9 +30,10 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
   void initState() {
     super.initState();
    setState(() {
+     ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
      ObjectFactory().prefs.isEmailVerifiedStatus() == true
-         ? isDone = true
-         : false;
+         ? isDone = false
+         : true;
    });
     // isDone = true;
   }
@@ -42,11 +43,13 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
         if(state is HomeLoaded) {
-          if(  ObjectFactory().prefs.isEmailNotVerifiedStatus() == false
+          if(!ObjectFactory().prefs.isEmailNotVerifiedStatus()!
+          && !ObjectFactory().prefs.isEmailNotVerifiedCalled()!
               ) {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => const AlertOverlay());
+                builder: (BuildContext context) => const AlertOverlay()
+            );
           }
         }
       },

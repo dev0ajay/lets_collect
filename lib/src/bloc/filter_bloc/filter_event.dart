@@ -10,3 +10,10 @@ class GetBrandAndCategoryFilterList extends FilterEvent {
   List<Object?> get props => [];
 
 }
+
+///Supermarket List
+class GetFilterList extends FilterEvent {
+  @override
+  List<Object?> get props => [];
+
+}

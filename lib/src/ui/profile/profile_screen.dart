@@ -244,14 +244,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         );
                       },
-                      child: ProfileDetailsListTileWidget(
-                        labelText: 'Purchase History',
-                        textStyle: GoogleFonts.roboto(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                          letterSpacing:
-                              0, // This is the default value for normal line height
+                      child: InkWell(
+                        onTap: () {
+                          context.push('/purchase_history');
+                        },
+                        child: ProfileDetailsListTileWidget(
+                          labelText: 'Purchase History',
+                          textStyle: GoogleFonts.roboto(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.normal,
+                            letterSpacing:
+                                0, // This is the default value for normal line height
+                          ),
                         ),
                       ),
                     ),
@@ -326,17 +331,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        backgroundColor: AppColors.secondaryColor,
+                        backgroundColor: AppColors.primaryColor,
                       ),
                       onPressed: () {
-                              ObjectFactory().prefs.setIsLoggedIn(false);
-                              ObjectFactory().prefs.clearPrefs();
-                              _signOut();
-                              context.go('/login');
+                        ObjectFactory().prefs.setIsLoggedIn(false);
+                        ObjectFactory().prefs.clearPrefs();
+                        _signOut();
+                        context.go('/login');
                       },
-                      child: const Text("Log out",style: TextStyle(
-                        color: AppColors.primaryWhiteColor,
-                      ),),
+                      child: const Text(
+                        "Log out",
+                        style: TextStyle(
+                          color: AppColors.secondaryColor,
+                        ),
+                      ),
                     ),
                   ),
                 ],

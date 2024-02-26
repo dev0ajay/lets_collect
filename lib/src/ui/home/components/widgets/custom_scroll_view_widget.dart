@@ -52,6 +52,14 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
     print("IS EMAIL VERIFIED: ${ObjectFactory().prefs.isEmailVerified()}");
     print(
         "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
+
+    print(
+        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory()
+            .prefs.isEmailNotVerifiedStatus()}");
+
+    print(
+        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()
+        }");
     super.initState();
   }
 
@@ -103,12 +111,19 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
                   ObjectFactory().prefs.setIsEmailVerified(true);
+                  ObjectFactory()
+                  .prefs.setIsEmailNotVerifiedStatus(false);
                   ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
                       verifiedPoints: state.homeResponse.emailVerificationPoints
                           .toString());
+                }else if(state.homeResponse.emailVerified == 0) {
+                  ObjectFactory()
+                      .prefs.setIsEmailNotVerifiedStatus(true);
                 }
+
                 return CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverAppBar(
                       leading: const SizedBox(),

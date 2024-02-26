@@ -20,3 +20,21 @@ class BrandLoaded extends FilterState {
   List<Object> get props => [brandAndCategoryFilterResponse];
 }
 
+
+///Supermarket List State
+class SupermarketFilterInitial extends FilterState {
+  @override
+  List<Object> get props => [];
+}
+class SupermarketFilterLoading extends FilterState {
+  @override
+  List<Object> get props => [];
+}
+
+class SupermarketFilterLoaded extends FilterState {
+  final SuperMarketListResponse superMarketListResponse;
+  const SupermarketFilterLoaded({required this.superMarketListResponse});
+  @override
+  List<Object> get props => [SuperMarketListResponse];
+}
+

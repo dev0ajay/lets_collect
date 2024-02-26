@@ -143,10 +143,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
               state.loginRequestResponse.token.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                backgroundColor: AppColors.primaryWhiteColor,
+                backgroundColor: AppColors.secondaryColor,
                 content: Text(
                   state.loginRequestResponse.message,
-                  style: const TextStyle(color: Colors.black),
+                  style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
             );
@@ -173,10 +173,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                   state.googleLoginResponse.token!.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: AppColors.primaryWhiteColor,
+                    backgroundColor: AppColors.secondaryColor,
                     content: Text(
                       state.googleLoginResponse.message!,
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 );

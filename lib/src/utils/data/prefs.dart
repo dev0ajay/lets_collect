@@ -32,6 +32,8 @@ class Prefs {
   static const String _IS_EMAIL_VERIFIED_STATUS = "is_email_verified";
   static const String _VERIFIED_POINTS = "verified_points";
   static const String _IS_EMAIL_NOT_VERIFIED_STATUS = "is_email_verified";
+  static const String _IS_EMAIL_NOT_VERIFIED_CALLED = "is_email_verified";
+
 
 
 
@@ -352,6 +354,17 @@ class Prefs {
   ///checking not status
   bool? isEmailNotVerifiedStatus() => _sharedPreferences!.getBool(_IS_EMAIL_NOT_VERIFIED_STATUS) != null &&
       _sharedPreferences!.getBool(_IS_EMAIL_NOT_VERIFIED_STATUS) == true
+      ? true
+      : false;
+
+  ///Setting email not verified status
+  void setIsEmailNotVerifiedCalled(bool status) {
+    _sharedPreferences!.setBool(_IS_EMAIL_NOT_VERIFIED_CALLED, status);
+  }
+
+  ///checking not status
+  bool? isEmailNotVerifiedCalled() => _sharedPreferences!.getBool(_IS_EMAIL_NOT_VERIFIED_CALLED) != null &&
+      _sharedPreferences!.getBool(_IS_EMAIL_NOT_VERIFIED_CALLED) == true
       ? true
       : false;
 

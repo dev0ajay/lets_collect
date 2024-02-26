@@ -289,7 +289,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                selectedCountry,
+                                "Country you live in",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -556,7 +556,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    padding: const EdgeInsets.only(left: 35, right: 35),
                     child: MyTextField(
                       inputFormatter: [LengthLimitingTextInputFormatter(8)],
                       focusNode: _countrynumber,

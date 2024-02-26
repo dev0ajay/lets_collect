@@ -123,25 +123,28 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: CachedNetworkImage(
+
                                   imageUrl:
                                       widget.redeemScreenArguments.imageUrl,
                                   fit: BoxFit.fill,
-                                  placeholder: (context, url) => Lottie.asset(
-                                      Assets.JUMBINGDOT,
-                                      height: 10,
-                                      width: 10),
+                                  placeholder: (context, url) => SizedBox(
+                                    // height: getProportionateScreenHeight(170),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: Lottie.asset(
+                                        Assets.JUMBINGDOT,
+                                        height: 45,
+                                        width: 45,
+                                      ),
+                                    ),
+                                  ),
                                   errorWidget: (context, url, error) =>
                                       const ImageIcon(
+                                        size: 200,
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),
                                 ),
-                                // Image.network(
-                                //   widget.redeemScreenArguments.imageUrl,
-                                //   fit: BoxFit.fill,
-                                //
-                                //   // height: 350,
-                                // ),
                               ),
                             ),
                             const SizedBox(height: 30),
@@ -205,7 +208,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                     onTap: () {
                       BlocProvider.of<RedeemBloc>(context).add(
                         GetQrCodeUrlEvent(
-                          qrCodeUrlRequest: QrCodeUrlRequest(rewardId: widget.redeemScreenArguments.rewardId!),
+                          qrCodeUrlRequest: QrCodeUrlRequest(
+                              rewardId: widget.redeemScreenArguments.rewardId!),
                         ),
                       );
 

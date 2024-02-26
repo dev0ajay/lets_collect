@@ -13,6 +13,7 @@ import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+import '../../model/purchase_history/purchase_history_request.dart';
 import '../../model/scan_receipt/scan_receipt_history_request.dart';
 import '../../model/search/brand/search_brand_request.dart';
 import '../../model/search/category/search_category_request.dart';
@@ -340,5 +341,42 @@ class ApiClient {
     );
   }
 
+
+///Purchase History Screen
+  Future<Response> purchaseHistoryRequest(PurchaseHistoryRequest purchaseHistoryRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.PURCHASE_HISTORY,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+
+    );
+  }
+
+///Purchase History Details
+//   Future<Response> purchaseHistoryDetailsRequest(PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
+//     return dioLetsCollect.post(
+//       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
+//       options: Options(
+//           headers: {
+//             "Authorization": ObjectFactory().prefs.getAuthToken(),
+//           }
+//       ),
+//     );
+//   }
+
+///Super market list
+  Future<Response> getSuperMarketList() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.POINT_TRACKER_FILTER,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
 
 }

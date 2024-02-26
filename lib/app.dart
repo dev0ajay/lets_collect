@@ -15,6 +15,7 @@ import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.d
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
+import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
@@ -27,6 +28,7 @@ import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/purchase_history_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/reward_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/scan_receipt_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/search_provider.dart';
@@ -66,6 +68,9 @@ class _AppState extends State<App> {
         ),
         RepositoryProvider(
           create: (create) => ScanReceiptApiProvider(),
+        ),
+        RepositoryProvider(
+          create: (create) => PurchaseHistoryDataProvider(),
         ),
       ],
       child: MultiBlocProvider(
@@ -122,6 +127,7 @@ class _AppState extends State<App> {
           BlocProvider<FilterBloc>(
             create: (BuildContext context) => FilterBloc(
               rewardScreenProvider: RepositoryProvider.of(context),
+              superMarketListProvider: RepositoryProvider.of(context),
             ),
           ),
           BlocProvider<RewardTierBloc>(
@@ -155,6 +161,11 @@ class _AppState extends State<App> {
               create: (BuildContext context) => GoogleLoginBloc(authProvider: RepositoryProvider.of(context))
           ),
 
+          BlocProvider<PurchaseHistoryBloc>(
+              create: (BuildContext context) => PurchaseHistoryBloc(purchaseHistoryDataProvider: RepositoryProvider.of(context))
+              )
+
+
         ],
         child: BlocBuilder<NetworkBloc, NetworkState>(
           builder: (context, state) {
@@ -175,6 +186,8 @@ class _AppState extends State<App> {
               );
             }
             return MaterialApp.router(
+              themeAnimationCurve: Curves.easeIn,
+              themeAnimationDuration: const Duration(milliseconds: 750),
               // routerConfig: AppRouter.router,
               routerDelegate: AppRouter.router.routerDelegate,
               routeInformationProvider:
