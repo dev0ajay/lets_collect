@@ -12,7 +12,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
 
   void login() async {
-    emit(GoogleSignInLoading());
+    emit(GoogleSignInCubitLoading());
     try {
       //select acoount
       final userAccount = await googleSignIn.signIn();
@@ -47,5 +47,16 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
     } catch(e) {}
   }
 
+
+  // void signInSilently() async{
+  //   try {
+  //     // final userAccount = await googleSignIn.signIn();
+  //     if(userAccount != null) {
+  //
+  //     }
+  //     // emit(GoogleSignInLoggedOut());
+  //
+  //   } catch(e) {}
+  // }
 
 }

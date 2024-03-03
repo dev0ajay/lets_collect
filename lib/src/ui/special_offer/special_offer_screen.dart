@@ -122,55 +122,6 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                   // filterWidgets.clear();
                                   return Stack(
                                     children: [
-                                      Positioned(
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        // bottom: 20,
-                                        child: SafeArea(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "Sort by",
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: AppColors
-                                                            .primaryGrayColor,
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                      onPressed: () {
-                                                        context.pop();
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons.close,
-                                                        color: AppColors
-                                                            .primaryGrayColor,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                const Divider(
-                                                    color: AppColors
-                                                        .primaryGrayColor,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height /
@@ -302,7 +253,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                 TextButton(
                                                   onPressed: () {
                                                     clearFilter();
-                                                    context.pop();
+                                                    // context.pop();
                                                     BlocProvider.of<OfferBloc>(
                                                             context)
                                                         .add(
@@ -373,6 +324,57 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                           ),
                                         ),
                                       ),
+                                      Positioned(
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        // bottom: 20,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Sort by",
+                                                      style: GoogleFonts.roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight.w400,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        selectedSortVariants = <String>[];
+                                                        context.pop();
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                  color: AppColors
+                                                      .primaryGrayColor,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
                                     ],
                                   );
                                 },
@@ -580,11 +582,8 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                     width: 20,
                                                                                     decoration: const BoxDecoration(
                                                                                       shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
+                                                                                      color: AppColors.primaryWhiteColor,
+
                                                                                       boxShadow: [
                                                                                         BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                       ],
@@ -718,11 +717,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                     width: 20,
                                                                                     decoration: const BoxDecoration(
                                                                                       shape: BoxShape.rectangle,
-                                                                                      color: Color(0xFFD9D9D9),
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                      ),
+                                                                                      color: AppColors.primaryWhiteColor,
                                                                                       boxShadow: [
                                                                                         BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                       ],

@@ -10,10 +10,11 @@ import '../../model/scan_receipt/scan_receipt_history_request.dart';
 import 'components/scan_detail_screen_argument.dart';
 
 class ScanHistoryDetailsScreen extends StatefulWidget {
+  final Function(int) onIndexChanged;
   final ScanDetailsScreenArgument scanDetailsScreenArgument;
 
   const ScanHistoryDetailsScreen(
-      {super.key, required this.scanDetailsScreenArgument});
+      {super.key, required this.scanDetailsScreenArgument,required this.onIndexChanged});
 
   @override
   State<ScanHistoryDetailsScreen> createState() =>
@@ -26,8 +27,8 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
     super.initState();
     BlocProvider.of<ScanBloc>(context).add(
       ScanReceiptHistoryEvent(
-        scanReceiptHistoryRequest: ScanReceiptHistoryRequest(pointId: 14
-            // widget.scanDetailsScreenArgument.pointId
+        scanReceiptHistoryRequest: ScanReceiptHistoryRequest(pointId:
+            widget.scanDetailsScreenArgument.pointId
             ),
       ),
     );
@@ -37,7 +38,7 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        context.pop();
+        context.go('/home');
         return false;
       },
       child: Scaffold(
@@ -55,7 +56,7 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
           ),
           leading: IconButton(
             onPressed: () {
-              context.pop();
+              context.go('/home');
             },
             icon:
                 const Icon(Icons.arrow_back_ios, color: AppColors.primaryColor),
@@ -192,16 +193,20 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                         ],
                       ),
                       Positioned(
+                        bottom: 0,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.secondaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              )
                             ),
                             fixedSize: Size(MediaQuery.of(context).size.width, 50)
                           ),
                           onPressed: () {
-
+                            context.go('/home');
                           },
                           child: const Text("Done"),
                         ),

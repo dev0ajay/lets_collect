@@ -124,21 +124,21 @@ class _RewardScreenState extends State<RewardScreen> {
     SizeConfig().init(context);
     return BlocConsumer<RewardTierBloc, RewardTierState>(
       listener: (context, state) {
-        if (state is RewardTierLoaded) {
-          if (state.rewardTierRequestResponse.data != null) {
-            ObjectFactory()
-                .prefs
-                .saveBrandTierData(state.rewardTierRequestResponse);
-            ObjectFactory()
-                .prefs
-                .savePartnerTierData(state.rewardTierRequestResponse);
-            ObjectFactory()
-                .prefs
-                .saveLetsCollectTierData(state.rewardTierRequestResponse);
-            letsCollectTotalPoints =
-                state.rewardTierRequestResponse.totalPoints.toString();
-          }
-        }
+        // if (state is RewardTierLoaded) {
+        //   if (state.rewardTierRequestResponse.data != null) {
+        //     ObjectFactory()
+        //         .prefs
+        //         .saveBrandTierData(state.rewardTierRequestResponse);
+        //     ObjectFactory()
+        //         .prefs
+        //         .savePartnerTierData(state.rewardTierRequestResponse);
+        //     ObjectFactory()
+        //         .prefs
+        //         .saveLetsCollectTierData(state.rewardTierRequestResponse);
+        //     letsCollectTotalPoints =
+        //         state.rewardTierRequestResponse.totalPoints.toString();
+        //   }
+        // }
       },
       builder: (context, state) {
         return CustomScrollView(
@@ -180,60 +180,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                             selectedSortVariants = <String>[];
                                           });
                                         }
-
                                         // filterWidgets.clear();
                                         return Stack(
                                           children: [
-                                            Positioned(
-                                              top: 0,
-                                              left: 0,
-                                              right: 0,
-                                              // bottom: 20,
-                                              child: SafeArea(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 15),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "Sort by",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: AppColors
-                                                                  .primaryGrayColor,
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            onPressed: () {},
-                                                            icon: const Icon(
-                                                              Icons.close,
-                                                              color: AppColors
-                                                                  .primaryGrayColor,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      const Divider(
-                                                          color: AppColors
-                                                              .primaryGrayColor),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
                                             SizedBox(
                                               height: MediaQuery.of(context)
                                                       .size
@@ -427,6 +376,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                             ),
                                                           );
                                                           context.pop();
+                                                          clearFilter();
                                                         },
                                                         child: Text(
                                                           "Apply",
@@ -440,6 +390,59 @@ class _RewardScreenState extends State<RewardScreen> {
                                                           ),
                                                         ),
                                                       ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 4,
+                                              left: 0,
+                                              right: 0,
+                                              // bottom: 20,
+                                              child: SafeArea(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 15),
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                        children: [
+                                                          Text(
+                                                            "Sort by",
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                              color: AppColors
+                                                                  .primaryGrayColor,
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                            onPressed: () {
+                                                              context.pop();
+                                                              clearFilter();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.close,
+                                                              color: AppColors
+                                                                  .primaryGrayColor,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const Divider(
+                                                          color: AppColors
+                                                              .primaryGrayColor),
                                                     ],
                                                   ),
                                                 ),
@@ -1220,59 +1223,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                             // filterWidgets.clear();
                                             return Stack(
                                               children: [
-                                                Positioned(
-                                                  top: 0,
-                                                  left: 0,
-                                                  right: 0,
-                                                  // bottom: 20,
-                                                  child: SafeArea(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 15),
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                "Sort by",
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .roboto(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: AppColors
-                                                                      .primaryGrayColor,
-                                                                ),
-                                                              ),
-                                                              IconButton(
-                                                                onPressed:
-                                                                    () {},
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.close,
-                                                                  color: AppColors
-                                                                      .primaryGrayColor,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          const Divider(
-                                                              color: AppColors
-                                                                  .primaryGrayColor),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
+
                                                 SizedBox(
                                                   height: MediaQuery.of(context)
                                                           .size
@@ -1483,6 +1434,62 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               ),
                                                             ),
                                                           ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: 0,
+                                                  left: 0,
+                                                  right: 0,
+                                                  // bottom: 20,
+                                                  child: SafeArea(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 15),
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                            children: [
+                                                              Text(
+                                                                "Sort by",
+                                                                style:
+                                                                GoogleFonts
+                                                                    .roboto(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                                  color: AppColors
+                                                                      .primaryGrayColor,
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                onPressed:
+                                                                    () {
+                                                                  context.pop();
+                                                                  clearFilter();
+                                                                    },
+                                                                icon:
+                                                                const Icon(
+                                                                  Icons.close,
+                                                                  color: AppColors
+                                                                      .primaryGrayColor,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          const Divider(
+                                                              color: AppColors
+                                                                  .primaryGrayColor),
                                                         ],
                                                       ),
                                                     ),
@@ -2217,62 +2224,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                 // filterWidgets.clear();
                                                 return Stack(
                                                   children: [
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      // bottom: 20,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    "Sort by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed:
-                                                                        () {},
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
+
                                                     SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -2394,7 +2346,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               TextButton(
                                                                 onPressed: () {
                                                                   clearFilter();
-                                                                  context.pop();
+                                                                  // context.pop();
                                                                   BlocProvider.of<
                                                                               RewardTierBloc>(
                                                                           context)
@@ -2458,7 +2410,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       rewardTierRequest:
                                                                           RewardTierRequest(
                                                                         sort:
-                                                                            selectedSortFilter,
+                                                                            sortQuery,
                                                                         eligible:
                                                                             "",
                                                                         categoryId:
@@ -2485,6 +2437,66 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   ),
                                                                 ),
                                                               ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      // bottom: 20,
+                                                      child: SafeArea(
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: [
+                                                                  Text(
+                                                                    "Sort by",
+                                                                    style: GoogleFonts
+                                                                        .roboto(
+                                                                      fontSize:
+                                                                      16,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  ),
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      context.pop();
+                                                                          clearFilter();
+
+                                                                        },
+                                                                    icon:
+                                                                    const Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const Divider(
+                                                                  color: AppColors
+                                                                      .primaryGrayColor),
                                                             ],
                                                           ),
                                                         ),
@@ -3072,7 +3084,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           ),
                                                                           IconButton(
                                                                             onPressed:
-                                                                                () {},
+                                                                                () {
+                                                                              context.pop();
+                                                                                  clearFilter();
+
+                                                                                },
                                                                             icon:
                                                                                 const Icon(
                                                                               Icons.close,
@@ -3197,64 +3213,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                 // filterWidgets.clear();
                                                 return Stack(
                                                   children: [
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      // bottom: 20,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    "Sort by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context.pop();
-                                                                        },
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
+
                                                     SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -3467,6 +3426,65 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   ),
                                                                 ),
                                                               ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      // bottom: 20,
+                                                      child: SafeArea(
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: [
+                                                                  Text(
+                                                                    "Sort by",
+                                                                    style: GoogleFonts
+                                                                        .roboto(
+                                                                      fontSize:
+                                                                      16,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  ),
+                                                                  IconButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      context.pop();
+                                                                      clearFilter();
+                                                                    },
+                                                                    icon:
+                                                                    const Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const Divider(
+                                                                  color: AppColors
+                                                                      .primaryGrayColor),
                                                             ],
                                                           ),
                                                         ),
@@ -4416,7 +4434,7 @@ class _RewardScreenState extends State<RewardScreen> {
                       context.push(
                         '/lets_collect_redeem',
                         extra: LetCollectRedeemScreenArguments(
-                          totalPoint: letsCollectTotalPoints,
+                          totalPoint: state.rewardTierRequestResponse.totalPoints.toString(),
                           rewardId: state.rewardTierRequestResponse.data!
                               .letsCollect![index].rewardId,
                           requiredPoint: state.rewardTierRequestResponse.data!

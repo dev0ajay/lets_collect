@@ -22,3 +22,24 @@ class NationalityLoaded extends NationalityState {
     nationalityResponse
   ];
 }
+
+class NationalityLoadingServerError extends NationalityState {
+  final String errorMsg;
+  const NationalityLoadingServerError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+class NationalityLoadingConnectionTimeOut extends NationalityState {
+  final String errorMsg;
+  const NationalityLoadingConnectionTimeOut({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+class NationalityLoadingConnectionRefused extends NationalityState {
+  final String errorMsg;
+  const NationalityLoadingConnectionRefused({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

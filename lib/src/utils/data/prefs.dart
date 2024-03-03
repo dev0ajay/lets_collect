@@ -23,31 +23,20 @@ class Prefs {
   static const String _FCM_TOKEN = "fcm_token";
   static const String _USER_DATA = "user_data";
   static const String _USER_DATA_SIGNUP = "user_data_signup";
-
   static const String _REFERRAL_DATA = "referral_data";
   static const String _HELP_CENTER_DATA = "help_center_data";
-
   static const String _IS_LOGGED_IN = "is_logged_in";
   static const String _IS_EMAIL_VERIFIED = "is_email_verified";
   static const String _IS_EMAIL_VERIFIED_STATUS = "is_email_verified";
   static const String _VERIFIED_POINTS = "verified_points";
   static const String _IS_EMAIL_NOT_VERIFIED_STATUS = "is_email_verified";
   static const String _IS_EMAIL_NOT_VERIFIED_CALLED = "is_email_verified";
-
-
-
-
-
   static const String _IS_MOB_NUM_VERIFIED = "is_mob_num_verified";
   static const String _IS_REFERRAL_LOADED = "is_referral_loaded";
   static const String _IS_HELP_CENTER_LOADED = "is_help_center_loaded";
   static const String _BRAND_TIER_DATA = "brand_tier_data";
   static const String _PARTNER_TIER_DATA = "partner_tier_data";
   static const String _LETSCOLLECT_TIER_DATA = "letsCollect_tier_data";
-
-
-
-
 
 
   Prefs();

@@ -13,6 +13,9 @@ import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+import '../../model/point_tracker/point_tracker_details_request.dart';
+import '../../model/point_tracker/point_tracker_request.dart';
+import '../../model/purchase_history/purchase_history_details_request.dart';
 import '../../model/purchase_history/purchase_history_request.dart';
 import '../../model/scan_receipt/scan_receipt_history_request.dart';
 import '../../model/search/brand/search_brand_request.dart';
@@ -356,21 +359,63 @@ class ApiClient {
   }
 
 ///Purchase History Details
-//   Future<Response> purchaseHistoryDetailsRequest(PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
-//     return dioLetsCollect.post(
-//       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
-//       options: Options(
-//           headers: {
-//             "Authorization": ObjectFactory().prefs.getAuthToken(),
-//           }
-//       ),
-//     );
-//   }
+  Future<Response> purchaseHistoryDetailsRequest(PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
 
 ///Super market list
   Future<Response> getSuperMarketList() {
     return dioLetsCollect.get(
       UrlsLetsCollect.POINT_TRACKER_FILTER,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
+  ///GetProfile
+  Future<Response> getProfileData() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.MY_PROFILE_DATA,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
+
+  /// Point Tracker
+  Future<Response> pointTrackerRequest(PointTrackerRequest pointTrackerRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.POINT_TRACKER,
+      data: pointTrackerRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
+  ///Point Tracker Details
+  Future<Response> pointTrackerDetailsRequest(PointTrackerDetailsRequest pointTrackerDetailsRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.POINT_TRACKER_DETAILS,
+      data: pointTrackerDetailsRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),

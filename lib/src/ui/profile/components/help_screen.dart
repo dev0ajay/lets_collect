@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/ui/profile/profile_screen.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
@@ -46,11 +47,49 @@ class HelpScreen extends StatelessWidget {
                 height: 200,
               )),
               const SizedBox(height: 35),
-              const ProfileDetailsListTileWidget(
-                  labelText: "How to redeem my points ?"),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(10)),
+                        content: SizedBox(
+                          height: getProportionateScreenHeight(260),
+                          width: getProportionateScreenWidth(320),
+                          child: Lottie.asset(Assets.SOON),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const ProfileDetailsListTileWidget(
+                    labelText: "How to redeem my points ?"),
+              ),
               const SizedBox(height: 15),
-              const ProfileDetailsListTileWidget(
-                  labelText: "Point Calculations"),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(10)),
+                        content: SizedBox(
+                          height: getProportionateScreenHeight(260),
+                          width: getProportionateScreenWidth(320),
+                          child: Lottie.asset(Assets.SOON),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const ProfileDetailsListTileWidget(
+                    labelText: "Point Calculations"),
+              ),
               const SizedBox(height: 15),
               GestureDetector(
                 onTap: () {
@@ -68,7 +107,25 @@ class HelpScreen extends StatelessWidget {
                     labelText: "Privacy policies"),
               ),
               const SizedBox(height: 15),
-              const ProfileDetailsListTileWidget(labelText: "Need more Help?"),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(10)),
+                        content: SizedBox(
+                          height: getProportionateScreenHeight(260),
+                          width: getProportionateScreenWidth(320),
+                          child: Lottie.asset(Assets.SOON),
+                        ),
+                      );
+                    },
+                  );
+                },
+                  child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
             ],
           ),
         ),

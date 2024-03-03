@@ -11,7 +11,6 @@ part 'sign_up_event.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final AuthProvider authProvider;
-
   SignUpBloc({required this.authProvider}) : super(SignUpInitial()) {
     on<SignUpRequestEvent>((event, emit) async {
       // SignupRequest? signupRequest;
@@ -24,9 +23,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       }
       if(stateModel is ErrorState) {
         emit(SignUpErrorState(signUpRequestErrorResponse: stateModel.msg));
+        emit(SignUpLoadingServerError(errorMsg: stateModel.msg));
+        emit(SignUpLoadingTimeoutError(errorMsg: stateModel.msg));
+        emit(SignUpLoadingConnectionRefusedError(errorMsg: stateModel.msg));
       }
-
-
     });
   }
 }

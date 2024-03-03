@@ -13,8 +13,10 @@ import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart'
 import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
+import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
+import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
@@ -28,7 +30,7 @@ import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
-import 'package:lets_collect/src/resources/api_providers/purchase_history_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/purchase_data_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/reward_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/scan_receipt_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/search_provider.dart';
@@ -70,7 +72,7 @@ class _AppState extends State<App> {
           create: (create) => ScanReceiptApiProvider(),
         ),
         RepositoryProvider(
-          create: (create) => PurchaseHistoryDataProvider(),
+          create: (create) => PurchaseDataProvider(),
         ),
       ],
       child: MultiBlocProvider(
@@ -153,7 +155,6 @@ class _AppState extends State<App> {
           BlocProvider<OfferBloc>(
             create: (BuildContext context) => OfferBloc(homeDataProvider: RepositoryProvider.of(context))
           ),
-
           BlocProvider<RedeemBloc>(
               create: (BuildContext context) => RedeemBloc( rewardScreenProvider: RepositoryProvider.of(context))
           ),
@@ -163,7 +164,13 @@ class _AppState extends State<App> {
 
           BlocProvider<PurchaseHistoryBloc>(
               create: (BuildContext context) => PurchaseHistoryBloc(purchaseHistoryDataProvider: RepositoryProvider.of(context))
-              )
+              ),
+          BlocProvider<MyProfileBloc>(
+              create: (BuildContext context) => MyProfileBloc(myProfileDataProvider: RepositoryProvider.of(context)),
+          ),
+          BlocProvider<PointTrackerBloc>(
+            create: (BuildContext context) => PointTrackerBloc(pointTrackerProvider: RepositoryProvider.of(context)),
+          ),
 
 
         ],

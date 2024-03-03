@@ -33,6 +33,13 @@ class _ScanScreenState extends State<ScanScreen> {
   // XFile? _pickedFile;
   final _picker = ImagePicker();
 
+  // Function to clear the picked image
+  void _clearImage() {
+    setState(() {
+      galleryFile = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -48,6 +55,7 @@ class _ScanScreenState extends State<ScanScreen> {
             }
           },
           child: Scaffold(
+            backgroundColor: AppColors.primaryWhiteColor,
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
               child: SafeArea(
@@ -154,6 +162,7 @@ class _ScanScreenState extends State<ScanScreen> {
                                 data: FormData.fromMap({"file": imageUploadFormated})),
                           );
                           _showDialogBox(context: context);
+
                         }else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -192,6 +201,7 @@ class _ScanScreenState extends State<ScanScreen> {
     required BuildContext context,
   }) {
     showDialog(
+      barrierDismissible: false,
         context: context,
         builder: (ctx) {
 
@@ -215,6 +225,7 @@ class _ScanScreenState extends State<ScanScreen> {
                           child: IconButton(
                             onPressed: () {
                               context.pop();
+                              _clearImage();
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -265,7 +276,8 @@ class _ScanScreenState extends State<ScanScreen> {
                 );
               }
               if (state is ScanLoaded) {
-                if (state.scanReceiptRequestResponse.success == false
+                if (state.scanReceiptRequestResponse.success == false &&
+                    state.scanReceiptRequestResponse.message == "This receipt number already exists"
                    ) {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
@@ -284,6 +296,8 @@ class _ScanScreenState extends State<ScanScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   context.pop();
+                                  _clearImage();
+
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -332,6 +346,8 @@ class _ScanScreenState extends State<ScanScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   context.pop();
+                                  _clearImage();
+
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -364,6 +380,7 @@ class _ScanScreenState extends State<ScanScreen> {
                               flex: 1,
                               child: TextButton(
                                 onPressed: () {
+                                  _clearImage();
                                   context.push(
                                     '/scan_history',
                                     extra: ScanDetailsScreenArgument(
@@ -374,7 +391,8 @@ class _ScanScreenState extends State<ScanScreen> {
                                         pointId: state
                                             .scanReceiptRequestResponse
                                             .data!
-                                            .pointId!),
+                                            .pointId!,
+                                    ),
                                   );
                                   context.pop();
                                 },
@@ -434,6 +452,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             child: IconButton(
                               onPressed: () {
                                 context.pop();
+                                _clearImage();
                               },
                               icon: const Icon(Icons.close),
                             ),

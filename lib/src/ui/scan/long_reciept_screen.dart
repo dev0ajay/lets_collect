@@ -13,6 +13,7 @@ import 'package:lottie/lottie.dart';
 import '../../bloc/scan_bloc/scan_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import 'components/scan_detail_screen_argument.dart';
 import 'components/widgets/scan_screen_collect_button.dart';
 import 'package:path/path.dart' as p;
 
@@ -35,6 +36,12 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
   List<File> selectedImages = [];
 
   final picker = ImagePicker();
+  // Function to clear the picked image
+  void _clearImage() {
+    setState(() {
+      galleryFile = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -337,6 +344,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
   }) {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (ctx) {
           BlocProvider.of<ScanBloc>(context).add(
             ScanReceiptEvent(
@@ -362,6 +370,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                           child: IconButton(
                             onPressed: () {
                               context.pop();
+                              _removeFile();
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -436,6 +445,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   context.pop();
+                                  _removeFile();
                                   // BlocProvider.of<ScanBloc>(context).add(
                                   //   ScanReceiptHistoryEvent(
                                   //       scanReceiptHistoryRequest: scanReceiptHistoryRequest
@@ -485,14 +495,14 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                     content: SizedBox(
                         height: getProportionateScreenHeight(260),
                         width: getProportionateScreenWidth(320),
-                        child:
-                        Column(
+                        child: Column(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
                               child: IconButton(
                                 onPressed: () {
-                                 context.pop();
+                                  context.pop();
+                                  _removeFile();
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -512,7 +522,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                "Lets Collect Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
+                                "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -523,30 +533,59 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                             const SizedBox(height: 10),
                             Flexible(
                               flex: 1,
-                              child: Text(
-                                "Brand points: ${state.scanReceiptRequestResponse.data!.brandPoint.toString()}",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
+                              child: TextButton(
+                                onPressed: () {
+                                  _removeFile();
+                                  context.push(
+                                    '/scan_history',
+                                    extra: ScanDetailsScreenArgument(
+                                      totalPoint: state
+                                          .scanReceiptRequestResponse
+                                          .data!
+                                          .totalPoints!,
+                                      pointId: state
+                                          .scanReceiptRequestResponse
+                                          .data!
+                                          .pointId!,
+                                    ),
+                                  );
+                                  context.pop();
+                                },
+                                child: Text(
+                                  "View Details",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.underlineColor,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
                               ),
                             ),
-                            Flexible(
-                              flex: 1,
-                              child: Text(
-                                "Partner points: ${state.scanReceiptRequestResponse.data!.letsCollectPoints.toString()}",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
+                            // Flexible(
+                            //   flex: 1,
+                            //   child: Text(
+                            //     "Brand points: ${state.scanReceiptRequestResponse.data!.brandPoint.toString()}",
+                            //     textAlign: TextAlign.center,
+                            //     style: GoogleFonts.roboto(
+                            //       fontSize: 12,
+                            //       fontWeight: FontWeight.w700,
+                            //     ),
+                            //   ),
+                            // ),
+                            // Flexible(
+                            //   flex: 1,
+                            //   child: Text(
+                            //     "Partner points: ${state.scanReceiptRequestResponse.data!.letsCollectPoints.toString()}",
+                            //     textAlign: TextAlign.center,
+                            //     style: GoogleFonts.roboto(
+                            //       fontSize: 12,
+                            //       fontWeight: FontWeight.w700,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
-                        )
-
-                    ),
+                        )),
                   );
                 }
 
@@ -572,6 +611,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                             child: IconButton(
                               onPressed: () {
                                 context.pop();
+                                _removeFile();
                               },
                               icon: const Icon(Icons.close),
                             ),
@@ -591,7 +631,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                           Flexible(
                             flex: 2,
                             child: Text(
-                              "Oops Something went wrong!.",
+                              state.errorMsg,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.openSans(
                                 fontSize: 16,

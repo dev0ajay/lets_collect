@@ -25,7 +25,8 @@ import '../firstscreen/sign_up_argument_class.dart';
 class NumberVerificationScreen extends StatefulWidget {
   final SignUpArgumentClass signUpArgumentClass;
 
-  const NumberVerificationScreen({super.key, required this.signUpArgumentClass});
+  const NumberVerificationScreen(
+      {super.key, required this.signUpArgumentClass});
 
   @override
   State<NumberVerificationScreen> createState() =>
@@ -36,8 +37,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
   String selectedDropdownItem = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  TextEditingController countrycodeController = TextEditingController();
-  TextEditingController phonenumberController = TextEditingController();
+  TextEditingController countryCodeController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+
+  // TextEditingController phonenumController = TextEditingController();
 
   bool isOneTime = false;
 
@@ -52,12 +55,22 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
     }
   }
 
+  String? validateCountryCodeNumber(String? value) {
+    if (value!.length == 0 || value.isEmpty) {
+      return '';
+    } else {
+      return null;
+    }
+  }
+
   String selectedCountry = "";
   int? selectedCountryID;
   String selectedCity = "";
+  String selectedCountryCode = "";
   String? selectedCityValue;
   String? selectedCountryValue;
-  late  List<CountryData> countryList = [];
+  late List<CountryData> countryList = [];
+  final String initialValue = 'Bahrain';
 
   @override
   void initState() {
@@ -69,6 +82,45 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
     SizeConfig().init(context);
     return BlocListener<SignUpBloc, SignUpState>(
       listener: (context, state) {
+        if (state is SignUpLoadingServerError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: GoogleFonts.openSans(
+                  color: AppColors.primaryWhiteColor,
+                ),
+              ),
+            ),
+          );
+        }
+        if (state is SignUpLoadingTimeoutError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: GoogleFonts.openSans(
+                  color: AppColors.primaryWhiteColor,
+                ),
+              ),
+            ),
+          );
+        }
+        if (state is SignUpLoadingConnectionRefusedError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: GoogleFonts.openSans(
+                  color: AppColors.primaryWhiteColor,
+                ),
+              ),
+            ),
+          );
+        }
         if (state is SignUpLoaded) {
           if (state.signUpRequestResponse.success == true &&
               state.signUpRequestResponse.token.isNotEmpty) {
@@ -96,11 +148,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   ),
                 ),
               );
-             context.pop();
               context.pop();
-
+              context.pop();
             } else if (state
-                .signUpRequestErrorResponse.data.email!.isNotEmpty &&
+                    .signUpRequestErrorResponse.data.email!.isNotEmpty &&
                 state.signUpRequestErrorResponse.data.email ==
                     "The email has already been taken.") {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -116,16 +167,14 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
               );
               context.pop();
               context.pop();
-
-            }  else if (state
-                .signUpRequestErrorResponse.data.email!.isNotEmpty &&
-                state.signUpRequestErrorResponse.data.email ==
-                    "The email has already been taken." ||
+            } else if (state
+                        .signUpRequestErrorResponse.data.email!.isNotEmpty &&
+                    state.signUpRequestErrorResponse.data.email ==
+                        "The email has already been taken." ||
                 state.signUpRequestErrorResponse.data.userName ==
                     "The user name has already been taken." ||
                 state.signUpRequestErrorResponse.data.mobileNo ==
-                    "The mobile no has already been taken."
-            ) {
+                    "The mobile no has already been taken.") {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: AppColors.secondaryColor,
@@ -139,10 +188,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
               );
               context.pop();
               context.pop();
-
-            }
-            else if (state
-                .signUpRequestErrorResponse.data.mobileNo!.isNotEmpty &&
+            } else if (state
+                    .signUpRequestErrorResponse.data.mobileNo!.isNotEmpty &&
                 state.signUpRequestErrorResponse.data.mobileNo ==
                     "The mobile no has already been taken.") {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -157,7 +204,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                 ),
               );
             }
-
           }
         }
       },
@@ -173,7 +219,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
               icon: const Icon(Icons.arrow_back_ios),
               color: AppColors.primaryWhiteColor),
         ),
-
         body: Padding(
           padding: const EdgeInsets.only(left: 5, right: 5),
           child: Form(
@@ -246,8 +291,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                               buttonStyleData: ButtonStyleData(
                                 height: 50,
                                 width: 340,
-                                padding: const EdgeInsets.only(
-                                    left: 14, right: 14),
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   boxShadow: const [
                                     BoxShadow(
@@ -279,9 +324,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                           );
                         }
                         if (state is CountryLoaded) {
-                          // CountryData? firstCountry = state.countryResponse.data.firstWhere((element) {
-                          //   element.name == "Bahrain" ? "" : "";
-                          // });
                           return DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -289,7 +331,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                "Country you live in",
+                                      "Country you live in",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -301,20 +343,20 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 ],
                               ),
                               items: state.countryResponse.data
-                                  .map((item) => DropdownMenuItem<String>(
-                                        value: item.countriesId.toString(),
-                                        child: Text(
-                                         item.name,
-                                          style: GoogleFonts.roboto(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                                AppColors.primaryBlackColor,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
+                                  .map(
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item.countriesId.toString(),
+                                      child: Text(
+                                        item.name,
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.primaryBlackColor,
                                         ),
-                                      )
-                              )
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                               value: selectedCountryValue,
                               onChanged: (String? value) {
@@ -323,7 +365,15 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   selectedCountry = selectedCountryValue!;
                                   selectedCountryID =
                                       int.tryParse(selectedCountry);
+                                  for (var item in state.countryResponse.data) {
+                                    if (item.countriesId == selectedCountryID) {
+                                      selectedCountryCode = item.countryCode;
+                                      countryCodeController.text =
+                                          selectedCountryCode;
+                                    }
+                                  }
                                 });
+
                                 BlocProvider.of<CityBloc>(context).add(
                                   GetCityEvent(
                                       getCityRequest: GetCityRequest(
@@ -333,8 +383,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                               buttonStyleData: ButtonStyleData(
                                 height: 50,
                                 width: 340,
-                                padding: const EdgeInsets.only(
-                                    left: 14, right: 14),
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   boxShadow: const [
                                     BoxShadow(
@@ -416,8 +466,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                               buttonStyleData: ButtonStyleData(
                                 height: 50,
                                 width: 340,
-                                padding: const EdgeInsets.only(
-                                    left: 14, right: 14),
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   boxShadow: const [
                                     BoxShadow(
@@ -475,8 +525,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                           style: GoogleFonts.roboto(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
-                                            color:
-                                                AppColors.primaryBlackColor,
+                                            color: AppColors.primaryBlackColor,
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -492,8 +541,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                               buttonStyleData: ButtonStyleData(
                                 height: 50,
                                 width: 340,
-                                padding: const EdgeInsets.only(
-                                    left: 14, right: 14),
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   boxShadow: const [
                                     BoxShadow(
@@ -524,8 +573,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 ),
                                 iconSize: 14,
                                 iconEnabledColor: AppColors.secondaryColor,
-                                iconDisabledColor:
-                                    AppColors.primaryBlackColor,
+                                iconDisabledColor: AppColors.primaryBlackColor,
                               ),
                               dropdownStyleData: DropdownStyleData(
                                 maxHeight: 200,
@@ -556,24 +604,64 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   ),
                   SizedBox(height: getProportionateScreenHeight(20)),
                   Padding(
-                    padding: const EdgeInsets.only(left: 35, right: 35),
-                    child: MyTextField(
-                      inputFormatter: [LengthLimitingTextInputFormatter(8)],
-                      focusNode: _countrynumber,
-                      // horizontal: 10,
-                      hintText: Strings.PHONE_NUMBER,
-                      obscureText: false,
-                      maxLines: 1,
-                      controller: phonenumberController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        String? err = validatePhoneNumber(value);
-                        if (err != null) {
-                          _countrynumber.requestFocus();
-                        }
-                        return err;
-                      },
-                    ).animate().then(delay: 200.ms).slideX(),
+                    padding:
+                        const EdgeInsets.only(left: 30, right: 30, bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(5),
+                              bottomLeft: Radius.circular(5),
+                            ),
+                            child: MyTextField(
+                              obscureText: false,
+                              maxLines: 1,
+                              keyboardType: TextInputType.none,
+                              // focusNode: _countrynumber,
+                              controller: countryCodeController,
+                              enable: false,
+                              hintText: "+xx",
+                              validator: (value) {
+                                String? err = validateCountryCodeNumber(value);
+                                if (err != null) {
+                                  _countrynumber.requestFocus();
+                                }
+                                return err;
+                              },
+                              // controller: ,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          flex: 5,
+                          child: MyTextField(
+                            inputFormatter: [
+                              selectedCountryID == 18
+                                  ? LengthLimitingTextInputFormatter(8)
+                                  : LengthLimitingTextInputFormatter(10)
+                            ],
+                            focusNode: _countrynumber,
+                            // horizontal: 10,
+                            hintText: Strings.PHONE_NUMBER,
+                            obscureText: false,
+                            maxLines: 1,
+                            controller: phoneNumberController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              String? err = validatePhoneNumber(value);
+                              if (err != null) {
+                                _countrynumber.requestFocus();
+                              }
+                              return err;
+                            },
+                          ).animate().then(delay: 200.ms).slideX(),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: getProportionateScreenHeight(30)),
                   BlocBuilder<SignUpBloc, SignUpState>(
@@ -598,24 +686,30 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                           width: getProportionateScreenHeight(340),
                           height: getProportionateScreenWidth(40),
                           onTap: () {
-                            print(selectedCity);
+                            print("SELECTED COUNTRY ID: $selectedCountry");
+                            print(
+                                "SELECTED COUNTRY CODE: ${countryCodeController.text}");
+                            print("SELECTED CITY: $selectedCity");
+                            print(
+                                "MOBILE: ${countryCodeController.text + phoneNumberController.text}");
+
                             if (_formKey.currentState?.validate() ?? false) {
                               if (selectedCountry.isNotEmpty &&
                                   selectedCity.isNotEmpty) {
                                 BlocProvider.of<SignUpBloc>(context).add(
                                   SignUpRequestEvent(
                                     signupRequest: SignupRequest(
-                                      firstName: widget
-                                          .signUpArgumentClass.firsname!,
-                                      lastName: widget
-                                          .signUpArgumentClass.lastName!,
-                                      email:
-                                          widget.signUpArgumentClass.email!,
-                                      mobileNo: phonenumberController.text,
-                                      userName: widget
-                                          .signUpArgumentClass.firsname!,
-                                      password: widget
-                                          .signUpArgumentClass.password!,
+                                      firstName:
+                                          widget.signUpArgumentClass.firsname!,
+                                      lastName:
+                                          widget.signUpArgumentClass.lastName!,
+                                      email: widget.signUpArgumentClass.email!,
+                                      mobileNo: countryCodeController.text +
+                                          phoneNumberController.text,
+                                      userName:
+                                          widget.signUpArgumentClass.firsname!,
+                                      password:
+                                          widget.signUpArgumentClass.password!,
                                       gender:
                                           widget.signUpArgumentClass.gender!,
                                       dob: widget.signUpArgumentClass.dob!,

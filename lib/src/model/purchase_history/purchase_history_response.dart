@@ -1,4 +1,5 @@
 
+
 import 'dart:convert';
 
 PurchaseHistoryResponse purchaseHistoryResponseFromJson(String str) => PurchaseHistoryResponse.fromJson(json.decode(str));
@@ -8,7 +9,7 @@ String purchaseHistoryResponseToJson(PurchaseHistoryResponse data) => json.encod
 class PurchaseHistoryResponse {
   bool? success;
   int? statusCode;
-  List<Datum>? data;
+  List<PurchaseData>? data;
   int? totalPages;
 
   PurchaseHistoryResponse({
@@ -21,7 +22,7 @@ class PurchaseHistoryResponse {
   factory PurchaseHistoryResponse.fromJson(Map<String, dynamic> json) => PurchaseHistoryResponse(
     success: json["success"],
     statusCode: json["status_code"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<PurchaseData>.from(json["data"]!.map((x) => PurchaseData.fromJson(x))),
     totalPages: json["total_pages"],
   );
 
@@ -33,22 +34,22 @@ class PurchaseHistoryResponse {
   };
 }
 
-class Datum {
+class PurchaseData {
   int? receiptId;
   int? customerId;
   int? supermarketId;
   String? branch;
-  DateTime? receiptDate;
+  String? receiptDate;
   String? totalAmount;
   String? currencyCode;
   String? receiptNumber;
   int? totalNoOfProducts;
-  int? totalTaxAmount;
+  String? totalTaxAmount;
   String? servedBy;
   String? tillNumber;
   String? paymentMethod;
 
-  Datum({
+  PurchaseData({
     this.receiptId,
     this.customerId,
     this.supermarketId,
@@ -64,12 +65,12 @@ class Datum {
     this.paymentMethod,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory PurchaseData.fromJson(Map<String, dynamic> json) => PurchaseData(
     receiptId: json["receipt_id"],
     customerId: json["customer_id"],
     supermarketId: json["supermarket_id"],
     branch: json["branch"],
-    receiptDate: json["receipt_date"] == null ? null : DateTime.parse(json["receipt_date"]),
+    receiptDate: json["receipt_date"] == null ? null : json["receipt_date"],
     totalAmount: json["total_amount"],
     currencyCode: json["currency_code"],
     receiptNumber: json["receipt_number"],
@@ -85,7 +86,7 @@ class Datum {
     "customer_id": customerId,
     "supermarket_id": supermarketId,
     "branch": branch,
-    "receipt_date": "${receiptDate!.year.toString().padLeft(4, '0')}-${receiptDate!.month.toString().padLeft(2, '0')}-${receiptDate!.day.toString().padLeft(2, '0')}",
+    "receipt_date": receiptDate,
     "total_amount": totalAmount,
     "currency_code": currencyCode,
     "receipt_number": receiptNumber,

@@ -24,3 +24,22 @@ class SignUpErrorState extends SignUpState {
   @override
   List<Object> get props => [signUpRequestErrorResponse];
 }
+
+class SignUpLoadingServerError extends SignUpState {
+  final String errorMsg;
+  const SignUpLoadingServerError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+class SignUpLoadingTimeoutError extends SignUpState {
+  final String errorMsg;
+  const SignUpLoadingTimeoutError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+class SignUpLoadingConnectionRefusedError extends SignUpState {
+  final String errorMsg;
+  const SignUpLoadingConnectionRefusedError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

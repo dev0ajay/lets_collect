@@ -5,7 +5,7 @@ abstract class GoogleSignInState {}
 
 class GoogleSignInInitial extends GoogleSignInState {}
 
-class GoogleSignInLoading extends GoogleSignInState {}
+class GoogleSignInCubitLoading extends GoogleSignInState {}
 
 class GoogleSignInLoggedOut extends GoogleSignInState {}
 

@@ -19,3 +19,30 @@ class LoginLoaded extends LoginState {
   @override
   List<Object> get props => [loginRequestResponse];
 }
+
+
+
+class LoginLoadingServerError extends LoginState {
+  final String errorMsg;
+  const LoginLoadingServerError({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+
+
+class LoginLoadingRequestTimeOut extends LoginState {
+  final String errorMsg;
+  const LoginLoadingRequestTimeOut({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+
+
+class LoginLoadingConnectionRefused extends LoginState {
+  final String errorMsg;
+  const LoginLoadingConnectionRefused({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

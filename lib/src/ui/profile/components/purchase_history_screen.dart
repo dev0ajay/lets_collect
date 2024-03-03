@@ -12,6 +12,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../../bloc/filter_bloc/filter_bloc.dart';
 import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
+import '../../../model/purchase_history/purchase_history_response.dart';
 import '../../reward/components/widgets/custome_rounded_button.dart';
 import '../widgets/bar_chart_widget.dart';
 
@@ -49,13 +50,12 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       lastYear: 2025,
       selectButtonText: 'OK',
       cancelButtonText: 'Cancel',
-      highlightColor: Colors.purple,
-      textColor: Colors.black,
-      contentBackgroundColor: Colors.white,
-      dialogBackgroundColor: Colors.grey[200],
+      highlightColor: AppColors.secondaryColor,
+      textColor: AppColors.primaryBlackColor,
+      contentBackgroundColor: AppColors.primaryWhiteColor,
+      dialogBackgroundColor: AppColors.primaryColor,
     );
   }
-
 
   List<String> selectedSortVariants = <String>[];
   String selectedSortFilter = "";
@@ -66,14 +66,35 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   String selectedMonthAndYearFilters = "";
   List<String> selectedSuperMarketVariants = <String>[];
   List<String> selectedMonthAndYearVariants = <String>[];
-
-
-
+  late  String totalAmount = "0";
+  Map<String, dynamic> dateAmountMap = {};
   List<String> sort = <String>[
     "Recent",
     "Expiry First",
   ];
+  List<PurchaseData> purchaseList = [];
 
+
+
+
+  void checkSameDate(PurchaseHistoryResponse jsonData) {
+    for (int i = 0; i < jsonData.data!.length; i++) {
+      String currentDate = jsonData.data![i].receiptDate.toString();
+
+      for (int j = i + 1; j < jsonData.data!.length; j++) {
+        if (currentDate == jsonData.data![j].receiptDate) {
+            totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
+            print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
+          print("Total amount: $totalAmount of indexes $i and $j");
+          // You can do further processing here if needed
+        }
+      }
+    }
+  }
+  
+
+  
+  
   @override
   void initState() {
     super.initState();
@@ -88,8 +109,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             sort: '', supermarketId: '', month: '', year: '', page: '1'),
       ),
     );
+
   }
 
+  
   @override
   void dispose() {
     _purchaseMonthController.dispose();
@@ -102,6 +125,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
         slivers: [
           SliverAppBar(
             expandedHeight: 80.0,
@@ -149,6 +173,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                     );
                   }
                   if (state is PurchaseHistoryLoaded) {
+                    ///Sorting to do
+                    // List<PurchaseData> sortedPurchaseDataList = List.from(state.purchaseHistoryResponse.data!);
+                    // sortedPurchaseDataList = state.purchaseHistoryResponse.data?.sort((a, b) => a.receiptDate!.compareTo(b.receiptDate!));
+
                     return Column(
                       children: [
                         const SizedBox(
@@ -156,8 +184,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         ),
                         const Center(
                           child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: BarChartWidget(),
+                            padding: EdgeInsets.only(top: 0),
+                            child: SizedBox(
+                                child: BarChartWidget(),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -199,58 +229,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                 // filterWidgets.clear();
                                                 return Stack(
                                                   children: [
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      // bottom: 20,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 15),
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                                children: [
-                                                                  Text(
-                                                                    "Sort by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize: 16,
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed: () {
-                                                                      context.pop();
-                                                                    },
-                                                                    icon: const Icon(
-                                                                      Icons.close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
                                                     SizedBox(
                                                       height: MediaQuery.of(context)
                                                           .size
@@ -381,7 +359,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                       .add(
                                                                     GetPurchaseHistory(
                                                                       purchaseHistoryRequest:
-                                                                      PurchaseHistoryRequest(sort: '', supermarketId: '', month: '', year: '', page: ''
+                                                                      PurchaseHistoryRequest(sort: '', supermarketId: '', month: '', year: '', page: '',
 
                                                                       ),
                                                                     ),
@@ -426,7 +404,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                     GetPurchaseHistory(
                                                                       purchaseHistoryRequest:
                                                                       PurchaseHistoryRequest(
-                                                                        sort: '',
+                                                                        sort: sortQuery,
                                                                         month: '',
                                                                         year: '',
                                                                         supermarketId: '',
@@ -448,6 +426,58 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                   ),
                                                                 ),
                                                               ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      // bottom: 20,
+                                                      child: SafeArea(
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: 15),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                                children: [
+                                                                  Text(
+                                                                    "Sort by",
+                                                                    style: GoogleFonts
+                                                                        .roboto(
+                                                                      fontSize: 16,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  ),
+                                                                  IconButton(
+                                                                    onPressed: () {
+                                                                      context.pop();
+                                                                    },
+                                                                    icon: const Icon(
+                                                                      Icons.close,
+                                                                      color: AppColors
+                                                                          .primaryGrayColor,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              const Divider(
+                                                                  color: AppColors
+                                                                      .primaryGrayColor),
                                                             ],
                                                           ),
                                                         ),
@@ -661,11 +691,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                                       width: 20,
                                                                                       decoration: const BoxDecoration(
                                                                                         shape: BoxShape.rectangle,
-                                                                                        color: Color(0xFFD9D9D9),
-                                                                                        image: DecorationImage(
-                                                                                          image: AssetImage(Assets.DISABLED_TICK),
-                                                                                          fit: BoxFit.contain,
-                                                                                        ),
+                                                                                        color: AppColors.primaryWhiteColor,
                                                                                         boxShadow: [
                                                                                           BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                         ],
@@ -719,7 +745,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                       Row(
                                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                                         children: [
-                                                                          Text('Month: '),
+                                                                          const Text('Month: '),
                                                                           SizedBox(
                                                                             width: 50,
                                                                             child: TextField(
@@ -732,8 +758,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                               },
                                                                             ),
                                                                           ),
-                                                                          SizedBox(width: 20),
-                                                                          Text('Year: '),
+                                                                          const SizedBox(width: 20),
+                                                                          const Text('Year: '),
                                                                           SizedBox(
                                                                             width: 70,
                                                                             child: TextField(
@@ -746,7 +772,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                               },
                                                                             ),
                                                                           ),
-                                                                          SizedBox(width: 100),
+                                                                          const SizedBox(width: 100),
                                                                           GestureDetector(
                                                                               onTap: () {
                                                                                 showMonthPickerDialog(context, _purchaseMonthController, _purchaseYearController);
@@ -906,8 +932,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                 child:
                                                                 Container(
                                                                   // height: 40,
-                                                                  color: Colors
-                                                                      .white,
+                                                                  color: AppColors.primaryWhiteColor,
                                                                   child: Column(
                                                                     children: [
                                                                       Row(
@@ -929,6 +954,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                             onPressed:
                                                                                 () {
                                                                               context.pop();
+                                                                              clearFilter();
                                                                             },
                                                                             icon:
                                                                             const Icon(
@@ -1035,13 +1061,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) =>
-                                //     const PurchaseHistoryDetailsScreen(),
-                                //   ),
-                                // );
+                                context.push('/purchase_history_details',extra: state.purchaseHistoryResponse.data![index].receiptId.toString());
                               },
                               child: Container(
                                 width: double.infinity,
@@ -1084,7 +1104,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                       Text(
                                         "Total amount"
                                         // "${AppLocalizations.of(context)!.totalamount} "
-                                            "${state.purchaseHistoryResponse.data![index].totalAmount} "
+                                            "  ${state.purchaseHistoryResponse.data![index].totalAmount} "
                                             "${state.purchaseHistoryResponse.data![index].currencyCode}",
                                         style: GoogleFonts.roboto(
                                           fontSize: 16,
@@ -1124,7 +1144,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                             ],
                           ),
                         )
-                            : SizedBox(),
+                            : const SizedBox(),
                       ],
                     );
                   } else {

@@ -15,10 +15,10 @@ class GetPurchaseHistory extends PurchaseHistoryEvent{
 
 
 
-// class GetPurchaseHistoryDetails extends PurchaseHistoryEvent{
-//   final PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest;
-//   const GetPurchaseHistoryDetails({required this.purchaseHistoryDetailsRequest});
-//   @override
-//   List<Object?> get props => [];
-//
-// }
+class GetPurchaseHistoryDetails extends PurchaseHistoryEvent{
+  final PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest;
+  const GetPurchaseHistoryDetails({required this.purchaseHistoryDetailsRequest});
+  @override
+  List<Object?> get props => [];
+
+}

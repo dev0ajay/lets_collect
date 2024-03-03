@@ -7,13 +7,15 @@ import 'package:lets_collect/src/model/purchase_history/purchase_history_respons
 import 'package:lets_collect/src/model/state_model.dart';
 import 'package:meta/meta.dart';
 
-import '../../resources/api_providers/purchase_history_screen_provider.dart';
+import '../../model/purchase_history/purchase_history_details_request.dart';
+import '../../model/purchase_history/purchase_history_details_response.dart';
+import '../../resources/api_providers/purchase_data_provider.dart';
 
 part 'purchase_history_event.dart';
 part 'purchase_history_state.dart';
 
 class PurchaseHistoryBloc extends Bloc<PurchaseHistoryEvent, PurchaseHistoryState> {
-  final PurchaseHistoryDataProvider purchaseHistoryDataProvider;
+  final PurchaseDataProvider purchaseHistoryDataProvider;
   PurchaseHistoryBloc({required this.purchaseHistoryDataProvider}) : super(PurchaseHistoryInitial()) {
     on<GetPurchaseHistory>((event, emit) async{
       emit(PurchaseHistoryLoading());
@@ -24,13 +26,13 @@ class PurchaseHistoryBloc extends Bloc<PurchaseHistoryEvent, PurchaseHistoryStat
     }
     );
 
-    // on<GetPurchaseHistoryDetails>((event, emit) async{
-    //   emit(PurchaseHistoryDetailsLoading());
-    //   final StateModel? stateModel = await purchaseHistoryDataProvider.purchaseHistoryDetailsRequest(event.purchaseHistoryDetailsRequest);
-    //   if(stateModel is SuccessState){
-    //     emit(PurchaseHistoryDetailsLoaded(purchaseHistoryDetailsResponse: stateModel.value));
-    //   }
-    // });
+    on<GetPurchaseHistoryDetails>((event, emit) async{
+      emit(PurchaseHistoryDetailsLoading());
+      final StateModel? stateModel = await purchaseHistoryDataProvider.purchaseHistoryDetailsRequest(event.purchaseHistoryDetailsRequest);
+      if(stateModel is SuccessState){
+        emit(PurchaseHistoryDetailsLoaded(purchaseHistoryDetailsResponse: stateModel.value));
+      }
+    });
   }
 }
 

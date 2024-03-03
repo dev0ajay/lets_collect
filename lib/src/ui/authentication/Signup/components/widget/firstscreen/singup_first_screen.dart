@@ -9,6 +9,7 @@ import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
+import '../../../../../../bloc/country_bloc/country_bloc.dart';
 import '../../../../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import '../../../../../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../../../../../constants/colors.dart';
@@ -102,8 +103,9 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
   @override
   void initState() {
     super.initState();
-    gmailController.text = widget.gUserMail;
     BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
+
   }
 
 
@@ -129,7 +131,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         children: [
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -142,14 +144,14 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         color: Colors.white,
                         fontSize: 40,
                       ),
-                    )).animate().then(delay: 200.ms).slideX(),
+                    )),
                     const Center(
                       child: Image(
                         image: AssetImage(Assets.APP_LOGO),
                         width: 100,
                         height: 80,
                       ),
-                    ).animate().then(delay: 200.ms).slideX(),
+                    ),
                     const SizedBox(height: 20),
                     Center(
                         child: Text(
@@ -159,7 +161,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
-                    )).animate().then(delay: 200.ms).slideX(),
+                    )),
                     const SizedBox(height: 40),
                     Row(
                       children: [
@@ -205,41 +207,22 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    widget.from == "Email"
-                        ? MyTextField(
-                            // horizontal: 20,
-                            focusNode: _email,
-                            hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
-                            obscureText: false,
-                            maxLines: 1,
-                            controller: emailController,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              String? err = validateEmail(value);
-                              if (err != null) {
-                                _email.requestFocus();
-                              }
-                              return err;
-                            },
-                          )
-                        : MyTextField(
-                            enable: false,
-                            // horizontal: 20,
-                            focusNode: _email,
-                            controller: gmailController,
-                            // hintText: widget.gUserMail,
-                            obscureText: false,
-                            maxLines: 1,
-                            // controller: ,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              String? err = validateEmail(value);
-                              if (err != null) {
-                                _email.requestFocus();
-                              }
-                              return err;
-                            },
-                          ),
+                    MyTextField(
+                      // horizontal: 20,
+                      focusNode: _email,
+                      hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
+                      obscureText: false,
+                      maxLines: 1,
+                      controller: emailController,
+                      keyboardType: TextInputType.text,
+                      validator: (value) {
+                        String? err = validateEmail(value);
+                        if (err != null) {
+                          _email.requestFocus();
+                        }
+                        return err;
+                      },
+                    ),
                     const SizedBox(height: 20),
                     MyTextField(
                       // horizontal: 20,

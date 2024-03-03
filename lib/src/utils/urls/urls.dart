@@ -34,6 +34,7 @@ class UrlsLetsCollect {
   static const String PURCHASE_HISTORY = "/api/lcuser/purchase_history";
   static const String PURCHASE_HISTORY_DETAILS = "/api/lcuser/purchase_history_details";
   static const String POINT_TRACKER_FILTER = "/api/lcuser/supermarket_ist";
+  static const String MY_PROFILE_DATA = "/api/lcuser/getprofile";
 
 
 
@@ -58,5 +59,15 @@ class UrlsLetsCollect {
 
   ///Offer list
   static const String OFFER_LIST = "/api/lcuser/offer_list";
+
+
+  ///Point Tracker
+  static const String POINT_TRACKER = "/api/lcuser/point_history";
+  static const String POINT_TRACKER_DETAILS = "/api/lcuser/point_history_details";
+
+
+
+
+
 
 }

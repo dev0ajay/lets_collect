@@ -59,6 +59,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
     }
   }
 
+///Method for calculating Age above 12
   bool isAbove12YearsOld(DateTime selectedDate) {
     final DateTime now = DateTime.now();
     final DateTime twelveYearsAgo =
@@ -71,7 +72,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
     // BlocProvider.of<NationalityBloc>(context).add(GetNationality());
 
     super.initState();
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
+    // BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
     // _minimumDate = DateTime.now().subtract(const Duration(days: 12 * 365));
   }
 
@@ -419,6 +420,45 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                           menuItemStyleData: const MenuItemStyleData(
                             height: 40,
                             padding: EdgeInsets.only(left: 14, right: 14),
+                          ),
+                        ),
+                      );
+                    }
+                    if(state is NationalityLoadingServerError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.secondaryColor,
+                          content: Text(
+                            state.errorMsg,
+                            style: GoogleFonts.openSans(
+                              color: AppColors.primaryWhiteColor,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    if(state is NationalityLoadingConnectionTimeOut) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.secondaryColor,
+                          content: Text(
+                            state.errorMsg,
+                            style: GoogleFonts.openSans(
+                              color: AppColors.primaryWhiteColor,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    if(state is NationalityLoadingConnectionRefused) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.secondaryColor,
+                          content: Text(
+                            state.errorMsg,
+                            style: GoogleFonts.openSans(
+                              color: AppColors.primaryWhiteColor,
+                            ),
                           ),
                         ),
                       );

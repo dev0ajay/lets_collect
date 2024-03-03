@@ -28,6 +28,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
   @override
   void initState() {
     super.initState();
+    print(widget.redeemScreenArguments.totalPoint);
+   print( widget.redeemScreenArguments.requiredPoint);
     // ObjectFactory().prefs.getLetsCollectTierData()!.data.letsCollect.forEach((element) { });
   }
 
@@ -123,7 +125,6 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(5),
                                 child: CachedNetworkImage(
-
                                   imageUrl:
                                       widget.redeemScreenArguments.imageUrl,
                                   fit: BoxFit.fill,
@@ -205,23 +206,38 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                   child: InkWell(
                     splashColor: AppColors.secondaryButtonColor,
                     splashFactory: InkSplash.splashFactory,
-                    onTap: () {
-                      BlocProvider.of<RedeemBloc>(context).add(
-                        GetQrCodeUrlEvent(
-                          qrCodeUrlRequest: QrCodeUrlRequest(
-                              rewardId: widget.redeemScreenArguments.rewardId!),
-                        ),
-                      );
+                    onTap: () async{
+                      if(int.tryParse(widget.redeemScreenArguments.totalPoint!)! > int.parse(widget.redeemScreenArguments.requiredPoint)) {
+                        BlocProvider.of<RedeemBloc>(context).add(
+                          GetQrCodeUrlEvent(
+                            qrCodeUrlRequest: QrCodeUrlRequest(
+                                rewardId: widget.redeemScreenArguments.rewardId!),
+                          ),
+                        );
+                        await  showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              RedeemAlertOverlayWidget(
+                                imageUrl: widget.redeemScreenArguments.imageUrl,
+                                requiredPoints:
+                                widget.redeemScreenArguments.requiredPoint,
+                              ),
+                        );
+                      }
+                     else {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(
+                           backgroundColor: AppColors.secondaryColor,
+                             content: Text("You don't have enough points to redeem this item.",
+                               style: TextStyle(
+                                 color: AppColors.primaryWhiteColor,
+                               ),
+                             ),
+                         )
+                       );
+                     }
 
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            RedeemAlertOverlayWidget(
-                          imageUrl: widget.redeemScreenArguments.imageUrl,
-                          requiredPoints:
-                              widget.redeemScreenArguments.requiredPoint,
-                        ),
-                      );
+
                     },
                     child: const SizedBox(
                       child: Padding(

@@ -121,7 +121,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   ObjectFactory()
                       .prefs.setIsEmailNotVerifiedStatus(true);
                 }
-
                 return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
@@ -152,7 +151,22 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   fontSize: 22, fontWeight: FontWeight.w600),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10)),
+                                      content: SizedBox(
+                                        height: getProportionateScreenHeight(260),
+                                        width: getProportionateScreenWidth(320),
+                                        child: Lottie.asset(Assets.SOON),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                               icon: const Icon(
                                 Icons.mail_sharp,
                               ),
@@ -251,6 +265,20 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   height: getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
                                     // color: AppColors.primaryColor,
                                     gradient: const RadialGradient(
                                       center: Alignment(0, 1),
@@ -304,6 +332,20 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   height: getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
                                     // color: AppColors.primaryColor,
                                     gradient: const RadialGradient(
                                       center: Alignment(0, 1),
@@ -414,22 +456,28 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     left: 5,
                                                     bottom: 5),
                                                 child: Container(
+                                                  padding: EdgeInsets.all(5),
                                                   margin:
                                                       const EdgeInsets.all(9),
                                                   decoration:
                                                       const BoxDecoration(
                                                     color: AppColors
                                                         .primaryWhiteColor,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color:
-                                                            Color(0x11000000),
-                                                        blurRadius: 6.80,
-                                                        offset: Offset(2, 2),
-                                                        spreadRadius: 2,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: AppColors.boxShadow,
+                                                            blurRadius: 4,
+                                                            offset: Offset(4, 2),
+                                                            spreadRadius: 0,
+                                                          ),
+                                                          BoxShadow(
+                                                            color: AppColors.boxShadow,
+                                                            blurRadius: 4,
+                                                            offset: Offset(-4, -2),
+                                                            spreadRadius: 0,
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
                                                   child: CachedNetworkImage(
                                                     fadeInCurve: Curves.easeIn,
                                                     fadeInDuration:

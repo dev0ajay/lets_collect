@@ -18,6 +18,11 @@ class NationalityBloc extends Bloc<NationalityEvent, NationalityState> {
      if(stateModel is SuccessState) {
        emit(NationalityLoaded(nationalityResponse: stateModel.value));
      }
+     if(stateModel is ErrorState) {
+       emit(NationalityLoadingServerError(errorMsg: stateModel.msg));
+       emit(NationalityLoadingConnectionTimeOut(errorMsg: stateModel.msg));
+       emit(NationalityLoadingConnectionRefused(errorMsg: stateModel.msg));
+     }
     });
   }
 }

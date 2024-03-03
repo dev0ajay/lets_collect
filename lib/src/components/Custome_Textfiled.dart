@@ -29,7 +29,7 @@ class MyTextField extends StatefulWidget {
      this.controller,
     this.validator,
     required this.keyboardType,
-    required this.focusNode,
+     this.focusNode,
     this.prefixText,
     this.prefixIcon,
     this.inputFormatter,

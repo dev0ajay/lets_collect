@@ -152,6 +152,41 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             );
           }
         }
+        if(state is LoginLoadingConnectionRefused) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: const TextStyle(color: AppColors.primaryWhiteColor),
+              ),
+            ),
+          );
+        }
+        if(state is LoginLoadingRequestTimeOut) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: const TextStyle(color: AppColors.primaryWhiteColor),
+              ),
+            ),
+          );
+        }
+        if(state is LoginLoadingServerError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: AppColors.secondaryColor,
+              content: Text(
+                state.errorMsg,
+                style: const TextStyle(color: AppColors.primaryWhiteColor),
+              ),
+            ),
+          );
+        }
+
+
       },
       builder: (context, state) {
         return BlocConsumer<GoogleLoginBloc, GoogleLoginState>(
@@ -180,24 +215,24 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                     ),
                   ),
                 );
-                Navigator.of(context).push(PageRouteBuilder(
-                  reverseTransitionDuration: const Duration(seconds: 5),
-                  transitionDuration: const Duration(seconds: 3),
-                  pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(
-                    from: 'Google', gmail: gUserEmail,
-                  ),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    const begin = Offset(0.0, 1.0);
-                    const end = Offset.zero;
-                    const curve = Curves.ease;
-                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                    return SlideTransition(
-                      position: animation.drive(tween),
-                      child: child,
-                    );
-                  },
-                ),
-                );
+                // Navigator.of(context).push(PageRouteBuilder(
+                //   reverseTransitionDuration: const Duration(seconds: 5),
+                //   transitionDuration: const Duration(seconds: 3),
+                //   pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(
+                //     from: 'Google', gmail: gUserEmail,
+                //   ),
+                //   transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                //     const begin = Offset(0.0, 1.0);
+                //     const end = Offset.zero;
+                //     const curve = Curves.ease;
+                //     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                //     return SlideTransition(
+                //       position: animation.drive(tween),
+                //       child: child,
+                //     );
+                //   },
+                // ),
+                // );
               }
             }
           },
@@ -455,6 +490,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                 .getFcmToken()!,
                                             deviceType:
                                                 Platform.isAndroid ? "A" : "I",
+                                                displayName: state.user.displayName!,
+                                                mobileNo: "0",
                                           ),
                                         ),
                                       );
@@ -471,7 +508,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                               BorderRadius.circular(8),
                                         ),
                                       ),
-                                      onPressed: state is GoogleSignInLoading
+                                      onPressed:
+                                      state is GoogleSignInCubitLoading
                                           ? null
                                           : () => context
                                               .read<GoogleSignInCubit>()
@@ -486,7 +524,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             fit: BoxFit.cover,
                                           ),
                                           const SizedBox(width: 8),
-                                          state is GoogleLoginLoading
+                                          state is GoogleSignInCubitLoading
                                               ? const Center(
                                                   // widthFactor: 2,
                                                   child: SizedBox(
