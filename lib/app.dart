@@ -7,6 +7,7 @@ import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_p
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
+import 'package:lets_collect/src/bloc/contact_us_bloc/contact_us_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
@@ -31,6 +32,7 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/resources/api_providers/auth_provider.dart';
 import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
+import 'package:lets_collect/src/resources/api_providers/contact_us_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/purchase_data_provider.dart';
@@ -78,6 +80,9 @@ class _AppState extends State<App> {
         ),
         RepositoryProvider(
           create: (create) => PurchaseDataProvider(),
+        ),
+        RepositoryProvider(
+          create: (context) => ContactUsProvider(),
         ),
       ],
       child: MultiBlocProvider(
@@ -182,7 +187,11 @@ class _AppState extends State<App> {
           RepositoryProvider(
             create: (context) => RedemptionHistoryDataProvider(),
           ),
-
+          BlocProvider<ContactUsBloc>(
+          create: (BuildContext context) => ContactUsBloc(
+    contactUsProvider: RepositoryProvider.of(context),
+    ),
+          )
         ],
         child: BlocBuilder<NetworkBloc, NetworkState>(
           builder: (context, state) {

@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -110,11 +111,10 @@ class HelpScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   context.push('/contact_us');
+                  print("contact_us tapped");
                 },
                 child:  ProfileDetailsListTileWidget(
-                  labelText: "sdhfds"
-                  // AppLocalizations.of(context)!.needmorehelp,
-                ),
+                  labelText: AppLocalizations.of(context)!.needmorehelp,),
               ),
 
               // InkWell(

@@ -30,6 +30,10 @@ class UrlsLetsCollect {
   ///Edit Profile
   static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
 
+
+  ///Contact Us
+  static const String CONTACT_US = "/api/lcuser/send_support";
+
   ///Redemption History
   static const String REDEMPTION_HISTORY = "/api/lcuser/redemption_history";
 

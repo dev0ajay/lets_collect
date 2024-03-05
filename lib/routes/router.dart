@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/countryscreen/signup_country_screen.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
+import 'package:lets_collect/src/ui/profile/components/contact_us.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_details_screen.dart';
@@ -708,6 +709,12 @@ class AppRouter {
                   },
                 );
               }),
+
+          GoRoute(
+              path: 'contact_us',
+              builder: (BuildContext context, GoRouterState state) =>
+              const ContactUsScreen()
+          ),
 
 
 

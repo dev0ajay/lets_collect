@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -48,109 +49,76 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-          leading: IconButton(
-              onPressed: () {
-                context.pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_outlined,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppColors.primaryColor,
+            leading: IconButton(
+                onPressed: () {
+                  context.pop();
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: AppColors.primaryWhiteColor,
+                )),
+            title: Text(
+              AppLocalizations.of(context)!.contactus,
+              style: GoogleFonts.openSans(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
                 color: AppColors.primaryWhiteColor,
-              )),
-          title: Text(
-            AppLocalizations.of(context)!.contactus,
-            style: GoogleFonts.openSans(
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
-              color: AppColors.primaryWhiteColor,
+              ),
             ),
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: SvgPicture.asset(
-                      Assets.CONTACT_US_SVG,
-                      fit: BoxFit.cover,
-                      height: 130,
+          body: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
                     ),
-                  ),
-                  Center(
-                    child: ClipOval(
+                    Center(
                       child: SvgPicture.asset(
-                        Assets.SHADE_SVG,
+                        Assets.CONTACT_US_SVG,
                         fit: BoxFit.cover,
-                        height: 12,
+                        height: 130,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 35),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: const Offset(3, 3),
+                    Center(
+                      child: ClipOval(
+                        child: SvgPicture.asset(
+                          Assets.SHADE_SVG,
+                          fit: BoxFit.cover,
+                          height: 12,
                         ),
-                      ],
+                      ),
                     ),
-                    child: MyTextField(
-                      enable: false,
-                      hintText:AppLocalizations.of(context)!.subject,
-                      obscureText: false,
-                      maxLines: 1,
-                      controller: subjectController,
-                      keyboardType: TextInputType.text,
-                      focusNode: _subjectFocus,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 35),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
-                    ),
-                    child: SizedBox(
-                      height: 150,
+                    const SizedBox(height: 35),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: const Offset(3, 3),
+                          ),
+                        ],
+                      ),
                       child: MyTextField(
-                        enable: false,
-                        hintText:AppLocalizations.of(context)!.message,
+                        hintText:AppLocalizations.of(context)!.subject,
                         obscureText: false,
-                        controller: messageController,
-                        maxLines: 10,
-                        keyboardType: TextInputType.multiline,
-                        focusNode: null,
+                        maxLines: 1,
+                        controller: subjectController,
+                        keyboardType: TextInputType.text,
+                        focusNode: _subjectFocus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
 
@@ -159,117 +127,149 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         },
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: _pickFile,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: DottedBorder(
-                        borderType: BorderType.RRect,
-                        color: AppColors.cardTextColor,
-                        radius: const Radius.circular(10),
-                        child: _pickedFile == null
-                            ? SizedBox(
-                                height: getProportionateScreenHeight(60),
-                                width: getProportionateScreenWidth(320),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)!.supportingimage,
-                                      style: GoogleFonts.roboto(
-                                        color: AppColors.primaryBlackColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    const ImageIcon(
-                                      const AssetImage(Assets.UPLOAD),
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: SizedBox(
-                                      height: getProportionateScreenHeight(60),
-                                      width: getProportionateScreenWidth(300),
-                                      child: Center(
-                                        child: Text(
-                                            '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path}'),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _pickedFile = null;
-                                        });
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 12,
-                                        backgroundColor: AppColors.secondaryColor,
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                          size: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                    const SizedBox(height: 35),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: const Offset(3, 3),
+                          ),
+                        ],
+                      ),
+                      child: SizedBox(
+                        height: 150,
+                        child: MyTextField(
+                          hintText:AppLocalizations.of(context)!.message,
+                          obscureText: false,
+                          controller: messageController,
+                          maxLines: 10,
+                          keyboardType: TextInputType.multiline,
+                          focusNode: null,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: MyButton(
-                      Textfontsize: 16,
-                      TextColors: Colors.white,
-                      text: AppLocalizations.of(context)!.singupbuttonsubmit,
-                      color: AppColors.secondaryColor,
-                      width: 340,
-                      height: 40,
-                      onTap: () {
-                        if (_formKey.currentState!.validate() && _pickedFile != null ) {
-                          _showDialogBox(context: context);
-                        } else {
-                          Fluttertoast.showToast(
-                            msg: AppLocalizations.of(context)!.allfieldsareimportant,
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.black87,
-                            textColor: Colors.white,
-                          );
-                        }
-                      },
-                      showImage: false,
-                      imagePath: '',
-                      imagewidth: 0,
-                      imageheight: 0,
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: _pickFile,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: DottedBorder(
+                          borderType: BorderType.RRect,
+                          color: AppColors.cardTextColor,
+                          radius: const Radius.circular(10),
+                          child: _pickedFile == null
+                              ? SizedBox(
+                            height: getProportionateScreenHeight(60),
+                            width: getProportionateScreenWidth(320),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.supportingimage,
+                                  style: GoogleFonts.roboto(
+                                    color: AppColors.primaryBlackColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(width: 20),
+                                const ImageIcon(
+                                  const AssetImage(Assets.UPLOAD),
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                          )
+                              : Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: SizedBox(
+                                  height: getProportionateScreenHeight(60),
+                                  width: getProportionateScreenWidth(300),
+                                  child: Center(
+                                    child: Text(
+                                        '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path}'),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 5,
+                                right: 5,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _pickedFile = null;
+                                    });
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 12,
+                                    backgroundColor: AppColors.secondaryColor,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: MyButton(
+                        Textfontsize: 16,
+                        TextColors: Colors.white,
+                        text: AppLocalizations.of(context)!.singupbuttonsubmit,
+                        color: AppColors.secondaryColor,
+                        width: 340,
+                        height: 40,
+                        onTap: () {
+                          if (_formKey.currentState!.validate() && _pickedFile != null ) {
+
+                            _showDialogBox(context: context);
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.black87,
+                              textColor: Colors.white,
+                            );
+                          }
+                        },
+                        showImage: false,
+                        imagePath: '',
+                        imagewidth: 0,
+                        imageheight: 0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        )
     );
   }
 

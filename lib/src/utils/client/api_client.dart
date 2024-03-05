@@ -8,6 +8,7 @@ import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/auth/google_login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/sign_up_request.dart';
+import 'package:lets_collect/src/model/contact_us/contact_us_request.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
 import 'package:lets_collect/src/model/offer/offer_list_request.dart';
 import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
@@ -440,6 +441,19 @@ class ApiClient {
   Future<Response> getRedemptionHistoryResponse() {
     return dioLetsCollect.post(
       UrlsLetsCollect.REDEMPTION_HISTORY,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+  /// Contact Us
+  Future<Response> contactUsRequestClient(ContactUsRequest contactUsRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.CONTACT_US,
+      data: contactUsRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
