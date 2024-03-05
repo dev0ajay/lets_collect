@@ -40,6 +40,8 @@ class Assets {
   static const String CONTAINER_SVG = 'assets/svg/container.svg';
   static const String SORT_SVG = 'assets/svg/sort.svg';
   static const String FILTER_SVG = 'assets/svg/filter.svg';
+  static const String CONTACT_US_SVG = 'assets/svg/message_icon.svg';
+  static const String SHADE_SVG = 'assets/svg/shade.svg';
 
 
 

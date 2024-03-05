@@ -14,7 +14,6 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../bloc/country_bloc/country_bloc.dart';
-import '../../bloc/my_profile_bloc/my_profile_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../constants/assets.dart';
 import 'components/my_profile_screen_arguments.dart';
@@ -146,21 +145,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           padding: const EdgeInsets.only(top: 0),
                           child: ProfileDetailsListTileWidget(
                             onPressed: () {
-                              context.push("/my_profile",
-                                  extra: MyProfileArguments(
-                                    first_name: state.myProfileScreenResponse
-                                        .data!.firstName
-                                        .toString(),
-                                    last_name: state.myProfileScreenResponse.data!.lastName.toString(),
-                                    email:state.myProfileScreenResponse.data!.email.toString(),
-                                    mobile_no:state.myProfileScreenResponse.data!.mobileNo.toString(),
-                                    user_name:state.myProfileScreenResponse.data!.userName.toString(),
-                                    gender:state.myProfileScreenResponse.data!.gender.toString(),
-                                    dob:state.myProfileScreenResponse.data!.dob.toString(),
-                                    nationality_name_en:state.myProfileScreenResponse.data!.nationalityNameEn.toString(),
-                                    city_name:state.myProfileScreenResponse.data!.cityName.toString(),
-                                    country_name_en:state.myProfileScreenResponse.data!.countryNameEn.toString(),
-                                  ),
+                              context.push(
+                                "/my_profile",
+                                extra: MyProfileArguments(
+                                  first_name: state
+                                      .myProfileScreenResponse.data!.firstName
+                                      .toString(),
+                                  last_name: state
+                                      .myProfileScreenResponse.data!.lastName
+                                      .toString(),
+                                  email: state
+                                      .myProfileScreenResponse.data!.email
+                                      .toString(),
+                                  mobile_no: state
+                                      .myProfileScreenResponse.data!.mobileNo
+                                      .toString(),
+                                  user_name: state
+                                      .myProfileScreenResponse.data!.userName
+                                      .toString(),
+                                  gender: state
+                                      .myProfileScreenResponse.data!.gender
+                                      .toString(),
+                                  dob: state.myProfileScreenResponse.data!.dob
+                                      .toString(),
+                                  nationality_name_en: state
+                                      .myProfileScreenResponse
+                                      .data!
+                                      .nationalityNameEn
+                                      .toString(),
+                                  city_name: state
+                                      .myProfileScreenResponse.data!.cityName
+                                      .toString(),
+                                  country_name_en: state.myProfileScreenResponse
+                                      .data!.countryNameEn
+                                      .toString(),
+                                  photo: state
+                                      .myProfileScreenResponse.data!.photo
+                                      .toString(),
+                                  nationality_id: state.myProfileScreenResponse.data!.nationalityId!.toInt(),
+                                  country_id: state.myProfileScreenResponse.data!.countryId!.toInt(),
+                                  city: state.myProfileScreenResponse.data!.city.toString(),
+                                ),
                               );
                               print("MyProfile tapped!");
                             },

@@ -107,25 +107,35 @@ class HelpScreen extends StatelessWidget {
                     labelText: "Privacy policies"),
               ),
               const SizedBox(height: 15),
-              InkWell(
+              GestureDetector(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
+                  context.push('/contact_us');
                 },
-                  child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
+                child:  ProfileDetailsListTileWidget(
+                  labelText: "sdhfds"
+                  // AppLocalizations.of(context)!.needmorehelp,
+                ),
+              ),
+
+              // InkWell(
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return AlertDialog(
+              //           shape: RoundedRectangleBorder(
+              //               borderRadius:
+              //               BorderRadius.circular(10)),
+              //           content: SizedBox(
+              //             height: getProportionateScreenHeight(260),
+              //             width: getProportionateScreenWidth(320),
+              //             child: Lottie.asset(Assets.SOON),
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              //     child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
             ],
           ),
         ),

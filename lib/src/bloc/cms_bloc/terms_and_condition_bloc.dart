@@ -10,7 +10,7 @@ part 'terms_and_condition_event.dart';
 part 'terms_and_condition_state.dart';
 
 class TermsAndConditionBloc extends Bloc<TermsAndConditionEvent, TermsAndConditionState> {
-  final ProfileDataProvider profileDataProvider;
+  final MyProfileDataProvider profileDataProvider;
   TermsAndConditionBloc({required this.profileDataProvider}) : super(TermsAndConditionInitial()) {
     on<GetTermsAndConditionEvent>((event, emit) async{
      emit(TermsAndConditionLoading());

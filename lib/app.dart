@@ -13,7 +13,6 @@ import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart'
 import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
-import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
@@ -31,6 +30,7 @@ import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/purchase_data_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/redemption_history_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/reward_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/scan_receipt_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/search_provider.dart';
@@ -57,7 +57,7 @@ class _AppState extends State<App> {
           create: (create) => HomeDataProvider(),
         ),
         RepositoryProvider(
-          create: (create) => ProfileDataProvider(),
+          create: (create) => MyProfileDataProvider(),
         ),
         RepositoryProvider(
           create: (create) => SearchProvider(),
@@ -171,7 +171,9 @@ class _AppState extends State<App> {
           BlocProvider<PointTrackerBloc>(
             create: (BuildContext context) => PointTrackerBloc(pointTrackerProvider: RepositoryProvider.of(context)),
           ),
-
+          RepositoryProvider(
+            create: (context) => RedemptionHistoryDataProvider(),
+          ),
 
         ],
         child: BlocBuilder<NetworkBloc, NetworkState>(

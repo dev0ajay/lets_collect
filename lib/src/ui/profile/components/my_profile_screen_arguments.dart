@@ -9,11 +9,21 @@ class MyProfileArguments{
   final String nationality_name_en;
   final String city_name;
   final String country_name_en;
+  final String photo;
+  final int nationality_id;
+  final int country_id;
+  final String city;
+
 
 
 
   MyProfileArguments(
-      {required this.first_name,
+      {
+        required this.nationality_id,
+        required this.country_id,
+        required this.city,
+        required this.photo,
+        required this.first_name,
         required this.last_name,
         required this.email,
         required this.mobile_no,

@@ -27,6 +27,12 @@ class UrlsLetsCollect {
   ///Home Screen
   static const String HOME_DATA = "/api/lcuser/customer_home";
 
+  ///Edit Profile
+  static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
+
+  ///Redemption History
+  static const String REDEMPTION_HISTORY = "/api/lcuser/redemption_history";
+
 
   ///Profile Screen
   static const String TERMS_AND_CONDITIONS = "/api/lcuser/terms_and_conditions";

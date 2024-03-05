@@ -8,6 +8,7 @@ import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/auth/google_login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/sign_up_request.dart';
+import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
 import 'package:lets_collect/src/model/offer/offer_list_request.dart';
 import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
@@ -383,20 +384,6 @@ class ApiClient {
   }
 
 
-  ///GetProfile
-  Future<Response> getProfileData() {
-    return dioLetsCollect.get(
-      UrlsLetsCollect.MY_PROFILE_DATA,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
-    );
-  }
-
-
-
   /// Point Tracker
   Future<Response> pointTrackerRequest(PointTrackerRequest pointTrackerRequest) {
     return dioLetsCollect.post(
@@ -416,6 +403,43 @@ class ApiClient {
     return dioLetsCollect.post(
       UrlsLetsCollect.POINT_TRACKER_DETAILS,
       data: pointTrackerDetailsRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+  ///GetProfile
+  Future<Response> getProfileData() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.MY_PROFILE_DATA,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+  ///EditProfile
+  Future<Response> getEditProfileData(EditProfileRequest editProfileRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.MY_EDIT_PROFILE_DATA,
+      data: editProfileRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+  ///Redemption History
+  Future<Response> getRedemptionHistoryResponse() {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.REDEMPTION_HISTORY,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
