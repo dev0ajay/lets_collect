@@ -58,7 +58,7 @@ class _MyTextFieldState extends State<MyTextField> {
         obscureText: widget.obscureText && !_passwordVisible,
         validator: widget.validator,
         decoration: InputDecoration(
-
+            border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),

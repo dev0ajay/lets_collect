@@ -45,7 +45,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   bool isAbove12YearsOld(DateTime selectedDate) {
     final DateTime now = DateTime.now();
     final DateTime twelveYearsAgo =
-    now.subtract(const Duration(days: 12 * 365));
+        now.subtract(const Duration(days: 12 * 365));
     return selectedDate.isBefore(twelveYearsAgo);
   }
 
@@ -111,35 +111,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     }
   }
 
-  String? validateEmail(String? value) {
-    String pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?)*$";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter a new email address';
-    } else {
-      return null;
-    }
-  }
-
-  String? validatePassword(String? value) {
-    String pattern =
-        r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty) {
-      return 'Please enter password';
-    }
-    if (value.length < 8) {
-      return "Length should be 8 or more";
-    }
-    if (!regex.hasMatch(value)) {
-      return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
-    }
-    return null;
-  }
-
   String? validatePhoneNumber(String? value) {
     if (value!.length < 10 || value.isEmpty) {
       return 'Enter a valid phone number';
@@ -161,6 +132,37 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   final _picker = ImagePicker();
 
   late XFile _pickedFile;
+
+  // CropImage()async{
+  //
+  //   var result = await ImageCropper().cropImage(
+  //     sourcepath : pickedImage!.path,
+  //   );
+  // }
+
+  Future<void> _pickImage() async {
+    _pickedFile = (await _picker.pickImage(source: ImageSource.gallery))!;
+    setState(() {
+      _image = File(_pickedFile.path);
+      if (XFile != null) {
+        galleryFile = File(_pickedFile.path);
+        final bytes = galleryFile!.readAsBytesSync();
+        String img64 = base64Encode(bytes);
+        setState(() {
+          imageBase64 = img64;
+          extension = p
+              .extension(galleryFile!.path)
+              .trim()
+              .toString()
+              .replaceAll('.', '');
+          imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+            const SnackBar(content: Text('Nothing is selected')));
+      }
+    });
+  }
 
   int? selectedCountryID;
   int? selectedNationalityID;
@@ -203,30 +205,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     }
   }
 
-  Future<void> _pickImage() async {
-    _pickedFile = (await _picker.pickImage(source: ImageSource.gallery))!;
-    setState(() {
-      _image = File(_pickedFile.path);
-      if (XFile != null) {
-        galleryFile = File(_pickedFile!.path);
-        final bytes = galleryFile!.readAsBytesSync();
-        String img64 = base64Encode(bytes);
-        setState(() {
-          imageBase64 = img64;
-          extension = p
-              .extension(galleryFile!.path)
-              .trim()
-              .toString()
-              .replaceAll('.', '');
-          imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-            const SnackBar(content: Text('Nothing is selected')));
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -243,13 +221,19 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<MyProfileBloc, MyProfileState>(
       listener: (context, state) {
+
         if (state is MyEditProfileLoaded) {
           if (state.editProfileRequestResponse.status == true) {
             BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
+            const Center(
+              heightFactor: 10,
+              child: RefreshProgressIndicator(
+                color: AppColors.secondaryColor,
+              ),
+            );
           }
-        }
-        else if(state is MyEditProfileLoaded){
-          if(state.editProfileRequestResponse.status == false ){
+        } else if (state is MyEditProfileLoaded) {
+          if (state.editProfileRequestResponse.status == false) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: AppColors.secondaryColor,
@@ -285,7 +269,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                     delegate: SliverChildListDelegate([
                       BlocBuilder<MyProfileBloc, MyProfileState>(
                         builder: (context, state) {
-                          if(state is MyProfileLoading){
+                          if (state is MyProfileLoading) {
                             return const Center(
                               heightFactor: 10,
                               child: RefreshProgressIndicator(
@@ -293,7 +277,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                               ),
                             );
                           }
-                          if(state is MyProfileLoaded){
+                          if (state is MyProfileLoaded) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -309,8 +293,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
                                 const SizedBox(height: 20),
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 11),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 11),
                                   child: Row(
                                     children: [
                                       Flexible(
@@ -319,7 +303,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           builder: (context, state) {
                                             if (state is MyProfileLoaded) {
                                               return MyTextField(
-                                                enable: false,
+                                                enable: true,
                                                 focusNode: _firstname,
                                                 // horizontal: 10,
                                                 hintText: Strings
@@ -327,10 +311,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 obscureText: false,
                                                 maxLines: 1,
                                                 controller: firstnameController,
-                                                keyboardType: TextInputType.text,
+                                                keyboardType:
+                                                    TextInputType.text,
                                                 validator: (value) {
                                                   String? err =
-                                                  validateFirstname(value);
+                                                      validateFirstname(value);
                                                   if (err != null) {
                                                     _firstname.requestFocus();
                                                   }
@@ -350,7 +335,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           builder: (context, state) {
                                             if (state is MyProfileLoaded) {
                                               return MyTextField(
-                                                enable: false,
+                                                enable: true,
                                                 focusNode: _secondname,
                                                 // horizontal: 10,
                                                 hintText: Strings
@@ -358,10 +343,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 obscureText: false,
                                                 maxLines: 1,
                                                 controller: lastnameController,
-                                                keyboardType: TextInputType.text,
+                                                keyboardType:
+                                                    TextInputType.text,
                                                 validator: (value) {
                                                   String? err =
-                                                  validateLastname(value);
+                                                      validateLastname(value);
                                                   if (err != null) {
                                                     _secondname.requestFocus();
                                                   }
@@ -414,14 +400,14 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           ),
                                         ),
                                         items: Gender.map(
-                                              (item) => DropdownMenuItem<String>(
+                                          (item) => DropdownMenuItem<String>(
                                             value: item,
                                             child: Text(
                                               item,
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 color:
-                                                AppColors.primaryBlackColor,
+                                                    AppColors.primaryBlackColor,
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -442,7 +428,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               left: 14, right: 14),
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(5),
+                                                BorderRadius.circular(5),
                                             border: Border.all(
                                               width: 1,
                                               color: const Color(0xFFE6ECFF),
@@ -458,31 +444,30 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           ),
                                           iconSize: 14,
                                           iconEnabledColor:
-                                          AppColors.secondaryColor,
+                                              AppColors.secondaryColor,
                                           iconDisabledColor:
-                                          AppColors.primaryGrayColor,
+                                              AppColors.primaryGrayColor,
                                         ),
                                         dropdownStyleData: DropdownStyleData(
                                           maxHeight: 200,
                                           width: 350,
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(14),
+                                                BorderRadius.circular(14),
                                             color: AppColors.primaryWhiteColor,
                                           ),
                                           offset: const Offset(-2, -5),
                                           scrollbarTheme: ScrollbarThemeData(
                                             radius: const Radius.circular(40),
-                                            thickness:
-                                            MaterialStateProperty.all<double>(
-                                                6),
+                                            thickness: MaterialStateProperty
+                                                .all<double>(6),
                                             thumbVisibility:
-                                            MaterialStateProperty.all<bool>(
-                                                true),
+                                                MaterialStateProperty.all<bool>(
+                                                    true),
                                           ),
                                         ),
                                         menuItemStyleData:
-                                        const MenuItemStyleData(
+                                            const MenuItemStyleData(
                                           height: 40,
                                           padding: EdgeInsets.only(
                                               left: 14, right: 14),
@@ -516,8 +501,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               items: state
                                                   .nationalityResponse.data
                                                   .map(
-                                                    (item) =>
-                                                    DropdownMenuItem<String>(
+                                                    (item) => DropdownMenuItem<
+                                                        String>(
                                                       value: item.id.toString(),
                                                       child: Text(
                                                         item.nationality,
@@ -526,19 +511,19 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                           color: AppColors
                                                               .primaryBlackColor,
                                                         ),
-                                                        overflow:
-                                                        TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ),
-                                              )
+                                                  )
                                                   .toList(),
                                               value: selectedNationalityValue,
                                               onChanged: (String? value) {
                                                 setState(() {
                                                   selectedNationalityValue =
-                                                  value!;
+                                                      value!;
                                                   selectedNationality =
-                                                  selectedNationalityValue!;
+                                                      selectedNationalityValue!;
                                                   selectedNationalityID =
                                                       int.tryParse(
                                                           selectedNationality!);
@@ -556,52 +541,54 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     left: 14, right: 14),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(5),
+                                                      BorderRadius.circular(5),
                                                   border: Border.all(
                                                     width: 1,
                                                     color:
-                                                    const Color(0xFFE6ECFF),
+                                                        const Color(0xFFE6ECFF),
                                                   ),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 elevation: 0,
                                               ),
-                                              iconStyleData: const IconStyleData(
+                                              iconStyleData:
+                                                  const IconStyleData(
                                                 icon: Icon(
                                                   Icons.arrow_drop_down_rounded,
                                                   size: 35,
                                                 ),
                                                 iconSize: 14,
                                                 iconEnabledColor:
-                                                AppColors.secondaryColor,
+                                                    AppColors.secondaryColor,
                                                 iconDisabledColor:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                               dropdownStyleData:
-                                              DropdownStyleData(
+                                                  DropdownStyleData(
                                                 maxHeight: 200,
                                                 width: 350,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(14),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                      BorderRadius.circular(14),
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 offset: const Offset(-2, -5),
                                                 scrollbarTheme:
-                                                ScrollbarThemeData(
+                                                    ScrollbarThemeData(
                                                   radius:
-                                                  const Radius.circular(40),
-                                                  thickness: MaterialStateProperty
-                                                      .all<double>(6),
+                                                      const Radius.circular(40),
+                                                  thickness:
+                                                      MaterialStateProperty.all<
+                                                          double>(6),
                                                   thumbVisibility:
-                                                  MaterialStateProperty.all<
-                                                      bool>(true),
+                                                      MaterialStateProperty.all<
+                                                          bool>(true),
                                                 ),
                                               ),
                                               menuItemStyleData:
-                                              const MenuItemStyleData(
+                                                  const MenuItemStyleData(
                                                 height: 40,
                                                 padding: EdgeInsets.only(
                                                     left: 14, right: 14),
@@ -624,7 +611,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 11),
-                                    child: BlocBuilder<CountryBloc, CountryState>(
+                                    child:
+                                        BlocBuilder<CountryBloc, CountryState>(
                                       builder: (context, state) {
                                         if (state is CountryLoaded) {
                                           return DropdownButtonHideUnderline(
@@ -639,8 +627,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               ),
                                               items: state.countryResponse.data
                                                   .map(
-                                                    (item) =>
-                                                    DropdownMenuItem<String>(
+                                                    (item) => DropdownMenuItem<
+                                                        String>(
                                                       value: item.countriesId
                                                           .toString(),
                                                       child: Text(
@@ -650,30 +638,32 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                           color: AppColors
                                                               .primaryBlackColor,
                                                         ),
-                                                        overflow:
-                                                        TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ),
-                                              )
+                                                  )
                                                   .toList(),
                                               value: selectedCountryValue,
                                               onChanged: (String? value) {
                                                 setState(() {
                                                   selectedCountryValue = value;
                                                   selectedCountry =
-                                                  selectedCountryValue!;
+                                                      selectedCountryValue!;
                                                   selectedCountryID =
                                                       int.tryParse(
                                                           selectedCountry!);
                                                 });
                                                 print(
                                                     'Selected Country ID: $selectedCountryID');
-                                                BlocProvider.of<CityBloc>(context)
+                                                BlocProvider.of<CityBloc>(
+                                                        context)
                                                     .add(
                                                   GetCityEvent(
-                                                      getCityRequest: GetCityRequest(
-                                                          countriesId:
-                                                          selectedCountryID!)),
+                                                      getCityRequest:
+                                                          GetCityRequest(
+                                                              countriesId:
+                                                                  selectedCountryID!)),
                                                 );
                                               },
                                               buttonStyleData: ButtonStyleData(
@@ -683,52 +673,54 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     left: 14, right: 14),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(5),
+                                                      BorderRadius.circular(5),
                                                   border: Border.all(
                                                     width: 1,
                                                     color:
-                                                    const Color(0xFFE6ECFF),
+                                                        const Color(0xFFE6ECFF),
                                                   ),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 elevation: 0,
                                               ),
-                                              iconStyleData: const IconStyleData(
+                                              iconStyleData:
+                                                  const IconStyleData(
                                                 icon: Icon(
                                                   Icons.arrow_drop_down_rounded,
                                                   size: 35,
                                                 ),
                                                 iconSize: 14,
                                                 iconEnabledColor:
-                                                AppColors.secondaryColor,
+                                                    AppColors.secondaryColor,
                                                 iconDisabledColor:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                               dropdownStyleData:
-                                              DropdownStyleData(
+                                                  DropdownStyleData(
                                                 maxHeight: 200,
                                                 width: 350,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(14),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                      BorderRadius.circular(14),
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 offset: const Offset(-2, -5),
                                                 scrollbarTheme:
-                                                ScrollbarThemeData(
+                                                    ScrollbarThemeData(
                                                   radius:
-                                                  const Radius.circular(40),
-                                                  thickness: MaterialStateProperty
-                                                      .all<double>(6),
+                                                      const Radius.circular(40),
+                                                  thickness:
+                                                      MaterialStateProperty.all<
+                                                          double>(6),
                                                   thumbVisibility:
-                                                  MaterialStateProperty.all<
-                                                      bool>(true),
+                                                      MaterialStateProperty.all<
+                                                          bool>(true),
                                                 ),
                                               ),
                                               menuItemStyleData:
-                                              const MenuItemStyleData(
+                                                  const MenuItemStyleData(
                                                 height: 40,
                                                 padding: EdgeInsets.only(
                                                     left: 14, right: 14),
@@ -774,10 +766,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               ),
                                               items: state.getCityResponse.data
                                                   .map(
-                                                    (item) =>
-                                                    DropdownMenuItem<String>(
-                                                      value:
-                                                      item.cityId.toString(),
+                                                    (item) => DropdownMenuItem<
+                                                        String>(
+                                                      value: item.cityId
+                                                          .toString(),
                                                       child: Text(
                                                         item.city,
                                                         style: const TextStyle(
@@ -785,11 +777,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                           color: AppColors
                                                               .primaryBlackColor,
                                                         ),
-                                                        overflow:
-                                                        TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                       ),
                                                     ),
-                                              )
+                                                  )
                                                   .toList(),
                                               value: selectedCityID,
                                               onChanged: (String? value) {
@@ -806,52 +798,54 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     left: 14, right: 14),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(5),
+                                                      BorderRadius.circular(5),
                                                   border: Border.all(
                                                     width: 1,
                                                     color:
-                                                    const Color(0xFFE6ECFF),
+                                                        const Color(0xFFE6ECFF),
                                                   ),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 elevation: 0,
                                               ),
-                                              iconStyleData: const IconStyleData(
+                                              iconStyleData:
+                                                  const IconStyleData(
                                                 icon: Icon(
                                                   Icons.arrow_drop_down_rounded,
                                                   size: 35,
                                                 ),
                                                 iconSize: 14,
                                                 iconEnabledColor:
-                                                AppColors.secondaryColor,
+                                                    AppColors.secondaryColor,
                                                 iconDisabledColor:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                               dropdownStyleData:
-                                              DropdownStyleData(
+                                                  DropdownStyleData(
                                                 maxHeight: 200,
                                                 width: 350,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(14),
-                                                  color:
-                                                  AppColors.primaryWhiteColor,
+                                                      BorderRadius.circular(14),
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
                                                 ),
                                                 offset: const Offset(-2, -5),
                                                 scrollbarTheme:
-                                                ScrollbarThemeData(
+                                                    ScrollbarThemeData(
                                                   radius:
-                                                  const Radius.circular(40),
-                                                  thickness: MaterialStateProperty
-                                                      .all<double>(6),
+                                                      const Radius.circular(40),
+                                                  thickness:
+                                                      MaterialStateProperty.all<
+                                                          double>(6),
                                                   thumbVisibility:
-                                                  MaterialStateProperty.all<
-                                                      bool>(true),
+                                                      MaterialStateProperty.all<
+                                                          bool>(true),
                                                 ),
                                               ),
                                               menuItemStyleData:
-                                              const MenuItemStyleData(
+                                                  const MenuItemStyleData(
                                                 height: 40,
                                                 padding: EdgeInsets.only(
                                                     left: 14, right: 14),
@@ -878,10 +872,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                 const SizedBox(height: 20),
 
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 11),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 11),
                                   child: MyTextField(
-                                    enable: true,
+                                    enable: false,
                                     focusNode: _email,
                                     // horizontal: 10,
                                     hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
@@ -889,30 +883,23 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                     maxLines: 1,
                                     controller: emailController,
                                     keyboardType: TextInputType.text,
-                                    validator: (value) {
-                                      String? err = validateEmail(value);
-                                      if (err != null) {
-                                        _email.requestFocus();
-                                      }
-                                      return err;
-                                    },
                                   ),
                                 ).animate().then(delay: 200.ms).slideY(),
 
                                 const SizedBox(height: 15),
 
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 11),
-                                  child:
-                                  BlocBuilder<MyProfileBloc, MyProfileState>(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 11),
+                                  child: BlocBuilder<MyProfileBloc,
+                                      MyProfileState>(
                                     builder: (context, state) {
                                       if (state is MyProfileLoaded) {
                                         return MyTextField(
                                           inputFormatter: [
                                             LengthLimitingTextInputFormatter(10)
                                           ],
-                                          enable: false,
+                                          enable: true,
                                           focusNode: _phone,
                                           // horizontal: 10,
                                           hintText: Strings.PHONE_NUMBER,
@@ -922,7 +909,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           keyboardType: TextInputType.number,
                                           validator: (value) {
                                             String? err =
-                                            validatePhoneNumber(value);
+                                                validatePhoneNumber(value);
                                             if (err != null) {
                                               _phone.requestFocus();
                                             }
@@ -937,90 +924,125 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                 ).animate().then(delay: 200.ms).slideY(),
                                 const SizedBox(height: 20),
 
-                                Center(
-                                  child: MyButton(
-                                    Textfontsize: 16,
-                                    TextColors: Colors.white,
-                                    text: "save",
-                                    color: AppColors.secondaryColor,
-                                    width: 340,
-                                    height: 40,
-                                    onTap: () {
-                                      // BlocProvider.of<MyProfileBloc>(context)
-                                      //     .add(GetProfileDataEvent());
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        BlocProvider.of<MyProfileBloc>(context)
-                                            .add(
-                                          EditProfileDataEvent(
-                                            editProfileRequest:
-                                            EditProfileRequest(
-                                              firstName: firstnameController.text,
-                                              lastName: lastnameController.text,
-                                              photo: imageUploadFormated != null && imageUploadFormated.isNotEmpty ? imageUploadFormated! : widget.myProfileArguments.photo,
-                                              dob: selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text,
-                                              gender: selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text,
-                                              mobileNo: int.parse(
-                                                  mobileController.text),
-                                              nationalityId:
-                                              selectedNationalityID != null
-                                                  ? selectedNationalityID!
-                                                  : int.parse(widget.myProfileArguments.nationality_id
-                                                  .toString()),
-                                              city: selectedCityID != null && selectedCityID.toString().isNotEmpty
-                                                  ? selectedCityID.toString()
-                                                  : widget.myProfileArguments.city
-                                                  .toString(),
-                                              countryId: selectedCountryID != null
-                                                  ? selectedCountryID!
-                                                  : int.parse(widget.myProfileArguments.country_id.toString()),
-                                              userName: widget
-                                                  .myProfileArguments.user_name,
-                                              status: 1,
-                                            ),
-                                          ),
-                                        );
-                                        print(
-                                            'FIRST NAME = ${firstnameController}');
-                                        print('LAST NAME = ${lastnameController}');
-                                        print('DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
-                                        print('GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
-                                        print(
-                                            'NATIONALITY  = ${selectedNationalityID != null
-                                                ? selectedNationalityID!
-                                                : int.parse(widget.myProfileArguments.nationality_id
-                                                .toString())}');
-                                        print('COUNTRY = ${selectedCountryID != null
-                                            ? selectedCountryID!
-                                            : int.parse(widget.myProfileArguments.country_id.toString())}');
-                                        print('CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty
-                                            ? selectedCityID.toString()
-                                            : widget.myProfileArguments.city
-                                            .toString()}');
-                                        print('Email = ${emailController}');
-                                        print(
-                                            'PHONE NUMBER =  ${mobileController}');
-                                        print("PHOTO  = ${imageUploadFormated != null && imageUploadFormated.isNotEmpty ? imageUploadFormated! : widget.myProfileArguments.photo}");
-                                      } else {
-                                        Fluttertoast.showToast(
-                                          msg: "All fields are important",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM,
-                                          backgroundColor: Colors.black87,
-                                          textColor: Colors.white,
-                                        );
-                                      }
-                                    },
-                                    showImage: false,
-                                    imagePath: '',
-                                    imagewidth: 0,
-                                    imageheight: 0,
-                                  ),
+                                BlocBuilder<MyProfileBloc, MyProfileState>(
+                                  builder: (context, state) {
+                                    if (state is MyEditProfileLoading) {
+                                      return const Center(
+                                        child: RefreshProgressIndicator(
+                                          color: AppColors.secondaryColor,
+                                          // backgroundColor: AppColors.secondaryColor,
+                                        ),
+                                      );
+                                    }
+                                    return Center(
+                                      child: MyButton(
+                                        Textfontsize: 16,
+                                        TextColors: Colors.white,
+                                        text: "save",
+                                        color: AppColors.secondaryColor,
+                                        width: 340,
+                                        height: 40,
+                                        onTap: () {
+                                          // BlocProvider.of<MyProfileBloc>(context)
+                                          //     .add(GetProfileDataEvent());
+                                          if (_formKey.currentState
+                                                  ?.validate() ??
+                                              false) {
+                                            BlocProvider.of<MyProfileBloc>(
+                                                    context)
+                                                .add(
+                                              EditProfileDataEvent(
+                                                editProfileRequest:
+                                                    EditProfileRequest(
+                                                  firstName:
+                                                      firstnameController.text,
+                                                  lastName:
+                                                      lastnameController.text,
+                                                  photo: imageUploadFormated !=
+                                                              null &&
+                                                          imageUploadFormated
+                                                              .isNotEmpty
+                                                      ? imageUploadFormated!
+                                                      : widget
+                                                          .myProfileArguments
+                                                          .photo,
+                                                  dob: selectedDate != null &&
+                                                          selectedDate
+                                                              .toString()
+                                                              .isNotEmpty
+                                                      ? selectedDate.toString()
+                                                      : dateInputController
+                                                          .text,
+                                                  gender: selectedGender !=
+                                                              null &&
+                                                          selectedGender
+                                                              .toString()
+                                                              .isNotEmpty
+                                                      ? selectedGender
+                                                          .toString()
+                                                      : genderController.text,
+                                                  mobileNo: int.parse(
+                                                      mobileController.text),
+                                                  nationalityId:
+                                                      selectedNationalityID !=
+                                                              null
+                                                          ? selectedNationalityID!
+                                                          : int.parse(widget
+                                                              .myProfileArguments
+                                                              .nationality_id
+                                                              .toString()),
+                                                  city: selectedCityID != null && selectedCityID.toString().isNotEmpty
+                                                      ? selectedCityID.toString()
+                                                      : widget.myProfileArguments.city.toString(),
+                                                  countryId:
+                                                      selectedCountryID != null
+                                                          ? selectedCountryID!
+                                                          : int.parse(widget.myProfileArguments.country_id.toString()),
+                                                  userName: widget.myProfileArguments.user_name,
+                                                  status: 1,
+                                                ),
+                                              ),
+                                            );
+                                            print(
+                                                'FIRST NAME = ${firstnameController}');
+                                            print(
+                                                'LAST NAME = ${lastnameController}');
+                                            print(
+                                                'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
+                                            print(
+                                                'GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
+                                            print(
+                                                'NATIONALITY  = ${selectedNationalityID != null ? selectedNationalityID! : int.parse(widget.myProfileArguments.nationality_id.toString())}');
+                                            print(
+                                                'COUNTRY = ${selectedCountryID != null ? selectedCountryID! : int.parse(widget.myProfileArguments.country_id.toString())}');
+                                            print(
+                                                'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
+                                            print('Email = ${emailController}');
+                                            print(
+                                                'PHONE NUMBER =  ${mobileController}');
+                                            print(
+                                                "PHOTO  = ${imageUploadFormated != null && imageUploadFormated.isNotEmpty ? imageUploadFormated! : widget.myProfileArguments.photo}");
+                                          } else {
+                                            Fluttertoast.showToast(
+                                              msg: "All fields are important",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              backgroundColor: Colors.black87,
+                                              textColor: Colors.white,
+                                            );
+                                          }
+                                        },
+                                        showImage: false,
+                                        imagePath: '',
+                                        imagewidth: 0,
+                                        imageheight: 0,
+                                      ),
+                                    );
+                                  },
                                 ).animate().then(delay: 200.ms).slideY(),
                               ],
                             );
-                          }
-                          else {
+                          } else {
                             return SizedBox();
                           }
                         },
@@ -1084,7 +1106,7 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
           fillColor: Colors.white,
           filled: true,
           contentPadding:
-          const EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
+              const EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
           suffixIcon: IconButton(
             padding: const EdgeInsets.only(right: 20, left: 20),
             color: AppColors.secondaryColor,
@@ -1116,10 +1138,10 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent,
-      ) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     final appBarSize = expandedHeight - shrinkOffset;
     // final cardTopPosition = expandedHeight / 7 - shrinkOffset;
     final proportion = 2 - (expandedHeight / appBarSize);
@@ -1243,7 +1265,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                   builder: (context, state) {
                     if (state is MyProfileLoaded) {
                       String b64 =
-                      state.myProfileScreenResponse.data!.photo.toString();
+                          state.myProfileScreenResponse.data!.photo.toString();
                       final UriData? data = Uri.parse(b64).data;
                       Uint8List bytesImage = data!.contentAsBytes();
 
@@ -1287,41 +1309,41 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                               },
                               child: filePath.path.isNotEmpty
                                   ? Container(
-                                alignment: Alignment.center,
-                                width: 130,
-                                height: 130,
-                                // color: Colors.grey[300],
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius:
-                                  BorderRadius.circular(100),
-                                  child: Image.file(
-                                    File(filePath.path),
-                                    width: 130,
-                                    height: 130,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              )
+                                      alignment: Alignment.center,
+                                      width: 130,
+                                      height: 130,
+                                      // color: Colors.grey[300],
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        // borderRadius: BorderRadius.circular(100),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Image.file(
+                                          File(filePath.path),
+                                          width: 130,
+                                          height: 130,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
                                   : Container(
-                                width: 130.0,
-                                height: 130.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // border: Border.all(
-                                  //   color: AppColors.secondaryColor,
-                                  //   width: 2.0,
-                                  // ),
-                                  image: DecorationImage(
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.cover,
-                                    image: MemoryImage(bytesImage),
-                                  ),
-                                ),
-                              ),
+                                      width: 130.0,
+                                      height: 130.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        // border: Border.all(
+                                        //   color: AppColors.secondaryColor,
+                                        //   width: 2.0,
+                                        // ),
+                                        image: DecorationImage(
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(bytesImage),
+                                        ),
+                                      ),
+                                    ),
                               // Container(
                               //         alignment: Alignment.center,
                               //         width: 130,

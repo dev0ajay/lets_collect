@@ -373,6 +373,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             ],
                           ),
                           const SizedBox(height: 20),
+
+
+                          /// Login button
+
                           BlocBuilder<LoginBloc, LoginState>(
                             builder: (context, state) {
                               if (state is LoginLoading) {

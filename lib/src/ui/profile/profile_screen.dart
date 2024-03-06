@@ -651,40 +651,44 @@ void _showDialogBox({
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MyButton(
-                      Textfontsize: 16,
-                      TextColors: Colors.white,
-                      text: AppLocalizations.of(context)!.yes,
-                      color: AppColors.secondaryColor,
-                      height: 5,
-                      onTap: () {
-                        ObjectFactory().prefs.setIsLoggedIn(false);
-                        ObjectFactory().prefs.clearPrefs();
-                        context.go('/login');
-                      },
-                      showImage: false,
-                      imagePath: '',
-                      imagewidth: 0,
-                      imageheight: 0,
-                      width: 120,
+                    Expanded(
+                      child: MyButton(
+                        Textfontsize: 16,
+                        TextColors: Colors.white,
+                        text: AppLocalizations.of(context)!.yes,
+                        color: AppColors.secondaryColor,
+                        height: 5,
+                        onTap: () {
+                          ObjectFactory().prefs.setIsLoggedIn(false);
+                          ObjectFactory().prefs.clearPrefs();
+                          context.go('/login');
+                        },
+                        showImage: false,
+                        imagePath: '',
+                        imagewidth: 0,
+                        imageheight: 0,
+                        width: 120,
+                      ),
                     ),
                     SizedBox(
                       width: 20,
                     ),
-                    MyButton(
-                      Textfontsize: 16,
-                      TextColors: Colors.white,
-                      text: AppLocalizations.of(context)!.no,
-                      color: AppColors.secondaryColor,
-                      height: 5,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      showImage: false,
-                      imagePath: '',
-                      imagewidth: 0,
-                      imageheight: 0,
-                      width: 120,
+                    Expanded(
+                      child: MyButton(
+                        Textfontsize: 16,
+                        TextColors: Colors.white,
+                        text: AppLocalizations.of(context)!.no,
+                        color: AppColors.secondaryColor,
+                        height: 5,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        showImage: false,
+                        imagePath: '',
+                        imagewidth: 0,
+                        imageheight: 0,
+                        width: 120,
+                      ),
                     ),
                   ],
                 ),
