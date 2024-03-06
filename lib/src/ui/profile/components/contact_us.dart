@@ -396,7 +396,11 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 alignment: Alignment.topLeft,
                 child: IconButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    subjectController.clear();
+                    messageController.clear();
+                    _removeFile();
+                    context.pop();
+                    // Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.close),
                 ),
