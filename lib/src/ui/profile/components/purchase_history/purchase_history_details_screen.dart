@@ -7,7 +7,7 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
-import '../../../model/purchase_history/purchase_history_details_request.dart';
+import '../../../../model/purchase_history/purchase_history_details_request.dart';
 
 class PurchaseHistoryDetailsScreen extends StatefulWidget {
   final String receiptId;

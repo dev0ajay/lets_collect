@@ -83,10 +83,10 @@ class ApiClient {
       createHttpClient: () {
         // Don't trust any certificate just because their root cert is trusted.
         final HttpClient client =
-            HttpClient(context: SecurityContext(withTrustedRoots: false));
+        HttpClient(context: SecurityContext(withTrustedRoots: false));
         // You can test the intermediate / root cert here. We just ignore it.
         client.badCertificateCallback =
-            ((X509Certificate cert, String host, int port) => true);
+        ((X509Certificate cert, String host, int port) => true);
         return client;
       },
     );
@@ -243,18 +243,31 @@ class ApiClient {
     );
   }
 
-  ///Profile
-  //Terms and Conditions
+  ///Terms and Conditions
   Future<Response> getTermsAndConditions() {
     return dioLetsCollect.get(
       UrlsLetsCollect.TERMS_AND_CONDITIONS,
     );
   }
 
-  //Privacy Policies
+  ///Privacy Policies
   Future<Response> getPrivacyPolicies() {
     return dioLetsCollect.get(
       UrlsLetsCollect.PRIVACY_POLICIES,
+    );
+  }
+
+  /// How to Redeem My Points
+  Future<Response> getHowToRedeemMyPoints() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.HOW_TO_REDEEM_MY_POINTS,
+    );
+  }
+
+  /// Point Calculations
+  Future<Response> getPointCalculations() {
+    return dioLetsCollect.get(
+        UrlsLetsCollect.POINT_CALCULATIONS
     );
   }
 
@@ -280,12 +293,11 @@ class ApiClient {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
     );
-
-
   }
 
   //Brand And Partner Product
-  Future<Response> getBrandAndPartnerProduct(BrandAndPartnerProductRequest brandAndPartnerProductRequest) {
+  Future<Response> getBrandAndPartnerProduct(
+      BrandAndPartnerProductRequest brandAndPartnerProductRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.BRAND_AND_PARTNER_TIER_PRODUCT,
       data: brandAndPartnerProductRequest,
@@ -293,8 +305,6 @@ class ApiClient {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
     );
-
-
   }
 
 
@@ -318,7 +328,8 @@ class ApiClient {
     );
   }
 
-  Future<Response> showScanHistory(ScanReceiptHistoryRequest scanReceiptHistoryRequest) {
+  Future<Response> showScanHistory(
+      ScanReceiptHistoryRequest scanReceiptHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.SCAN_HISTORY,
       data: scanReceiptHistoryRequest,
@@ -347,8 +358,9 @@ class ApiClient {
   }
 
 
-///Purchase History Screen
-  Future<Response> purchaseHistoryRequest(PurchaseHistoryRequest purchaseHistoryRequest) {
+  ///Purchase History Screen
+  Future<Response> purchaseHistoryRequest(
+      PurchaseHistoryRequest purchaseHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY,
       options: Options(
@@ -360,8 +372,9 @@ class ApiClient {
     );
   }
 
-///Purchase History Details
-  Future<Response> purchaseHistoryDetailsRequest(PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
+  ///Purchase History Details
+  Future<Response> purchaseHistoryDetailsRequest(
+      PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
       options: Options(
@@ -372,7 +385,7 @@ class ApiClient {
     );
   }
 
-///Super market list
+  ///Super market list
   Future<Response> getSuperMarketList() {
     return dioLetsCollect.get(
       UrlsLetsCollect.POINT_TRACKER_FILTER,
@@ -386,7 +399,8 @@ class ApiClient {
 
 
   /// Point Tracker
-  Future<Response> pointTrackerRequest(PointTrackerRequest pointTrackerRequest) {
+  Future<Response> pointTrackerRequest(
+      PointTrackerRequest pointTrackerRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.POINT_TRACKER,
       data: pointTrackerRequest,
@@ -400,7 +414,8 @@ class ApiClient {
 
 
   ///Point Tracker Details
-  Future<Response> pointTrackerDetailsRequest(PointTrackerDetailsRequest pointTrackerDetailsRequest) {
+  Future<Response> pointTrackerDetailsRequest(
+      PointTrackerDetailsRequest pointTrackerDetailsRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.POINT_TRACKER_DETAILS,
       data: pointTrackerDetailsRequest,

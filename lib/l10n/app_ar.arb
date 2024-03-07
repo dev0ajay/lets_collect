@@ -1,95 +1,79 @@
 {
-
-    "selectlanguage" : "select Language",
-    "changelanguage" : "Change Language",
-    "youarenotconnectedtotheinternet" : "You are not connected to the internet",
-
-    "findyourfavourite" : "Find Your Favourites",
+    "selectlanguage" : "اختار اللغة",
+    "changelanguage" : "تغيير اللغة",
+    "youarenotconnectedtotheinternet" : "أنت غير متصل بالإنترنت",
 
 
-    "referralcode" : "Referral code",
-    "bonuspoint" : "Bonus Point !",
-    "scan" : "Scan",
-    "totalpoints" : "Total Points",
+    "referralcode" : "رمز الإحالة",
+    "bonuspoint" : "نقاط مكافأة!",
+    "scan" : "مسح",
+    "totalpoints" : "مجمل النقاط",
     "pts" : "pts",
-    "brands" : "Brands",
-    "viewall" : "View all",
-    "specialoffersforyou" : "Special offers for you",
-    "congratulations" : "Congratulations !",
-    "youhaveearned" : "You have earned",
-    "points" : "Points",
-    "yay" : "Yay!",
-    "hurryup" : "Hurry Up!",
-    "pleaseverifythemailwehavesendtoyouandearnpoints" : "Please verify the mail we have send to you and earn points.",
-    "close" : "Close",
+    "brands" : "العلامات التجارية",
+    "viewall" : "عرض الكل",
+    "specialoffersforyou" : "عروض خاصة  لك",
+    "congratulations" : "تهانينا!",
+    "youhaveearned" : "لقد حصلت على",
+    "points" : "نقطة",
+    "yay" : "ياي!",
+    "hurryup" : "أسرع - بسرعة!",
+    "pleaseverifythemailwehavesendtoyouandearnpoints" : "يرجى التحقق من البريد الذي أرسلناه إليك وكسب النقاط.",
+    "close" : "يغلق",
 
 
-    "myprofile" : "My Profile",
-    "pointtracker" : "Point Tracker",
-    "redemptiontracker" : "Redemption Tracker",
-    "purchasehistory" : "Purchase History",
-    "help" : "Help",
-    "notificationcenter" : "Notification Center",
-    "referafriend" : "Refer a Friend",
-    "logout" : "Logout",
+    "myprofile" : "ملفي",
+    "pointtracker" : "متتبع النقاط",
+    "redemptiontracker" : "متتبع الاسترداد",
+    "purchasehistory" : "سجل الشراء",
+    "help" : "المساعدة",
+    "notificationcenter" : "مركز الإشعارات",
+    "referafriend" : "أدعو صديقًا",
+    "logout" : "تسجيل الخروج",
 
-    "areyousureyouwanttologout" : "Are you sure you want to log out ?",
-    "yes" : "Yes",
-    "no" : "No",
-
-
-    "underdevelopment" : "Under development..!!",
-    "internetdown" : "No internet connection..!",
-    "searchscreenhint" : "Search Category",
-    "searchdetailhint" : "Search Brand",
+    "areyousureyouwanttologout" : "هل أنت متأكد أنك تريد تسجيل الخروج ؟",
+    "yes" : "نعم",
+    "no" : "لا",
 
 
-    "forgetemailhint" : "Enter your email",
-    "forgetemailtext" : "Please provide us your email.",
-    "otpbuttonverify" : "Verify OTP",
-    "otpbuttonsend" : "Send OTP",
+    "underdevelopment" : "تحت التطوير..!!",
+    "internetdown" : "لا يوجد اتصال بالإنترنت..!",
+    "searchscreenhint" : "فئة البحث",
+    "searchdetail_hint" : "بحث عن العلامة التجارية",
 
 
-    "otpdiscription" : "A One-Time password has been send to your email. ",
-    "buttonverification" : "Verify",
+    "forgetemail_hint" : "أدخل بريدك الإلكتروني",
+    "forgetemailtext" : "يرجى تزويدنا بالبريد الإلكتروني الخاص بك.",
+    "otpbuttonverify" : "التحقق من كلمة المرور لمرة واحدة (OTP).",
+    "otpbuttonsend" : "أرسل كلمة مرور لمرة واحدة",
 
 
-    "findyourfavourite" : "Find Your Favourite",
+    "otpdiscription" : "تم إرسال كلمة المرور لمرة واحدة إلى بريدك الإلكتروني.",
+    "buttonverification" : "يؤكد",
 
 
-    "loginletscollect" : "Let's Collect",
-    "loginwelcomeback" : "Welcome Back !",
-    "loginemaillabeltext" : "E-mail",
-    "loginemailhint_text" : "Enter email",
-    "loginemailvalidatortext" : "Please enter email",
-    "loginpasswordlabeltext" : "Password",
-    "loginpasswordhinttext" : "Enter password",
-    "loginpasswordvalidatortext" : "Please enter password",
-    "loginconfirmationtext" : "Do you really want to logout?",
-    "loginforgetpasswordtext" : "Forget password?",
-    "loginbuttontext" : "Login",
-    "logindonthaveanac": "Don't have an account ?",
-    "emailsingup" : "Email Sign up",
-    "googlesingup" : "Google Sign up",
-    "facebooksignup" : "Facebook Sign up",
-    "loginnotes1" : "By signing up, you agree to the",
-    "loginnotes2" : "Terms and Conditions",
-    "loginnotes3" : "and our",
-    "loginnotes4" : "Privacy Policy",
+
+    "findyourfavourite" : "ابحث عن المفضلة لديك",
 
 
-    "singupbutton_text" : "Next",
-    "signupsubheading" : "Join Today And Collect",
-    "signupfirstnamelabeltext" : "First Name",
-    "signuplastnamelabeltext" : "Last Name",
-    "signupemaillabeltext" : "E-mail",
-    "singuppasswordlabeltext" : "Password",
-    "singuprepasswordlabeltext" : "Re-Enter Password",
-    "signuptext1" : "We'd love to send you some amazing offers \n through email. Want In?",
-    "signupnotes1" : "By signing up, you agree to the",
-    "signupnotes2" : "Terms and Conditions",
-    "signupnotes3" : "and our",
-    "signupnotes4" : "Privacy Policy",
+    "loginletscollect" : "دعونا نجمع",
+    "loginwelcomeback" : "مرحبًا بعودتك !",
+    "loginemaillabeltext" : "البريد الإلكتروني",
+    "loginemailhint_text" : "أدخل البريد الإلكتروني",
+    "loginemailvalidatortext" : "الرجاء إدخال البريد الإلكتروني",
+    "loginpasswordlabeltext" : "كلمة المرور",
+    "loginpasswordhinttext" : "أدخل كلمة المرور",
+    "loginpasswordvalidatortext" : "الرجاء إدخال كلمة المرور",
+    "loginconfirmationtext" : "هل تريد حقا تسجيل الخروج؟",
+    "loginforgetpasswordtext" : "هل نسيت كلمة المرور؟",
+    "loginbuttontext" : "تسجيل الدخول",
+    "logindonthaveanac": "ليس لديك حساب؟",
+    "emailsingup" : "الاشتراك عبر البريد الإلكتروني",
+    "googlesingup" : "الاشتراك عبر جوجل",
+    "facebooksignup" : "الاشتراك عبر فيس بوك",
+    "loginnotes1" : "بالتسجيل فإنك توافق على",
+    "loginnotes2" : "الأحكام والشروط",
+    "loginnotes3" : "و لنا",
+    "loginnotes4" : "سياسة الخصوصية",
 
 
     "welcome" : "Welcome",
@@ -108,109 +92,136 @@
 
 
     "resetpassword" : "Reset Password",
-    "donotworry" : "Do not worry! We will help you recover your password",
-    "pleaseprovideusyouremail" : "Please provide us your email",
-    "sentotp" : "Sent OTP",
+    "donotworry" : "لا تقلق! سنساعدك على استعادة كلمة المرور الخاصة بك",
+    "pleaseprovideusyouremail" : "يرجى تزويدنا بالبريد الإلكتروني الخاص بك",
+    "sentotp" : "تم إرسال كلمة المرور لمرة واحدة",
 
 
 
+    "singupbutton_text" : "التالي",
+    "signupsubheading" : "انضم اليوم وجمع",
+    "signupfirstnamelabeltext" : "الاسم الأول",
+    "signuplastnamelabeltext" : "اسم العائلة",
+    "signupemaillabeltext" : "البريد الإلكتروني",
+    "singuppasswordlabeltext" : "كلمة المرور",
+    "singuprepasswordlabeltext" : "إعادة إدخال كلمة المرور",
+    "signuptext1" : "يسعدنا أن نرسل إليك بعض العروض الرائعة \n عبر البريد الإلكتروني. ترغب في؟",
+    "signupnotes1" : "بالتسجيل فإنك توافق على",
+    "signupnotes2" : "الأحكام والشروط",
+    "signupnotes3" : "و لنا",
+    "signupnotes4" : "سياسة الخصوصية",
 
-    "forgetrestpasswortd" : "Reset Password",
-    "forgetpasswordreset" : "Password reset",
-    "forgetnewpassword" : "New Password",
-    "forgetnewpasswordhint" : "Enter Password",
-    "forgetconfirmpassword" : "Confirm Password",
-    "forgetconfirmpasswordhint" : "Re-entre Password",
-    "forgetbutton" : "Submit",
-    "forgotpassworddiscription" : "Do not worry! We will help you recover your password.",
+    "forgetrestpasswortd" : "إعادة تعيين كلمة المرور",
+    "forgetpasswordreset" : "إعادة ضبط كلمة المرور",
+    "forgetnewpassword" : "كلمة المرور الجديدة",
+    "forgetnewpasswordhint" : "أدخل كلمة المرور",
+    "forgetconfirmpassword" : "تأكيد كلمة المرور",
+    "forgetconfirmpasswordhint" : "إعادة إدخال كلمة المرور",
+    "forgetbutton" : "إرسال",
+    "forgotpassworddiscription" : "لا تقلق! سنساعدك على استعادة كلمة المرور الخاصة بك.",
 
 
-    "welocom" : "Welcome, ",
+    "welocom" : "مرحباً،",
+    "discription" : "لقد أوشكت على الانتهاء، نحتاج فقط إلى القليل من المعلومات \n للتأكد من أنه يمكننا أن نرسل لك أفضل العروض على الإطلاق",
+    "gender" : "جنس",
+    "nationality" : "جنسية ",
+
+
+    "singupbuttonsubmit" : "يُقدِّم",
+    "almostdone" : "الرجاء إدخال كلمة المرور لمرة واحدة للتحقق من حسابك",
+    "city" : "مدينة",
+    "country" : "دولة",
+    "verifydiscription" : "ما عليك سوى هذه الخطوة الصغيرة وستكون جاهزًا \n نعدك بذلك!",
+    "phonenumber" : "رقم التليفون",
+
+
+    "welocom" : "مرحباً, ",
     "sarah" : "Sarah !",
-    "discription" : "You're almost there, we just need a bit of info to \n make sure we can send you the absolute best offers",
-    "gender" : "Gender",
-    "nationality" : "Nationality ",
+    "discription" : "أنت على وشك الانتهاء، نحتاج فقط إلى بعض المعلومات للتأكد من أننا يمكننا إرسال أفضل العروض المطلقة لك.",
+    "gender" : "الجنس",
+    "nationality" : "الجنسية",
 
 
-    "singupbuttonsubmit" : "Submit",
-    "almostdone" : "Please enter the One-Time password to verify your account.",
-    "city" : "City",
-    "verifydiscription" : "Just this one little step, and you're all set \n We promise!",
-    "phonenumber" : "Phone Number",
+    "singupbuttonsubmit" : "إرسال",
+    "almostdone" : "الرجاء إدخال كلمة المرور لمرة واحدة للتحقق من حسابك.",
+    "verifydiscription" : "ما عليك سوى هذه الخطوة الصغيرة وستكون جاهزًا \n نعدك بذلك!",
+    "phonenumber" : "رقم الهاتف",
 
 
-    "buttonskipverification" : "Skip Verification",
+    "buttonskipverification" : "تخطي التحقق",
     "countrycode" : "+973",
-    "countryphone_no" : "Phone Number",
-    "cancel" : "Cancel",
-    "ok" : "Ok",
-    "yes" : "Yes",
-    "close" : "Close",
-    "update" : "Update",
-    "ordercancellation" : "Confirm order cancellation?",
+    "countryphone_no" : "رقم الهاتف",
+    "cancel" : "يلغي",
+    "ok" : "نعم",
+    "yes" : "نعم",
+    "close" : "يغلق",
+    "update" : "تحديث",
+    "ordercancellation" : "تأكيد إلغاء الطلب؟",
 
 
-    "nodatatext" : "Nothing to show here",
-    "poweredby" : "powered by ",
+    "nodatatext" : "لا شيء لإظهاره هنا",
+    "poweredby" : "مشغل بواسطة",
 
 
-    "settingstitle" : "Settings",
-    "privacypolicy" : "Privacy policy",
-    "settingtermscondition" : "Terms & conditions",
+    "settingstitle" : "إعدادات",
+    "privacypolicy" : "سياسة الخصوصية",
+    "settingtermscondition" : "البنود و الظروف",
 
 
-    "emailnotvalid" : "Email is not valid",
-    "usernamenotvalid" : "Username is not valid",
-    "passwordlength" : "Password length should be greater than 5 chars.",
-    "invalidmobilenum" : "Invalid mobile number",
-    "invalidname" : "Invalid name",
-    "someerroroccurred" : "Some error occurred !!!",
+    "emailnotvalid" : "البريد الإلكتروني غير صالح",
+    "usernamenotvalid" : "اسم المستخدم غير متاح",
+    "passwordlength" : "يجب أن يكون طول كلمة المرور أكبر من 5 أحرف.",
+    "invalidmobilenum" : "رقم الجوال غير صالح",
+    "invalidname" : "اسم غير صالح",
+    "someerroroccurred" : "حدث بعض الخطأ !!!",
 
 
 
-
-    "redeemed" : "Redeemed :",
-    "store" : "Store :",
-    "redemptiondetails" : "Redemption Details",
-
-
-    "transactionlog" : "Transaction Log",
-    "totalamount" : "Total Amount",
-    "date" : "Date : ",
-    "supermarket" : "SuperMarket : ",
-    "totalitem" : "Total items : ",
-    "bhd" : "BHD",
-
-    "findyourfavourite" : "Find Your Favourite",
-    "searchcategory" : "Search Category",
-    "searchbrand" : "Search Brand",
+    "redeemed" : "المستردة :",
+    "store" : "محل :",
+    "redemptiondetails" : "تفاصيل الاسترداد",
 
 
-    "totalpointearned" : "Total Point earned !",
+     "transactionlog" : "سجل المعاملات",
+     "totalamount" : "المبلغ الإجمالي",
+     "date" : " : تاريخ",
+     "supermarket" : " : سوبر ماركت",
+     "totalitem" : " : مجموع العناصر",
+     "bhd" : "دينار بحريني",
 
 
-    "helpcenter" : "Help Center",
-    "howtoredeemmypoints" : "How to redeem my points ?",
-    "pointcalculations" : "Point calculations",
-    "termsandconditionds" : "Terms and Calculations",
-    "privacypolicy" : "Privacy Policy",
-    "needmorehelp" : "Need more help ?",
-    "contactus" : "Contact us",
-    "subject" : "Subject",
-    "message" : "Message",
-    "supportingimage" : "Supporting Image",
-    "selectedfile" : "Selected file :",
-
-    "thankyouforcontactingus" : "Thank you for contacting us",
-    "wewillgetbackto" : "We'll get back to you as soon as we can. \n It may take up to 3 working days.",
+    "findyourfavourite" : "ابحث عن المفضلة لديك",
+    "searchcategory" : "فئة البحث",
+    "searchbrand" : "بحث عن العلامة التجارية",
 
 
-    "allfieldsareimportant" : "All fields are important",
-    "letscollectreward" : "Let's Collect Reward",
-    "brandreward" : "Brand Reward",
-    "partnerreward" : "Partner Reward",
-    "sort" : "Sort",
-    "filter" : "Filter"
+    "totalpointearned" : "إجمالي النقاط المكتسبة!",
+
+
+    "helpcenter" : "مركز المساعدة",
+    "howtoredeemmypoints" : "كيف أستبدل نقاطي؟",
+    "pointcalculations" : "حسابات النقاط",
+    "termsandconditionds" : "الشروط والحسابات",
+    "privacypolicy" : "سياسة الخصوصية",
+    "needmorehelp" :"هل تريد المزيد من المساعدة ؟",
+    "contactus" : "اتصل بنا",
+    "subject" : "موضوع",
+    "message" : "رسالة",
+    "supportingimage" : "صورة داعمة",
+    "selectedfile" : "الملف المحدد :",
+
+    "thankyouforcontactingus" : "أشكركم على الاتصال بنا",
+    "wewillgetbackto" : "سنعود إليك في أقرب وقت ممكن. \n قد يستغرق الأمر ما يصل إلى 3 أيام عمل.",
+
+
+
+    "allfieldsareimportant" : "جميع المجالات مهمة",
+    "letscollectreward" : "دعونا نجمع المكافأة",
+    "brandreward" : "مكافأة العلامة التجارية",
+    "partnerreward" : "مكافأة الشريك",
+    "sort" : "نوع",
+    "filter" : "منقي"
+
 
 
 

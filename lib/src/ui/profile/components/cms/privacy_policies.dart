@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 
-import '../../../constants/colors.dart';
+import '../../../../constants/colors.dart';
 
 class PrivacyPoliciesScreen extends StatefulWidget {
   const PrivacyPoliciesScreen({super.key});
@@ -55,7 +57,14 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
           }
           if(state is PrivacyPoliciesLoaded) {
             return SingleChildScrollView(
-              child: Html(data: state.privacyPoliciesResponse.data.pageContent),
+              child: Html(
+                  // data: state.privacyPoliciesResponse.data.pageContent
+                data: state.privacyPoliciesResponse != null
+                    ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                    ? state.privacyPoliciesResponse.data.pageContent
+                    : state.privacyPoliciesResponse.data.pageContentArabic)
+                    : '',
+              ),
             );
           }
           return const Center(

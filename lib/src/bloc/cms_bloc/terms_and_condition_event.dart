@@ -7,7 +7,6 @@ abstract class TermsAndConditionEvent extends Equatable {
 
 class GetTermsAndConditionEvent extends TermsAndConditionEvent {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 
 }

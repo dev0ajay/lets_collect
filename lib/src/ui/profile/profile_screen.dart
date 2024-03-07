@@ -14,7 +14,7 @@ import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:lets_collect/src/ui/profile/components/my_profile_screen_arguments.dart';
+import 'package:lets_collect/src/ui/profile/components/my_profile/my_profile_screen_arguments.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import '../../bloc/country_bloc/country_bloc.dart';

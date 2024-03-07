@@ -6,7 +6,6 @@ abstract class ContactUsEvent extends Equatable {
 
 class GetContactUsEvent extends ContactUsEvent{
   final ContactUsRequest contactUsRequest;
-
   const GetContactUsEvent({required this.contactUsRequest});
   @override
   List<Object?> get props => [];

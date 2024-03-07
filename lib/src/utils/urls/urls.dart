@@ -41,6 +41,8 @@ class UrlsLetsCollect {
   ///Profile Screen
   static const String TERMS_AND_CONDITIONS = "/api/lcuser/terms_and_conditions";
   static const String PRIVACY_POLICIES = "/api/lcuser/terms_and_conditions";
+  static const String HOW_TO_REDEEM_MY_POINTS = "/api/lcuser/how_to_redeem_mypoints";
+  static const String POINT_CALCULATIONS = "/api/lcuser/point_calculations";
   static const String PURCHASE_HISTORY = "/api/lcuser/purchase_history";
   static const String PURCHASE_HISTORY_DETAILS = "/api/lcuser/purchase_history_details";
   static const String POINT_TRACKER_FILTER = "/api/lcuser/supermarket_ist";

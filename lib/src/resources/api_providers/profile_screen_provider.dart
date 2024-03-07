@@ -1,3 +1,5 @@
+import 'package:lets_collect/src/model/cms/how_to_redeem_my_points.dart';
+import 'package:lets_collect/src/model/cms/point_calculations.dart';
 import 'package:lets_collect/src/model/cms/privacy_policies.dart';
 import 'package:lets_collect/src/model/cms/terms_and_condition.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
@@ -63,6 +65,32 @@ class MyProfileDataProvider {
     if (response.statusCode == 200) {
       return StateModel<PrivacyPoliciesResponse>.success(
           PrivacyPoliciesResponse.fromJson(response.data));
+    } else {
+      return null;
+    }
+  }
+
+  ///How To Redeem My Points
+  Future<StateModel?> getHowToRedeemMyPoints() async {
+    final response = await ObjectFactory().apiClient.getHowToRedeemMyPoints();
+    print(response.toString());
+    if (response.statusCode == 200) {
+      return StateModel<HowToRedeemMyPointsResponse>.success(
+          HowToRedeemMyPointsResponse.fromJson(response.data));
+    } else {
+      return null;
+    }
+  }
+
+
+
+  /// Point Calculations
+  Future<StateModel?> getPointCalculations() async {
+    final response = await ObjectFactory().apiClient.getPointCalculations();
+    print(response.toString());
+    if (response.statusCode == 200) {
+      return StateModel<PointCalculationsResponse>.success(
+          PointCalculationsResponse.fromJson(response.data));
     } else {
       return null;
     }

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 
-import '../../../constants/colors.dart';
+import '../../../../constants/colors.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
   const TermsAndConditionsScreen({super.key});
@@ -56,7 +56,13 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
           }
          if(state is TermsAndConditionLoaded) {
            return SingleChildScrollView(
-             child: Html(data: state.termsAndConditionResponse.data.pageContent),
+             child: Html(data: state.termsAndConditionResponse.data.pageContent
+              //    data: state.termsAndConditionResponse != null
+              //    ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
+              //    ? state.termsAndConditionResponse.data.pageContent
+              //    : state.termsAndConditionResponse.data.pageTitleArabic )
+              // : ""
+             ),
            );
          }
          return const Center(

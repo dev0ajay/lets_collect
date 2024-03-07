@@ -48,45 +48,60 @@ class HelpScreen extends StatelessWidget {
                 height: 200,
               )),
               const SizedBox(height: 35),
-              InkWell(
+              // InkWell(
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return AlertDialog(
+              //           shape: RoundedRectangleBorder(
+              //               borderRadius:
+              //               BorderRadius.circular(10)),
+              //           content: SizedBox(
+              //             height: getProportionateScreenHeight(260),
+              //             width: getProportionateScreenWidth(320),
+              //             child: Lottie.asset(Assets.SOON),
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              //   child: const ProfileDetailsListTileWidget(
+              //       labelText: "How to redeem my points ?"),
+              // ),
+              GestureDetector(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
+                  context.push('/how_to_redeem_my_points');
                 },
                 child: const ProfileDetailsListTileWidget(
                     labelText: "How to redeem my points ?"),
               ),
               const SizedBox(height: 15),
-              InkWell(
+              // InkWell(
+              //   onTap: () {
+              //     showDialog(
+              //       context: context,
+              //       builder: (BuildContext context) {
+              //         return AlertDialog(
+              //           shape: RoundedRectangleBorder(
+              //               borderRadius:
+              //               BorderRadius.circular(10)),
+              //           content: SizedBox(
+              //             height: getProportionateScreenHeight(260),
+              //             width: getProportionateScreenWidth(320),
+              //             child: Lottie.asset(Assets.SOON),
+              //           ),
+              //         );
+              //       },
+              //     );
+              //   },
+              //   child: const ProfileDetailsListTileWidget(
+              //       labelText: "Point Calculations"),
+              // ),
+
+              GestureDetector(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
+                  context.push('/point_calculations');
                 },
                 child: const ProfileDetailsListTileWidget(
                     labelText: "Point Calculations"),

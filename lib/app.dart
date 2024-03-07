@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
+import 'package:lets_collect/src/bloc/cms_bloc/how_to_redeem_my_points/how_to_redeem_my_points_bloc.dart';
+import 'package:lets_collect/src/bloc/cms_bloc/point_calculations/point_calculations_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/contact_us_bloc/contact_us_bloc.dart';
@@ -23,6 +25,7 @@ import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
+import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
@@ -34,6 +37,7 @@ import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
 import 'package:lets_collect/src/resources/api_providers/contact_us_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/point_tracker_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/purchase_data_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/redemption_history_provider.dart';
@@ -79,7 +83,13 @@ class _AppState extends State<App> {
           create: (create) => ScanReceiptApiProvider(),
         ),
         RepositoryProvider(
+          create: (context) => PointTrackerProvider(),
+        ),
+        RepositoryProvider(
           create: (create) => PurchaseDataProvider(),
+        ),
+        RepositoryProvider(
+          create: (context) => RedemptionHistoryDataProvider(),
         ),
         RepositoryProvider(
           create: (context) => ContactUsProvider(),
@@ -152,8 +162,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider<BrandAndPartnerProductBloc>(
             create: (BuildContext context) => BrandAndPartnerProductBloc(
-                rewardScreenProvider: RepositoryProvider.of(context),
-
+              rewardScreenProvider: RepositoryProvider.of(context),
             ),
           ),
           BlocProvider<ScanBloc>(
@@ -162,36 +171,49 @@ class _AppState extends State<App> {
             ),
           ),
           BlocProvider<GoogleSignInCubit>(
-            create: (BuildContext context) => GoogleSignInCubit(
-            ),
+            create: (BuildContext context) => GoogleSignInCubit(),
           ),
           BlocProvider<OfferBloc>(
-            create: (BuildContext context) => OfferBloc(homeDataProvider: RepositoryProvider.of(context))
-          ),
+              create: (BuildContext context) =>
+                  OfferBloc(homeDataProvider: RepositoryProvider.of(context))),
           BlocProvider<RedeemBloc>(
-              create: (BuildContext context) => RedeemBloc( rewardScreenProvider: RepositoryProvider.of(context))
-          ),
+              create: (BuildContext context) => RedeemBloc(
+                  rewardScreenProvider: RepositoryProvider.of(context))),
           BlocProvider<GoogleLoginBloc>(
-              create: (BuildContext context) => GoogleLoginBloc(authProvider: RepositoryProvider.of(context))
-          ),
-
-          BlocProvider<PurchaseHistoryBloc>(
-              create: (BuildContext context) => PurchaseHistoryBloc(purchaseHistoryDataProvider: RepositoryProvider.of(context))
-              ),
-          BlocProvider<MyProfileBloc>(
-              create: (BuildContext context) => MyProfileBloc(myProfileDataProvider: RepositoryProvider.of(context)),
-          ),
+              create: (BuildContext context) => GoogleLoginBloc(
+                  authProvider: RepositoryProvider.of(context))),
           BlocProvider<PointTrackerBloc>(
-            create: (BuildContext context) => PointTrackerBloc(pointTrackerProvider: RepositoryProvider.of(context)),
+            create: (context) => PointTrackerBloc(
+              pointTrackerProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<PurchaseHistoryBloc>(
+              create: (BuildContext context) => PurchaseHistoryBloc(
+                  purchaseHistoryDataProvider: RepositoryProvider.of(context))),
+          BlocProvider<MyProfileBloc>(
+            create: (BuildContext context) => MyProfileBloc(
+                myProfileDataProvider: RepositoryProvider.of(context)),
           ),
           RepositoryProvider(
-            create: (context) => RedemptionHistoryDataProvider(),
+            create: (BuildContext context) => RedemptionHistoryBloc(
+                redemptionDataProvider: RepositoryProvider.of(context)),
           ),
           BlocProvider<ContactUsBloc>(
-          create: (BuildContext context) => ContactUsBloc(
-    contactUsProvider: RepositoryProvider.of(context),
-    ),
-          )
+            create: (BuildContext context) => ContactUsBloc(
+              contactUsProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<HowToRedeemMyPointsBloc>(
+            create: (BuildContext context) => HowToRedeemMyPointsBloc(
+              profileDataProvider: RepositoryProvider.of(context),
+            ),
+          ),
+          BlocProvider<PointCalculationsBloc>(
+            create: (BuildContext context) => PointCalculationsBloc(
+              profileDataProvider: RepositoryProvider.of(context),
+            ),
+          ),
+
         ],
         child: BlocBuilder<NetworkBloc, NetworkState>(
           builder: (context, state) {
@@ -217,12 +239,12 @@ class _AppState extends State<App> {
                   locale: state.selectedLanguage.value,
                   supportedLocales: AppLocalizations.supportedLocales,
                   localizationsDelegates:
-                  AppLocalizations.localizationsDelegates,
+                      AppLocalizations.localizationsDelegates,
                   routerDelegate: AppRouter.router.routerDelegate,
                   routeInformationProvider:
-                  AppRouter.router.routeInformationProvider,
+                      AppRouter.router.routeInformationProvider,
                   routeInformationParser:
-                  AppRouter.router.routeInformationParser,
+                      AppRouter.router.routeInformationParser,
                   debugShowCheckedModeBanner: false,
                   title: 'Lets Collect',
                   theme: AppTheme.lightTheme,
