@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,15 +7,19 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_event.dart';
 import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/components/my_button.dart';
+import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/ui/profile/components/my_profile/my_profile_screen_arguments.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:lottie/lottie.dart';
 import '../../bloc/country_bloc/country_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,6 +32,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  bool networkSuccess = false;
+
+
   File? _image;
   XFile? _pickedFile;
   final _picker = ImagePicker();
@@ -126,211 +133,323 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get.lazyPut(() => ImageController());
-    return BlocBuilder<MyProfileBloc, MyProfileState>(
+    return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
-        if (state is MyProfileLoading) {
-          return const Center(
-            child: RefreshProgressIndicator(
-              color: AppColors.secondaryColor,
-              backgroundColor: AppColors.primaryWhiteColor,
-            ),
-          );
-        }
-        if (state is MyProfileLoaded) {
-          String b64 = state.myProfileScreenResponse.data!.photo.toString();
-          final UriData? data = Uri.parse(b64).data;
-          Uint8List bytesImage = data!.contentAsBytes();
-          print("PHOTO CODE : $bytesImage");
-          return CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                leading: const SizedBox(),
-                pinned: false,
-                stretch: true,
+        if(state is NetworkSuccess){
+          return BlocBuilder<MyProfileBloc, MyProfileState>(
+            builder: (context, state) {
+              if (state is MyProfileLoading) {
+                return const Center(
+                  child: RefreshProgressIndicator(
+                    color: AppColors.secondaryColor,
+                    backgroundColor: AppColors.primaryWhiteColor,
+                  ),
+                );
+              }
+              if (state is HomeErrorState) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Lottie.asset(Assets.TRY_AGAIN),
+                      const Text("state"),
+                    ],
+                  ),
+                );
+              }
+              if (state is MyProfileLoaded) {
+                String b64 = state.myProfileScreenResponse.data!.photo.toString();
+                final UriData? data = Uri.parse(b64).data;
+                Uint8List bytesImage = data!.contentAsBytes();
+                print("PHOTO CODE : $bytesImage");
+                return CustomScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  slivers: [
+                    SliverAppBar(
+                      leading: const SizedBox(),
+                      pinned: false,
+                      stretch: true,
 
-                // snap: true,
-                // collapsedHeight: 60,
-                backgroundColor: AppColors.primaryColor,
-                expandedHeight: getProportionateScreenHeight(220),
-                elevation: 0,
-                systemOverlayStyle: SystemUiOverlayStyle.light,
-                shape: const ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  background: SafeArea(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                              flex: 3,
-                              child: bytesImage != null
-                                  ? Container(
-                                width: 150.0,
-                                height: 150.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  // border: Border.all(
-                                  //   color: AppColors.secondaryColor,
-                                  //   width: 2.0,
-                                  // ),
-                                  image: DecorationImage(
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.cover,
-                                    image: MemoryImage(bytesImage),
-                                  ),
-                                ),
-                              )
-                                  : Container(
-                                  alignment: Alignment.center,
-                                  width: 130,
-                                  height: 130,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.shadow,
-                                    // borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: const Stack(children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text("Add"),
-                                    ),
-                                    Positioned(
-                                        bottom: 8,
-                                        right: 8,
-                                        child: Icon(
-                                          Icons.add_a_photo_outlined,
-                                          color: AppColors.secondaryColor,
-                                        )
-                                      // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                    ),
-                                  ]))
-                            // GestureDetector(
-                            //     onTap: () {
-                            //       _pickImage();
-                            //     },
-                            //     child: _pickedFile != null
-                            //         ? Container(
-                            //             alignment: Alignment.center,
-                            //             width: 130,
-                            //             height: 130,
-                            //             // color: Colors.grey[300],
-                            //             decoration: const BoxDecoration(
-                            //               shape: BoxShape.circle,
-                            //               // borderRadius: BorderRadius.circular(100),
-                            //             ),
-                            //             child: ClipRRect(
-                            //               borderRadius:
-                            //                   BorderRadius.circular(100),
-                            //               child: Image.file(
-                            //                 File(_pickedFile!.path),
-                            //                 width: 130,
-                            //                 height: 130,
-                            //                 fit: BoxFit.cover,
-                            //               ),
-                            //             ),
-                            //           )
-                            //         : Container(
-                            //             alignment: Alignment.center,
-                            //             width: 130,
-                            //             height: 130,
-                            //             decoration: const BoxDecoration(
-                            //               shape: BoxShape.circle,
-                            //               color: AppColors.shadow,
-                            //               // borderRadius: BorderRadius.circular(100),
-                            //             ),
-                            //             child: const Stack(
-                            //               children: [
-                            //                 Align(
-                            //                   alignment: Alignment.center,
-                            //                   child: Text("Add"),
-                            //                 ),
-                            //                 Positioned(
-                            //                     bottom: 8,
-                            //                     right: 8,
-                            //                     child: Icon(
-                            //                       Icons.add_a_photo_outlined,
-                            //                       color:
-                            //                           AppColors.secondaryColor,
-                            //                     )
-                            //                     // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                            //                     ),
-                            //               ],
-                            //             ),
-                            //           )),
-                          ),
-                          const SizedBox(height: 10),
-                          Flexible(
-                            flex: 1,
-                            child: Text(
-                              // ObjectFactory().prefs.getUserName() ??
-                              state.myProfileScreenResponse.data!.userName
-                                  .toString(),
-                              style: GoogleFonts.openSans(
-                                color: AppColors.secondaryColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.fade,
-                              maxLines: 3,
-                              softWrap: true,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SliverPadding(
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 20,
+                      // snap: true,
+                      // collapsedHeight: 60,
+                      backgroundColor: AppColors.primaryColor,
+                      expandedHeight: getProportionateScreenHeight(220),
+                      elevation: 0,
+                      systemOverlayStyle: SystemUiOverlayStyle.light,
+                      shape: const ContinuousRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            showLanguageBottomSheet(context);
-                          },
-                          child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0x4F000000),
-                                  blurRadius: 4.10,
-                                  offset: Offset(2, 4),
-                                  spreadRadius: 0,
+                      ),
+                      flexibleSpace: FlexibleSpaceBar(
+                        centerTitle: true,
+                        background: SafeArea(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                    flex: 3,
+                                    child: bytesImage != null
+                                        ? Container(
+                                      width: 150.0,
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        // border: Border.all(
+                                        //   color: AppColors.secondaryColor,
+                                        //   width: 2.0,
+                                        // ),
+                                        image: DecorationImage(
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(bytesImage),
+                                        ),
+                                      ),
+                                    )
+                                        : Container(
+                                        alignment: Alignment.center,
+                                        width: 130,
+                                        height: 130,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.shadow,
+                                          // borderRadius: BorderRadius.circular(100),
+                                        ),
+                                        child: const Stack(children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Text("Add"),
+                                          ),
+                                          Positioned(
+                                              bottom: 8,
+                                              right: 8,
+                                              child: Icon(
+                                                Icons.add_a_photo_outlined,
+                                                color: AppColors.secondaryColor,
+                                              )
+                                            // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                          ),
+                                        ]))
                                 ),
+                                const SizedBox(height: 10),
+                                Flexible(
+                                  flex: 1,
+                                  child: Text(
+                                    // ObjectFactory().prefs.getUserName() ??
+                                    state.myProfileScreenResponse.data!.userName
+                                        .toString(),
+                                    style: GoogleFonts.openSans(
+                                      color: AppColors.secondaryColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.fade,
+                                    maxLines: 3,
+                                    softWrap: true,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
                               ],
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0,
-                                  bottom: 8.0,
-                                  right: 8.0,
-                                  left: 8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .changelanguage,
-                                    style: GoogleFonts.roboto(
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate([
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showLanguageBottomSheet(context);
+                                },
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x4F000000),
+                                        blurRadius: 4.10,
+                                        offset: Offset(2, 4),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8.0,
+                                        right: 8.0,
+                                        left: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .changelanguage,
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing:
+                                            0, // This is the default value for normal line height
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                        ),
+                                        Container(
+                                          height: 20,
+                                          child: BlocBuilder<LanguageBloc,
+                                              LanguageState>(
+                                            builder: (context, state) {
+                                              return state.selectedLanguage.image
+                                                  .image();
+                                            },
+                                          ),
+                                        ),
+                                        const Icon(
+                                          Icons.arrow_forward_ios_sharp,
+                                          size: 19,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: ProfileDetailsListTileWidget(
+                                  onPressed: () {
+                                    context.push(
+                                      "/my_profile",
+                                      extra: MyProfileArguments(
+                                        first_name: state
+                                            .myProfileScreenResponse.data!.firstName
+                                            .toString(),
+                                        last_name: state
+                                            .myProfileScreenResponse.data!.lastName
+                                            .toString(),
+                                        email: state
+                                            .myProfileScreenResponse.data!.email
+                                            .toString(),
+                                        mobile_no: state
+                                            .myProfileScreenResponse.data!.mobileNo
+                                            .toString(),
+                                        user_name: state
+                                            .myProfileScreenResponse.data!.userName
+                                            .toString(),
+                                        gender: state
+                                            .myProfileScreenResponse.data!.gender
+                                            .toString(),
+                                        dob: state.myProfileScreenResponse.data!.dob
+                                            .toString(),
+                                        nationality_name_en: state
+                                            .myProfileScreenResponse
+                                            .data!
+                                            .nationalityNameEn
+                                            .toString(),
+                                        city_name: state
+                                            .myProfileScreenResponse.data!.cityName
+                                            .toString(),
+                                        country_name_en: state.myProfileScreenResponse
+                                            .data!.countryNameEn
+                                            .toString(),
+                                        photo: state
+                                            .myProfileScreenResponse.data!.photo
+                                            .toString(),
+                                        nationality_id: state.myProfileScreenResponse.data!.nationalityId!.toInt(),
+                                        country_id: state.myProfileScreenResponse.data!.countryId!.toInt(),
+                                        city: state.myProfileScreenResponse.data!.city.toString(),
+                                      ),
+                                    );
+                                    print("MyProfile tapped!");
+                                  },
+                                  labelText: AppLocalizations.of(context)!.myprofile,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: EdgeInsets.only(top: 18),
+                                child: ProfileDetailsListTileWidget(
+                                  onPressed: () {
+                                    context.push("/Point_Tracker");
+                                    print("Point Tracker tapped!");
+                                  },
+                                  labelText:
+                                  AppLocalizations.of(context)!.pointtracker,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18),
+                                child: ProfileDetailsListTileWidget(
+                                  onPressed: () {
+                                    context.push("/Redemption_Tracker");
+                                    print("Redemption Tracker tapped!");
+                                  },
+                                  labelText:
+                                  AppLocalizations.of(context)!.redemptiontracker,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: ProfileDetailsListTileWidget(
+                                  onPressed: () {
+                                    context.push("/Purchase_History");
+                                    print("Purchase History tapped!");
+                                  },
+                                  labelText:
+                                  AppLocalizations.of(context)!.purchasehistory,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.push('/help');
+                                  },
+                                  child: ProfileDetailsListTileWidget(
+                                    labelText: AppLocalizations.of(context)!.help,
+                                    textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
@@ -338,221 +457,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       0, // This is the default value for normal line height
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 150,
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: ProfileDetailsListTileWidget(
+                                  labelText: AppLocalizations.of(context)!
+                                      .notificationcenter,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
                                   ),
-                                  Container(
-                                    height: 20,
-                                    child: BlocBuilder<LanguageBloc,
-                                        LanguageState>(
-                                      builder: (context, state) {
-                                        return state.selectedLanguage.image
-                                            .image();
-                                      },
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: ProfileDetailsListTileWidget(
+                                  labelText:
+                                  AppLocalizations.of(context)!.referafriend,
+                                  textStyle: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing:
+                                    0, // This is the default value for normal line height
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _showDialogBox(context: context);
+                                  },
+                                  child: ProfileDetailsListTileWidget(
+                                    labelText: AppLocalizations.of(context)!.logout,
+                                    textStyle: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing:
+                                      0, // This is the default value for normal line height
                                     ),
                                   ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios_sharp,
-                                    size: 19,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 0),
-                          child: ProfileDetailsListTileWidget(
-                            onPressed: () {
-                              context.push(
-                                "/my_profile",
-                                extra: MyProfileArguments(
-                                  first_name: state
-                                      .myProfileScreenResponse.data!.firstName
-                                      .toString(),
-                                  last_name: state
-                                      .myProfileScreenResponse.data!.lastName
-                                      .toString(),
-                                  email: state
-                                      .myProfileScreenResponse.data!.email
-                                      .toString(),
-                                  mobile_no: state
-                                      .myProfileScreenResponse.data!.mobileNo
-                                      .toString(),
-                                  user_name: state
-                                      .myProfileScreenResponse.data!.userName
-                                      .toString(),
-                                  gender: state
-                                      .myProfileScreenResponse.data!.gender
-                                      .toString(),
-                                  dob: state.myProfileScreenResponse.data!.dob
-                                      .toString(),
-                                  nationality_name_en: state
-                                      .myProfileScreenResponse
-                                      .data!
-                                      .nationalityNameEn
-                                      .toString(),
-                                  city_name: state
-                                      .myProfileScreenResponse.data!.cityName
-                                      .toString(),
-                                  country_name_en: state.myProfileScreenResponse
-                                      .data!.countryNameEn
-                                      .toString(),
-                                  photo: state
-                                      .myProfileScreenResponse.data!.photo
-                                      .toString(),
-                                  nationality_id: state.myProfileScreenResponse.data!.nationalityId!.toInt(),
-                                  country_id: state.myProfileScreenResponse.data!.countryId!.toInt(),
-                                  city: state.myProfileScreenResponse.data!.city.toString(),
                                 ),
-                              );
-                              print("MyProfile tapped!");
-                            },
-                            labelText: AppLocalizations.of(context)!.myprofile,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                            ],
                           ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: EdgeInsets.only(top: 18),
-                          child: ProfileDetailsListTileWidget(
-                            onPressed: () {
-                              context.push("/Point_Tracker");
-                              print("Point Tracker tapped!");
-                            },
-                            labelText:
-                            AppLocalizations.of(context)!.pointtracker,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18),
-                          child: ProfileDetailsListTileWidget(
-                            onPressed: () {
-                              context.push("/Redemption_Tracker");
-                              print("Redemption Tracker tapped!");
-                            },
-                            labelText:
-                            AppLocalizations.of(context)!.redemptiontracker,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: ProfileDetailsListTileWidget(
-                            onPressed: () {
-                              context.push("/Purchase_History");
-                              print("Purchase History tapped!");
-                            },
-                            labelText:
-                            AppLocalizations.of(context)!.purchasehistory,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              context.push('/help');
-                            },
-                            child: ProfileDetailsListTileWidget(
-                              labelText: AppLocalizations.of(context)!.help,
-                              textStyle: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing:
-                                0, // This is the default value for normal line height
-                              ),
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: ProfileDetailsListTileWidget(
-                            labelText: AppLocalizations.of(context)!
-                                .notificationcenter,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: ProfileDetailsListTileWidget(
-                            labelText:
-                            AppLocalizations.of(context)!.referafriend,
-                            textStyle: GoogleFonts.roboto(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.normal,
-                              letterSpacing:
-                              0, // This is the default value for normal line height
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              _showDialogBox(context: context);
-                            },
-                            child: ProfileDetailsListTileWidget(
-                              labelText: AppLocalizations.of(context)!.logout,
-                              textStyle: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing:
-                                0, // This is the default value for normal line height
-                              ),
-                            ),
-                          ),
-                        ).animate().then(delay: 200.ms).slideY(),
-                      ],
+                        ]),
+                      ),
+                      padding: const EdgeInsets.only(
+                          top: 25, left: 15, right: 15, bottom: 110),
                     ),
-                  ]),
-                ),
-                padding: const EdgeInsets.only(
-                    top: 25, left: 15, right: 15, bottom: 110),
-              ),
-            ],
+                  ],
+                );
+              } else {
+                return const SizedBox();
+              }
+            },
           );
-        } else {
-          return const SizedBox();
+        }else if (state is NetworkFailure) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(Assets.NO_INTERNET),
+                Text(
+                  "You are not connected to the internet",
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryGrayColor,
+                    fontSize: 20,
+                  ),
+                ).animate().scale(delay: 200.ms, duration: 300.ms),
+              ],
+            ),
+          );
+        }
+        return const SizedBox();
+      },
+      listener: (BuildContext context, NetworkState state) {
+        if (state is NetworkSuccess) {
+          networkSuccess = true;
         }
       },
-    );
+
+);
   }
 }
 

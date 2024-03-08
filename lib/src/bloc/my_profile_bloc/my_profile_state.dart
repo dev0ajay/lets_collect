@@ -23,6 +23,16 @@ class MyProfileLoaded extends MyProfileState {
   List<Object> get props => [myProfileScreenResponse];
 }
 
+class MyProfileErrorState extends MyProfileState {
+  final String errorMsg;
+  const MyProfileErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+
+
+
 ///EditProfile
 class MyEditProfileInitial extends MyProfileState {
   @override
@@ -36,14 +46,21 @@ class MyEditProfileLoading extends MyProfileState {
 
 class MyEditProfileLoaded extends MyProfileState {
   final EditProfileRequestResponse editProfileRequestResponse;
-  MyEditProfileLoaded({required this.editProfileRequestResponse});
+  const MyEditProfileLoaded({required this.editProfileRequestResponse});
   @override
   List<Object> get props => [editProfileRequestResponse];
 }
 
-class MyEditProfileError extends MyProfileState {
-  final EditProfileRequestResponse editProfileRequestResponse;
-  MyEditProfileError({required this.editProfileRequestResponse});
+// class MyEditProfileError extends MyProfileState {
+//   final EditProfileRequestResponse editProfileRequestResponse;
+//   const MyEditProfileError({required this.editProfileRequestResponse});
+//   @override
+//   List<Object> get props => [editProfileRequestResponse];
+// }
+
+class MyEditProfileErrorState extends MyProfileState {
+  final String errorMsg;
+  const MyEditProfileErrorState({required this.errorMsg});
   @override
-  List<Object> get props => [editProfileRequestResponse];
+  List<Object> get props => [errorMsg];
 }
