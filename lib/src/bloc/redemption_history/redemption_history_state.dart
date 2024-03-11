@@ -23,3 +23,10 @@ class RedemptionHistoryLoaded extends RedemptionHistoryState {
   @override
   List<Object?> get props => [redemptionHistoryResponse];
 }
+
+class RedemptionHistoryErrorState extends RedemptionHistoryState {
+  final String errorMsg;
+  const RedemptionHistoryErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
