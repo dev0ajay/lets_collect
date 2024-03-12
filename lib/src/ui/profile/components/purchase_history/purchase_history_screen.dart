@@ -61,7 +61,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   String selectedSortFilter = "";
   String sortQuery = "";
   bool isSuperMarketFilterTileSelected = false;
-  bool isMonthFilterTileSelected = false;
+  bool isMonthAndYearFilterTileSelected = false;
   String selectedSuperMarketFilters = "";
   String selectedMonthAndYearFilters = "";
   List<String> selectedSuperMarketVariants = <String>[];
@@ -711,13 +711,13 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                     onTap: () {
                                                                       setState(
                                                                               () {
-                                                                            isMonthFilterTileSelected =
-                                                                            !isMonthFilterTileSelected;
+                                                                                isMonthAndYearFilterTileSelected =
+                                                                            !isMonthAndYearFilterTileSelected;
                                                                           });
                                                                     },
                                                                     child:
                                                                     ListTile(
-                                                                      trailing: !isMonthFilterTileSelected ==
+                                                                      trailing: !isMonthAndYearFilterTileSelected ==
                                                                           true
                                                                           ? const ImageIcon(
                                                                         color: AppColors.secondaryColor,
@@ -731,7 +731,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           "Month and Year"),
                                                                     ),
                                                                   ),
-                                                                  isMonthFilterTileSelected ==
+                                                                  isMonthAndYearFilterTileSelected ==
                                                                       true
                                                                       ? SingleChildScrollView(
                                                                     child:
@@ -868,7 +868,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           print(
                                                                               "Selected SuperMarket: $selectedSuperMarketFilters");
                                                                           print(
-                                                                              "Selected Month: $selectedMonthAndYearFilters");
+                                                                              "Selected MonthAndYear: $selectedMonthAndYearFilters");
                                                                           BlocProvider.of<PurchaseHistoryBloc>(context)
                                                                               .add(
                                                                             GetPurchaseHistory(

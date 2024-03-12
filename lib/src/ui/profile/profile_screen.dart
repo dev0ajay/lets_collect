@@ -32,9 +32,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   bool networkSuccess = false;
-
 
   File? _image;
   XFile? _pickedFile;
@@ -94,10 +92,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         title: Text(Language.values[index].text),
                         trailing:
-                        Language.values[index] == state.selectedLanguage
-                            ? Icon(Icons.check_circle_rounded,
-                            color: AppColors.secondaryColor)
-                            : null,
+                            Language.values[index] == state.selectedLanguage
+                                ? Icon(Icons.check_circle_rounded,
+                                    color: AppColors.secondaryColor)
+                                : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           side: Language.values[index] == state.selectedLanguage
@@ -105,9 +103,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : BorderSide(color: Colors.grey[300]!),
                         ),
                         tileColor:
-                        Language.values[index] == state.selectedLanguage
-                            ? Colors.grey
-                            : null,
+                            Language.values[index] == state.selectedLanguage
+                                ? Colors.grey
+                                : null,
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -131,11 +129,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
 
+  void _retryApiCall() {
+    // Trigger the API call here
+    BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
+    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
-        if(state is NetworkSuccess){
+        if (state is NetworkSuccess) {
           return BlocBuilder<MyProfileBloc, MyProfileState>(
             builder: (context, state) {
               if (state is MyProfileLoading) {
@@ -157,7 +162,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 );
               }
               if (state is MyProfileLoaded) {
-                String b64 = state.myProfileScreenResponse.data!.photo.toString();
+                String b64 =
+                    state.myProfileScreenResponse.data!.photo.toString();
                 final UriData? data = Uri.parse(b64).data;
                 Uint8List bytesImage = data!.contentAsBytes();
                 print("PHOTO CODE : $bytesImage");
@@ -192,46 +198,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     flex: 3,
                                     child: bytesImage != null
                                         ? Container(
-                                      width: 150.0,
-                                      height: 150.0,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        // border: Border.all(
-                                        //   color: AppColors.secondaryColor,
-                                        //   width: 2.0,
-                                        // ),
-                                        image: DecorationImage(
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.cover,
-                                          image: MemoryImage(bytesImage),
-                                        ),
-                                      ),
-                                    )
+                                            width: 150.0,
+                                            height: 150.0,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              // border: Border.all(
+                                              //   color: AppColors.secondaryColor,
+                                              //   width: 2.0,
+                                              // ),
+                                              image: DecorationImage(
+                                                alignment: Alignment.center,
+                                                fit: BoxFit.cover,
+                                                image: MemoryImage(bytesImage),
+                                              ),
+                                            ),
+                                          )
                                         : Container(
-                                        alignment: Alignment.center,
-                                        width: 130,
-                                        height: 130,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.shadow,
-                                          // borderRadius: BorderRadius.circular(100),
-                                        ),
-                                        child: const Stack(children: [
-                                          Align(
                                             alignment: Alignment.center,
-                                            child: Text("Add"),
-                                          ),
-                                          Positioned(
-                                              bottom: 8,
-                                              right: 8,
-                                              child: Icon(
-                                                Icons.add_a_photo_outlined,
-                                                color: AppColors.secondaryColor,
-                                              )
-                                            // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                          ),
-                                        ]))
-                                ),
+                                            width: 130,
+                                            height: 130,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColors.shadow,
+                                              // borderRadius: BorderRadius.circular(100),
+                                            ),
+                                            child: const Stack(children: [
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text("Add"),
+                                              ),
+                                              Positioned(
+                                                  bottom: 8,
+                                                  right: 8,
+                                                  child: Icon(
+                                                    Icons.add_a_photo_outlined,
+                                                    color: AppColors
+                                                        .secondaryColor,
+                                                  )
+                                                  // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                                  ),
+                                            ]))),
                                 const SizedBox(height: 10),
                                 Flexible(
                                   flex: 1,
@@ -291,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         left: 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           AppLocalizations.of(context)!
@@ -301,7 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             fontWeight: FontWeight.w500,
                                             fontStyle: FontStyle.normal,
                                             letterSpacing:
-                                            0, // This is the default value for normal line height
+                                                0, // This is the default value for normal line height
                                           ),
                                         ),
                                         SizedBox(
@@ -312,7 +318,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           child: BlocBuilder<LanguageBloc,
                                               LanguageState>(
                                             builder: (context, state) {
-                                              return state.selectedLanguage.image
+                                              return state
+                                                  .selectedLanguage.image
                                                   .image();
                                             },
                                           ),
@@ -337,53 +344,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       "/my_profile",
                                       extra: MyProfileArguments(
                                         first_name: state
-                                            .myProfileScreenResponse.data!.firstName
+                                            .myProfileScreenResponse
+                                            .data!
+                                            .firstName
                                             .toString(),
-                                        last_name: state
-                                            .myProfileScreenResponse.data!.lastName
+                                        last_name: state.myProfileScreenResponse
+                                            .data!.lastName
                                             .toString(),
                                         email: state
                                             .myProfileScreenResponse.data!.email
                                             .toString(),
-                                        mobile_no: state
-                                            .myProfileScreenResponse.data!.mobileNo
+                                        mobile_no: state.myProfileScreenResponse
+                                            .data!.mobileNo
                                             .toString(),
-                                        user_name: state
-                                            .myProfileScreenResponse.data!.userName
+                                        user_name: state.myProfileScreenResponse
+                                            .data!.userName
                                             .toString(),
-                                        gender: state
-                                            .myProfileScreenResponse.data!.gender
+                                        gender: state.myProfileScreenResponse
+                                            .data!.gender
                                             .toString(),
-                                        dob: state.myProfileScreenResponse.data!.dob
+                                        dob: state
+                                            .myProfileScreenResponse.data!.dob
                                             .toString(),
                                         nationality_name_en: state
                                             .myProfileScreenResponse
                                             .data!
                                             .nationalityNameEn
                                             .toString(),
-                                        city_name: state
-                                            .myProfileScreenResponse.data!.cityName
+                                        city_name: state.myProfileScreenResponse
+                                            .data!.cityName
                                             .toString(),
-                                        country_name_en: state.myProfileScreenResponse
-                                            .data!.countryNameEn
+                                        country_name_en: state
+                                            .myProfileScreenResponse
+                                            .data!
+                                            .countryNameEn
                                             .toString(),
                                         photo: state
                                             .myProfileScreenResponse.data!.photo
                                             .toString(),
-                                        nationality_id: state.myProfileScreenResponse.data!.nationalityId!.toInt(),
-                                        country_id: state.myProfileScreenResponse.data!.countryId!.toInt(),
-                                        city: state.myProfileScreenResponse.data!.city.toString(),
+                                        nationality_id: state
+                                            .myProfileScreenResponse
+                                            .data!
+                                            .nationalityId!
+                                            .toInt(),
+                                        country_id: state
+                                            .myProfileScreenResponse
+                                            .data!
+                                            .countryId!
+                                            .toInt(),
+                                        city: state
+                                            .myProfileScreenResponse.data!.city
+                                            .toString(),
                                       ),
                                     );
                                     print("MyProfile tapped!");
                                   },
-                                  labelText: AppLocalizations.of(context)!.myprofile,
+                                  labelText:
+                                      AppLocalizations.of(context)!.myprofile,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -394,14 +417,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push("/Point_Tracker");
                                     print("Point Tracker tapped!");
                                   },
-                                  labelText:
-                                  AppLocalizations.of(context)!.pointtracker,
+                                  labelText: AppLocalizations.of(context)!
+                                      .pointtracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -412,14 +435,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push("/Redemption_Tracker");
                                     print("Redemption Tracker tapped!");
                                   },
-                                  labelText:
-                                  AppLocalizations.of(context)!.redemptiontracker,
+                                  labelText: AppLocalizations.of(context)!
+                                      .redemptiontracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -430,14 +453,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push("/Purchase_History");
                                     print("Purchase History tapped!");
                                   },
-                                  labelText:
-                                  AppLocalizations.of(context)!.purchasehistory,
+                                  labelText: AppLocalizations.of(context)!
+                                      .purchasehistory,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -448,13 +471,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push('/help');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: AppLocalizations.of(context)!.help,
+                                    labelText:
+                                        AppLocalizations.of(context)!.help,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                      0, // This is the default value for normal line height
+                                          0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -469,21 +493,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
                               Padding(
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: ProfileDetailsListTileWidget(
-                                  labelText:
-                                  AppLocalizations.of(context)!.referafriend,
+                                  labelText: AppLocalizations.of(context)!
+                                      .referafriend,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                    0, // This is the default value for normal line height
+                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -494,13 +518,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     _showDialogBox(context: context);
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: AppLocalizations.of(context)!.logout,
+                                    labelText:
+                                        AppLocalizations.of(context)!.logout,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                      0, // This is the default value for normal line height
+                                          0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -519,7 +544,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             },
           );
-        }else if (state is NetworkFailure) {
+        }
+        else if (state is NetworkFailure) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -543,8 +569,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           networkSuccess = true;
         }
       },
-
-);
+    );
   }
 }
 
