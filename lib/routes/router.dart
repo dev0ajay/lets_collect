@@ -746,7 +746,7 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child: const HelpScreen(),
+                  child:  ContactUsScreen(),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,

@@ -15,7 +15,6 @@ import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../widgets/bar_chart_widget.dart';
 
 class PointTrackerScreen extends StatefulWidget {
   const PointTrackerScreen({super.key});
@@ -1178,7 +1177,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                             color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            boxShadow: [
+                                            boxShadow: const [
                                               BoxShadow(
                                                 color: AppColors.boxShadow,
                                                 blurRadius: 4,

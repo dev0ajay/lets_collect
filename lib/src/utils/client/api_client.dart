@@ -363,6 +363,7 @@ class ApiClient {
       PurchaseHistoryRequest purchaseHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY,
+      data: purchaseHistoryRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
@@ -377,6 +378,7 @@ class ApiClient {
       PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
+      data:purchaseHistoryDetailsRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),

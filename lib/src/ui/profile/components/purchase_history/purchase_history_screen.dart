@@ -68,23 +68,27 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   List<String> selectedMonthAndYearVariants = <String>[];
   late  String totalAmount = "0";
   Map<String, dynamic> dateAmountMap = {};
+
   List<String> sort = <String>[
     "Recent",
-    "Expiry First",
+    "Points (Low to High)",
+    "Points (High to Low)",
   ];
+
+
   List<PurchaseData> purchaseList = [];
 
 
 
 
   void checkSameDate(PurchaseHistoryResponse jsonData) {
-    for (int i = 0; i < jsonData.data!.length; i++) {
-      String currentDate = jsonData.data![i].receiptDate.toString();
+    for (int i = 0; i < jsonData.data.length; i++) {
+      String currentDate = jsonData.data[i].receiptDate.toString();
 
-      for (int j = i + 1; j < jsonData.data!.length; j++) {
-        if (currentDate == jsonData.data![j].receiptDate) {
-            totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
-            print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
+      for (int j = i + 1; j < jsonData.data.length; j++) {
+        if (currentDate == jsonData.data[j].receiptDate) {
+            totalAmount = (jsonData.data[i].totalAmount + jsonData.data[j].totalAmount);
+            print("Date ${jsonData.data[j].receiptDate} found at indexes $i and $j");
           print("Total amount: $totalAmount of indexes $i and $j");
           // You can do further processing here if needed
         }
@@ -98,10 +102,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    _purchaseMonthController =
-        TextEditingController();
-    _purchaseYearController =
-        TextEditingController();
+    _purchaseMonthController = TextEditingController();
+    _purchaseYearController = TextEditingController();
     BlocProvider.of<FilterBloc>(context).add(GetFilterList());
     BlocProvider.of<PurchaseHistoryBloc>(context).add(
       GetPurchaseHistory(
@@ -163,7 +165,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
               child: BlocBuilder<PurchaseHistoryBloc, PurchaseHistoryState>(
                 builder: (context, state) {
                   if (state is PurchaseHistoryLoading) {
-                    print('PurchaseHistoryLoading state detected');
                     return const Center(
                       heightFactor: 12,
                       child: RefreshProgressIndicator(
@@ -173,6 +174,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                     );
                   }
                   if (state is PurchaseHistoryLoaded) {
+                    print('PurchaseHistoryLoading state detected');
                     ///Sorting to do
                     // List<PurchaseData> sortedPurchaseDataList = List.from(state.purchaseHistoryResponse.data!);
                     // sortedPurchaseDataList = state.purchaseHistoryResponse.data?.sort((a, b) => a.receiptDate!.compareTo(b.receiptDate!));
@@ -233,7 +235,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                       height: MediaQuery.of(context)
                                                           .size
                                                           .height /
-                                                          3,
+                                                          2,
                                                       child: SingleChildScrollView(
                                                         child: Column(
                                                           children: [
@@ -279,42 +281,38 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                             15,
                                                                           ),
                                                                         ),
-                                                                        selectedSortVariants
-                                                                            .contains(
-                                                                            sort[index])
+                                                                        selectedSortVariants.contains(sort[index])
                                                                             ? InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(
-                                                                                    () {
+                                                                          onTap: () {
+                                                                            setState(() {
                                                                                   selectedSortVariants.remove(sort[index]);
                                                                                 });
                                                                           },
-                                                                          child: const CustomRoundedButton(
-                                                                              enabled:
-                                                                              true),
+                                                                          child: const CustomRoundedButton(enabled: true),
                                                                         )
                                                                             : InkWell(
                                                                           onTap:
                                                                               () {
-                                                                            setState(
-                                                                                    () {
-                                                                                  selectedSortVariants.add(sort[index]);
-                                                                                  if (selectedSortVariants.length >
-                                                                                      1) {
-                                                                                    selectedSortVariants.removeAt(0);
-                                                                                  }
-                                                                                  selectedSortFilter =
-                                                                                  selectedSortVariants[0];
-                                                                                  if (selectedSortFilter ==
-                                                                                      "Recent") {
-                                                                                    sortQuery = "recent";
-                                                                                  }
-                                                                                  if (selectedSortFilter ==
-                                                                                      "Expiry First") {
-                                                                                    sortQuery = "expire_first";
-                                                                                  }
-                                                                                });
+                                                                            setState(() {
+                                                                                      selectedSortVariants.add(sort[index]);
+                                                                                      if (selectedSortVariants.length > 1) {
+                                                                                        selectedSortVariants.removeAt(0);
+                                                                                      }
+                                                                                      selectedSortFilter =
+                                                                                      selectedSortVariants[0];
+                                                                                      if (selectedSortFilter ==
+                                                                                          "Recent") {
+                                                                                        sortQuery = "recent";
+                                                                                      }
+                                                                                      if (selectedSortFilter ==
+                                                                                          "Points Low") {
+                                                                                        sortQuery = "total_low";
+                                                                                      }
+                                                                                      if (selectedSortFilter ==
+                                                                                          "Points High") {
+                                                                                        sortQuery = "total_high";
+                                                                                      }
+                                                                                    });
                                                                           },
                                                                           child:
                                                                           const CustomRoundedButton(
@@ -408,7 +406,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         month: '',
                                                                         year: '',
                                                                         supermarketId: '',
-                                                                        page: '',
+                                                                        page: "1",
                                                                       ),
                                                                     ),
                                                                   );
@@ -1052,16 +1050,16 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           ),
                         ),
                         state is PurchaseHistoryLoaded
-                            ? state.purchaseHistoryResponse.data!.isNotEmpty
+                            ? state.purchaseHistoryResponse.data.isNotEmpty
                             ?ListView.builder(
                           shrinkWrap: true,
-                          itemCount: state.purchaseHistoryResponse.data!.length,
+                          itemCount: state.purchaseHistoryResponse.data.length,
                           padding: const EdgeInsets.only(bottom: 120, top: 10),
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                context.push('/purchase_history_details',extra: state.purchaseHistoryResponse.data![index].receiptId.toString());
+                                context.push('/purchase_history_details',extra: state.purchaseHistoryResponse.data[index].receiptId.toString());
                               },
                               child: Container(
                                 width: double.infinity,
@@ -1091,7 +1089,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                     children: [
                                       Text(
                                         state.purchaseHistoryResponse
-                                            .data![index].branch!,
+                                            .data[index].branch,
                                         style: GoogleFonts.roboto(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
@@ -1104,8 +1102,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                       Text(
                                         "Total amount"
                                         // "${AppLocalizations.of(context)!.totalamount} "
-                                            "  ${state.purchaseHistoryResponse.data![index].totalAmount} "
-                                            "${state.purchaseHistoryResponse.data![index].currencyCode}",
+                                            "  ${state.purchaseHistoryResponse.data[index].totalAmount} "
+                                            "${state.purchaseHistoryResponse.data[index].currencyCode}",
                                         style: GoogleFonts.roboto(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -1116,7 +1114,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                       ),
                                       Text(
                                         state.purchaseHistoryResponse
-                                            .data![index].receiptDate.toString(),
+                                            .data[index].receiptDate.toString(),
                                         style: GoogleFonts.roboto(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,
