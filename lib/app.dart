@@ -35,7 +35,6 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/resources/api_providers/auth_provider.dart';
 import 'package:lets_collect/src/bloc/sign_up_bloc/sign_up_bloc.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
-import 'package:lets_collect/src/resources/api_providers/contact_us_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/home_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/point_tracker_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
@@ -90,9 +89,6 @@ class _AppState extends State<App> {
         ),
         RepositoryProvider(
           create: (context) => RedemptionHistoryDataProvider(),
-        ),
-        RepositoryProvider(
-          create: (context) => ContactUsProvider(),
         ),
       ],
       child: MultiBlocProvider(
@@ -200,7 +196,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider<ContactUsBloc>(
             create: (BuildContext context) => ContactUsBloc(
-              contactUsProvider: RepositoryProvider.of(context),
+              myProfileDataProvider: RepositoryProvider.of(context),
             ),
           ),
           BlocProvider<HowToRedeemMyPointsBloc>(
