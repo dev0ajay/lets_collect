@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_event.dart';
 import 'package:lets_collect/src/bloc/language/language_state.dart';
@@ -129,13 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
 
-  void _retryApiCall() {
-    // Trigger the API call here
-    BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NetworkBloc, NetworkState>(
@@ -151,12 +143,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               }
-              if (state is HomeErrorState) {
+              if (state is MyProfileErrorState) {
                 return Center(
                   child: Column(
                     children: [
                       Lottie.asset(Assets.TRY_AGAIN),
-                      const Text("state"),
+                      Expanded(
+                          flex: 2,
+                          child: Text(state.errorMsg)),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            backgroundColor: AppColors.primaryColor),
+                        onPressed: () {
+                          BlocProvider.of<MyProfileBloc>(context)
+                              .add(GetProfileDataEvent());
+                        },
+                        child: const Text(
+                          "Try again....",
+                          style: TextStyle(color: AppColors.primaryWhiteColor),
+                        ),
+                      )
                     ],
                   ),
                 );
@@ -544,8 +553,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
             },
           );
-        }
-        else if (state is NetworkFailure) {
+        } else if (state is NetworkFailure) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

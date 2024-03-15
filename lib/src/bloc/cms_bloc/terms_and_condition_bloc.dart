@@ -18,6 +18,9 @@ class TermsAndConditionBloc extends Bloc<TermsAndConditionEvent, TermsAndConditi
      if(stateModel is SuccessState) {
        emit(TermsAndConditionLoaded(termsAndConditionResponse: stateModel.value));
      }
+     if(stateModel is ErrorState){
+       emit(TermsAndConditionErrorState(errorMsg: stateModel.msg));
+     }
     });
   }
 }

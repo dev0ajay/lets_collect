@@ -18,6 +18,9 @@ class HowToRedeemMyPointsBloc extends Bloc<HowToRedeemMyPointsEvent, HowToRedeem
       if(stateModel is SuccessState) {
         emit(HowToRedeemMyPointsLoaded(howToRedeemMyPointsResponse: stateModel.value));
       }
+      if(stateModel is ErrorState){
+        emit(HowToRedeemMyPointsErrorState(errorMsg: stateModel.msg));
+      }
     });
   }
 }

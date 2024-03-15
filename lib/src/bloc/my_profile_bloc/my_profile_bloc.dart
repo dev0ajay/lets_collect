@@ -26,6 +26,9 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
       if (stateModel is SuccessState) {
         emit(MyProfileLoaded(myProfileScreenResponse: stateModel.value));
       }
+      if(stateModel is ErrorState) {
+        emit(MyProfileErrorState(errorMsg : stateModel.msg));
+      }
     });
 
     on<EditProfileDataEvent>(
@@ -36,6 +39,9 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
         if (stateModel is SuccessState) {
           emit(MyEditProfileLoaded(
               editProfileRequestResponse: stateModel.value));
+        }
+        if(stateModel is ErrorState) {
+          emit(MyEditProfileErrorState(errorMsg :stateModel.msg));
         }
       },
     );

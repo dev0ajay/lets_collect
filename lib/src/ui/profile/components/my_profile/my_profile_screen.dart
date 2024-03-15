@@ -318,7 +318,24 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                     child: Column(
                       children: [
                         Lottie.asset(Assets.TRY_AGAIN),
-                        const Text("state"),
+                        const Expanded(
+                            flex: 0,
+                            child: Text("SJHFBDSJFN")),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<MyProfileBloc>(context)
+                                .add(GetProfileDataEvent());
+                          },
+                          child: const Text(
+                            "Try again....",
+                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        )
                       ],
                     ),
                   );

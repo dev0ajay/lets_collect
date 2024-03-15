@@ -19,6 +19,9 @@ class ContactUsBloc extends Bloc<ContactUsEvent, ContactUsState> {
       if(stateModel is SuccessState) {
         emit(ContactUsLoaded(contactUsRequestResponse: stateModel.value));
       }
+      if(stateModel is ErrorState){
+        emit(ContactUsErrorState(errorMsg: stateModel.msg));
+      }
     });
   }
 }

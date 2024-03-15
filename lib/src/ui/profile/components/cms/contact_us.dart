@@ -111,6 +111,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ),
                 );
               }
+
               if (state is ContactUsLoaded) {
                 if (state.contactUsRequestResponse.success == true) {
                   _showDialogBox(context: context);

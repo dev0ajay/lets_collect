@@ -20,3 +20,10 @@ class HowToRedeemMyPointsLoaded extends HowToRedeemMyPointsState {
   @override
   List<Object> get props => [howToRedeemMyPointsResponse];
 }
+
+class HowToRedeemMyPointsErrorState extends HowToRedeemMyPointsState {
+  final String errorMsg;
+  const HowToRedeemMyPointsErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

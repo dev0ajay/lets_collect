@@ -71,6 +71,35 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
                     ),
                   );
                 }
+
+                if (state is PointCalculationsErrorState) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset(Assets.TRY_AGAIN),
+                        Expanded(
+                            flex: 2,
+                            child: Text(state.errorMsg)),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<PointCalculationsBloc>(context)
+                                .add(GetPointCalculationsEvent());
+                          },
+                          child: const Text(
+                            "Try again....",
+                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+
                 if (state is PointCalculationsLoaded) {
                   return SingleChildScrollView(
                     child: Html(

@@ -9,9 +9,7 @@ import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
-import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../constants/colors.dart';
 
 class PrivacyPoliciesScreen extends StatefulWidget {
@@ -71,6 +69,35 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                     ),
                   );
                 }
+
+                if (state is PrivacyPoliciesErrorState) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset(Assets.TRY_AGAIN),
+                        Expanded(
+                            flex: 2,
+                            child: Text(state.errorMsg)),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<PrivacyPoliciesBloc>(context)
+                                .add(GetPrivacyPolicies());
+                          },
+                          child: const Text(
+                            "Try again....",
+                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+
                 if (state is PrivacyPoliciesLoaded) {
                   return SingleChildScrollView(
                     child: Html(
@@ -109,7 +136,6 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
             );
           }
           return const SizedBox();
-
         },
       ),
     );

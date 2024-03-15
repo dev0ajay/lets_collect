@@ -19,6 +19,9 @@ class PointCalculationsBloc extends Bloc<PointCalculationsEvent, PointCalculatio
         emit(PointCalculationsLoaded(
             pointCalculationsResponse: stateModel.value));
       }
+      if(stateModel is ErrorState){
+        emit(PointCalculationsErrorState(errorMsg: stateModel.msg));
+      }
       });
   }
 }

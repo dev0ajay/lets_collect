@@ -20,3 +20,10 @@ class PointCalculationsLoaded extends PointCalculationsState {
   @override
   List<Object> get props => [];
 }
+
+class PointCalculationsErrorState extends PointCalculationsState {
+  final String errorMsg;
+  const PointCalculationsErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

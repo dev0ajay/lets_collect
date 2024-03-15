@@ -70,6 +70,35 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                     ),
                   );
                 }
+
+                if (state is TermsAndConditionErrorState) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Lottie.asset(Assets.TRY_AGAIN),
+                        Expanded(
+                            flex: 2,
+                            child: Text(state.errorMsg)),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<TermsAndConditionBloc>(context)
+                                .add(GetTermsAndConditionEvent());
+                          },
+                          child: const Text(
+                            "Try again....",
+                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+
                 if (state is TermsAndConditionLoaded) {
                   return SingleChildScrollView(
                     child: Html(

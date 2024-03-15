@@ -20,3 +20,10 @@ class TermsAndConditionLoaded extends TermsAndConditionState {
   @override
   List<Object> get props => [termsAndConditionResponse];
 }
+
+class TermsAndConditionErrorState extends TermsAndConditionState {
+  final String errorMsg;
+  const TermsAndConditionErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
