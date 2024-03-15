@@ -30,13 +30,13 @@ class ScanReceiptApiProvider {
         print("Error type: ${e.type}");
         // print(e.response!.headers);
         // print(e.response!.requestOptions);
-        return StateModel.error("The server isn't responding! Please try again later.");
+        return StateModel.error("Oops! It looks like the server isn't responding! Please try again later");
         // return response!;
       } else if(e.response != null && e.response!.statusCode == 408){
         return StateModel.error("Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!");
         // Something happened in setting up or sending the request that triggered an Error
       }else if(e.response != null && e.response!.statusCode == 404){
-        return StateModel.error("The server isn't responding! Reach out to our support team for assistance. Thank you for your patience!");
+        return StateModel.error("Oops! It looks like the server isn't responding! Please try again later");
         // Something happened in setting up or sending the request that triggered an Error
       }
 
@@ -69,13 +69,13 @@ class ScanReceiptApiProvider {
         print("Error type: ${e.type}");
         // print(e.response!.headers);
         // print(e.response!.requestOptions);
-        return StateModel.error("The server isn't responding! Please try again later.");
+        return StateModel.error("Oops! It looks like the server isn't responding! Please try again later");
         // return response!;
       } else if(e.response != null && e.response!.statusCode == 408){
         return StateModel.error("Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!");
         // Something happened in setting up or sending the request that triggered an Error
       }else if(e.response != null && e.response!.statusCode == 404){
-        return StateModel.error("Please try again later or reach out to our support team for assistance. Thank you for your patience!");
+        return StateModel.error("Oops! It looks like the server isn't responding! Please try again later");
         // Something happened in setting up or sending the request that triggered an Error
       }
 

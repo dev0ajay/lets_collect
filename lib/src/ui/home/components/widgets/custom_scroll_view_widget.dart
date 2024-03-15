@@ -16,7 +16,6 @@ import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
-import 'alert_overlay_widget.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -54,12 +53,10 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
 
     print(
-        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory()
-            .prefs.isEmailNotVerifiedStatus()}");
+        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory().prefs.isEmailNotVerifiedStatus()}");
 
     print(
-        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()
-        }");
+        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()}");
     super.initState();
   }
 
@@ -76,7 +73,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     SizeConfig().init(context);
     return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
@@ -111,15 +107,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
                   ObjectFactory().prefs.setIsEmailVerified(true);
-                  ObjectFactory()
-                  .prefs.setIsEmailNotVerifiedStatus(false);
-                  ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                  // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
+                  // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
                       verifiedPoints: state.homeResponse.emailVerificationPoints
                           .toString());
-                }else if(state.homeResponse.emailVerified == 0) {
-                  ObjectFactory()
-                      .prefs.setIsEmailNotVerifiedStatus(true);
+                } else if (state.homeResponse.emailVerified == 0) {
+                  ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
                 }
                 return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -145,32 +139,52 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Hi ${ObjectFactory().prefs.getUserName() ?? ""}!",
-                              style: GoogleFonts.openSans(
-                                  fontSize: 22, fontWeight: FontWeight.w600),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10)),
-                                      content: SizedBox(
-                                        height: getProportionateScreenHeight(260),
-                                        width: getProportionateScreenWidth(320),
-                                        child: Lottie.asset(Assets.SOON),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.mail_sharp,
+                            Expanded(
+                              flex: 5,
+                              child: Text(
+                                "Hi ${ObjectFactory().prefs.getUserName() ?? ""}!",
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.openSans(
+                                    fontSize: 22, fontWeight: FontWeight.w600),
                               ),
-                              color: Colors.white,
+                            ),
+                            Flexible(
+                              child: Stack(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      context.push('/notification');
+                                    },
+                                    icon: const Icon(
+                                      Icons.mail_sharp,
+                                    ),
+                                    color: AppColors.primaryWhiteColor,
+                                  ),
+                                  // BlocBuilder<NotificationBloc,
+                                  //     NotificationState>(
+                                  //   builder: (context, state) {
+                                  //     return Positioned(
+                                  //       right: 0,
+                                  //       top: 10,
+                                  //       left: 20,
+                                  //       child: Container(
+                                  //         padding: const EdgeInsets.all(2),
+                                  //         decoration: const BoxDecoration(
+                                  //           shape: BoxShape.circle,
+                                  //           color: AppColors
+                                  //               .secondaryColor, // Change color as needed
+                                  //         ),
+                                  //         constraints: const BoxConstraints(
+                                  //           minWidth: 10,
+                                  //           minHeight: 10,
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -228,14 +242,14 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  backgroundColor:
-                                      AppColors.secondaryButtonColor,
+                                  backgroundColor: AppColors.secondaryColor,
                                 ),
                                 onPressed: () {},
                                 child: const Text(
                                   "Bonus point!",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color: AppColors.primaryWhiteColor),
                                 ),
                               ),
                             ),
@@ -463,21 +477,23 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                       const BoxDecoration(
                                                     color: AppColors
                                                         .primaryWhiteColor,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: AppColors.boxShadow,
-                                                            blurRadius: 4,
-                                                            offset: Offset(4, 2),
-                                                            spreadRadius: 0,
-                                                          ),
-                                                          BoxShadow(
-                                                            color: AppColors.boxShadow,
-                                                            blurRadius: 4,
-                                                            offset: Offset(-4, -2),
-                                                            spreadRadius: 0,
-                                                          ),
-                                                        ],
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(4, 2),
+                                                        spreadRadius: 0,
                                                       ),
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(-4, -2),
+                                                        spreadRadius: 0,
+                                                      ),
+                                                    ],
+                                                  ),
                                                   child: CachedNetworkImage(
                                                     fadeInCurve: Curves.easeIn,
                                                     fadeInDuration:

@@ -1,4 +1,6 @@
-
+// To parse this JSON data, do
+//
+//     final googleLoginResponse = googleLoginResponseFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -47,9 +49,9 @@ class Data {
   String? userName;
   String? gender;
   String? dob;
-  int? nationalityId;
+  String? nationalityId;
   String? city;
-  int? countryId;
+  String? countryId;
   String? createdAt;
   int? status;
 

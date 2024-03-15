@@ -50,7 +50,7 @@ class Data {
   String? cityNameAr;
   int? countryId;
   int? status;
-  dynamic photo;
+  String? photo;
 
   Data({
     this.firstName,

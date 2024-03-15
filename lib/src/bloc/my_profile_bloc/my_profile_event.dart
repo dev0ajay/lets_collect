@@ -12,12 +12,13 @@ class GetProfileDataEvent extends MyProfileEvent {
 
 }
 
+
 /// EditProfile
 
-// class EditProfileDataEvent extends MyProfileEvent {
-//   final EditProfileRequest editProfileRequest;
-//   const EditProfileDataEvent({required this.editProfileRequest});
-//   @override
-//   List<Object?> get props => [];
-//
-// }
+class EditProfileDataEvent extends MyProfileEvent {
+  final EditProfileRequest editProfileRequest;
+  const EditProfileDataEvent({required this.editProfileRequest});
+  @override
+  List<Object?> get props => [];
+
+}

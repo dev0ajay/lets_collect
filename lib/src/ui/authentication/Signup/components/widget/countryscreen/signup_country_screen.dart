@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -128,7 +130,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                 .prefs
                 .setAuthToken(token: state.signUpRequestResponse.token);
             ObjectFactory().prefs.setUserName(
-                userName: state.signUpRequestResponse.data.userName);
+                userName: state.signUpRequestResponse.data.firstName);
             ObjectFactory().prefs.setIsLoggedIn(true);
             context.go('/home');
           }
@@ -717,6 +719,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                           .signUpArgumentClass.nationalityID!,
                                       city: selectedCity,
                                       countryId: selectedCountry,
+                                      deviceToken:
+                                          ObjectFactory().prefs.getFcmToken()!,
+                                      deviceType:
+                                          Platform.isAndroid ? "A" : "I",
                                     ),
                                   ),
                                 );

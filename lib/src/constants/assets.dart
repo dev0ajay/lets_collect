@@ -40,6 +40,12 @@ class Assets {
   static const String CONTAINER_SVG = 'assets/svg/container.svg';
   static const String SORT_SVG = 'assets/svg/sort.svg';
   static const String FILTER_SVG = 'assets/svg/filter.svg';
+  static const String NOTIFICATION_SVG = 'assets/svg/notification.svg';
+  static const String MAIL_SVG = 'assets/svg/msg.svg';
+  static const String CONTACT_US_SVG = 'assets/svg/message_icon.svg';
+  static const String SHADE_SVG = 'assets/svg/shade.svg';
+
+
 
 
 
@@ -51,6 +57,8 @@ class Assets {
   static const String BEGA = 'assets/png_icons/bega.png';
   static const String DURRA = 'assets/png_icons/durra.png';
   static const String MAZA = 'assets/png_icons/maza.png';
+  static const String NOTI = 'assets/png_icons/app_icon_android.png';
+
 
 
   ///home screen

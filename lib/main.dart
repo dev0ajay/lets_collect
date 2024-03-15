@@ -1,23 +1,27 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lets_collect/app.dart';
+import 'package:lets_collect/src/model/notification/push_notification_model.dart';
+import 'package:lets_collect/src/utils/api/firebase.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message)async {
+  await Firebase.initializeApp();
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-
-  );
-  // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  // ConnectionStatusSingleton connectionStatus =
-  // ConnectionStatusSingleton.getInstance();
-  // connectionStatus.initialize();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final SharedPreferences sharedPreferences =
-  await SharedPreferences.getInstance();
+      await SharedPreferences.getInstance();
   ObjectFactory().setPrefs(sharedPreferences);
 //
 //  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -42,14 +46,26 @@ Future<void> main() async {
 
   ///setting device orientation as portrait, then calling the runApp method
   SystemChrome.setPreferredOrientations(
-
       <DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
     runApp(
-     const App(),
+      const App(),
     );
   });
 }
 
-
-
-
+// For handling notification when the app is in terminated state
+// checkForInitialMessage() async {
+//   RemoteMessage? initialMessage =
+//       await FirebaseMessaging.instance.getInitialMessage();
+//
+//   if (initialMessage != null) {
+//     PushNotification notification = PushNotification(
+//       title: initialMessage.notification?.title,
+//       body: initialMessage.notification?.body,
+//       dataTitle: initialMessage.data['title'],
+//       dataBody: initialMessage.data['body'],
+//     );
+//     print(
+//         'checkForInitialMessage _firebaseMessagingBackgroundHandler :: Message title: ${notification.title}, body: ${notification.body}');
+//   }
+// }

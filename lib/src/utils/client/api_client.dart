@@ -13,6 +13,8 @@ import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+import '../../model/contact_us/contact_us_request.dart';
+import '../../model/edit_profile/edit_profile_request.dart';
 import '../../model/point_tracker/point_tracker_details_request.dart';
 import '../../model/point_tracker/point_tracker_request.dart';
 import '../../model/purchase_history/purchase_history_details_request.dart';
@@ -222,7 +224,7 @@ class ApiClient {
   Future<Response> searchCategoryRequest(
       SearchCategoryRequest searchCategoryRequest) {
     return dioLetsCollect.post(
-      UrlsLetsCollect.SEARCH_CATEGORY,
+      UrlsLetsCollect.SEARCH_DEPARTMENT,
       data: searchCategoryRequest,
       options: Options(headers: {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
@@ -268,7 +270,6 @@ class ApiClient {
     );
   }
 
-
   ///Reward Tier
   Future<Response> rewardTierRequest(RewardTierRequest rewardTierRequest) {
     return dioLetsCollect.post(
@@ -278,12 +279,11 @@ class ApiClient {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
     );
-
-
   }
 
   //Brand And Partner Product
-  Future<Response> getBrandAndPartnerProduct(BrandAndPartnerProductRequest brandAndPartnerProductRequest) {
+  Future<Response> getBrandAndPartnerProduct(
+      BrandAndPartnerProductRequest brandAndPartnerProductRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.BRAND_AND_PARTNER_TIER_PRODUCT,
       data: brandAndPartnerProductRequest,
@@ -291,10 +291,7 @@ class ApiClient {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
     );
-
-
   }
-
 
   Future<Response> uploadReceipt(FormData formData) {
     return dioLetsCollect.post(
@@ -316,7 +313,8 @@ class ApiClient {
     );
   }
 
-  Future<Response> showScanHistory(ScanReceiptHistoryRequest scanReceiptHistoryRequest) {
+  Future<Response> showScanHistory(
+      ScanReceiptHistoryRequest scanReceiptHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.SCAN_HISTORY,
       data: scanReceiptHistoryRequest,
@@ -325,7 +323,6 @@ class ApiClient {
       }),
     );
   }
-
 
   Future<Response> generateQrCode(QrCodeUrlRequest qrCodeUrlRequest) {
     return dioLetsCollect.post(
@@ -344,78 +341,98 @@ class ApiClient {
     );
   }
 
-
-///Purchase History Screen
-  Future<Response> purchaseHistoryRequest(PurchaseHistoryRequest purchaseHistoryRequest) {
+  ///Purchase History Screen
+  Future<Response> purchaseHistoryRequest(
+      PurchaseHistoryRequest purchaseHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
-
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
-///Purchase History Details
-  Future<Response> purchaseHistoryDetailsRequest(PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
+  ///Purchase History Details
+  Future<Response> purchaseHistoryDetailsRequest(
+      PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
-///Super market list
+  ///Super market list
   Future<Response> getSuperMarketList() {
     return dioLetsCollect.get(
       UrlsLetsCollect.POINT_TRACKER_FILTER,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
-
 
   ///GetProfile
   Future<Response> getProfileData() {
     return dioLetsCollect.get(
       UrlsLetsCollect.MY_PROFILE_DATA,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
-
-
   /// Point Tracker
-  Future<Response> pointTrackerRequest(PointTrackerRequest pointTrackerRequest) {
+  Future<Response> pointTrackerRequest(
+      PointTrackerRequest pointTrackerRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.POINT_TRACKER,
       data: pointTrackerRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
-
   ///Point Tracker Details
-  Future<Response> pointTrackerDetailsRequest(PointTrackerDetailsRequest pointTrackerDetailsRequest) {
+  Future<Response> pointTrackerDetailsRequest(
+      PointTrackerDetailsRequest pointTrackerDetailsRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.POINT_TRACKER_DETAILS,
       data: pointTrackerDetailsRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
+    );
+  }
+
+  ///Notification
+  Future<Response> getNotificationData() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.NOTIFICATION,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
+    );
+  }
+
+  ///EditProfile
+  Future<Response> getEditProfileData(EditProfileRequest editProfileRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.MY_EDIT_PROFILE_DATA,
+      data: editProfileRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
+    );
+  }
+
+  /// Contact Us
+  Future<Response> contactUsRequestClient(ContactUsRequest contactUsRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.CONTACT_US,
+      data: contactUsRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
@@ -423,5 +440,37 @@ class ApiClient {
       ),
     );
   }
+
+
+  /// How to Redeem My Points
+  Future<Response> getHowToRedeemMyPoints() {
+    return dioLetsCollect.get(
+      UrlsLetsCollect.HOW_TO_REDEEM_MY_POINTS,
+    );
+  }
+
+
+  /// Point Calculations
+  Future<Response> getPointCalculations() {
+    return dioLetsCollect.get(
+        UrlsLetsCollect.POINT_CALCULATIONS
+    );
+  }
+
+
+  /// Delete Account
+  Future<Response> deleteAccount() {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.DELETE_ACCOUNT,
+      // data: contactUsRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
 
 }

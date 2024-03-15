@@ -8,9 +8,9 @@ import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 
 class LoginCongratsCard extends StatefulWidget {
-  final bool isDone;
+  late  bool isDone;
 
-  const LoginCongratsCard({super.key, required this.isDone});
+   LoginCongratsCard({super.key, required this.isDone});
 
   @override
   State<LoginCongratsCard> createState() => _LoginCongratsCardState();
@@ -39,7 +39,8 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
                   onPressed: () {
                     setState(() {
                       // ObjectFactory().prefs.setIsEmailVerified(true);
-                      ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
+                      ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                      widget.isDone = false;
                     });
                   },
                   icon: const Icon(Icons.close),
@@ -55,9 +56,9 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
 }
 
 class CardContent extends StatefulWidget {
-  const CardContent({super.key, required this.isDone});
+   CardContent({super.key, required this.isDone});
 
-  final bool isDone;
+  late  bool isDone;
 
   @override
   State<CardContent> createState() => _CardContentState();
@@ -142,7 +143,8 @@ class _CardContentState extends State<CardContent>
           ),
           onPressed: () {
             // ObjectFactory().prefs.setIsEmailVerified(true);
-            ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
+            ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+            widget.isDone = false;
           },
           child: Text(
             "Yay!",

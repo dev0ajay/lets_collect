@@ -354,7 +354,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                             const SizedBox(height: 10),
                             Flexible(
-                              flex: 3,
+                              flex: 2,
                               child: Center(
                                 child: Image.asset(
                                   Assets.APP_LOGO,
@@ -365,7 +365,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                             const SizedBox(height: 20),
                             Flexible(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
                                 "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
                                 textAlign: TextAlign.center,
@@ -377,7 +377,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                             const SizedBox(height: 10),
                             Flexible(
-                              flex: 1,
+                              flex: 2,
                               child: TextButton(
                                 onPressed: () {
                                   _clearImage();

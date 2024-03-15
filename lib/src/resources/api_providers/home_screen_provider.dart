@@ -13,6 +13,7 @@ class HomeDataProvider {
 
       final response = await ObjectFactory().apiClient.getHomeData();
       if (response.statusCode == 200) {
+        print(response.toString());
         return StateModel<HomeResponse>.success(
             HomeResponse.fromJson(response.data));
       } else {

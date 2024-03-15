@@ -1,5 +1,3 @@
-/// New Brand Search
-library;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
     BlocProvider.of<SearchBloc>(context).add(
       GetBrandEvent(
         searchBrandRequest: SearchBrandRequest(
-          categoryId: widget.searchScreenArguments.categoryId,
+          departmentId: widget.searchScreenArguments.categoryId,
           searchText: '',
           page: '1',
         ),
@@ -148,14 +146,38 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                   placeholderStyle: const TextStyle(
                                     color: AppColors.primaryGrayColor,
                                   ),
+                                  onSubmitted: (text) {
+                                    BlocProvider.of<SearchBloc>(context).add(
+                                      GetSearchEvent(
+                                        searchCategoryRequest:
+                                            SearchCategoryRequest(
+                                          searchText: text.isNotEmpty
+                                              ? _searchController.text
+                                              : "",
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   onChanged: (text) {
                                     BlocProvider.of<SearchBloc>(context).add(
                                       GetBrandEvent(
                                         searchBrandRequest: SearchBrandRequest(
-                                          searchText: _searchController.text,
-                                          categoryId: widget
+                                          searchText: text.isNotEmpty
+                                              ? _searchController.text
+                                              : "",
+                                          departmentId: widget
                                               .searchScreenArguments.categoryId,
                                           page: "1",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onEditingComplete: () {
+                                    BlocProvider.of<SearchBloc>(context).add(
+                                      GetSearchEvent(
+                                        searchCategoryRequest:
+                                            SearchCategoryRequest(
+                                          searchText: _searchController.text,
                                         ),
                                       ),
                                     );
@@ -172,7 +194,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                   GetBrandEvent(
                                     searchBrandRequest: SearchBrandRequest(
                                       searchText: _searchController.text,
-                                      categoryId: widget
+                                      departmentId: widget
                                           .searchScreenArguments.categoryId,
                                       page: "1",
                                     ),
@@ -194,6 +216,52 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
           },
           body: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
+              if (state is BrandErrorState) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Lottie.asset(Assets.TRY_AGAIN),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          state.msg,
+                          style: const TextStyle(
+                              color: AppColors.primaryWhiteColor),
+                        ),
+                      ),
+                      const Spacer(),
+                      Flexible(
+                        flex: 1,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              fixedSize: const Size(100, 50),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<SearchBloc>(context).add(
+                              GetSearchEvent(
+                                searchCategoryRequest:
+                                    SearchCategoryRequest(searchText: ''),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Try again",
+                            style:
+                                TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        ),
+                      ),
+                      // const Text("state"),
+                    ],
+                  ),
+                );
+              }
               if (state is BrandLoading) {
                 return const Center(
                   child: RefreshProgressIndicator(
@@ -254,14 +322,14 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: CachedNetworkImage(
-                                  imageUrl: state.searchBrandRequestResponse.data[index]
-                                          .brandLogo,
+                                  imageUrl: state.searchBrandRequestResponse
+                                      .data[index].brandLogo,
                                   width: MediaQuery.of(context).size.width,
                                   fit: BoxFit.contain,
                                   alignment: Alignment.center,
                                   fadeInCurve: Curves.easeIn,
                                   fadeInDuration:
-                                  const Duration(milliseconds: 200),
+                                      const Duration(milliseconds: 200),
                                   placeholder: (context, url) => SizedBox(
                                     height: 40,
                                     width: 40,
@@ -270,7 +338,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     ),
                                   ),
                                   errorWidget: (context, url, error) =>
-                                  const ImageIcon(
+                                      const ImageIcon(
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),

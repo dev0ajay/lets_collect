@@ -20,12 +20,18 @@ class UrlsLetsCollect {
 
 
   ///Search Category
-  static const String SEARCH_CATEGORY = "/api/lcuser/category_search";
+  static const String SEARCH_DEPARTMENT = "/api/lcuser/department_search";
   ///Search Brand
   static const String SEARCH_BBRAND = "/api/lcuser/brand_search";
 
   ///Home Screen
   static const String HOME_DATA = "/api/lcuser/customer_home";
+
+  ///Notification
+  static const String NOTIFICATION = "/api/lcuser/list_notifications";
+
+  ///Edit Profile
+  static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
 
 
   ///Profile Screen
@@ -35,6 +41,11 @@ class UrlsLetsCollect {
   static const String PURCHASE_HISTORY_DETAILS = "/api/lcuser/purchase_history_details";
   static const String POINT_TRACKER_FILTER = "/api/lcuser/supermarket_ist";
   static const String MY_PROFILE_DATA = "/api/lcuser/getprofile";
+  static const String CONTACT_US = "/api/lcuser/send_support";
+  static const String HOW_TO_REDEEM_MY_POINTS = "/api/lcuser/how_to_redeem_mypoints";
+  static const String POINT_CALCULATIONS = "/api/lcuser/point_calculations";
+  static const String DELETE_ACCOUNT = "/api/delete_customer_account";
+
 
 
 

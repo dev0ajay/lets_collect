@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/countryscreen/signup_country_screen.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
+import 'package:lets_collect/src/ui/notification/notification_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/contact_us.dart';
+import 'package:lets_collect/src/ui/profile/components/how_to_redeem_my_points.dart';
+import 'package:lets_collect/src/ui/profile/components/point_calculation_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_details_screen.dart';
@@ -708,6 +712,91 @@ class AppRouter {
                   },
                 );
               }),
+          GoRoute(
+              path: 'notification',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const NotificationScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity: CurveTween(curve: Curves.easeIn)
+                          .animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'how_to_redeem',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const HowToRedeemMyPointsScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity: CurveTween(curve: Curves.easeIn)
+                          .animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'point_calculation',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const PointCalculationsScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity: CurveTween(curve: Curves.easeIn)
+                          .animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'contact_us',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const ContactUsScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity: CurveTween(curve: Curves.easeIn)
+                          .animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+
 
 
 

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -120,7 +121,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -135,7 +135,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             ObjectFactory().prefs.setUserId(
                 userId: state.loginRequestResponse.data.id.toString());
             ObjectFactory().prefs.setUserName(
-                userName: state.loginRequestResponse.data.userName);
+                userName: state.loginRequestResponse.data.firstName);
             ObjectFactory().prefs.setIsLoggedIn(true);
             context.pushReplacement("/home");
             // ignore: unnecessary_null_comparison
@@ -152,7 +152,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             );
           }
         }
-        if(state is LoginLoadingConnectionRefused) {
+        if (state is LoginLoadingConnectionRefused) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
@@ -163,7 +163,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             ),
           );
         }
-        if(state is LoginLoadingRequestTimeOut) {
+        if (state is LoginLoadingRequestTimeOut) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
@@ -174,7 +174,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             ),
           );
         }
-        if(state is LoginLoadingServerError) {
+        if (state is LoginLoadingServerError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
@@ -185,12 +185,21 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             ),
           );
         }
-
-
       },
       builder: (context, state) {
         return BlocConsumer<GoogleLoginBloc, GoogleLoginState>(
           listener: (context, state) {
+            if (state is GoogleLoginErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: AppColors.secondaryColor,
+                  content: Text(
+                    state.msg,
+                    style: const TextStyle(color: AppColors.primaryWhiteColor),
+                  ),
+                ),
+              );
+            }
             if (state is GoogleLoginLoaded) {
               if (state.googleLoginResponse.success == true &&
                   state.googleLoginResponse.token!.isNotEmpty) {
@@ -200,7 +209,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                 ObjectFactory().prefs.setUserId(
                     userId: state.googleLoginResponse.data!.id.toString());
                 ObjectFactory().prefs.setUserName(
-                    userName: state.googleLoginResponse.data!.userName);
+                    userName: state.googleLoginResponse.data!.firstName);
                 ObjectFactory().prefs.setIsLoggedIn(true);
                 context.pushReplacement("/home");
                 // ignore: unnecessary_null_comparison
@@ -211,7 +220,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                     backgroundColor: AppColors.secondaryColor,
                     content: Text(
                       state.googleLoginResponse.message!,
-                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                      style:
+                          const TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 );
@@ -237,6 +247,27 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             }
           },
           builder: (context, state) {
+            if (state is GoogleLoginLoading) {
+              return Stack(
+                children: [
+                  // const ModalBarrier(
+                  //   color: Colors.black54,
+                  //   dismissible: false,
+                  // ),
+                  Center(
+                    child:
+                        Container(
+                          height: 90,
+                          width: 90,
+                          decoration: const BoxDecoration(
+                            color: AppColors.boxShadow
+                          ),
+                            child: Lottie.asset(Assets.JUMBINGDOT, height: 90, width: 90)
+                        ),
+                  ),
+                ],
+              );
+            }
             return WillPopScope(
               child: Center(
                 child: Padding(
@@ -264,9 +295,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               scale: 30,
                             ),
                           ),
-                          const SizedBox(
-                            height: 10
-                          ),
+                          const SizedBox(height: 10),
                           Center(
                             child: Text(
                               Strings.LOGIN_WELCOME_BACK,
@@ -343,14 +372,21 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 onTap: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
-                                      reverseTransitionDuration: const Duration(milliseconds: 750),
-                                      transitionDuration: const Duration(milliseconds: 750),
-                                      pageBuilder: (context, animation, secondaryAnimation) => const ForgetPasswordScreen(),
-                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      reverseTransitionDuration:
+                                          const Duration(milliseconds: 750),
+                                      transitionDuration:
+                                          const Duration(milliseconds: 750),
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          const ForgetPasswordScreen(),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
                                         const begin = Offset(1.0, 0.0);
                                         const end = Offset.zero;
                                         const curve = Curves.decelerate;
-                                        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
                                         return SlideTransition(
                                           position: animation.drive(tween),
                                           child: child,
@@ -394,12 +430,16 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                   onTap: () {
                                     if (_formKey.currentState!.validate()) {
                                       // If the form is valid, perform login action
-                                      // For demo, I'm just navigating to the HomeScreen
                                       BlocProvider.of<LoginBloc>(context).add(
                                         LoginRequestEvent(
                                           loginRequest: LoginRequest(
                                             email: emailController.text,
                                             password: passwordController.text,
+                                            deviceToken: ObjectFactory()
+                                                .prefs
+                                                .getFcmToken()!,
+                                            deviceType:
+                                                Platform.isAndroid ? "A" : "I",
                                           ),
                                         ),
                                       );
@@ -408,8 +448,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                         msg: "All fields are important",
                                         toastLength: Toast.LENGTH_LONG,
                                         gravity: ToastGravity.BOTTOM,
-                                        backgroundColor: Colors.black87,
-                                        textColor: Colors.white,
+                                        backgroundColor:
+                                            AppColors.primaryWhiteColor,
+                                        textColor: AppColors.secondaryColor,
                                       );
                                     }
                                   },
@@ -445,22 +486,29 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   PageRouteBuilder(
-                                  reverseTransitionDuration: const Duration(milliseconds: 750),
-                                  transitionDuration: const Duration(milliseconds: 750),
-                                  pageBuilder: (context, animation, secondaryAnimation) => const SignUpScreen(
-                                    from: 'Email', gmail: '',
+                                    reverseTransitionDuration:
+                                        const Duration(milliseconds: 750),
+                                    transitionDuration:
+                                        const Duration(milliseconds: 750),
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        const SignUpScreen(
+                                      from: 'Email',
+                                      gmail: '',
+                                    ),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      const begin = Offset(0.0, 1.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.decelerate;
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
                                   ),
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    const begin = Offset(0.0, 1.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.decelerate;
-                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                                    return SlideTransition(
-                                      position: animation.drive(tween),
-                                      child: child,
-                                    );
-                                  },
-                                ),
                                 );
                               },
                               showImage: true,
@@ -490,8 +538,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                 .getFcmToken()!,
                                             deviceType:
                                                 Platform.isAndroid ? "A" : "I",
-                                                displayName: state.user.displayName!,
-                                                mobileNo: "0",
+                                            displayName:
+                                                state.user.displayName!,
+                                            mobileNo: "0",
                                           ),
                                         ),
                                       );
@@ -509,13 +558,14 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                         ),
                                       ),
                                       onPressed:
-                                      state is GoogleSignInCubitLoading
-                                          ? null
-                                          : () => context
-                                              .read<GoogleSignInCubit>()
-                                              .login(),
+                                          state is GoogleSignInCubitLoading
+                                              ? null
+                                              : () => context
+                                                  .read<GoogleSignInCubit>()
+                                                  .login(),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
                                             Assets.GOOGLE,
@@ -539,7 +589,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                   ),
                                                 )
                                               : Text(
-                                                   "Sign up/Login",
+                                                  "Sign up/Login",
                                                   style: GoogleFonts.roboto(
                                                     color: AppColors
                                                         .primaryGrayColor,
@@ -569,14 +619,16 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10)
-                                          ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           content: SizedBox(
-                                            height: getProportionateScreenHeight(260),
-                                            width: getProportionateScreenWidth(320),
+                                            height:
+                                                getProportionateScreenHeight(
+                                                    260),
+                                            width: getProportionateScreenWidth(
+                                                320),
                                             child: Lottie.asset(Assets.SOON),
                                           ),
-
                                         );
                                       },
                                     );
@@ -608,7 +660,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       splashColor: AppColors.borderColor,
                                       splashFactory: InkRipple.splashFactory,
                                       onTap: () {
-                                        _launchInBrowser(Strings.TERMS_AND_CONDITION_URL);
+                                        _launchInBrowser(
+                                          Strings.TERMS_AND_CONDITION_URL,
+                                        );
                                       },
                                       child: Text(
                                         Strings.LOGIN_NOTES2,
@@ -636,7 +690,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                       splashColor: AppColors.borderColor,
                                       splashFactory: InkRipple.splashFactory,
                                       onTap: () {
-                                        _launchInBrowser(Strings.PRIVACY_POLICY_URL);
+                                        _launchInBrowser(
+                                            Strings.PRIVACY_POLICY_URL);
                                       },
                                       child: Text(
                                         Strings.LOGIN_NOTES4,

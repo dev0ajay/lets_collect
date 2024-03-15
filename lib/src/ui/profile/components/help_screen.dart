@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/ui/profile/profile_screen.dart';
+import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 
-class HelpScreen extends StatelessWidget {
+class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
+
+  @override
+  State<HelpScreen> createState() => _HelpScreenState();
+}
+
+class _HelpScreenState extends State<HelpScreen> {
+  bool networkSuccess = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,101 +44,158 @@ class HelpScreen extends StatelessWidget {
             color: AppColors.primaryWhiteColor,
           ),
         ),
+        actions: const [
+          Text("v1.1.2+3",style: TextStyle(fontSize: 9),)
+        ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-          child: Column(
-            children: [
-              Center(
-                  child: SvgPicture.asset(
-                Assets.HELP_SVG,
-                fit: BoxFit.cover,
-                height: 200,
-              )),
-              const SizedBox(height: 35),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: const ProfileDetailsListTileWidget(
-                    labelText: "How to redeem my points ?"),
+      body: BlocConsumer<NetworkBloc, NetworkState>(
+        listener: (context, state) {
+          if (state is NetworkSuccess) {
+            networkSuccess = true;
+          }
+        },
+        builder: (context, state) {
+          if (state is NetworkSuccess) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+                child: Column(
+                  children: [
+                    Center(
+                        child: SvgPicture.asset(
+                          Assets.HELP_SVG,
+                          fit: BoxFit.cover,
+                          height: 200,
+                        )),
+                    const SizedBox(height: 35),
+                    // InkWell(
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) {
+                    //         return AlertDialog(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius:
+                    //               BorderRadius.circular(10)),
+                    //           content: SizedBox(
+                    //             height: getProportionateScreenHeight(260),
+                    //             width: getProportionateScreenWidth(320),
+                    //             child: Lottie.asset(Assets.SOON),
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    //   child: const ProfileDetailsListTileWidget(
+                    //       labelText: "How to redeem my points ?"),
+                    // ),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/how_to_redeem');
+                      },
+                      child: const ProfileDetailsListTileWidget(
+                          labelText: "How to redeem my points ?"),
+                    ),
+                    const SizedBox(height: 15),
+                    // InkWell(
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) {
+                    //         return AlertDialog(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius:
+                    //               BorderRadius.circular(10)),
+                    //           content: SizedBox(
+                    //             height: getProportionateScreenHeight(260),
+                    //             width: getProportionateScreenWidth(320),
+                    //             child: Lottie.asset(Assets.SOON),
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    //   child: const ProfileDetailsListTileWidget(
+                    //       labelText: "Point Calculations"),
+                    // ),
+
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/point_calculation');
+                      },
+                      child: const ProfileDetailsListTileWidget(
+                          labelText: "Point Calculations"),
+                    ),
+                    const SizedBox(height: 15),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/terms_and_condition');
+                      },
+                      child: const ProfileDetailsListTileWidget(
+                          labelText: "Terms and Conditions"),
+                    ),
+                    const SizedBox(height: 15),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/privacy_policies');
+                      },
+                      child: const ProfileDetailsListTileWidget(
+                          labelText: "Privacy policies"),
+                    ),
+                    const SizedBox(height: 15),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/contact_us');
+                        print("contact_us tapped");
+                      },
+                      child: const ProfileDetailsListTileWidget(
+                        labelText: "Need more help"
+                        // AppLocalizations.of(context)!.needmorehelp,
+                      ),
+                    ),
+
+                    // InkWell(
+                    //   onTap: () {
+                    //     showDialog(
+                    //       context: context,
+                    //       builder: (BuildContext context) {
+                    //         return AlertDialog(
+                    //           shape: RoundedRectangleBorder(
+                    //               borderRadius:
+                    //               BorderRadius.circular(10)),
+                    //           content: SizedBox(
+                    //             height: getProportionateScreenHeight(260),
+                    //             width: getProportionateScreenWidth(320),
+                    //             child: Lottie.asset(Assets.SOON),
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    //     child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
+                  ],
+                ),
               ),
-              const SizedBox(height: 15),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: const ProfileDetailsListTileWidget(
-                    labelText: "Point Calculations"),
+            );
+          } else if (state is NetworkFailure) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(Assets.NO_INTERNET),
+                  Text(
+                    "You are not connected to the internet",
+                    style: GoogleFonts.openSans(
+                      color: AppColors.primaryGrayColor,
+                      fontSize: 20,
+                    ),
+                  ).animate().scale(delay: 200.ms, duration: 300.ms),
+                ],
               ),
-              const SizedBox(height: 15),
-              GestureDetector(
-                onTap: () {
-                  context.push('/terms_and_condition');
-                },
-                child: const ProfileDetailsListTileWidget(
-                    labelText: "Terms and Conditions"),
-              ),
-              const SizedBox(height: 15),
-              GestureDetector(
-                onTap: () {
-                  context.push('/privacy_policies');
-                },
-                child: const ProfileDetailsListTileWidget(
-                    labelText: "Privacy policies"),
-              ),
-              const SizedBox(height: 15),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.circular(10)),
-                        content: SizedBox(
-                          height: getProportionateScreenHeight(260),
-                          width: getProportionateScreenWidth(320),
-                          child: Lottie.asset(Assets.SOON),
-                        ),
-                      );
-                    },
-                  );
-                },
-                  child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
-            ],
-          ),
-        ),
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
