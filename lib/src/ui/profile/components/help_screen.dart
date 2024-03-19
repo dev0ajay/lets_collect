@@ -38,7 +38,8 @@ class _HelpScreenState extends State<HelpScreen> {
               color: AppColors.primaryWhiteColor,
             )),
         title: Text(
-          "Help Center",
+          // "Help Center",
+          AppLocalizations.of(context)!.helpcenter,
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -91,8 +92,11 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/how_to_redeem_my_points');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "How to redeem my points ?"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "How to redeem my points ?"
+                          labelText: AppLocalizations.of(context)!.howtoredeemmypoints
+
+                      ),
                     ),
                     const SizedBox(height: 15),
                     // InkWell(
@@ -121,24 +125,32 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/point_calculations');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Point Calculations"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Point Calculations"
+                          labelText: AppLocalizations.of(context)!.pointcalculations
+
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         context.push('/terms_and_condition');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Terms and Conditions"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Terms and Conditions"
+                          labelText: AppLocalizations.of(context)!.termsandconditionds
+
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         context.push('/privacy_policies');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Privacy policies"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Privacy policies"
+                          labelText: AppLocalizations.of(context)!.privacypolicy
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(

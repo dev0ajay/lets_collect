@@ -1,3 +1,8 @@
+// To parse this JSON data, do
+//
+//     final signupRequest = signupRequestFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SignupRequest signupRequestFromJson(String str) => SignupRequest.fromJson(json.decode(str));
@@ -16,6 +21,8 @@ class SignupRequest {
   final String nationalityId;
   final String city;
   final String countryId;
+  final String deviceToken;
+  final String deviceType;
 
   SignupRequest({
     required this.firstName,
@@ -29,6 +36,8 @@ class SignupRequest {
     required this.nationalityId,
     required this.city,
     required this.countryId,
+    required this.deviceToken,
+    required this.deviceType,
   });
 
   factory SignupRequest.fromJson(Map<String, dynamic> json) => SignupRequest(
@@ -43,6 +52,8 @@ class SignupRequest {
     nationalityId: json["nationality_id"],
     city: json["city"],
     countryId: json["country_id"],
+    deviceToken: json["device_token"],
+    deviceType: json["device_type"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +68,7 @@ class SignupRequest {
     "nationality_id": nationalityId,
     "city": city,
     "country_id": countryId,
+    "device_token": deviceToken,
+    "device_type": deviceType,
   };
 }

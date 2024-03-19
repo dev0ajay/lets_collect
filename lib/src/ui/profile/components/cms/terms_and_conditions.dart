@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../constants/colors.dart';
 
 class TermsAndConditionsScreen extends StatefulWidget {
@@ -44,7 +46,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
             color: AppColors.primaryWhiteColor,
           ),),
         title: Text(
-          "Terms And Conditions",
+          // "Terms And Conditions",
+          AppLocalizations.of(context)!.termsandconditionds,
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -75,25 +78,41 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                   return Center(
                     child: Column(
                       children: [
-                        Lottie.asset(Assets.TRY_AGAIN),
                         Expanded(
-                            flex: 2,
-                            child: Text(state.errorMsg)),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              backgroundColor: AppColors.primaryColor),
-                          onPressed: () {
-                            BlocProvider.of<TermsAndConditionBloc>(context)
-                                .add(GetTermsAndConditionEvent());
-                          },
-                          child: const Text(
-                            "Try again....",
-                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          flex: 3,
+                          child: Lottie.asset(Assets.TRY_AGAIN),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            state.errorMsg,
+                            style: const TextStyle(
+                                color: AppColors.primaryWhiteColor),
                           ),
-                        )
+                        ),
+                        const Spacer(),
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9),
+                                ),
+                                fixedSize: const Size(100, 50),
+                                backgroundColor: AppColors.primaryColor),
+                            onPressed: () {
+                              BlocProvider.of<TermsAndConditionBloc>(context)
+                                  .add(GetTermsAndConditionEvent());
+                            },
+                            child:  Text(
+                              // "Try again",
+                              AppLocalizations.of(context)!.tryagain,
+                              style:
+                              const TextStyle(color: AppColors.primaryWhiteColor),
+                            ),
+                          ),
+                        ),
+                        // const Text("state"),
                       ],
                     ),
                   );
@@ -102,17 +121,20 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 if (state is TermsAndConditionLoaded) {
                   return SingleChildScrollView(
                     child: Html(
-                        data: state.termsAndConditionResponse.data.pageContent
-                      //    data: state.termsAndConditionResponse != null
-                      //    ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                      //    ? state.termsAndConditionResponse.data.pageContent
-                      //    : state.termsAndConditionResponse.data.pageTitleArabic )
-                      // : ""
+                        // data: state.termsAndConditionResponse.data.pageContent
+                         data: state.termsAndConditionResponse != null
+                         ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                         ? state.termsAndConditionResponse.data.pageContent
+                         : state.termsAndConditionResponse.data.pageTitleArabic )
+                      : ""
                     ),
                   );
                 }
-                return const Center(
-                  child: Text("No Data to show"),
+                // return const Center(
+                //   child: Text("No Data to show"),
+                // );
+                return  Center(
+                  child: Text(AppLocalizations.of(context)!.nodatashow),
                 );
               },
             );
@@ -123,7 +145,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    "You are not connected to the internet",
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,

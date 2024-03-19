@@ -1,0 +1,222 @@
+{
+
+    "selectlanguage" : "select Language",
+    "changelanguage" : "Change Language",
+    "youarenotconnectedtotheinternet" : "You are not connected to the internet",
+
+
+    "letscollect" : "Let's Collect",
+    "welcomeback" : "Welcome Back !",
+    "email" : "E-mail",
+    "enteryouremail" : "Enter your email",
+    "pleaseenteremail" : "Please enter email",
+    "password" : "Password",
+    "enteryourpassword" : "Enter your password",
+    "pleaseenterpassword" : "Please enter a password",
+    "doyyoureallywanttologout" : "Do you really want to logout?",
+    "forgetpassword" : "Forget password?",
+    "login" : "Login",
+    "donthaveanaccount" : "Don't have an account ?",
+    "emailsignup" : "Email Sign up",
+    "signup" : "Sign up",
+    "bysigningupyouagreetothe" : "By signing up, you agree to the",
+    "termsandconditions" : "Terms and Conditions",
+    "andour" : "and our",
+    "privacypolicy" : "Privacy Policy",
+    "enteravalidemailaddress" : "Enter a valid email address",
+
+
+    "next" : "Next",
+    "jointodayandstartcollect" : "Join Today And Start Collect",
+    "firstname" : "First Name",
+    "enterfirstname" : "Enter First Name",
+    "lastname" : "Last Name",
+    "enterlastname" : "Enter last name",
+    "enteranewenailaddress" : "Enter a new email address",
+    "reentepassword" : "Re-Enter Password",
+    "pleaseenterpassword" : "Please enter password",
+    "lengthshouldbe" : "Length should be 8 or more",
+    "mustcontainatleast" : "Must contain at least 1 uppercase, 1 lowercase, 1 special character",
+    "wedidlovetosendyousomeamazingoffer" : "We'd love to send you some amazing offers through email. Want In?",
+    "entecorrectpassword" : "Enter correct password",
+
+    "welcome" : "Welcome",
+    "youralmostthere" : "You're almost there, we just need a bit of info to make sure we can send you the absolute best offers",
+    "dateofbirth" : "Date of Birth",
+    "gender" : "Gender",
+    "male" : "Male",
+    "female" : "Female",
+    "nationality" : "Nationality",
+    "pleaseprovideyourcorrectdetails" : "Please provide your correct details!",
+    "pleaseselectadateofbirthabove12" : "Please select a date of birth above 12 years old!",
+
+
+    "justthisone" : "Just this one little step,and you're all set We promise!",
+    "almostdone" : "Almost Done",
+    "countryyoulivein" : "Country you live in",
+    "city" : "City",
+    "phonenumber" : "Phone Number",
+    "submit" : "submit",
+
+
+    "otpbuttonverify" : "Verify OTP",
+    "resetpassword" : "Reset Password",
+    "donotworry" : "Do not worry! We will help you recover your password",
+    "emailaddress" : "Email Address",
+    "enteryouremail" : "Enter your email",
+    "pleaseenteravalidmail" : "Please enter a valid mail",
+    "sentotp" : "Sent OTP",
+    "rest" : "Rest",
+
+
+    "findyourfavourite" : "Find Your Favourites",
+
+
+    "referralcode" : "Referral code",
+    "bonuspoint" : "Bonus Point !",
+    "scan" : "Scan",
+    "totalpoints" : "Total Points",
+    "pts" : "pts",
+    "brands" : "Brands",
+    "viewall" : "View all",
+    "specialoffersforyou" : "Special offers for you",
+    "congratulations" : "Congratulations !",
+    "youhaveearned" : "You have earned",
+    "points" : "Points",
+    "yay" : "Yay!",
+    "hurryup" : "Hurry Up!",
+    "pleaseverifythemailwehavesendtoyouandearnpoints" : "Please verify the mail we have send to you and earn points.",
+    "close" : "Close",
+
+
+    "myprofile" : "My Profile",
+    "pointtracker" : "Point Tracker",
+    "redemptiontracker" : "Redemption Tracker",
+    "purchasehistory" : "Purchase History",
+    "help" : "Help",
+    "notificationcenter" : "Notification Center",
+    "referafriend" : "Refer a Friend",
+    "logout" : "Logout",
+
+    "areyousureyouwanttologout" : "Are you sure you want to log out ?",
+    "yes" : "Yes",
+    "no" : "No",
+
+
+    "underdevelopment" : "Under development..!!",
+    "internetdown" : "No internet connection..!",
+    "searchscreenhint" : "Search Category",
+    "searchdetailhint" : "Search Brand",
+
+
+    "otpdiscription" : "A One-Time password has been send to your email. ",
+    "buttonverification" : "Verify",
+
+
+    "findyourfavourite" : "Find Your Favourite",
+
+
+    "loginletscollect" : "Let's Collect",
+    "loginwelcomeback" : "Welcome Back !",
+    "loginemaillabeltext" : "E-mail",
+    "loginemailhint_text" : "Enter email",
+    "loginemailvalidatortext" : "Please enter email",
+    "loginpasswordlabeltext" : "Password",
+    "loginpasswordhinttext" : "Enter password",
+    "loginpasswordvalidatortext" : "Please enter password",
+    "loginconfirmationtext" : "Do you really want to logout?",
+    "loginforgetpasswordtext" : "Forget password?",
+    "loginbuttontext" : "Login",
+    "logindonthaveanac": "Don't have an account ?",
+    "emailsingup" : "Email Sign up",
+    "googlesingup" : "Google Sign up",
+    "facebooksignup" : "Facebook Sign up",
+    "loginnotes1" : "By signing up, you agree to the",
+    "loginnotes2" : "Terms and Conditions",
+    "loginnotes3" : "and our",
+    "loginnotes4" : "Privacy Policy",
+
+
+
+
+    "buttonskipverification" : "Skip Verification",
+    "countrycode" : "+973",
+    "countryphone_no" : "Phone Number",
+    "cancel" : "Cancel",
+    "ok" : "Ok",
+    "yes" : "Yes",
+    "close" : "Close",
+    "update" : "Update",
+    "ordercancellation" : "Confirm order cancellation?",
+
+
+    "nodatatext" : "Nothing to show here",
+    "poweredby" : "powered by ",
+
+
+    "settingstitle" : "Settings",
+    "privacypolicy" : "Privacy policy",
+    "settingtermscondition" : "Terms & conditions",
+
+
+    "emailnotvalid" : "Email is not valid",
+    "usernamenotvalid" : "Username is not valid",
+    "passwordlength" : "Password length should be greater than 5 chars.",
+    "invalidmobilenum" : "Invalid mobile number",
+    "invalidname" : "Invalid name",
+    "someerroroccurred" : "Some error occurred !!!",
+
+
+
+
+    "redeemed" : "Redeemed :",
+    "store" : "Store :",
+    "redemptiondetails" : "Redemption Details",
+
+
+    "transactionlog" : "Transaction Log",
+    "totalamount" : "Total Amount",
+    "date" : "Date : ",
+    "supermarket" : "SuperMarket : ",
+    "totalitem" : "Total items : ",
+    "bhd" : "BHD",
+
+    "findyourfavourite" : "Find Your Favourite",
+    "searchcategory" : "Search Category",
+    "searchbrand" : "Search Brand",
+
+
+    "totalpointearned" : "Total Point earned !",
+
+
+    "helpcenter" : "Help Center",
+    "howtoredeemmypoints" : "How to redeem my points ?",
+    "pointcalculations" : "Point calculations",
+    "termsandconditionds" : "Terms and Calculations",
+    "privacypolicy" : "Privacy Policy",
+    "needmorehelp" : "Need more help ?",
+    "contactus" : "Contact us",
+    "subject" : "Subject",
+    "message" : "Message",
+    "supportingimage" : "Supporting Image",
+    "selectedfile" : "Selected file :",
+
+    "thankyouforcontactingus" : "Thank you for contacting us",
+    "wewillgetbackto" : "We'll get back to you as soon as we can. \n It may take up to 3 working days.",
+
+
+    "tryagain" : "Try again",
+
+
+    "youarenotconnectedtotheinternet" : "You are not connected to the internet",
+    "nodatashow" : "No Data to show",
+    "allfieldsareimportant" : "All fields are important",
+    "letscollectreward" : "Let's Collect Reward",
+    "brandreward" : "Brand Reward",
+    "partnerreward" : "Partner Reward",
+    "sort" : "Sort",
+    "filter" : "Filter"
+
+
+
+}

@@ -18,40 +18,33 @@ class Login_screen extends StatefulWidget {
 class _Login_screenState extends State<Login_screen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body:
-      BlocBuilder<NetworkBloc, NetworkState>(
-        builder: (context, state) {
-          if(state is NetworkSuccess) {
-            return const SafeArea(child: LoginUiwidget());
-                }
-          if(state is NetworkFailure) {
-            return  Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Lottie.asset(Assets.NO_INTERNET),
-                   Text("You are not connected to the internet",
-                    style: GoogleFonts.openSans(
-                      color: AppColors.primaryWhiteColor,
-                      fontSize: 20,
-                    ),
-                  )
-                  .animate()
-                  .scale(delay: 200.ms, duration: 300.ms),
-
-                ],
-              ),
-            );
-          }
-          return const SizedBox();
-          }
-
-  ),);
-
-
-
-
+      body: BlocBuilder<NetworkBloc, NetworkState>(builder: (context, state) {
+        if (state is NetworkSuccess) {
+          return const SafeArea(
+            child: LoginUiwidget(),
+          );
+        }
+        if (state is NetworkFailure) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(Assets.NO_INTERNET),
+                Text(
+                  "You are not connected to the internet",
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryWhiteColor,
+                    fontSize: 20,
+                  ),
+                ).animate().scale(delay: 200.ms, duration: 300.ms),
+              ],
+            ),
+          );
+        }
+        return const SizedBox();
+      }),
+    );
   }
 }

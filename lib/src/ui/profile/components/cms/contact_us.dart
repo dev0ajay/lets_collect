@@ -345,7 +345,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                       Textfontsize: 16,
                                       TextColors: Colors.white,
                                       text: AppLocalizations.of(context)!
-                                          .singupbuttonsubmit,
+                                          .submit,
                                       color: AppColors.secondaryColor,
                                       width: 340,
                                       height: 40,

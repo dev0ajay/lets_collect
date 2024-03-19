@@ -11,6 +11,7 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
 import '../../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivacyPoliciesScreen extends StatefulWidget {
   const PrivacyPoliciesScreen({super.key});
@@ -43,7 +44,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
             color: AppColors.primaryWhiteColor,
           ),),
         title: Text(
-          "Privacy policies",
+          // "Privacy policies",
+          AppLocalizations.of(context)!.privacypolicy,
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -74,25 +76,41 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                   return Center(
                     child: Column(
                       children: [
-                        Lottie.asset(Assets.TRY_AGAIN),
                         Expanded(
-                            flex: 2,
-                            child: Text(state.errorMsg)),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              backgroundColor: AppColors.primaryColor),
-                          onPressed: () {
-                            BlocProvider.of<PrivacyPoliciesBloc>(context)
-                                .add(GetPrivacyPolicies());
-                          },
-                          child: const Text(
-                            "Try again....",
-                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                          flex: 3,
+                          child: Lottie.asset(Assets.TRY_AGAIN),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            state.errorMsg,
+                            style: const TextStyle(
+                                color: AppColors.primaryWhiteColor),
                           ),
-                        )
+                        ),
+                        const Spacer(),
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9),
+                                ),
+                                fixedSize: const Size(100, 50),
+                                backgroundColor: AppColors.primaryColor),
+                            onPressed: () {
+                              BlocProvider.of<PrivacyPoliciesBloc>(context)
+                                  .add(GetPrivacyPolicies());
+                            },
+                            child:  Text(
+                              // "Try again",
+                              AppLocalizations.of(context)!.tryagain,
+                              style:
+                              const TextStyle(color: AppColors.primaryWhiteColor),
+                            ),
+                          ),
+                        ),
+                        // const Text("state"),
                       ],
                     ),
                   );
@@ -103,18 +121,18 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                     child: Html(
                       // data: state.privacyPoliciesResponse.data.pageContent
                       data: state.privacyPoliciesResponse != null
-                          ? (context
-                          .read<LanguageBloc>()
-                          .state
-                          .selectedLanguage == Language.english
+                          ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
                           ? state.privacyPoliciesResponse.data.pageContent
                           : state.privacyPoliciesResponse.data.pageContentArabic)
                           : '',
                     ),
                   );
                 }
-                return const Center(
-                  child: Text("No Data to show"),
+                // return const Center(
+                //   child: Text("No Data to show"),
+                // );
+                return  Center(
+                  child: Text(AppLocalizations.of(context)!.nodatashow),
                 );
               },
             );
@@ -125,7 +143,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    "You are not connected to the internet",
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,
