@@ -9,10 +9,9 @@ import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart'
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
-import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../constants/colors.dart';
 
 class ForgetPasswordEmailWidget extends StatefulWidget {
@@ -146,7 +145,9 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                     height: 20
                   ),
                   Center(
-                      child: Text(Strings.FORGOT_PASSWORD_DISCRIPTION,
+                      child: Text(
+                        AppLocalizations.of(context)!.donotworry,
+                          // Strings.FORGOT_PASSWORD_DISCRIPTION,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
                             fontSize: 16,
@@ -156,8 +157,10 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                     height: 70,
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(left: 5, bottom: 15),
-                      child: Text(Strings.FORGET_EMAIL_TEXT,
+                      padding: const EdgeInsets.only(left: 5, bottom: 15,right: 5),
+                      child: Text(
+                          AppLocalizations.of(context)!.emailaddress,
+                          // Strings.FORGET_EMAIL_TEXT,
                           style: GoogleFonts.openSans(
                             fontSize: 16,
                             color: AppColors.primaryWhiteColor,
@@ -165,7 +168,8 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                   MyTextField(
                     // horizontal: 20,
                     focusNode: _emailFocus,
-                    hintText: Strings.FORGET_EMAIL_HINT,
+                    hintText: AppLocalizations.of(context)!.enteryouremail,
+                    // hintText: Strings.FORGET_EMAIL_HINT,
                     obscureText: false,
                     maxLines: 1,
                     controller: emailController,
@@ -187,7 +191,8 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                         child: MyButton(
                           Textfontsize: 16,
                           TextColors: Colors.white,
-                          text: Strings.OTP_BUTTON_SEND,
+                          text: AppLocalizations.of(context)!.rest,
+                          // text: Strings.OTP_BUTTON_SEND,
                           color: AppColors.secondaryColor,
                           width: 340,
                           height: 40,
@@ -203,7 +208,8 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                               );
                             } else {
                               Fluttertoast.showToast(
-                                msg: "Please enter a valid mail.",
+                                msg: AppLocalizations.of(context)!.pleaseenteravalidmail,
+                                // msg: "Please enter a valid mail.",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 backgroundColor: AppColors.primaryWhiteColor,

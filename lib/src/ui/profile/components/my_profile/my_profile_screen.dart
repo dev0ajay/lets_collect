@@ -313,29 +313,46 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                     ),
                   );
                 }
+
+
                 if (state is MyEditProfileErrorState) {
                   return Center(
                     child: Column(
                       children: [
-                        Lottie.asset(Assets.TRY_AGAIN),
-                        const Expanded(
-                            flex: 0,
-                            child: Text("SJHFBDSJFN")),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              backgroundColor: AppColors.primaryColor),
-                          onPressed: () {
-                            BlocProvider.of<MyProfileBloc>(context)
-                                .add(GetProfileDataEvent());
-                          },
-                          child: const Text(
-                            "Try again....",
-                            style: TextStyle(color: AppColors.primaryWhiteColor),
+                        Expanded(
+                          flex: 3,
+                          child: Lottie.asset(Assets.TRY_AGAIN),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            state.errorMsg,
+                            style: const TextStyle(
+                                color: AppColors.primaryWhiteColor),
                           ),
-                        )
+                        ),
+                        const Spacer(),
+                        Flexible(
+                          flex: 1,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(9),
+                                ),
+                                fixedSize: const Size(100, 50),
+                                backgroundColor: AppColors.primaryColor),
+                            onPressed: () {
+                              BlocProvider.of<MyProfileBloc>(context)
+                                  .add(GetProfileDataEvent());
+                            },
+                            child: const Text(
+                              "Try again",
+                              style:
+                              TextStyle(color: AppColors.primaryWhiteColor),
+                            ),
+                          ),
+                        ),
+                        // const Text("state"),
                       ],
                     ),
                   );

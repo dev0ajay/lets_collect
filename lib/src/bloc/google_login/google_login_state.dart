@@ -20,3 +20,10 @@ class GoogleLoginLoaded extends GoogleLoginState {
   @override
   List<Object> get props => [googleLoginResponse];
 }
+
+class GoogleLoginErrorState extends GoogleLoginState {
+  final String msg;
+  const GoogleLoginErrorState({required this.msg});
+  @override
+  List<Object> get props => [msg];
+}
