@@ -59,19 +59,28 @@
     "submit" : "submit",
 
 
-    "otpbuttonverify" : "Verify OTP",
-    "resetpassword" : "Reset Password",
-    "donotworry" : "Do not worry! We will help you recover your password",
     "emailaddress" : "Email Address",
     "enteryouremail" : "Enter your email",
     "pleaseenteravalidmail" : "Please enter a valid mail",
+    "donotworry" : "Do not worry! We will help you recover your password.",
     "sentotp" : "Sent OTP",
     "rest" : "Rest",
 
 
+    "resetpassword" : "Reset Password",
+    "pleaseentertheonetimepassword" : "Please enter the One-Time password to verify your account.",
+    "aonetimepasswordhasbeensendto" : "A One-Time password has been send to ",
+    "otpnumber" : "OTP Number",
+    "verifyotp" : "Verify OTP",
+
+    "passwordreset" : "Password Reset",
+    "newpassword" : "New Password",
+    "confirmpassword" : "Confirm Password",
+    "verify" : "verify",
+
     "findyourfavourite" : "Find Your Favourites",
 
-
+    "hi" : "Hi",
     "referralcode" : "Referral code",
     "bonuspoint" : "Bonus Point !",
     "scan" : "Scan",
@@ -206,8 +215,8 @@
 
 
     "tryagain" : "Try again",
-
-
+    "hisarah" : "Hi Sarah",
+    "pressagaintoexittheapp" : "Press again to exit the app",
     "youarenotconnectedtotheinternet" : "You are not connected to the internet",
     "nodatashow" : "No Data to show",
     "allfieldsareimportant" : "All fields are important",

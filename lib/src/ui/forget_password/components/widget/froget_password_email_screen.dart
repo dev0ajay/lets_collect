@@ -9,6 +9,7 @@ import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart'
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
+import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -147,7 +148,7 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                   Center(
                       child: Text(
                         AppLocalizations.of(context)!.donotworry,
-                          // Strings.FORGOT_PASSWORD_DISCRIPTION,
+                        //   Strings.FORGOT_PASSWORD_DISCRIPTION,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
                             fontSize: 16,

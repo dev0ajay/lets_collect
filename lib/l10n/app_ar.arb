@@ -60,16 +60,25 @@
     "phonenumber" : "رقم التليفون",
     "submit" : "يُقدِّم",
 
-    "otpbuttonverify" : "التحقق من كلمة المرور لمرة واحدة (OTP).",
-    "resetpassword" : "إعادة تعيين كلمة المرور",
-    "donotworry" : "لا تقلق! سنساعدك على استعادة كلمة المرور الخاصة بك",
     "emailaddress" : "عنوان البريد الإلكتروني",
     "enteryouremail" : "أدخل بريدك الإلكتروني",
     "pleaseenteravalidmail" : "من فضلك، أدخل البريد صالح",
-    "sentotp" : "تم إرسال كلمة المرور لمرة واحدة",
+    "donotworry" : "لا تقلق! سنساعدك على استعادة كلمة المرور الخاصة بك.",
+    "sentotp" : "OTP مرسل",
     "rest" : "استراحة",
 
+    "resetpassword" : "إعادة تعيين كلمة المرور",
+    "pleaseentertheonetimepassword" : "الرجاء إدخال كلمة المرور لمرة واحدة للتحقق من حسابك.",
+    "aonetimepasswordhasbeensendto" : "تم إرسال كلمة المرور لمرة واحدة إلى",
+    "otpnumber" : "رقم مكتب المدعي العام",
+    "verifyotp" : "OTP يؤكد",
 
+    "passwordreset" : "إعادة تعيين كلمة المرور",
+    "newpassword" : "كلمة المرور الجديدة",
+    "confirmpassword" : "تأكيد كلمة المرور",
+     "verify" : "يؤكد",
+
+    "hi" : "أهلاً",
     "referralcode" : "رمز الإحالة",
     "bonuspoint" : "نقاط مكافأة!",
     "scan" : "مسح",
@@ -141,7 +150,6 @@
     "loginnotes3" : "و لنا",
     "loginnotes4" : "سياسة الخصوصية",
 
-    "resetpassword" : "Reset Password",
     "donotworry" : "لا تقلق! سنساعدك على استعادة كلمة المرور الخاصة بك",
     "pleaseprovideusyouremail" : "يرجى تزويدنا بالبريد الإلكتروني الخاص بك",
     "sentotp" : "تم إرسال كلمة المرور لمرة واحدة",
@@ -237,8 +245,8 @@
     "wewillgetbackto" : "سنعود إليك في أقرب وقت ممكن. \n قد يستغرق الأمر ما يصل إلى 3 أيام عمل.",
 
     "tryagain" : "حاول ثانية",
-
-
+    "hisarah" : "مرحبا سارة",
+    "pressagaintoexittheapp" : "اضغط مرة أخرى للخروج من التطبيق",
     "youarenotconnectedtotheinternet" : "أنت غير متصل بالإنترنت",
     "nodatashow" : "لا توجد بيانات لإظهارها",
     "allfieldsareimportant" : "جميع المجالات مهمة",

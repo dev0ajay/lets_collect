@@ -12,9 +12,9 @@ import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
-
 import '../../../../constants/colors.dart';
 import '../forgot_password arguments.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ForgetPasswordOtpScreen extends StatefulWidget {
@@ -79,7 +79,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
             },
           ),
           title:   Text(
-            Strings.FORGET_REST_PASSWORTD,
+            AppLocalizations.of(context)!.resetpassword,
+            // Strings.FORGET_REST_PASSWORTD,
             style: GoogleFonts.openSans(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -159,7 +160,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     ),
                      Center(
                       child: Text(
-                        Strings.ALMOST_DONE,
+                        AppLocalizations.of(context)!.pleaseentertheonetimepassword,
+                        // Strings.ALMOST_DONE,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.openSans(
                           fontSize: 18,
@@ -173,7 +175,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     ),
                      Center(
                       child: Text(
-                       "A One-Time password has been send to ${widget.forgotPasswordArguments!.email}. ",
+                       "${AppLocalizations.of(context)!.aonetimepasswordhasbeensendto
+              } ${widget.forgotPasswordArguments!.email} ",
                         style: const TextStyle(color: Colors.white, fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
@@ -195,12 +198,12 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
-                              const Flexible(
+                               Flexible(
                                 flex: 1,
                                 child: Center(
                                   child: Text(
-                                    "OTP Number",
-                                    style: TextStyle(
+                                    AppLocalizations.of(context)!.otpnumber,
+                                    style:const TextStyle(
                                         fontSize: 20, color: Colors.white),
                                   ),
                                 ),
@@ -299,7 +302,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                       child: MyButton(
                                         Textfontsize: 16,
                                         TextColors: Colors.white,
-                                        text: Strings.OTP_BUTTON_VERIFY,
+                                        text: AppLocalizations.of(context)!.verifyotp,
+                                        // text: Strings.OTP_BUTTON_VERIFY,
                                         color: AppColors.secondaryColor,
                                         width: 340,
                                         height: 40,
