@@ -7,7 +7,7 @@ import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lets_collect/src/ui/profile/components/redemption/redemption_details_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/redemption_details_screen.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';

@@ -22,11 +22,12 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
-import 'package:lets_collect/src/ui/profile/components/my_profile/my_profile_screen_arguments.dart';
+import 'package:lets_collect/src/ui/profile/components/my_profile_screen_arguments.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyProfileScreen extends StatefulWidget {
   final MyProfileArguments myProfileArguments;
@@ -96,7 +97,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     String pattern = "[a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter first name';
+      // return 'Enter first name';
+      return AppLocalizations.of(context)!.enterfirstname;
     } else {
       return null;
     }
@@ -107,7 +109,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
         "a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter last name';
+      // return 'Enter last name';
+      return AppLocalizations.of(context)!.enterlastname;
     } else {
       return null;
     }
@@ -116,6 +119,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   String? validatePhoneNumber(String? value) {
     if (value!.length < 10 || value.isEmpty) {
       return 'Enter a valid phone number';
+      // return AppLocalizations.of(context)!.enterava;
     } else {
       return null;
     }
@@ -256,7 +260,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       lastnameController.text = widget.myProfileArguments.last_name;
       print("LASTNAME  : $lastnameController.text");
 
-      dateInputController.text = DateFormat('yyyy-MM-dd')
+      dateInputController.text =  DateFormat('yyyy-MM-dd')
           .format(DateTime.parse(widget.myProfileArguments.dob));
       print("DOB : $dateInputController.text");
 
@@ -345,10 +349,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                               BlocProvider.of<MyProfileBloc>(context)
                                   .add(GetProfileDataEvent());
                             },
-                            child: const Text(
-                              "Try again",
-                              style:
-                              TextStyle(color: AppColors.primaryWhiteColor),
+                            child:  Text(
+                              // "Try again",
+                              AppLocalizations.of(context)!.tryagain,
+                              style: TextStyle(color: AppColors.primaryWhiteColor),
                             ),
                           ),
                         ),
@@ -410,7 +414,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                     child: Column(
                                       children: [
                                         Lottie.asset(Assets.TRY_AGAIN),
-                                        const Text("state"),
+                                         Text(state.errorMsg),
                                       ],
                                     ),
                                   );
@@ -421,7 +425,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                     children: [
                                       // SizedBox(height: 30,),
                                       Text(
-                                        "About You",
+                                        // "About You",
+                                        AppLocalizations.of(context)!.aboutyou,
                                         style: GoogleFonts.openSans(
                                           color: AppColors.primaryBlackColor,
                                           fontSize: 20,
@@ -525,7 +530,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           },
                                           child: DatePickerTextField(
                                             controller: dateInputController,
-                                            hintText: "Date of Birth",
+                                            // hintText: "Date of Birth",
+                                            hintText: AppLocalizations.of(context)!.dateofbirth,
                                             onDateIconTap: () {
                                               _showDatePicker(context);
                                             },
@@ -1062,7 +1068,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
                                       const SizedBox(height: 20),
                                       Text(
-                                        "Contact Info",
+                                        // "Contact Info",
+                                        AppLocalizations.of(context)!.contactinfo,
                                         style: GoogleFonts.openSans(
                                           color: AppColors.primaryBlackColor,
                                           fontSize: 20,
@@ -1247,7 +1254,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 } else {
                                                   Fluttertoast.showToast(
                                                     msg:
-                                                    "All fields are important",
+                                                    // "All fields are important",
+                                                    AppLocalizations.of(context)!.allfieldsareimportant,
                                                     toastLength:
                                                     Toast.LENGTH_SHORT,
                                                     gravity: ToastGravity.BOTTOM,
@@ -1290,7 +1298,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    "You are not connected to the internet",
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,
@@ -2447,7 +2456,8 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                   Expanded(
                     flex: 5,
                     child: Text(
-                      "My Profile",
+                      // "My Profile",
+                      AppLocalizations.of(context)!.myprofile,
                       // myProfileArguments.user_name,
                       // ObjectFactory().prefs.getUserName() ?? "",
                       style: GoogleFonts.openSans(
@@ -2543,7 +2553,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                             child: Column(
                               children: [
                                 Text(
-                                  myProfileArguments.user_name,
+                                  myProfileArguments.first_name,
                                   // ObjectFactory().prefs.getUserName() ?? "",
                                   style: GoogleFonts.openSans(
                                     fontSize: 21,
@@ -2555,6 +2565,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                                 GestureDetector(
                                   child: Text(
                                     "Change Password",
+                                    // AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                                     style: GoogleFonts.openSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,

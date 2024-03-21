@@ -491,7 +491,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               imagePath: Assets.MAIL,
                               Textfontsize: 16,
                               TextColors: AppColors.iconGreyColor,
-                              text: AppLocalizations.of(context)!.emailsingup,
+                              text: AppLocalizations.of(context)!.emailsignup,
                               // Strings.EMAIL_SINGUP,
                               color: AppColors.primaryWhiteColor,
                               width: 160,

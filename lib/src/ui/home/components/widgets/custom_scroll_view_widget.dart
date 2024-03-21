@@ -16,7 +16,7 @@ import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
-import 'alert_overlay_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -54,12 +54,10 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
 
     print(
-        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory()
-            .prefs.isEmailNotVerifiedStatus()}");
+        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory().prefs.isEmailNotVerifiedStatus()}");
 
     print(
-        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()
-        }");
+        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()}");
     super.initState();
   }
 
@@ -76,7 +74,6 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     SizeConfig().init(context);
     return BlocConsumer<NetworkBloc, NetworkState>(
       builder: (context, state) {
@@ -111,15 +108,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
                   ObjectFactory().prefs.setIsEmailVerified(true);
-                  ObjectFactory()
-                  .prefs.setIsEmailNotVerifiedStatus(false);
-                  ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                  // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
+                  // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
                       verifiedPoints: state.homeResponse.emailVerificationPoints
                           .toString());
-                }else if(state.homeResponse.emailVerified == 0) {
-                  ObjectFactory()
-                      .prefs.setIsEmailNotVerifiedStatus(true);
+                } else if (state.homeResponse.emailVerified == 0) {
+                  ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
                 }
                 return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -145,32 +140,53 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Hi ${ObjectFactory().prefs.getUserName() ?? ""}!",
-                              style: GoogleFonts.openSans(
-                                  fontSize: 22, fontWeight: FontWeight.w600),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10)),
-                                      content: SizedBox(
-                                        height: getProportionateScreenHeight(260),
-                                        width: getProportionateScreenWidth(320),
-                                        child: Lottie.asset(Assets.SOON),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.mail_sharp,
+                            Expanded(
+                              flex: 5,
+                              child: Text(
+                                "${AppLocalizations.of(context)!.hi}  ${ObjectFactory().prefs.getUserName() ?? ""}!",
+                                // "Hi ${ObjectFactory().prefs.getUserName() ?? ""}!",
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.openSans(
+                                    fontSize: 22, fontWeight: FontWeight.w600),
                               ),
-                              color: Colors.white,
+                            ),
+                            Flexible(
+                              child: Stack(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      context.push('/notification');
+                                    },
+                                    icon: const Icon(
+                                      Icons.mail_sharp,
+                                    ),
+                                    color: AppColors.primaryWhiteColor,
+                                  ),
+                                  // BlocBuilder<NotificationBloc,
+                                  //     NotificationState>(
+                                  //   builder: (context, state) {
+                                  //     return Positioned(
+                                  //       right: 0,
+                                  //       top: 10,
+                                  //       left: 20,
+                                  //       child: Container(
+                                  //         padding: const EdgeInsets.all(2),
+                                  //         decoration: const BoxDecoration(
+                                  //           shape: BoxShape.circle,
+                                  //           color: AppColors
+                                  //               .secondaryColor, // Change color as needed
+                                  //         ),
+                                  //         constraints: const BoxConstraints(
+                                  //           minWidth: 10,
+                                  //           minHeight: 10,
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -208,13 +224,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 ),
                                 child: SizedBox(
                                   height: getProportionateScreenHeight(50),
-                                  child: const CupertinoTextField.borderless(
-                                    padding: EdgeInsets.only(
+                                  child: CupertinoTextField.borderless(
+                                    padding: const EdgeInsets.only(
                                         left: 15,
                                         top: 15,
                                         right: 6,
                                         bottom: 10),
-                                    placeholder: 'Referral code',
+                                    placeholder:
+                                        AppLocalizations.of(context)!.close,
+                                    // placeholder: 'Referral code',
                                   ),
                                 ),
                               ),
@@ -228,14 +246,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  backgroundColor:
-                                      AppColors.secondaryButtonColor,
+                                  backgroundColor: AppColors.secondaryColor,
                                 ),
                                 onPressed: () {},
-                                child: const Text(
-                                  "Bonus point!",
+                                child: Text(
+                                  AppLocalizations.of(context)!.bonuspoint,
+                                  // "Bonus point!",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                      color: AppColors.primaryWhiteColor),
                                 ),
                               ),
                             ),
@@ -308,7 +327,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          "Scan",
+                                          AppLocalizations.of(context)!.scan,
+                                          // "Scan",
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
@@ -375,7 +395,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          "Total points \n ${state.homeResponse.totalPoints} pts",
+                                          "${AppLocalizations.of(context)!.totalpoints}  \n ${state.homeResponse.totalPoints} ${AppLocalizations.of(context)!.pts}",
+                                          // "Total points \n ${state.homeResponse.totalPoints} pts",
                                           textAlign: TextAlign.center,
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
@@ -401,7 +422,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Brands",
+                                  AppLocalizations.of(context)!.brands,
+                                  // "Brands",
                                   style: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -419,7 +441,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     width: 50,
                                     child: Center(
                                       child: Text(
-                                        "View all",
+                                        AppLocalizations.of(context)!.viewall,
+                                        // "View all",
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.roboto(
                                           fontSize: 12,
@@ -463,21 +486,23 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                       const BoxDecoration(
                                                     color: AppColors
                                                         .primaryWhiteColor,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: AppColors.boxShadow,
-                                                            blurRadius: 4,
-                                                            offset: Offset(4, 2),
-                                                            spreadRadius: 0,
-                                                          ),
-                                                          BoxShadow(
-                                                            color: AppColors.boxShadow,
-                                                            blurRadius: 4,
-                                                            offset: Offset(-4, -2),
-                                                            spreadRadius: 0,
-                                                          ),
-                                                        ],
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(4, 2),
+                                                        spreadRadius: 0,
                                                       ),
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(-4, -2),
+                                                        spreadRadius: 0,
+                                                      ),
+                                                    ],
+                                                  ),
                                                   child: CachedNetworkImage(
                                                     fadeInCurve: Curves.easeIn,
                                                     fadeInDuration:
@@ -582,7 +607,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Special Offers for you",
+                              AppLocalizations.of(context)!.specialoffersforyou,
+                              // "Special Offers for you",
                               style: GoogleFonts.roboto(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -597,7 +623,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 width: 50,
                                 child: Center(
                                   child: Text(
-                                    "View all",
+                                    AppLocalizations.of(context)!.viewall,
+                                    // "View all",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.roboto(
                                       fontSize: 12,
@@ -771,8 +798,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Hi Sarah",
+                           Text(
+                          AppLocalizations.of(context)!.hisarah,
+                            // "Hi Sarah",
                             style: TextStyle(
                               fontSize: 20,
                               color: AppColors.primaryWhiteColor,
@@ -825,10 +853,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               ),
                               child: SizedBox(
                                 height: getProportionateScreenHeight(50),
-                                child: const CupertinoTextField.borderless(
-                                  padding: EdgeInsets.only(
+                                child: CupertinoTextField.borderless(
+                                  padding: const EdgeInsets.only(
                                       left: 15, top: 15, right: 6, bottom: 10),
-                                  placeholder: 'Referral code',
+                                  // placeholder: 'Referral code',
+                                  placeholder: AppLocalizations.of(context)!
+                                      .referralcode,
                                 ),
                               ),
                             ),
@@ -845,10 +875,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 backgroundColor: AppColors.secondaryButtonColor,
                               ),
                               onPressed: () {},
-                              child: const Text(
-                                "Bonus point!",
+                              child: Text(
+                                AppLocalizations.of(context)!.bonuspoint,
+                                // "Bonus point!",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -896,11 +927,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           ),
                                     ),
                                   ),
-                                  const Flexible(
+                                  Flexible(
                                     flex: 1,
                                     child: Text(
-                                      "Scan",
-                                      style: TextStyle(
+                                      AppLocalizations.of(context)!.scan,
+                                      // "Scan",
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -941,10 +973,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                               ),
                                     ),
                                   ),
-                                  const Text(
-                                    "Total points \n 1200 pts",
+                                  Text(
+                                    "${AppLocalizations.of(context)!.totalpoints} \n 1200 ${AppLocalizations.of(context)!.pts}",
+                                    // "Total points \n 1200 pts",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400),
                                   ),
@@ -960,16 +993,18 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     sliver: SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Brands",
-                                style: TextStyle(fontSize: 18),
+                                AppLocalizations.of(context)!.brands,
+                                // "Brands",
+                                style: const TextStyle(fontSize: 18),
                               ),
                               Text(
-                                "View all",
-                                style: TextStyle(fontSize: 15),
+                                AppLocalizations.of(context)!.viewall,
+                                // "View all",
+                                style: const TextStyle(fontSize: 15),
                               ),
                             ],
                           ),
@@ -1051,7 +1086,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   SliverPadding(
                     sliver: SliverToBoxAdapter(
                       child: Text(
-                        "Special Offers for you",
+                        AppLocalizations.of(context)!.specialoffersforyou,
+                        // "Special Offers for you",
                         style: GoogleFonts.roboto(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
@@ -1148,7 +1184,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,

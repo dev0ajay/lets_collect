@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
-import 'package:lets_collect/src/model/my_profile/my_profile_screen_response.dart';
+import 'package:lets_collect/src/model/profile/my_profile_screen_response.dart';
 import 'package:lets_collect/src/model/state_model.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 
@@ -14,7 +14,7 @@ part 'my_profile_event.dart';
 part 'my_profile_state.dart';
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
-  final MyProfileDataProvider myProfileDataProvider;
+  final ProfileDataProvider myProfileDataProvider;
 
   MyProfileBloc({required this.myProfileDataProvider})
       : super(MyProfileInitial()) {

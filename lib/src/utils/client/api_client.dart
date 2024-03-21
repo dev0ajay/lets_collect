@@ -479,4 +479,17 @@ class ApiClient {
     );
   }
 
+  /// Delete Account
+  Future<Response> deleteAccount() {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.DELETE_ACCOUNT,
+      // data: contactUsRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
 }

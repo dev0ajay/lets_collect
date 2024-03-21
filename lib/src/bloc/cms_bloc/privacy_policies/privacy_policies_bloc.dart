@@ -9,7 +9,7 @@ part 'privacy_policies_event.dart';
 part 'privacy_policies_state.dart';
 
 class PrivacyPoliciesBloc extends Bloc<PrivacyPoliciesEvent, PrivacyPoliciesState> {
-  final MyProfileDataProvider profileDataProvider;
+  final ProfileDataProvider profileDataProvider;
   PrivacyPoliciesBloc({required this.profileDataProvider}) : super(PrivacyPoliciesInitial()) {
     on<GetPrivacyPolicies>((event, emit) async{
       emit(PrivacyPoliciesLaoding());

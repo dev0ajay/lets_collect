@@ -10,11 +10,11 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../bloc/filter_bloc/filter_bloc.dart';
-import '../../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
-import '../../../../model/purchase_history/purchase_history_response.dart';
-import '../../../reward/components/widgets/custome_rounded_button.dart';
-import '../../widgets/bar_chart_widget.dart';
+import '../../../bloc/filter_bloc/filter_bloc.dart';
+import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
+import '../../../model/purchase_history/purchase_history_response.dart';
+import '../../reward/components/widgets/custome_rounded_button.dart';
+import '../widgets/bar_chart_widget.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
   const PurchaseHistoryScreen({super.key});

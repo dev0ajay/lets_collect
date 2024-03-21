@@ -5,29 +5,31 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
+import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../constants/colors.dart';
 
-class PrivacyPoliciesScreen extends StatefulWidget {
-  const PrivacyPoliciesScreen({super.key});
+class TermsAndConditionsScreen extends StatefulWidget {
+  const TermsAndConditionsScreen({super.key});
 
   @override
-  State<PrivacyPoliciesScreen> createState() => _PrivacyPoliciesScreenState();
+  State<TermsAndConditionsScreen> createState() =>
+      _TermsAndConditionsScreenState();
 }
 
-class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
-  bool networkSuccess = false;
+class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
 
+  bool networkSuccess= false;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<PrivacyPoliciesBloc>(context).add(GetPrivacyPolicies());
+    BlocProvider.of<TermsAndConditionBloc>(context).add(
+        GetTermsAndConditionEvent());
   }
 
   @override
@@ -44,8 +46,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
             color: AppColors.primaryWhiteColor,
           ),),
         title: Text(
-          // "Privacy policies",
-          AppLocalizations.of(context)!.privacypolicy,
+          // "Terms And Conditions",
+          AppLocalizations.of(context)!.termsandconditionds,
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -60,10 +62,10 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
           }
         },
         builder: (context, state) {
-          if(state is NetworkSuccess){
-            return BlocBuilder<PrivacyPoliciesBloc, PrivacyPoliciesState>(
+          if (state is NetworkSuccess) {
+            return BlocBuilder<TermsAndConditionBloc, TermsAndConditionState>(
               builder: (context, state) {
-                if (state is PrivacyPoliciesLaoding) {
+                if (state is TermsAndConditionLoading) {
                   return const Center(
                     child: RefreshProgressIndicator(
                       backgroundColor: AppColors.secondaryColor,
@@ -72,7 +74,7 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                   );
                 }
 
-                if (state is PrivacyPoliciesErrorState) {
+                if (state is TermsAndConditionErrorState) {
                   return Center(
                     child: Column(
                       children: [
@@ -99,8 +101,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                                 fixedSize: const Size(100, 50),
                                 backgroundColor: AppColors.primaryColor),
                             onPressed: () {
-                              BlocProvider.of<PrivacyPoliciesBloc>(context)
-                                  .add(GetPrivacyPolicies());
+                              BlocProvider.of<TermsAndConditionBloc>(context)
+                                  .add(GetTermsAndConditionEvent());
                             },
                             child:  Text(
                               // "Try again",
@@ -116,15 +118,15 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
                   );
                 }
 
-                if (state is PrivacyPoliciesLoaded) {
+                if (state is TermsAndConditionLoaded) {
                   return SingleChildScrollView(
                     child: Html(
-                      // data: state.privacyPoliciesResponse.data.pageContent
-                      data: state.privacyPoliciesResponse != null
-                          ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                          ? state.privacyPoliciesResponse.data.pageContent
-                          : state.privacyPoliciesResponse.data.pageContentArabic)
-                          : '',
+                        // data: state.termsAndConditionResponse.data.pageContent
+                         data: state.termsAndConditionResponse != null
+                         ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                         ? state.termsAndConditionResponse.data.pageContent
+                         : state.termsAndConditionResponse.data.pageTitleArabic )
+                      : ""
                     ),
                   );
                 }

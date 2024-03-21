@@ -11,16 +11,16 @@ import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_event.dart';
 import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
-import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:lets_collect/src/ui/profile/components/my_profile/my_profile_screen_arguments.dart';
-import 'package:lets_collect/src/utils/data/object_factory.dart';
+import 'package:lets_collect/src/ui/profile/widgets/delete_account_alert_widget.dart';
+import 'package:lets_collect/src/ui/profile/widgets/log_out_alert_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import '../../bloc/country_bloc/country_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
+import 'components/my_profile_screen_arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -91,20 +91,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         title: Text(Language.values[index].text),
                         trailing:
-                            Language.values[index] == state.selectedLanguage
-                                ? Icon(Icons.check_circle_rounded,
-                                    color: AppColors.secondaryColor)
-                                : null,
+                        Language.values[index] == state.selectedLanguage
+                            ? const Icon(Icons.check_circle_rounded,
+                            color: AppColors.secondaryColor)
+                            : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           side: Language.values[index] == state.selectedLanguage
-                              ? BorderSide(color: Colors.grey, width: 1.5)
+                              ? const BorderSide(color: Colors.grey, width: 1.5)
                               : BorderSide(color: Colors.grey[300]!),
                         ),
                         tileColor:
-                            Language.values[index] == state.selectedLanguage
-                                ? Colors.grey
-                                : null,
+                        Language.values[index] == state.selectedLanguage
+                            ? Colors.grey
+                            : null,
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -147,32 +147,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return Center(
                   child: Column(
                     children: [
-                      Lottie.asset(Assets.TRY_AGAIN),
                       Expanded(
-                          flex: 2,
-                          child: Text(state.errorMsg)),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            backgroundColor: AppColors.primaryColor),
-                        onPressed: () {
-                          BlocProvider.of<MyProfileBloc>(context)
-                              .add(GetProfileDataEvent());
-                        },
-                        child: const Text(
-                          "Try again....",
-                          style: TextStyle(color: AppColors.primaryWhiteColor),
+                        flex: 3,
+                        child: Lottie.asset(Assets.TRY_AGAIN),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          state.errorMsg,
+                          style: const TextStyle(
+                              color: AppColors.primaryWhiteColor),
                         ),
-                      )
+                      ),
+                      const Spacer(),
+                      Flexible(
+                        flex: 1,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              fixedSize: const Size(100, 50),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<MyProfileBloc>(context)
+                                .add(GetProfileDataEvent());
+                          },
+                          child:  Text(
+                            // "Try again",
+                            AppLocalizations.of(context)!.tryagain,
+                            style:
+                            const TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        ),
+                      ),
+                      // const Text("state"),
                     ],
                   ),
                 );
               }
               if (state is MyProfileLoaded) {
                 String b64 =
-                    state.myProfileScreenResponse.data!.photo.toString();
+                state.myProfileScreenResponse.data!.photo.toString();
                 final UriData? data = Uri.parse(b64).data;
                 Uint8List bytesImage = data!.contentAsBytes();
                 print("PHOTO CODE : $bytesImage");
@@ -207,52 +223,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     flex: 3,
                                     child: bytesImage != null
                                         ? Container(
-                                            width: 150.0,
-                                            height: 150.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              // border: Border.all(
-                                              //   color: AppColors.secondaryColor,
-                                              //   width: 2.0,
-                                              // ),
-                                              image: DecorationImage(
-                                                alignment: Alignment.center,
-                                                fit: BoxFit.cover,
-                                                image: MemoryImage(bytesImage),
-                                              ),
-                                            ),
-                                          )
+                                      width: 150.0,
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        // border: Border.all(
+                                        //   color: AppColors.secondaryColor,
+                                        //   width: 2.0,
+                                        // ),
+                                        image: DecorationImage(
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(bytesImage),
+                                        ),
+                                      ),
+                                    )
                                         : Container(
+                                        alignment: Alignment.center,
+                                        width: 130,
+                                        height: 130,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.shadow,
+                                          // borderRadius: BorderRadius.circular(100),
+                                        ),
+                                        child: const Stack(children: [
+                                          Align(
                                             alignment: Alignment.center,
-                                            width: 130,
-                                            height: 130,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.shadow,
-                                              // borderRadius: BorderRadius.circular(100),
-                                            ),
-                                            child: const Stack(children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text("Add"),
-                                              ),
-                                              Positioned(
-                                                  bottom: 8,
-                                                  right: 8,
-                                                  child: Icon(
-                                                    Icons.add_a_photo_outlined,
-                                                    color: AppColors
-                                                        .secondaryColor,
-                                                  )
-                                                  // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                                  ),
-                                            ]))),
+                                            child: Text("Add"),
+                                          ),
+                                          Positioned(
+                                              bottom: 8,
+                                              right: 8,
+                                              child: Icon(
+                                                Icons.add_a_photo_outlined,
+                                                color: AppColors
+                                                    .secondaryColor,
+                                              )
+                                            // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                          ),
+                                        ]))),
                                 const SizedBox(height: 10),
                                 Flexible(
                                   flex: 1,
                                   child: Text(
                                     // ObjectFactory().prefs.getUserName() ??
-                                    state.myProfileScreenResponse.data!.userName
+                                    state.myProfileScreenResponse.data!.firstName
                                         .toString(),
                                     style: GoogleFonts.openSans(
                                       color: AppColors.secondaryColor,
@@ -277,9 +293,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         delegate: SliverChildListDelegate([
                           Column(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
+
+                              ///Language Selection
                               GestureDetector(
                                 onTap: () {
                                   showLanguageBottomSheet(context);
@@ -291,9 +309,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color: Colors.white,
                                     boxShadow: const [
                                       BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
                                         color: Color(0x4F000000),
-                                        blurRadius: 4.10,
-                                        offset: Offset(2, 4),
+                                        blurRadius: 2,
+                                        offset: Offset(-4, -2),
                                         spreadRadius: 0,
                                       ),
                                     ],
@@ -306,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         left: 8.0),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           AppLocalizations.of(context)!
@@ -316,13 +340,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             fontWeight: FontWeight.w500,
                                             fontStyle: FontStyle.normal,
                                             letterSpacing:
-                                                0, // This is the default value for normal line height
+                                            0, // This is the default value for normal line height
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 150,
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: 20,
                                           child: BlocBuilder<LanguageBloc,
                                               LanguageState>(
@@ -333,16 +357,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             },
                                           ),
                                         ),
-                                        const Icon(
-                                          Icons.arrow_forward_ios_sharp,
-                                          size: 19,
-                                        )
+                                        const SizedBox(
+                                          width: 1,
+                                        ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
@@ -408,32 +431,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     );
                                     print("MyProfile tapped!");
                                   },
-                                  labelText:
-                                      AppLocalizations.of(context)!.myprofile,
+                                  // labelText: "My Profile",
+                                  labelText : AppLocalizations.of(context)!.myprofile,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
                               Padding(
-                                padding: EdgeInsets.only(top: 18),
+                                padding: const EdgeInsets.only(top: 18),
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
                                     context.push("/Point_Tracker");
                                     print("Point Tracker tapped!");
                                   },
-                                  labelText: AppLocalizations.of(context)!
-                                      .pointtracker,
+                                  // labelText: "Point Tracker",
+                                  labelText : AppLocalizations.of(context)!.pointtracker,
+                                  //     .pointtracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -442,16 +466,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
                                     context.push("/Redemption_Tracker");
+                                    print("Redemption_Tracker Tapped !");
+                                    // context.push("/Redemption_Tracker");
                                     print("Redemption Tracker tapped!");
                                   },
-                                  labelText: AppLocalizations.of(context)!
-                                      .redemptiontracker,
+                                  // labelText: "Redemption Tracker",
+                                  labelText :AppLocalizations.of(context)!.redemptiontracker,
+                                  //     .redemptiontracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -462,14 +489,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push("/Purchase_History");
                                     print("Purchase History tapped!");
                                   },
-                                  labelText: AppLocalizations.of(context)!
-                                      .purchasehistory,
+                                  // labelText: "Purchase History",
+                                  labelText : AppLocalizations.of(context)!.purchasehistory,
+                                  //     .purchasehistory,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -480,43 +508,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     context.push('/help');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText:
-                                        AppLocalizations.of(context)!.help,
+                                    // labelText: "Help",
+                                    labelText : AppLocalizations.of(context)!.help,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
                                     ),
-                                  ),
-                                ),
-                              ).animate().then(delay: 200.ms).slideY(),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 18.0),
-                                child: ProfileDetailsListTileWidget(
-                                  labelText: AppLocalizations.of(context)!
-                                      .notificationcenter,
-                                  textStyle: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing:
-                                        0, // This is the default value for normal line height
-                                  ),
-                                ),
-                              ).animate().then(delay: 200.ms).slideY(),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 18.0),
-                                child: ProfileDetailsListTileWidget(
-                                  labelText: AppLocalizations.of(context)!
-                                      .referafriend,
-                                  textStyle: GoogleFonts.roboto(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing:
-                                        0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -524,17 +524,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    _showDialogBox(context: context);
+                                    context.push('/notification');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText:
-                                        AppLocalizations.of(context)!.logout,
+                                    // labelText: "Notification center",
+                                    labelText : AppLocalizations.of(context)!.notificationcenter,
+                                    //     .notificationcenter,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
+                                    ),
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(10)),
+                                          content: SizedBox(
+                                            height:
+                                            getProportionateScreenHeight(
+                                                260),
+                                            width: getProportionateScreenWidth(
+                                                320),
+                                            child: Lottie.asset(Assets.SOON),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: ProfileDetailsListTileWidget(
+                                    // labelText: "Refer a friend",
+                                    labelText : AppLocalizations.of(context)!.referafriend,
+                                    //     .referafriend,
+                                    textStyle: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing:
+                                      0, // This is the default value for normal line height
+                                    ),
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 18.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                      const DeleteAccountAlertOverlay(),
+                                    );
+                                  },
+                                  child: ProfileDetailsListTileWidget(
+                                    // labelText: "Delete Account",
+                                    labelText : AppLocalizations.of(context)!.deleteaccount,
+                                    //     .referafriend,
+                                    textStyle: GoogleFonts.roboto(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                      letterSpacing:
+                                      0, // This is the default value for normal line height
+                                    ),
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 50),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(300, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    backgroundColor: AppColors.primaryColor,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                        const LogOutAlertOverlay());
+                                  },
+                                  child:  Text(
+                                    // "Log out",
+                                    AppLocalizations.of(context)!.logout,
+                                    style: const TextStyle(
+                                      color: AppColors.secondaryColor,
                                     ),
                                   ),
                                 ),
@@ -560,7 +647,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  // "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,
@@ -588,11 +676,11 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const ProfileDetailsListTileWidget({
-    Key? key,
+    super.key,
     this.textStyle,
     required this.labelText,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -602,12 +690,18 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
+          color: AppColors.primaryWhiteColor,
           boxShadow: const [
             BoxShadow(
+              color: AppColors.boxShadow,
+              blurRadius: 4,
+              offset: Offset(4, 2),
+              spreadRadius: 0,
+            ),
+            BoxShadow(
               color: Color(0x4F000000),
-              blurRadius: 4.10,
-              offset: Offset(2, 4),
+              blurRadius: 2,
+              offset: Offset(-4, -2),
               spreadRadius: 0,
             ),
           ],
@@ -622,10 +716,6 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
                 labelText,
                 style: textStyle,
               ),
-              const Icon(
-                Icons.arrow_forward_ios_sharp,
-                size: 19,
-              )
             ],
           ),
         ),
@@ -634,94 +724,95 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
   }
 }
 
-void _showDialogBox({
-  required BuildContext context,
-}) {
-  showDialog(
-    context: context,
-    builder: (ctx) => SizedBox(
-      width: 700,
-      child: AlertDialog(
-        backgroundColor: AppColors.primaryWhiteColor,
-        // elevation: 5,
-        alignment: Alignment.center,
-        content: SizedBox(
-          height: getProportionateScreenHeight(170),
-          width: getProportionateScreenWidth(500),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                AppLocalizations.of(context)!.areyousureyouwanttologout,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.openSans(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: MyButton(
-                        Textfontsize: 16,
-                        TextColors: Colors.white,
-                        text: AppLocalizations.of(context)!.yes,
-                        color: AppColors.secondaryColor,
-                        height: 5,
-                        onTap: () {
-                          ObjectFactory().prefs.setIsLoggedIn(false);
-                          ObjectFactory().prefs.clearPrefs();
-                          context.go('/login');
-                        },
-                        showImage: false,
-                        imagePath: '',
-                        imagewidth: 0,
-                        imageheight: 0,
-                        width: 120,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                      child: MyButton(
-                        Textfontsize: 16,
-                        TextColors: Colors.white,
-                        text: AppLocalizations.of(context)!.no,
-                        color: AppColors.secondaryColor,
-                        height: 5,
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        showImage: false,
-                        imagePath: '',
-                        imagewidth: 0,
-                        imageheight: 0,
-                        width: 120,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
+// void _showDialogBox({
+//   required BuildContext context,
+// }) {
+//   showDialog(
+//     context: context,
+//     builder: (ctx) => SizedBox(
+//       width: 700,
+//       child: AlertDialog(
+//         backgroundColor: AppColors.primaryWhiteColor,
+//         // elevation: 5,
+//         alignment: Alignment.center,
+//         content: SizedBox(
+//           height: getProportionateScreenHeight(170),
+//           width: getProportionateScreenWidth(500),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: [
+//               Align(
+//                 alignment: Alignment.topLeft,
+//                 child: IconButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   icon: const Icon(Icons.close),
+//                 ),
+//               ),
+//               const SizedBox(height: 10),
+//               Text(
+//                 AppLocalizations.of(context)!.areyousureyouwanttologout,
+//                 textAlign: TextAlign.center,
+//                 style: GoogleFonts.openSans(
+//                   fontSize: 18,
+//                   fontWeight: FontWeight.w400,
+//                 ),
+//               ),
+//               const SizedBox(height: 40),
+//               Padding(
+//                 padding: const EdgeInsets.only(left: 10, right: 10),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Expanded(
+//                       child: MyButton(
+//                         Textfontsize: 16,
+//                         TextColors: Colors.white,
+//                         text: AppLocalizations.of(context)!.yes,
+//                         color: AppColors.secondaryColor,
+//                         height: 5,
+//                         onTap: () {
+//                           ObjectFactory().prefs.setIsLoggedIn(false);
+//                           ObjectFactory().prefs.clearPrefs();
+//                           context.go('/login');
+//                         },
+//                         showImage: false,
+//                         imagePath: '',
+//                         imagewidth: 0,
+//                         imageheight: 0,
+//                         width: 120,
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 20,
+//                     ),
+//                     Expanded(
+//                       child: MyButton(
+//                         Textfontsize: 16,
+//                         TextColors: Colors.white,
+//                         text: ""
+//                         // AppLocalizations.of(context)!.no,
+//                         color: AppColors.secondaryColor,
+//                         height: 5,
+//                         onTap: () {
+//                           Navigator.of(context).pop();
+//                         },
+//                         showImage: false,
+//                         imagePath: '',
+//                         imagewidth: 0,
+//                         imageheight: 0,
+//                         width: 120,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     ),
+//   );
+// }

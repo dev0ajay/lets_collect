@@ -10,7 +10,7 @@ part 'point_calculations_event.dart';
 part 'point_calculations_state.dart';
 
 class PointCalculationsBloc extends Bloc<PointCalculationsEvent, PointCalculationsState> {
-  final MyProfileDataProvider profileDataProvider;
+  final ProfileDataProvider profileDataProvider;
   PointCalculationsBloc({required this.profileDataProvider}) : super(PointCalculationsInitial()) {
     on<GetPointCalculationsEvent>((event, emit) async{
       emit(PointCalculationsLoading());

@@ -10,7 +10,7 @@ part 'how_to_redeem_my_points_event.dart';
 part 'how_to_redeem_my_points_state.dart';
 
 class HowToRedeemMyPointsBloc extends Bloc<HowToRedeemMyPointsEvent, HowToRedeemMyPointsState> {
-  final MyProfileDataProvider profileDataProvider;
+  final ProfileDataProvider profileDataProvider;
   HowToRedeemMyPointsBloc({required this.profileDataProvider}) : super(HowToRedeemMyPointsInitial()) {
     on<GetHowToRedeemMyPointsEvent>((event, emit) async{
       emit(HowToRedeemMyPointsLoading());

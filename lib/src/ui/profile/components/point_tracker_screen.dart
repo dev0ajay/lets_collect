@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +5,9 @@ import 'package:flutter_custom_month_picker/flutter_custom_month_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
@@ -14,6 +15,7 @@ import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart'
 import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class PointTrackerScreen extends StatefulWidget {
@@ -112,7 +114,8 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
             automaticallyImplyLeading: false,
             backgroundColor: AppColors.primaryColor,
             title: Text(
-              "Point Tracker",
+              AppLocalizations.of(context)!.pointtracker,
+              // "Point Tracker",
               style: GoogleFonts.openSans(
                 color: AppColors.primaryWhiteColor,
                 fontSize: 20,
@@ -189,8 +192,11 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                   Expanded(
                                     flex: 2,
                                     child: Text(
-                                      state.pointTrackerRequestResponse
-                                          .brandPoints[index].brandName,
+                                       context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                      ?state.pointTrackerRequestResponse
+                                          .brandPoints[index].brandName
+                                    :state.pointTrackerRequestResponse
+                                        .brandPoints[index].brandNameArabic,
                                       // context
                                       //     .read<LanguageBloc>()
                                       //     .state

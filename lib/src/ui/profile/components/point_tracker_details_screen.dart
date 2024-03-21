@@ -7,7 +7,7 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../model/point_tracker/point_tracker_details_request.dart';
+import '../../../model/point_tracker/point_tracker_details_request.dart';
 
 class PointTrackerDetailsScreen extends StatefulWidget {
   final int pointId;

@@ -39,7 +39,7 @@ class Data {
   String? mobileNo;
   String? userName;
   String? gender;
-  String? dob;
+  DateTime? dob;
   int? nationalityId;
   String? nationalityNameEn;
   String? countryNameEn;
@@ -80,7 +80,7 @@ class Data {
     mobileNo: json["mobile_no"],
     userName: json["user_name"],
     gender: json["gender"],
-    dob: json["dob"],
+    dob: json["dob"] == null ? null : DateTime.parse(json["dob"]),
     nationalityId: json["nationality_id"],
     nationalityNameEn: json["nationality_name_en"],
     countryNameEn: json["country_name_en"],
@@ -101,7 +101,7 @@ class Data {
     "mobile_no": mobileNo,
     "user_name": userName,
     "gender": gender,
-    "dob": dob,
+    "dob": "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
     "nationality_id": nationalityId,
     "nationality_name_en": nationalityNameEn,
     "country_name_en": countryNameEn,
