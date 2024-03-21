@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="154" height="129" fill="none" viewBox="0 0 154 129">
+  <path fill="#FE5F6B" d="m9.139 22.793 53.168-10.4 15.989 82.481-52.778 12.675c-3.51.65-6.89-1.82-7.604-5.59L4.134 30.852c-.715-3.77 1.495-7.344 5.005-8.06Z"/>
+  <path fill="#F55763" d="m115.539 2.058-53.167 10.4 15.924 81.961 53.753-7.54c3.509-.65 5.719-4.29 5.004-8.06L123.144 7.584c-.715-3.77-4.16-6.24-7.605-5.525Z"/>
+  <path fill="#EE3F4C" d="M136.273 83.63c-.91 1.625-2.405 2.86-4.29 3.25l-106.4 20.799c-1.885.39-3.77-.195-5.2-1.365l48.098-62.072 67.792 39.388Z"/>
+  <g filter="url(#a)">
+    <path fill="#EE3F4C" d="M4.85 26.042c.91-1.625 2.404-2.86 4.289-3.25l106.4-20.799c1.885-.39 3.77.195 5.2 1.365L72.641 65.431 4.85 26.042Z"/>
+  </g>
+  <path fill="#FE5F6B" d="M40.078 55.031c0-.065.065-.13.065-.195s.065-.065.065-.13.065-.065.065-.13c.65-1.56 1.69-2.86 2.925-3.575l.325-.195 43.353-25.024L130.23.758l.325-.195c1.235-.714 2.535-.714 3.575-.194 0 0 .065 0 .065.065 0 0 .065 0 .065.065l5.72 3.314-3.185 1.3 11.44 60.708c.325 1.56.065 3.314-.65 4.874 0 .065-.065.065-.065.13s-.065.065-.065.13c-.65 1.56-1.69 2.86-2.925 3.575l-86.446 49.983.78 3.835-5.395-3.12s-.065 0-.065-.065c-1.04-.585-1.885-1.69-2.145-3.25L39.493 59.711c-.26-1.495 0-3.185.585-4.68Z"/>
+  <path fill="url(#b)" d="m62.761 128.283 87.486-50.503c2.665-1.495 4.225-5.654 3.575-9.164L142.253 7.323c-.65-3.51-3.38-5.134-5.98-3.64L48.787 54.251c-2.665 1.495-4.225 5.655-3.575 9.165l11.57 61.292c.65 3.51 3.38 5.135 5.98 3.575Z"/>
+  <path fill="#FE5F6B" d="M49.177 54.056 92.53 29.032l13.585 72.017-42.963 27.039c-2.86 1.625-5.655.325-6.24-2.99L45.147 62.961c-.65-3.315 1.17-7.28 4.03-8.905Z"/>
+  <path fill="url(#c)" d="M135.883 3.944 92.53 28.967l13.52 71.627 43.808-22.554c2.86-1.625 4.615-5.655 4.03-8.904l-11.7-62.203c-.65-3.314-3.445-4.614-6.305-2.99Z"/>
+  <path fill="#EE3F4C" d="M153.367 73.75c-.715 1.755-1.95 3.38-3.445 4.225l-86.77 50.113c-1.56.91-3.056.91-4.226.195l38.869-71.627 55.572 17.095Z"/>
+  <g filter="url(#d)">
+    <path fill="#fff" d="M45.668 58.281c.715-1.755 1.95-3.38 3.445-4.225l86.771-50.113c1.56-.91 3.055-.91 4.225-.195L101.306 75.31 45.668 58.281Z"/>
+  </g>
+  <defs>
+    <linearGradient id="b" x1="148.029" x2="44.131" y1="38.002" y2="57.601" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7BDAFF"/>
+      <stop offset="1" stop-color="#59BDEF"/>
+    </linearGradient>
+    <linearGradient id="c" x1="183.685" x2="110.219" y1="93.514" y2="62.301" gradientUnits="userSpaceOnUse">
+      <stop offset=".768" stop-color="#FE5F6B"/>
+      <stop offset=".845" stop-color="#F55763"/>
+      <stop offset=".932" stop-color="#F55763"/>
+      <stop offset="1" stop-color="#F55763"/>
+    </linearGradient>
+    <filter id="a" width="123.89" height="71.558" x=".849" y="1.873" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="4"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_202_1480"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_202_1480" result="shape"/>
+    </filter>
+    <filter id="d" width="102.441" height="80.076" x="41.668" y="3.234" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dy="4"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_202_1480"/>
+      <feBlend in="SourceGraphic" in2="effect1_dropShadow_202_1480" result="shape"/>
+    </filter>
+  </defs>
+</svg>
