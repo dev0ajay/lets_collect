@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 
 class RedemptionDetailsScreen extends StatefulWidget {
@@ -20,13 +18,13 @@ class RedemptionDetailsScreen extends StatefulWidget {
   final String store;
 
   const RedemptionDetailsScreen({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.itemName,
     required this.points,
     required this.time,
     required this.store,
-  }) : super(key: key);
+  });
 
   @override
   State<RedemptionDetailsScreen> createState() =>
@@ -54,7 +52,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
           ),
         ),
         title: Text(
-          AppLocalizations.of(context)!.redemptiondetails,
+          "Redemption Details",
+          // AppLocalizations.of(context)!.redemptiondetails,
           style: GoogleFonts.openSans(
             color: AppColors.primaryWhiteColor,
             fontSize: 24,
@@ -76,7 +75,7 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
           }
         },
         builder: (context, state) {
-          if(state is NetworkSuccess){
+          if (state is NetworkSuccess) {
             return BlocBuilder<RedemptionHistoryBloc, RedemptionHistoryState>(
               builder: (context, state) {
                 if (state is RedemptionHistoryLoading) {
@@ -93,114 +92,171 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 80, horizontal: 80),
+                            vertical: 50, horizontal: 50),
                         child: Container(
-                          width: 280,
-                          height: 300,
+                          width: getProportionateScreenWidth(380),
+                          height: getProportionateScreenHeight(370),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: const Offset(
-                                    0, 3), // changes position of shadow
-                              ),
-                            ],
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.boxShadow,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 2),
+                                  spreadRadius: 5,
+                                ),
+                                BoxShadow(
+                                  color: AppColors.boxShadow,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -2),
+                                  spreadRadius: 5,
+                                ),
+                              ],
+                              border:
+                              Border.all(color: AppColors.borderColor, width: 1)
                           ),
                           child: Column(
                             children: [
                               const SizedBox(height: 20),
-                              Text(
-                                "${widget.points} ${AppLocalizations.of(context)!.points}",
-                                style: GoogleFonts.roboto(
-                                  color: AppColors.primaryColor,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w400,
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "${widget.points} points",
+                                
+                                  // "${widget.points} ${AppLocalizations.of(context)!.points}",
+                                  style: GoogleFonts.roboto(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 15),
-                              SizedBox(
-                                height: 150,
-                                width: 100,
+                              // const SizedBox(height: 15),
+                              Expanded(
+                                flex: 4,
                                 child: CachedNetworkImage(
                                   imageUrl: widget.imageUrl,
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.contain,
                                   width: MediaQuery.of(context).size.width,
+                                  placeholder: (context, url) => SizedBox(
+                                    // height: getProportionateScreenHeight(170),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: Lottie.asset(
+                                        Assets.JUMBINGDOT,
+                                        height: 45,
+                                        width: 45,
+                                      ),
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) => const ImageIcon(
+                                    color: AppColors.hintColor,
+                                    AssetImage(Assets.NO_IMG),
+                                  ),
+
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: AppLocalizations.of(context)!
-                                              .redeemed,
-                                          style: GoogleFonts.roboto(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const WidgetSpan(
-                                            child: SizedBox(width: 10)),
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text: widget.time,
-                                              style: GoogleFonts.roboto(
-                                                color: AppColors.primaryColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                              Flexible(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "Redeemed",
+                                            // AppLocalizations.of(context)!
+                                            //     .redeemed,
+                                            style: GoogleFonts.roboto(
+                                              color: AppColors.primaryColor,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
                                             ),
-                                          ],
-                                        ),
-                                      ],
+                                          ),
+                                          const WidgetSpan(
+                                              child: SizedBox(width: 10)),
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: widget.time,
+                                                style: GoogleFonts.roboto(
+                                                  color: AppColors.primaryColor,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                          AppLocalizations.of(context)!.store,
-                                          style: GoogleFonts.roboto(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                              const SizedBox(height: 8),
+                              Flexible(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Flexible(
+                                      // flex: 2,
+                                      child: Text(
+                                        "Store: ",
+                                        style: GoogleFonts.roboto(
+                                          color: AppColors.primaryColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                        const WidgetSpan(
-                                            child: SizedBox(width: 10)),
-                                        TextSpan(
-                                          text: context
-                                              .read<LanguageBloc>()
-                                              .state
-                                              .selectedLanguage ==
-                                              Language.english
-                                              ? widget.store
-                                              : widget.store,
-                                          style: GoogleFonts.roboto(
-                                            color: AppColors.primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 9),
+                                    Flexible(
+                                      // flex: 3,
+                                      child: Text(
+                                        widget.store,
+                                        style: GoogleFonts.roboto(
+                                                    color: AppColors.primaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                      ),
+                                    ),
+                                    // RichText(
+                                    //   text: TextSpan(
+                                    //     children: [
+                                    //       TextSpan(
+                                    //         text: "Store",
+                                    //         // AppLocalizations.of(context)!.store,
+                                    //         style: GoogleFonts.roboto(
+                                    //           color: AppColors.primaryColor,
+                                    //           fontSize: 12,
+                                    //           fontWeight: FontWeight.w500,
+                                    //         ),
+                                    //       ),
+                                    //       const WidgetSpan(
+                                    //           child: SizedBox(width: 10)),
+                                    //       TextSpan(
+                                    //         text: widget.store,
+                                    //         // context
+                                    //         //     .read<LanguageBloc>()
+                                    //         //     .state
+                                    //         //     .selectedLanguage ==
+                                    //         //     Language.english
+                                    //         //     ? widget.store
+                                    //         //     : widget.store,
+                                    //         style: GoogleFonts.roboto(
+                                    //           color: AppColors.primaryColor,
+                                    //           fontSize: 12,
+                                    //           fontWeight: FontWeight.w400,
+                                    //         ),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -213,8 +269,7 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                 }
               },
             );
-          }
-          else if (state is NetworkFailure) {
+          } else if (state is NetworkFailure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

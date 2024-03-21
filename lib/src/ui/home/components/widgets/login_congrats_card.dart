@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginCongratsCard extends StatefulWidget {
   late  bool isDone;
 
-  LoginCongratsCard({super.key, required this.isDone});
+   LoginCongratsCard({super.key, required this.isDone});
 
   @override
   State<LoginCongratsCard> createState() => _LoginCongratsCardState();
@@ -37,8 +39,10 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
                   onPressed: () {
                     setState(() {
                       // ObjectFactory().prefs.setIsEmailVerified(true);
-                      ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
-                      widget.isDone = false;
+                   setState(() {
+                     ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                     widget.isDone = false;
+                   });
                     });
                   },
                   icon: const Icon(Icons.close),
@@ -54,7 +58,7 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
 }
 
 class CardContent extends StatefulWidget {
-  CardContent({super.key, required this.isDone});
+   CardContent({super.key, required this.isDone});
 
   late  bool isDone;
 
@@ -94,13 +98,12 @@ class _CardContentState extends State<CardContent>
           scale: CurvedAnimation(
               parent: animationController, curve: Curves.elasticOut),
           child:
-          // ImageIcon(AssetImage(Assets.GIFT_ICON),color: AppColors.secondaryButtonColor,size: 25,)
-          Image.asset(Assets.GIFT_ICON),
+              // ImageIcon(AssetImage(Assets.GIFT_ICON),color: AppColors.secondaryButtonColor,size: 25,)
+              Image.asset(Assets.GIFT_ICON),
         ),
         const SizedBox(height: 10),
         Text(
-          AppLocalizations.of(context)!.congratulations,
-          // "Congratulations !",
+          "Congratulations !",
           style: GoogleFonts.openSans(
             color: AppColors.secondaryColor,
             fontSize: 16,
@@ -108,8 +111,7 @@ class _CardContentState extends State<CardContent>
           ),
         ),
         Text(
-          AppLocalizations.of(context)!.youhaveearned,
-          // "You have earned",
+          "You have earned",
           style: GoogleFonts.roboto(
             fontSize: 12,
             fontWeight: FontWeight.w400,
@@ -125,8 +127,7 @@ class _CardContentState extends State<CardContent>
           ),
         ),
         Text(
-          AppLocalizations.of(context)!.points,
-          // "Points",
+          "Points",
           style: GoogleFonts.roboto(
             fontSize: 12,
             fontWeight: FontWeight.w400,
@@ -148,8 +149,7 @@ class _CardContentState extends State<CardContent>
             widget.isDone = false;
           },
           child: Text(
-            AppLocalizations.of(context)!.yay,
-            // "Yay!",
+            "Yay!",
             style: GoogleFonts.roboto(
               fontSize: 16,
               fontWeight: FontWeight.w400,

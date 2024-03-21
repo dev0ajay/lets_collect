@@ -10,6 +10,8 @@
 	<string>Lets Collect</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -27,14 +29,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.113086635979-dos7dr5ob1lih611v46sej435ij5ke7c</string>
+				<string>com.googleusercontent.apps.113086635979-83usej8u9bl97a44ouj7t7ehlc69nf0e</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GIDClientID</key>
-	<string>113086635979-dos7dr5ob1lih611v46sej435ij5ke7c.apps.googleusercontent.com</string>
+	<string>113086635979-83usej8u9bl97a44ouj7t7ehlc69nf0e.apps.googleusercontent.com</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -42,14 +44,14 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>NSDocumentsFolderUsageDescription</key>
-    <string>Allow access to the documents folder to select files.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Allow access to the documents folder to select files.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-    <string>This app requires access to the photo library.</string>
+	<string>This app requires access to the photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>Lets Collect need access to photo library so that photos can be selected</string>
+	<string>Lets Collect need access to photo library to upload the images</string>
 	<key>NSCameraUsageDescription</key>
-	<string>To capture photos Lets Collect needs access to your device's camera.</string>
+	<string>To capture photos Lets Collect needs access to your device camera</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -76,5 +78,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
 </dict>
 </plist>

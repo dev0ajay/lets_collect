@@ -29,16 +29,16 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
   @override
   void initState() {
     super.initState();
-    // setState(() {
-    //   // ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
-    //   if( ObjectFactory().prefs.isEmailVerifiedStatus() == true && ObjectFactory().prefs.isEmailVerified() == true) {
-    //     isDone = false;
-    //   }else {
-    //     isDone = true;
-    //   }
-    //
-    //
-    // });
+   // setState(() {
+   //   // ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
+   //   if( ObjectFactory().prefs.isEmailVerifiedStatus() == true && ObjectFactory().prefs.isEmailVerified() == true) {
+   //     isDone = false;
+   //   }else {
+   //     isDone = true;
+   //   }
+   //
+   //
+   // });
     // isDone = true;
   }
 
@@ -48,17 +48,18 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
       listener: (context, state) {
         if(state is HomeLoaded) {
           if(state.homeResponse.emailVerified == 0
-              && ObjectFactory().prefs.isEmailNotVerifiedStatus() == true
-          ) {
+          && ObjectFactory().prefs.isEmailNotVerifiedStatus() == true
+          && ObjectFactory().prefs.isEmailNotVerifiedCalled() == false
+              ) {
             // ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
             showDialog(
                 context: context,
                 builder: (BuildContext context) => const AlertOverlay()
             );
           }
-          // else if(state.homeResponse.emailVerified == 1 && ObjectFactory().prefs.isEmailVerifiedStatus() == true) {
-          //   isDone = true;
-          // }
+          else if(state.homeResponse.emailVerified == 1 && ObjectFactory().prefs.isEmailVerifiedStatus() == true) {
+            isDone = true;
+          }
         }
       },
       child: Stack(
@@ -69,9 +70,9 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
             },
           ),
 
-          // LoginCongratsCard(
-          //   isDone: isDone,
-          // ),
+          LoginCongratsCard(
+            isDone: isDone,
+          ),
           // LoginCongratsCard(
           //   isDone: isDone,
           //   emailVerifiedPoints: emailVerifiedPoints,

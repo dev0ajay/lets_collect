@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +15,30 @@ import 'package:lets_collect/src/ui/scan/components/scan_detail_screen_argument.
 import 'package:lets_collect/src/ui/scan/components/widgets/scan_screen_collect_button.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import 'package:path/path.dart' as p;
 
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 class ScanScreen extends StatefulWidget {
   final String from;
-  const ScanScreen({super.key,required this.from});
+
+  const ScanScreen({super.key, required this.from});
 
   @override
   State<ScanScreen> createState() => _ScanScreenState();
 }
 
-class _ScanScreenState extends State<ScanScreen> {
+class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   File? galleryFile;
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
-
-  // XFile? _pickedFile;
   final _picker = ImagePicker();
+  final Permission _permission = Permission.camera;
+  bool _checkingPermission = false;
 
   // Function to clear the picked image
   void _clearImage() {
@@ -39,6 +46,167 @@ class _ScanScreenState extends State<ScanScreen> {
       galleryFile = null;
     });
   }
+
+  void openSettings() {
+    openAppSettings();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  ///Runtime User Access and Permission handling
+
+  Future<void> checkPermissionForGallery(
+      Permission permission, BuildContext context) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      print("Permission granted");
+      getImage(ImageSource.gallery);
+    } else if (status.isDenied) {
+      print("Permission Denied");
+      _showPermissionDialog(_scaffoldKey.currentContext!);
+    } else if (status.isPermanentlyDenied) {
+      print("Permission permanently denied");
+
+      openSettings();
+    } else if (status.isLimited) {
+      print("Permission permanently denied");
+
+      getImage(ImageSource.gallery);
+    }
+  }
+
+  Future<void> checkPermissionForCamera(
+      Permission permission, BuildContext context) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      // _showPicker(context: context);
+      print("Granted permission");
+      getImage(ImageSource.camera);
+      // getImage(ImageSource.camera);
+    } else if (status.isDenied) {
+      print("Permission denied");
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Permission is not Granted")));
+      _showPermissionDialog(context);
+    } else if (status.isPermanentlyDenied) {
+      openSettings();
+    }
+  }
+
+  // Future<void> _checkPermission(Permission permission) async {
+  //   if(Platform.isIOS){
+  //     Map<Permission, PermissionStatus> status = await [
+  //       Permission.camera,
+  //       Permission.photos,
+  //       // Permission.storage,
+  //     ].request();
+  //     if (status == PermissionStatus.granted) {
+  //       print('Permission granted');
+  //       _showPicker(context: context);
+  //     } else if (status == PermissionStatus.denied) {
+  //       print(
+  //           'Permission denied. Show a dialog and again ask for the permission');
+  //       _showPermissionDialog();
+  //     } else if (status == PermissionStatus.permanentlyDenied) {
+  //       print('Take the user to the settings page.');
+  //       openSettings();
+  //     }
+  //   }
+  //   // if (Platform.isAndroid) {
+  //   //   final androidInfo = await DeviceInfoPlugin().androidInfo;
+  //   //   if (androidInfo.version.sdkInt <= 32) {
+  //   //     /// use [Permissions.storage.status]
+  //   //     var status = await Permission.storage.status;
+  //   //     if (status == PermissionStatus.granted) {
+  //   //       print('Permission granted');
+  //   //       _showPicker(context: context);
+  //   //     } else if (status == PermissionStatus.denied) {
+  //   //       print(
+  //   //           'Permission denied. Show a dialog and again ask for the permission');
+  //   //       _showPermissionDialog();
+  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
+  //   //       print('Take the user to the settings page.');
+  //   //       openSettings();
+  //   //     }
+  //   //
+  //   //     /// use [Permissions.photos.status]
+  //   //     var nwStatus = await Permission.photos.status;
+  //   //     if (nwStatus == PermissionStatus.granted) {
+  //   //       print('Permission granted');
+  //   //       _showPicker(context: context);
+  //   //     } else if (nwStatus == PermissionStatus.denied) {
+  //   //       print(
+  //   //           'Permission denied. Show a dialog and again ask for the permission');
+  //   //       _showPermissionDialog();
+  //   //     } else if (nwStatus == PermissionStatus.permanentlyDenied) {
+  //   //       print('Take the user to the settings page.');
+  //   //       openSettings();
+  //   //     }
+  //   //   } else {
+  //   //     Map<Permission, PermissionStatus> status = await [
+  //   //       Permission.camera,
+  //   //       Permission.photos,
+  //   //       Permission.storage,
+  //   //     ].request();
+  //   //     if (status == PermissionStatus.granted) {
+  //   //       print('Permission granted');
+  //   //       _showPicker(context: context);
+  //   //     } else if (status == PermissionStatus.denied) {
+  //   //       print(
+  //   //           'Permission denied. Show a dialog and again ask for the permission');
+  //   //       _showPermissionDialog();
+  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
+  //   //       print('Take the user to the settings page.');
+  //   //       openSettings();
+  //   //     }
+  //   //   }
+  //   // } else if(Platform.isIOS){
+  //   //   Map<Permission, PermissionStatus> status = await [
+  //   //     Permission.camera,
+  //   //     Permission.photos,
+  //   //     // Permission.storage,
+  //   //   ].request();
+  //   //   if (status == PermissionStatus.granted) {
+  //   //     print('Permission granted');
+  //   //     _showPicker(context: context);
+  //   //   } else if (status == PermissionStatus.denied) {
+  //   //     print(
+  //   //         'Permission denied. Show a dialog and again ask for the permission');
+  //   //     _showPermissionDialog();
+  //   //   } else if (status == PermissionStatus.permanentlyDenied) {
+  //   //     print('Take the user to the settings page.');
+  //   //     openSettings();
+  //   //   }
+  //   // }else {
+  //   //   // Map<Permission, PermissionStatus> status = await [
+  //   //   //   Permission.camera,
+  //   //   //   Permission.photos,
+  //   //   //   Permission.storage,
+  //   //   // ].request();
+  //   //   // if (status == PermissionStatus.granted) {
+  //   //   //   print('Permission granted');
+  //   //   //   _showPicker(context: context);
+  //   //   // } else if (status == PermissionStatus.denied) {
+  //   //   //   print(
+  //   //   //       'Permission denied. Show a dialog and again ask for the permission');
+  //   //   //   _showPermissionDialog();
+  //   //   // } else if (status == PermissionStatus.permanentlyDenied) {
+  //   //   //   print('Take the user to the settings page.');
+  //   //   //   openSettings();
+  //   //   // }
+  //   // }
+  //   // final status = await permission.request();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +223,7 @@ class _ScanScreenState extends State<ScanScreen> {
             }
           },
           child: Scaffold(
+            key: _scaffoldKey,
             backgroundColor: AppColors.primaryWhiteColor,
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
@@ -77,7 +246,10 @@ class _ScanScreenState extends State<ScanScreen> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  _showPicker(context: context);
+                                  // checkPermission(Permission.camera,context);
+                                  // cameraPermissionStatus(context);
+                                  _showPicker(
+                                      context: _scaffoldKey.currentContext!);
                                 },
                                 child: Center(
                                   child: ImageIcon(
@@ -102,7 +274,9 @@ class _ScanScreenState extends State<ScanScreen> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  _showPicker(context: context);
+                                  // checkPermission(Permission.camera,context);
+                                  _showPicker(
+                                      context: _scaffoldKey.currentContext!);
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
@@ -156,28 +330,28 @@ class _ScanScreenState extends State<ScanScreen> {
                         splashColor: AppColors.secondaryButtonColor,
                         splashFactory: InkSplash.splashFactory,
                         onTap: () {
-                        if(galleryFile != null) {
-                          BlocProvider.of<ScanBloc>(context).add(
-                            ScanReceiptEvent(
-                                data: FormData.fromMap({"file": imageUploadFormated})),
-                          );
-                          _showDialogBox(context: context);
-
-                        }else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: AppColors.secondaryColor,
-                              content: Text(
-                                "Please choose a file.",
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.primaryWhiteColor,
+                          if (galleryFile != null) {
+                            BlocProvider.of<ScanBloc>(context).add(
+                              ScanReceiptEvent(
+                                  data: FormData.fromMap(
+                                      {"file": imageUploadFormated})),
+                            );
+                            _showDialogBox(context: context);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: AppColors.secondaryColor,
+                                content: Text(
+                                  "Please choose a file.",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.primaryWhiteColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
+                            );
+                          }
                         },
                         child: const SizedBox(
                           child: Padding(
@@ -201,10 +375,9 @@ class _ScanScreenState extends State<ScanScreen> {
     required BuildContext context,
   }) {
     showDialog(
-      barrierDismissible: false,
+        barrierDismissible: false,
         context: context,
         builder: (ctx) {
-
           return BlocBuilder<ScanBloc, ScanState>(
             builder: (context, state) {
               if (state is ScanLoading) {
@@ -277,8 +450,8 @@ class _ScanScreenState extends State<ScanScreen> {
               }
               if (state is ScanLoaded) {
                 if (state.scanReceiptRequestResponse.success == false &&
-                    state.scanReceiptRequestResponse.message == "This receipt number already exists"
-                   ) {
+                    state.scanReceiptRequestResponse.message ==
+                        "This receipt number already exists") {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -297,7 +470,6 @@ class _ScanScreenState extends State<ScanScreen> {
                                 onPressed: () {
                                   context.pop();
                                   _clearImage();
-
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -347,14 +519,13 @@ class _ScanScreenState extends State<ScanScreen> {
                                 onPressed: () {
                                   context.pop();
                                   _clearImage();
-
                                 },
                                 icon: const Icon(Icons.close),
                               ),
                             ),
                             const SizedBox(height: 10),
                             Flexible(
-                              flex: 3,
+                              flex: 2,
                               child: Center(
                                 child: Image.asset(
                                   Assets.APP_LOGO,
@@ -365,7 +536,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                             const SizedBox(height: 20),
                             Flexible(
-                              flex: 2,
+                              flex: 1,
                               child: Text(
                                 "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
                                 textAlign: TextAlign.center,
@@ -377,7 +548,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                             const SizedBox(height: 10),
                             Flexible(
-                              flex: 1,
+                              flex: 2,
                               child: TextButton(
                                 onPressed: () {
                                   _clearImage();
@@ -388,10 +559,8 @@ class _ScanScreenState extends State<ScanScreen> {
                                           .scanReceiptRequestResponse
                                           .data!
                                           .totalPoints!,
-                                        pointId: state
-                                            .scanReceiptRequestResponse
-                                            .data!
-                                            .pointId!,
+                                      pointId: state.scanReceiptRequestResponse
+                                          .data!.pointId!,
                                     ),
                                   );
                                   context.pop();
@@ -491,11 +660,61 @@ class _ScanScreenState extends State<ScanScreen> {
         });
   }
 
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext permissionDialogContext) {
+          return AlertDialog(
+            title: Text(
+              "Permission Denied!",
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              "To continue file upload allow access to files and storage.",
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  "Cancel",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  openSettings();
+                  context.pop();
+                },
+                child: Text(
+                  "Settings",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   void _showPicker({
     required BuildContext context,
   }) {
     showModalBottomSheet(
-      context: context,
+      context: _scaffoldKey.currentContext!,
       builder: (BuildContext context) {
         return SafeArea(
           child: Wrap(
@@ -503,17 +722,36 @@ class _ScanScreenState extends State<ScanScreen> {
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Photo Library'),
-                onTap: () {
-                  getImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  if (Platform.isAndroid) {
+                    final androidInfo = await DeviceInfoPlugin().androidInfo;
+                    if (androidInfo.version.sdkInt <= 32) {
+                      checkPermissionForGallery(Permission.storage, context);
+                    } else {
+                      checkPermissionForGallery(Permission.photos, context);
+                    }
+                  } else if (Platform.isIOS) {
+                    checkPermissionForGallery(Permission.photos, context);
+                  }
+                  context.pop();
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Camera'),
-                onTap: () {
-                  getImage(ImageSource.camera);
-                  Navigator.of(context).pop();
+                onTap: () async {
+                  await checkPermissionForCamera(Permission.camera, context);
+                  // if(Platform.isAndroid) {
+                  //   final androidInfo = await DeviceInfoPlugin().androidInfo;
+                  //   if (androidInfo.version.sdkInt <= 32) {
+                  //     checkPermissionForGallery(Permission.camera, context);
+                  //   } else {
+                  //     checkPermissionForGallery(Permission.camera, context);
+                  //   }
+                  // }else if(Platform.isIOS) {
+                  //   checkPermissionForGallery(Permission.camera, context);
+                  // }
+                  context.pop();
                 },
               ),
             ],
@@ -526,28 +764,32 @@ class _ScanScreenState extends State<ScanScreen> {
   Future getImage(
     ImageSource img,
   ) async {
-    final pickedFile = await _picker.pickImage(source: img);
-    XFile? xfilePick = pickedFile;
-    setState(
-      () {
-        if (xfilePick != null) {
-          galleryFile = File(pickedFile!.path);
-          final bytes = galleryFile!.readAsBytesSync();
-          String img64 = base64Encode(bytes);
-          setState(() {
-            imageBase64 = img64;
-            extension = p
-                .extension(galleryFile!.path)
-                .trim()
-                .toString()
-                .replaceAll('.', '');
-            imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-              const SnackBar(content: Text('Nothing is selected')));
-        }
-      },
-    );
+    try {
+      final pickedFile = await _picker.pickImage(source: img);
+      XFile? xfilePick = pickedFile;
+      setState(
+        () {
+          if (xfilePick != null) {
+            galleryFile = File(pickedFile!.path);
+            final bytes = galleryFile!.readAsBytesSync();
+            String img64 = base64Encode(bytes);
+            setState(() {
+              imageBase64 = img64;
+              extension = p
+                  .extension(galleryFile!.path)
+                  .trim()
+                  .toString()
+                  .replaceAll('.', '');
+              imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+                const SnackBar(content: Text('Nothing is selected')));
+          }
+        },
+      );
+    } catch (e) {
+      print('Exception occured!');
+    }
   }
 }

@@ -39,16 +39,16 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
       bodyMedium: TextStyle(
-          // fontSize: 72,
-          // fontWeight: FontWeight.bold,
+        // fontSize: 72,
+        // fontWeight: FontWeight.bold,
 
-          ),
+      ),
       displaySmall: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-        color: AppColors.secondaryColor
+          color: AppColors.secondaryColor
 
-          ),
+      ),
     ),
 
 

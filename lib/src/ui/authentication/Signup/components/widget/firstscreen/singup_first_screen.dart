@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -15,7 +14,6 @@ import '../../../../../../bloc/country_bloc/country_bloc.dart';
 import '../../../../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import '../../../../../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../../../../../constants/colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpFirstScreen extends StatefulWidget {
   final String from;
@@ -57,7 +55,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
     String pattern = "[a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return AppLocalizations.of(context)!.enterfirstname;
+      return 'Enter first name';
     } else {
       return null;
     }
@@ -68,7 +66,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         "a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return AppLocalizations.of(context)!.enterlastname;
+      return 'Enter last name';
     } else {
       return null;
     }
@@ -81,7 +79,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return AppLocalizations.of(context)!.enteranewenailaddress;
+      return 'Enter a new email address';
     } else {
       return null;
     }
@@ -92,17 +90,27 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty) {
-      return AppLocalizations.of(context)!.pleaseenterpassword;
+      return 'Please enter password';
     }
     if (value.length < 8) {
-      return AppLocalizations.of(context)!.lengthshouldbe;
+      return "Length should be 8 or more";
     }
     if (!regex.hasMatch(value)) {
-      return AppLocalizations.of(context)!.mustcontainatleast;
+      return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
     }
     return null;
   }
 
+  Future<void> _launchInBrowser(String url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
 
 
@@ -143,15 +151,14 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     Center(
+                    const Center(
                         child: Text(
-                          // AppLocalizations.of(context)!.letscollect,
-                          Strings.LOGIN_LETS_COLLECT,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                          ),
-                        )),
+                      Strings.LOGIN_LETS_COLLECT,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40,
+                      ),
+                    )),
                     const Center(
                       child: Image(
                         image: AssetImage(Assets.APP_LOGO),
@@ -162,14 +169,13 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     const SizedBox(height: 20),
                     Center(
                         child: Text(
-                          AppLocalizations.of(context)!.jointodayandstartcollect,
-                          // Strings.SIGNUP_SUB_HEADING,
-                          style: GoogleFonts.openSans(
-                            color: AppColors.primaryWhiteColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )),
+                      Strings.SIGNUP_SUB_HEADING,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )),
                     const SizedBox(height: 40),
                     Row(
                       children: [
@@ -177,8 +183,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                           child: MyTextField(
                             focusNode: _firstname,
                             // horizontal: 10,
-                            hintText: AppLocalizations.of(context)!.firstname,
-                            // Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
+                            hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
                             obscureText: false,
                             maxLines: 1,
                             controller: firstnameController,
@@ -199,8 +204,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                           child: MyTextField(
                             focusNode: _secondname,
                             // horizontal: 10,
-                            hintText: AppLocalizations.of(context)!.lastname,
-                            // Strings.SIGNUP_LASTNAME_LABEL_TEXT,
+                            hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
                             obscureText: false,
                             maxLines: 1,
                             controller: lastnameController,
@@ -220,8 +224,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _email,
-                      hintText: AppLocalizations.of(context)!.email,
-                      // Strings.SIGNUP_EMAIL_LABEL_TEXT,
+                      hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
                       obscureText: false,
                       maxLines: 1,
                       controller: emailController,
@@ -238,8 +241,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _password,
-                      hintText: AppLocalizations.of(context)!.password,
-                      // Strings.SINGUP_PASSWORD_LABEL_TEXT,
+                      hintText: Strings.SINGUP_PASSWORD_LABEL_TEXT,
                       obscureText: true,
                       maxLines: 1,
                       controller: passwordController,
@@ -256,8 +258,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _repassword,
-                      hintText:AppLocalizations.of(context)!.reentepassword,
-                      // Strings.SINGUP_REPASSWORD_LABEL_TEXT,
+                      hintText: Strings.SINGUP_REPASSWORD_LABEL_TEXT,
                       obscureText: true,
                       maxLines: 1,
                       controller: repasswordController,
@@ -290,8 +291,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            AppLocalizations.of(context)!.wedidlovetosendyousomeamazingoffer,
-                            // Strings.SIGNUP_TEXT1,
+                            Strings.SIGNUP_TEXT1,
                             style: GoogleFonts.openSans(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
@@ -307,8 +307,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                       child: MyButton(
                         Textfontsize: 16,
                         TextColors: Colors.white,
-                        text: AppLocalizations.of(context)!.next,
-                        // Strings.SINGUP_BUTTON_TEXT,
+                        text: Strings.SINGUP_BUTTON_TEXT,
                         color: isChecked
                             ? AppColors.secondaryColor
                             : AppColors.primaryGrayColor,
@@ -316,41 +315,39 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         height: 40,
                         onTap: isChecked
                             ? () {
-                          if (passwordConfirmed()) {
-                            if (_formKey.currentState!.validate()) {
-                              context.push(
-                                '/signUpCalenderScreen',
-                                extra: SignUpArgumentClass(
-                                  firsname: firstnameController.text,
-                                  lastName: lastnameController.text,
-                                  email: widget.from == "Email"
-                                      ? emailController.text
-                                      : gmailController.text,
-                                  password: passwordController.text,
-                                  confirmPassword: repasswordController.text,
-                                ),
-                              );
-                            } else {
-                              Fluttertoast.showToast(
-                                msg: AppLocalizations.of(context)!.allfieldsareimportant,
-                                // "All fields are important",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.black87,
-                                textColor: Colors.white,
-                              );
-                            }
-                          } else {
-                            Fluttertoast.showToast(
-                              msg: AppLocalizations.of(context)!.entecorrectpassword,
-                              // "Enter correct password",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black87,
-                              textColor: Colors.white,
-                            );
-                          }
-                        }
+                                if (passwordConfirmed()) {
+                                  if (_formKey.currentState!.validate()) {
+                                    context.push(
+                                      '/signUpCalenderScreen',
+                                      extra: SignUpArgumentClass(
+                                        firsname: firstnameController.text,
+                                        lastName: lastnameController.text,
+                                        email: widget.from == "Email"
+                                            ? emailController.text
+                                            : gmailController.text,
+                                        password: passwordController.text,
+                                        confirmPassword: repasswordController.text,
+                                      ),
+                                    );
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: "All fields are important",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      backgroundColor: Colors.black87,
+                                      textColor: Colors.white,
+                                    );
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                    msg: "Enter correct password",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    backgroundColor: Colors.black87,
+                                    textColor: Colors.white,
+                                  );
+                                }
+                              }
                             : null,
                         showImage: false,
                         imagePath: '',
@@ -366,18 +363,11 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
             ),
           ),
           Align(
-            alignment: context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                ? Alignment.topLeft
-                : Alignment.topRight,
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-              color: AppColors.primaryWhiteColor,
-            ),
+            alignment: Alignment.topLeft,
+            child: IconButton(onPressed: () {
+              context.pop();
+            }, icon: const Icon(Icons.arrow_back_ios,),color: AppColors.primaryWhiteColor,),
           ),
-
 
         ],
       ),
@@ -390,167 +380,70 @@ class TermsAndConditionWidget extends StatelessWidget {
     super.key,
   });
 
-
-  Future<void> _launchInBrowser(String url) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 13, right: 13),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                AppLocalizations.of(context)!
-                    .bysigningupyouagreetothe,
-                style: GoogleFonts.openSans(
-                  color: AppColors.primaryWhiteColor,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
+      padding: const EdgeInsets.only(left: 13),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: 'By signing up, you agree to the',
+              style: GoogleFonts.openSans(
+                color: AppColors.primaryWhiteColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.8,
               ),
-              const SizedBox(width: 6),
-              InkWell(
-                splashColor: AppColors.borderColor,
-                splashFactory: InkRipple.splashFactory,
-                onTap: () {
-                  _launchInBrowser(
-                    Strings.TERMS_AND_CONDITION_URL,
-                  );
-                },
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .termsandconditionds,
-                  // Strings.LOGIN_NOTES2,
-                  style: GoogleFonts.openSans(
-                    color: AppColors.secondaryColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+            ),
+            TextSpan(
+              text: ' ',
+              style: GoogleFonts.openSans(
+                color: AppColors.primaryWhiteColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.8,
               ),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.andour,
-                // Strings.LOGIN_NOTES3,
-                style: GoogleFonts.openSans(
-                  color: AppColors.primaryWhiteColor,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
+            ),
+            TextSpan(
+              text: 'Terms and Conditions\n',
+              style: GoogleFonts.openSans(
+                color: AppColors.secondaryColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.8,
               ),
-              const SizedBox(width: 6),
-              InkWell(
-                splashColor: AppColors.borderColor,
-                splashFactory: InkRipple.splashFactory,
-                onTap: () {
-                  _launchInBrowser(
-                      Strings.PRIVACY_POLICY_URL);
-                },
-                child: Text(
-                  AppLocalizations.of(context)!
-                      .privacypolicy,
-                  // Strings.LOGIN_NOTES4,
-                  style: GoogleFonts.openSans(
-                    color: AppColors.secondaryColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+            ),
+            TextSpan(
+              text: 'and our',
+              style: GoogleFonts.openSans(
+                color: AppColors.primaryWhiteColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.8,
               ),
-            ],
-          ),
-        ],
+            ),
+            TextSpan(
+              text: ' ',
+              style: GoogleFonts.openSans(
+                color: AppColors.secondaryColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 0.8,
+              ),
+            ),
+            TextSpan(
+              text: 'Privacy Policy',
+              style: GoogleFonts.openSans(
+                color: AppColors.secondaryColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.8,
+              ),
+            ),
+          ],
+        ),
       ),
     );
-    //   Padding(
-    //   padding: const EdgeInsets.only(left: 13,right: 13),
-    //   child: Text.rich(
-    //     TextSpan(
-    //       children: [
-    //         TextSpan(
-    //           text: AppLocalizations.of(context)!.bysigningupyouagreetothe,
-    //           // 'By signing up, you agree to the',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.primaryWhiteColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w400,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text: ' ',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.primaryWhiteColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w400,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text: AppLocalizations.of(context)!.termsandconditionds,
-    //           // 'Terms and Conditions\n',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.secondaryColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w600,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text: '       ',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.secondaryColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w400,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text: AppLocalizations.of(context)!.andour,
-    //           // 'and our',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.primaryWhiteColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w400,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text: ' ',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.secondaryColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w400,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //         TextSpan(
-    //           text:AppLocalizations.of(context)!.privacypolicy,
-    //           // 'Privacy Policy',
-    //           style: GoogleFonts.openSans(
-    //             color: AppColors.secondaryColor,
-    //             fontSize: 12,
-    //             fontWeight: FontWeight.w600,
-    //             letterSpacing: 0.8,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

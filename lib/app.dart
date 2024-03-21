@@ -6,6 +6,8 @@ import 'package:lets_collect/routes/router.dart';
 import 'package:lets_collect/src/bloc/apple_sign_in/apple_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
+import 'package:lets_collect/src/bloc/cms_bloc/how_to_redeem_my_points/how_to_redeem_my_points_bloc.dart';
+import 'package:lets_collect/src/bloc/cms_bloc/point_calculations/point_calculations_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/contact_us_bloc/contact_us_bloc.dart';
@@ -16,12 +18,13 @@ import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart'
 import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
-import 'package:lets_collect/src/bloc/how_to_redeem/how_to_redeem_my_points_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_event.dart';
+import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:lets_collect/src/bloc/notification/notification_bloc.dart';
 import 'package:lets_collect/src/bloc/offer_bloc/offer_bloc.dart';
-import 'package:lets_collect/src/bloc/point_calculation/point_calculations_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
@@ -46,6 +49,8 @@ import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.da
 import 'package:lets_collect/src/utils/network_connectivity/network_helper.dart';
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -93,6 +98,9 @@ class _AppState extends State<App> {
             BlocProvider<NetworkBloc>(
               create: (BuildContext context) =>
                   NetworkBloc()..add(NetworkObserve()),
+            ),
+            BlocProvider<LanguageBloc>(
+              create: (context) => LanguageBloc()..add(GetLanguage()),
             ),
             BlocProvider<SignUpBloc>(
               create: (BuildContext context) => SignUpBloc(
@@ -233,38 +241,47 @@ class _AppState extends State<App> {
                   ),
                 );
               }
-              return MaterialApp.router(
-                themeAnimationCurve: Curves.easeIn,
-                themeAnimationDuration: const Duration(milliseconds: 750),
-                // routerConfig: AppRouter.router,
-                routerDelegate: AppRouter.router.routerDelegate,
-                routeInformationProvider:
-                    AppRouter.router.routeInformationProvider,
-                routeInformationParser: AppRouter.router.routeInformationParser,
-                debugShowCheckedModeBanner: false,
+              return BlocBuilder<LanguageBloc, LanguageState>(
+                builder: (context, state) {
+                  return MaterialApp.router(
+                    locale: state.selectedLanguage.value,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                    localizationsDelegates:
+                    AppLocalizations.localizationsDelegates,
+                    themeAnimationCurve: Curves.easeIn,
+                    themeAnimationDuration: const Duration(milliseconds: 750),
+                    // routerConfig: AppRouter.router,
+                    routerDelegate: AppRouter.router.routerDelegate,
+                    routeInformationProvider:
+                        AppRouter.router.routeInformationProvider,
+                    routeInformationParser:
+                        AppRouter.router.routeInformationParser,
+                    debugShowCheckedModeBanner: false,
 
-                title: 'Lets Collect',
-                theme: AppTheme.lightTheme,
-                themeMode: ThemeMode.light,
-                builder: (context, child) {
-                  // Obtain the current media query information.
-                  final mediaQueryData = MediaQuery.of(context);
+                    title: 'Lets Collect',
+                    theme: AppTheme.lightTheme,
+                    themeMode: ThemeMode.light,
+                    builder: (context, child) {
+                      // Obtain the current media query information.
+                      final mediaQueryData = MediaQuery.of(context);
 
-                  return MediaQuery(
-                    // Set the default textScaleFactor to 1.0 for
-                    // the whole subtree.
-                    data: mediaQueryData.copyWith(
-                        textScaler: const TextScaler.linear(0.85)),
-                    child: child!,
+                      return MediaQuery(
+                        // Set the default textScaleFactor to 1.0 for
+                        // the whole subtree.
+                        data: mediaQueryData.copyWith(
+                            textScaler: const TextScaler.linear(0.85)),
+                        child: child!,
+                      );
+                    },
+                    // themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
+                    // home: const HomeScreen(),/
+                    // SplashScreen(isOffline: isOffline),
+                    // home: OrderSuccessScreen(),
+                    // home: LoadUrl(urlPath: "https://www.google.com",),
+                    // home: PushNotify(),
+                    // home:Registration(),
                   );
                 },
-                // themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
-                // home: const HomeScreen(),/
-                // SplashScreen(isOffline: isOffline),
-                // home: OrderSuccessScreen(),
-                // home: LoadUrl(urlPath: "https://www.google.com",),
-                // home: PushNotify(),
-                // home:Registration(),
               );
             },
           ),

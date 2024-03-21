@@ -24,6 +24,14 @@ class SearchLoaded extends SearchState{
 
 }
 
+class SearchErrorState extends SearchState{
+  final String msg;
+  const SearchErrorState({required this.msg});
+  @override
+  List<Object?> get props =>[];
+
+}
+
 ///Brand search
 
 class BrandInitial extends SearchState {
@@ -41,4 +49,12 @@ class BrandLoaded extends SearchState{
   const BrandLoaded ({required this.searchBrandRequestResponse}) ;
   @override
   List<Object?> get props => [];
+}
+
+class BrandErrorState extends SearchState{
+  final String msg;
+  const BrandErrorState({required this.msg});
+  @override
+  List<Object?> get props =>[msg];
+
 }

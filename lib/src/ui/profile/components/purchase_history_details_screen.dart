@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:lets_collect/src/model/purchase_history/purchase_history_details_request.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
+import '../../../model/purchase_history/purchase_history_details_request.dart';
 
 class PurchaseHistoryDetailsScreen extends StatefulWidget {
   final String receiptId;

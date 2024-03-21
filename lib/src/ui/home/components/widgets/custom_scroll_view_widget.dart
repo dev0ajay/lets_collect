@@ -107,7 +107,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
-                  ObjectFactory().prefs.setIsEmailVerified(true);
+                  setState(() {
+                    ObjectFactory().prefs.setIsEmailVerified(true);
+                  });
                   // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
                   // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
@@ -224,15 +226,14 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 ),
                                 child: SizedBox(
                                   height: getProportionateScreenHeight(50),
-                                  child: CupertinoTextField.borderless(
-                                    padding: const EdgeInsets.only(
+                                  child:  CupertinoTextField.borderless(
+                                    padding: EdgeInsets.only(
                                         left: 15,
                                         top: 15,
                                         right: 6,
                                         bottom: 10),
-                                    placeholder:
-                                        AppLocalizations.of(context)!.close,
                                     // placeholder: 'Referral code',
+                                    placeholder: AppLocalizations.of(context)!.referralcode,
                                   ),
                                 ),
                               ),
@@ -249,7 +250,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   backgroundColor: AppColors.secondaryColor,
                                 ),
                                 onPressed: () {},
-                                child: Text(
+                                child:  Text(
                                   AppLocalizations.of(context)!.bonuspoint,
                                   // "Bonus point!",
                                   textAlign: TextAlign.center,
@@ -422,7 +423,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)!.brands,
+                            AppLocalizations.of(context)!.brands,
                                   // "Brands",
                                   style: GoogleFonts.roboto(
                                     fontSize: 16,
@@ -853,12 +854,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               ),
                               child: SizedBox(
                                 height: getProportionateScreenHeight(50),
-                                child: CupertinoTextField.borderless(
+                                child:  CupertinoTextField.borderless(
                                   padding: const EdgeInsets.only(
                                       left: 15, top: 15, right: 6, bottom: 10),
                                   // placeholder: 'Referral code',
-                                  placeholder: AppLocalizations.of(context)!
-                                      .referralcode,
+                                  placeholder: AppLocalizations.of(context)!.referralcode,
                                 ),
                               ),
                             ),
@@ -875,11 +875,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 backgroundColor: AppColors.secondaryButtonColor,
                               ),
                               onPressed: () {},
-                              child: Text(
+                              child:  Text(
                                 AppLocalizations.of(context)!.bonuspoint,
                                 // "Bonus point!",
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -927,7 +927,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           ),
                                     ),
                                   ),
-                                  Flexible(
+                                   Flexible(
                                     flex: 1,
                                     child: Text(
                                       AppLocalizations.of(context)!.scan,
@@ -973,7 +973,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                               ),
                                     ),
                                   ),
-                                  Text(
+                                   Text(
                                     "${AppLocalizations.of(context)!.totalpoints} \n 1200 ${AppLocalizations.of(context)!.pts}",
                                     // "Total points \n 1200 pts",
                                     textAlign: TextAlign.center,
@@ -993,18 +993,18 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     sliver: SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          Row(
+                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 AppLocalizations.of(context)!.brands,
                                 // "Brands",
-                                style: const TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 18),
                               ),
                               Text(
                                 AppLocalizations.of(context)!.viewall,
                                 // "View all",
-                                style: const TextStyle(fontSize: 15),
+                                style: TextStyle(fontSize: 15),
                               ),
                             ],
                           ),

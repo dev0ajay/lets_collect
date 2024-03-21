@@ -22,6 +22,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       final StateModel? stateModel = await searchProvider.searchCategoryRequest(event.searchCategoryRequest);
       if(stateModel is SuccessState) {
         emit(SearchLoaded(searchCategoryRequestResponse: stateModel.value));
+      }else if(stateModel is ErrorState){
+        emit(SearchErrorState(msg: stateModel.msg));
       }
     }
 
@@ -32,6 +34,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           event.searchBrandRequest);
       if (stateModel is SuccessState) {
         emit(BrandLoaded(searchBrandRequestResponse: stateModel.value));
+      }else if(stateModel is ErrorState) {
+        emit(BrandErrorState(msg: stateModel.msg));
       }
     }
     );

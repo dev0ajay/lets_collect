@@ -127,6 +127,7 @@
     "deleteaccount" : "Delete Account",
     "logout" : "Logout",
 
+    "changepassword" : "Change Password",
     "aboutyou" : "About You",
     "contactinfo" : "Contact Info",
     "save" : "Save",

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +17,12 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/contact_us/contact_us_request.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({super.key});
@@ -29,7 +31,8 @@ class ContactUsScreen extends StatefulWidget {
   State<ContactUsScreen> createState() => _ContactUsScreenState();
 }
 
-class _ContactUsScreenState extends State<ContactUsScreen> {
+class _ContactUsScreenState extends State<ContactUsScreen>
+    with WidgetsBindingObserver {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController subjectController = TextEditingController();
@@ -40,6 +43,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
+  bool networkSuccess = false;
 
   void _removeFile() {
     setState(() {
@@ -61,7 +65,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         'doc',
         'csv',
         'docx',
-        'mp4',
         'tiff',
         'tif',
         'txt',
@@ -88,7 +91,42 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     }
   }
 
-  bool networkSuccess = false;
+  ///Runtime User Access and Permission handling
+
+  Future<void> checkPermissionForGallery(
+      Permission permission, BuildContext context) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      print("Permission granted");
+      _pickFile();
+    } else if (status.isDenied) {
+      print("Permission Denied");
+      _showPermissionDialog(_scaffoldKey.currentContext!);
+    } else if (status.isPermanentlyDenied) {
+      print("Permission permanently denied");
+
+      openSettings();
+    } else if (status.isLimited) {
+      print("Permission permanently denied");
+      _pickFile();
+    }
+  }
+
+  void openSettings() {
+    openAppSettings();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +138,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         }
       },
       builder: (context, state) {
-        if(state is NetworkSuccess){
+        if (state is NetworkSuccess) {
           return BlocConsumer<ContactUsBloc, ContactUsState>(
             listener: (context, state) {
               if (state is ContactUsLoading) {
@@ -111,7 +149,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ),
                 );
               }
-
               if (state is ContactUsLoaded) {
                 if (state.contactUsRequestResponse.success == true) {
                   _showDialogBox(context: context);
@@ -150,6 +187,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                             color: AppColors.primaryWhiteColor,
                           )),
                       title: Text(
+                        // "Contact us",
                         AppLocalizations.of(context)!.contactus,
                         style: GoogleFonts.openSans(
                           fontSize: 24,
@@ -165,7 +203,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 40,
                               ),
                               Center(
@@ -174,7 +212,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   fit: BoxFit.cover,
                                   height: 130,
                                 ),
-                              ).animate().scale(delay: 200.ms, duration: 300.ms),
+                              )
+                                  .animate()
+                                  .scale(delay: 200.ms, duration: 300.ms),
                               Center(
                                 child: ClipOval(
                                   child: SvgPicture.asset(
@@ -199,7 +239,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   ],
                                 ),
                                 child: MyTextField(
-                                  hintText: AppLocalizations.of(context)!.subject,
+                                  // hintText: "Subject",
+                                  hintText : AppLocalizations.of(context)!.subject,
                                   obscureText: false,
                                   maxLines: 1,
                                   controller: subjectController,
@@ -212,7 +253,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     return null;
                                   },
                                 ),
-                              ).animate().scale(delay: 200.ms, duration: 300.ms),
+                              )
+                                  .animate()
+                                  .scale(delay: 200.ms, duration: 300.ms),
                               const SizedBox(height: 35),
                               Container(
                                 decoration: BoxDecoration(
@@ -230,8 +273,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                 child: SizedBox(
                                   height: 150,
                                   child: MyTextField(
-                                    hintText:
-                                    AppLocalizations.of(context)!.message,
+                                    // hintText: "Message",
+                                    hintText : AppLocalizations.of(context)!.message,
                                     obscureText: false,
                                     controller: messageController,
                                     maxLines: 10,
@@ -245,7 +288,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     },
                                   ),
                                 ),
-                              ).animate().scale(delay: 200.ms, duration: 300.ms),
+                              )
+                                  .animate()
+                                  .scale(delay: 200.ms, duration: 300.ms),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -259,107 +304,116 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     radius: const Radius.circular(10),
                                     child: _pickedFile == null
                                         ? SizedBox(
-                                      height:
-                                      getProportionateScreenHeight(60),
-                                      width:
-                                      getProportionateScreenWidth(320),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .supportingimage,
-                                            style: GoogleFonts.roboto(
-                                              color: AppColors
-                                                  .primaryBlackColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 20),
-                                          const ImageIcon(
-                                            AssetImage(Assets.UPLOAD),
-                                            size: 20,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                        : Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          child: SizedBox(
                                             height:
-                                            getProportionateScreenHeight(
-                                                60),
-                                            width:
-                                            getProportionateScreenWidth(
-                                                300),
-                                            child: Center(
-                                              child: Text(
-                                                  '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
+                                                getProportionateScreenHeight(
+                                                    60),
+                                            width: getProportionateScreenWidth(
+                                                320),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  // "Supporting image",
+                                                  AppLocalizations.of(context)!.supportingimage,
+                                                  style: GoogleFonts.roboto(
+                                                    color: AppColors
+                                                        .primaryBlackColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 20),
+                                                const ImageIcon(
+                                                  AssetImage(Assets.UPLOAD),
+                                                  size: 20,
+                                                ),
+                                              ],
                                             ),
+                                          )
+                                        : Row(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: SizedBox(
+                                                  height:
+                                                      getProportionateScreenHeight(
+                                                          60),
+                                                  width:
+                                                      getProportionateScreenWidth(
+                                                          300),
+                                                  child: Center(
+                                                    child: Text(
+                                                        "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
+                                                    // '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _pickedFile = null;
+                                                  });
+                                                },
+                                                child: const CircleAvatar(
+                                                  radius: 12,
+                                                  backgroundColor:
+                                                      AppColors.secondaryColor,
+                                                  child: Icon(
+                                                    Icons.delete,
+                                                    color: Colors.white,
+                                                    size: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _pickedFile = null;
-                                            });
-                                          },
-                                          child: const CircleAvatar(
-                                            radius: 12,
-                                            backgroundColor:
-                                            AppColors.secondaryColor,
-                                            child: Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
                                 ),
-                              ).animate().scale(delay: 200.ms, duration: 300.ms),
+                              )
+                                  .animate()
+                                  .scale(delay: 200.ms, duration: 300.ms),
                               SizedBox(
                                 height: 20,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
-                                child: BlocBuilder<ContactUsBloc, ContactUsState>(
+                                child:
+                                    BlocBuilder<ContactUsBloc, ContactUsState>(
                                   builder: (context, state) {
                                     if (state is ContactUsLoading) {
                                       return const Center(
                                         child: RefreshProgressIndicator(
                                           color: AppColors.primaryWhiteColor,
                                           backgroundColor:
-                                          AppColors.secondaryColor,
+                                              AppColors.secondaryColor,
                                         ),
                                       );
                                     }
                                     return MyButton(
                                       Textfontsize: 16,
                                       TextColors: Colors.white,
-                                      text: AppLocalizations.of(context)!
-                                          .submit,
+                                      // text: "Submit",
+                                      text : AppLocalizations.of(context)!.submit,
                                       color: AppColors.secondaryColor,
                                       width: 340,
                                       height: 40,
                                       onTap: () {
                                         if (_formKey.currentState!.validate() &&
                                             _pickedFile != null) {
-                                          BlocProvider.of<ContactUsBloc>(context)
+                                          BlocProvider.of<ContactUsBloc>(
+                                                  context)
                                               .add(
                                             GetContactUsEvent(
-                                              contactUsRequest: ContactUsRequest(
-                                                  subject: subjectController.text,
-                                                  message: messageController.text,
-                                                  supportPicture:
-                                                  imageUploadFormated),
+                                              contactUsRequest:
+                                                  ContactUsRequest(
+                                                      subject: subjectController
+                                                          .text,
+                                                      message: messageController
+                                                          .text,
+                                                      supportPicture:
+                                                          imageUploadFormated),
                                             ),
                                           );
                                           print("Subject = $subjectController");
@@ -367,12 +421,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                           print("Photo = $imageUploadFormated");
                                         } else {
                                           Fluttertoast.showToast(
-                                            msg: AppLocalizations.of(context)!
-                                                .allfieldsareimportant,
+                                            msg: "All Fields are important",
+                                            // AppLocalizations.of(context)!
+                                            //     .allfieldsareimportant,
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
-                                            backgroundColor: Colors.black87,
-                                            textColor: Colors.white,
+                                            backgroundColor:
+                                                AppColors.secondaryColor,
+                                            textColor:
+                                                AppColors.primaryWhiteColor,
                                           );
                                         }
                                       },
@@ -383,7 +440,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                     );
                                   },
                                 ),
-                              ).animate().scale(delay: 200.ms, duration: 300.ms),
+                              )
+                                  .animate()
+                                  .scale(delay: 200.ms, duration: 300.ms),
                             ],
                           ),
                         ),
@@ -392,7 +451,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ));
             },
           );
-        }else if (state is NetworkFailure) {
+        } else if (state is NetworkFailure) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -412,6 +471,56 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         return const SizedBox();
       },
     );
+  }
+
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext permissionDialogContext) {
+          return AlertDialog(
+            title: Text(
+              "Permission Denied!",
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              "To continue file upload allow access to files and storage.",
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  "Cancel",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  openSettings();
+                  context.pop();
+                },
+                child: Text(
+                  "Settings",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   void _showDialogBox({
@@ -445,7 +554,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               ),
               const SizedBox(height: 10),
               Text(
-                AppLocalizations.of(context)!.thankyouforcontactingus,
+                "Thank you for contacting us",
+                // AppLocalizations.of(context)!.thankyouforcontactingus,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 22,
@@ -455,7 +565,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               ),
               const SizedBox(height: 30),
               Text(
-                AppLocalizations.of(context)!.wewillgetbackto,
+                "We’ll get back to you as soon as we can. It may take up to 3 working days.",
+                // AppLocalizations.of(context)!.wewillgetbackto,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
@@ -468,7 +579,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 child: MyButton(
                   Textfontsize: 16,
                   TextColors: Colors.white,
-                  text: AppLocalizations.of(context)!.ok,
+                  text: "Ok",
+                  // AppLocalizations.of(context)!.ok,
                   color: AppColors.secondaryColor,
                   height: 40,
                   // Adjust the height as needed

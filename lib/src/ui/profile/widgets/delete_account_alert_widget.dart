@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lets_collect/src/bloc/delete_account/delete_account_bloc.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
+import '../../../bloc/delete_account/delete_account_bloc.dart';
 import '../../../constants/colors.dart';
 
 class DeleteAccountAlertOverlay extends StatefulWidget {

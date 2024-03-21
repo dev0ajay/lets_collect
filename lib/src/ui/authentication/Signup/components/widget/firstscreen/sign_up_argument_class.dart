@@ -9,16 +9,16 @@ class SignUpArgumentClass {
    String? nationalityID;
    String? countryId;
 
-   SignUpArgumentClass({
-      this.firsname,
-      this.lastName,
-      this.email,
-      this.password,
-      this.confirmPassword,
-      this.dob,
-      this.gender,
-      this.nationalityID,
-      this.countryId,
+  SignUpArgumentClass({
+     this.firsname,
+     this.lastName,
+     this.email,
+     this.password,
+     this.confirmPassword,
+     this.dob,
+     this.gender,
+     this.nationalityID,
+     this.countryId,
 
-   });
+  });
 }

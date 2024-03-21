@@ -11,13 +11,13 @@ import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
-import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lottie/lottie.dart';
 import '../../bloc/filter_bloc/filter_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../utils/screen_size/size_config.dart';
 import 'components/widgets/sliver_background_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RewardScreen extends StatefulWidget {
   const RewardScreen({super.key});
@@ -55,7 +55,7 @@ class _RewardScreenState extends State<RewardScreen> {
   ];
 
   // int selected = 0;
-  String letsCollectTotalPoints = "";
+  String letsCollectTotalPoints = "0";
   bool lastStatus = true;
   double height = 250;
 
@@ -103,42 +103,18 @@ class _RewardScreenState extends State<RewardScreen> {
     super.dispose();
   }
 
-  // void _scrollListener() {
-  //   if (_scrollController.offset > 100 &&
-  //       _scrollController.position.userScrollDirection ==
-  //           ScrollDirection.reverse) {
-  //     setState(() {
-  //       _isAppBarVisible = true;
-  //     });
-  //   } else if (
-  //       _scrollController.position.userScrollDirection ==
-  //           ScrollDirection.forward) {
-  //     setState(() {
-  //       _isAppBarVisible = false;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocConsumer<RewardTierBloc, RewardTierState>(
       listener: (context, state) {
-        // if (state is RewardTierLoaded) {
-        //   if (state.rewardTierRequestResponse.data != null) {
-        //     ObjectFactory()
-        //         .prefs
-        //         .saveBrandTierData(state.rewardTierRequestResponse);
-        //     ObjectFactory()
-        //         .prefs
-        //         .savePartnerTierData(state.rewardTierRequestResponse);
-        //     ObjectFactory()
-        //         .prefs
-        //         .saveLetsCollectTierData(state.rewardTierRequestResponse);
-        //     letsCollectTotalPoints =
-        //         state.rewardTierRequestResponse.totalPoints.toString();
-        //   }
-        // }
+        if (state is RewardTierLoaded) {
+          if (state.rewardTierRequestResponse.data != null) {
+            letsCollectTotalPoints =
+                state.rewardTierRequestResponse.totalPoints.toString();
+          }
+        }
       },
       builder: (context, state) {
         return CustomScrollView(
@@ -331,6 +307,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                           );
                                                         },
                                                         child: Text(
+                                                          // AppLocalizations.of(context)!.,
                                                           "Clear All",
                                                           style: GoogleFonts
                                                               .roboto(
@@ -3017,7 +2994,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         },
                                                                         child:
                                                                             Text(
-                                                                          "Apply",
+                                                                            "Apply",
                                                                           style:
                                                                               GoogleFonts.roboto(
                                                                             color:
@@ -3356,6 +3333,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   );
                                                                 },
                                                                 child: Text(
+                                                                  // AppLocalizations.of(context)!.clearall,
                                                                   "Clear All",
                                                                   style:
                                                                       GoogleFonts
@@ -3412,7 +3390,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   context.pop();
                                                                 },
                                                                 child: Text(
-                                                                  "Apply",
+                                                                  AppLocalizations.of(context)!.apply,
+                                                                  // "Apply",
                                                                   style:
                                                                       GoogleFonts
                                                                           .roboto(
@@ -3454,7 +3433,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                     .center,
                                                                 children: [
                                                                   Text(
-                                                                    "Sort by",
+                                                                    AppLocalizations.of(context)!.sortby,
+                                                                    // "Sort by",
                                                                     style: GoogleFonts
                                                                         .roboto(
                                                                       fontSize:
@@ -3523,8 +3503,9 @@ class _RewardScreenState extends State<RewardScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Sort",
+                                           Text(
+                                             AppLocalizations.of(context)!.sort,
+                                            // "Sort",
                                             style: TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
@@ -3624,7 +3605,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             MainAxisSize.max,
                                                                         children: <Widget>[
                                                                           Text(
-                                                                            "Eligible",
+                                                                            AppLocalizations.of(context)!.eligible,
+                                                                            // "Eligible",
                                                                             softWrap:
                                                                                 true,
                                                                             overflow:
@@ -3700,8 +3682,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                               color: AppColors.secondaryColor,
                                                                               AssetImage(Assets.DOWN_ARROW),
                                                                             ),
-                                                                      title: const Text(
-                                                                          "Brand"),
+                                                                      title:  Text(
+                                                                        AppLocalizations.of(context)!.brand,
+                                                                          // "Brand"
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                   isBrandFilterTileSelected ==
@@ -3811,8 +3795,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                               color: AppColors.secondaryColor,
                                                                               AssetImage(Assets.DOWN_ARROW),
                                                                             ),
-                                                                      title: const Text(
-                                                                          "Category"),
+                                                                      title:  Text(
+                                                                          // "Category"
+                                                                        AppLocalizations.of(context)!.category,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                   isCategoryFilterTileSelected ==
@@ -3952,7 +3938,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         },
                                                                         child:
                                                                             Text(
-                                                                          "Clear All",
+                                                                              AppLocalizations.of(context)!.clear,
+                                                                          // "Clear All",
                                                                           style:
                                                                               GoogleFonts.roboto(
                                                                             color:
@@ -4002,7 +3989,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                         },
                                                                         child:
                                                                             Text(
-                                                                          "Apply",
+                                                                              AppLocalizations.of(context)!.apply,
+                                                                          // "Apply",
                                                                           style:
                                                                               GoogleFonts.roboto(
                                                                             color:
@@ -4059,7 +4047,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             CrossAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            "Filter by",
+                                                                            AppLocalizations.of(context)!.filterby,
+                                                                            // "Filter by",
                                                                             style:
                                                                                 GoogleFonts.roboto(
                                                                               fontSize: 16,
@@ -4126,9 +4115,10 @@ class _RewardScreenState extends State<RewardScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Filter",
-                                            style: TextStyle(
+                                           Text(
+                                             AppLocalizations.of(context)!.filter,
+                                            // "Filter",
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
@@ -4158,12 +4148,13 @@ class _RewardScreenState extends State<RewardScreen> {
                   children: [
                     Container(
                       padding:
-                          const EdgeInsets.only(top: 10, bottom: 1, left: 15),
+                          const EdgeInsets.only(top: 10, bottom: 1, left: 15,right: 15),
                       color: AppColors.primaryWhiteColor,
                       width: MediaQuery.of(context).size.width,
                       height: 30,
                       child: Text(
-                        "Please choose a reward tier",
+                        AppLocalizations.of(context)!.pleasechoosearewardtier,
+                        // "Please choose a reward tier",
                         style: GoogleFonts.openSans(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -4743,7 +4734,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         ],
                         borderRadius: BorderRadius.circular(5),
                         border:
-                            Border.all(color: AppColors.borderColor, width: 1)),
+                            Border.all(color: AppColors.borderColor, width: 1)
+                    ),
                     child: Center(
                       child: SizedBox(
                         width: 120,

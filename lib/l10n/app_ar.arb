@@ -127,6 +127,7 @@
     "deleteaccount" : "حذف الحساب",
     "logout" : "تسجيل الخروج",
 
+    "changepassword" : "تغيير كلمة المرور",
     "aboutyou" : "نبذة عنك",
     "contactinfo" : "معلومات الاتصال",
     "save" : "حفظ",

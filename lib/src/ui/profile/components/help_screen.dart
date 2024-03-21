@@ -8,7 +8,6 @@ import 'package:lets_collect/src/ui/profile/profile_screen.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -38,14 +37,17 @@ class _HelpScreenState extends State<HelpScreen> {
               color: AppColors.primaryWhiteColor,
             )),
         title: Text(
-          // "Help Center",
           AppLocalizations.of(context)!.helpcenter,
+          // "Help Center",
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: AppColors.primaryWhiteColor,
           ),
         ),
+        actions: const [
+          Text("v1.1.2+3",style: TextStyle(fontSize: 9),)
+        ],
       ),
       body: BlocConsumer<NetworkBloc, NetworkState>(
         listener: (context, state) {
@@ -62,10 +64,10 @@ class _HelpScreenState extends State<HelpScreen> {
                   children: [
                     Center(
                         child: SvgPicture.asset(
-                      Assets.HELP_SVG,
-                      fit: BoxFit.cover,
-                      height: 200,
-                    )),
+                          Assets.HELP_SVG,
+                          fit: BoxFit.cover,
+                          height: 200,
+                        )),
                     const SizedBox(height: 35),
                     // InkWell(
                     //   onTap: () {
@@ -90,12 +92,11 @@ class _HelpScreenState extends State<HelpScreen> {
                     // ),
                     GestureDetector(
                       onTap: () {
-                        context.push('/how_to_redeem_my_points');
+                        context.push('/how_to_redeem');
                       },
                       child:  ProfileDetailsListTileWidget(
                           // labelText: "How to redeem my points ?"
-                          labelText: AppLocalizations.of(context)!.howtoredeemmypoints
-
+                          labelText: AppLocalizations.of(context)!.howtoredeemmypoints,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -123,12 +124,11 @@ class _HelpScreenState extends State<HelpScreen> {
 
                     GestureDetector(
                       onTap: () {
-                        context.push('/point_calculations');
+                        context.push('/point_calculation');
                       },
                       child:  ProfileDetailsListTileWidget(
                           // labelText: "Point Calculations"
-                          labelText: AppLocalizations.of(context)!.pointcalculations
-
+                        labelText: AppLocalizations.of(context)!.pointcalculations,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -138,8 +138,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       },
                       child:  ProfileDetailsListTileWidget(
                           // labelText: "Terms and Conditions"
-                          labelText: AppLocalizations.of(context)!.termsandconditionds
-
+                        labelText: AppLocalizations.of(context)!.termsandconditionds,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -149,7 +148,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       },
                       child:  ProfileDetailsListTileWidget(
                           // labelText: "Privacy policies"
-                          labelText: AppLocalizations.of(context)!.privacypolicy
+                        labelText: AppLocalizations.of(context)!.privacypolicy,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -158,8 +157,9 @@ class _HelpScreenState extends State<HelpScreen> {
                         context.push('/contact_us');
                         print("contact_us tapped");
                       },
-                      child: ProfileDetailsListTileWidget(
-                        labelText: AppLocalizations.of(context)!.needmorehelp,
+                      child:  ProfileDetailsListTileWidget(
+                        // labelText: "Need more help"
+                        labelText : AppLocalizations.of(context)!.needmorehelp,
                       ),
                     ),
 
