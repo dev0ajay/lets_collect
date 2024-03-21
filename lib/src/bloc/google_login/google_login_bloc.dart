@@ -23,5 +23,6 @@ class GoogleLoginBloc extends Bloc<GoogleLoginEvent, GoogleLoginState> {
         emit(GoogleLoginErrorState(msg: stateModel.msg));
       }
     });
+
   }
 }

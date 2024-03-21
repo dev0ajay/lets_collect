@@ -11,6 +11,8 @@ import 'package:lets_collect/src/ui/profile/components/point_tracker_details_scr
 import 'package:lets_collect/src/ui/profile/components/point_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/redem_tracker_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/redemption_details_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
@@ -68,8 +70,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -112,8 +114,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -136,8 +138,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -157,8 +159,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -178,8 +180,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -202,8 +204,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -226,8 +228,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -250,8 +252,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -271,8 +273,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -292,8 +294,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -313,8 +315,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -336,8 +338,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -357,8 +359,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -378,8 +380,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -401,8 +403,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -422,8 +424,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -434,7 +436,8 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child:  MyProfileScreen(myProfileArguments: state.extra as MyProfileArguments),
+                  child: MyProfileScreen(
+                      myProfileArguments: state.extra as MyProfileArguments),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -443,8 +446,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -464,8 +467,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -485,8 +488,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -506,8 +509,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -527,8 +530,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -550,8 +553,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -574,8 +577,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -588,7 +591,8 @@ class AppRouter {
                   key: state.pageKey,
                   child: ScanHistoryDetailsScreen(
                     scanDetailsScreenArgument:
-                        state.extra as ScanDetailsScreenArgument, onIndexChanged: (int) {},
+                        state.extra as ScanDetailsScreenArgument,
+                    onIndexChanged: (int) {},
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
@@ -598,8 +602,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -621,8 +625,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -642,8 +646,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -654,7 +658,8 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child:  PurchaseHistoryDetailsScreen(receiptId: state.extra as String),
+                  child: PurchaseHistoryDetailsScreen(
+                      receiptId: state.extra as String),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -663,8 +668,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -675,7 +680,7 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child:  const PointTrackerScreen(),
+                  child: const PointTrackerScreen(),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -684,8 +689,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -696,7 +701,7 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child:   PointTrackerDetailsScreen(pointId: state.extra as int),
+                  child: PointTrackerDetailsScreen(pointId: state.extra as int),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -705,8 +710,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -726,8 +731,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -747,8 +752,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -768,8 +773,8 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -789,17 +794,60 @@ class AppRouter {
                     // Change the opacity of the screen using a Curve based on the the animation's
                     // value
                     return FadeTransition(
-                      opacity: CurveTween(curve: Curves.easeIn)
-                          .animate(animation),
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
                 );
               }),
-
-
-
-
+          GoRoute(
+              path: 'redemption',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const RedemptionTrackerScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'redemption_details',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: RedemptionDetailsScreen(
+                      imageUrl: state.extra as String,
+                      itemName: state.extra as String,
+                      points: state.extra as int,
+                      time: state.extra as String,
+                      store: state.extra as String),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity:
+                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
         ],
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>

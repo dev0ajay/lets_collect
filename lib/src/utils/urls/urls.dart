@@ -31,7 +31,6 @@ class UrlsLetsCollect {
   static const String NOTIFICATION = "/api/lcuser/list_notifications";
 
   ///Edit Profile
-  static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
 
 
   ///Profile Screen
@@ -45,6 +44,9 @@ class UrlsLetsCollect {
   static const String HOW_TO_REDEEM_MY_POINTS = "/api/lcuser/how_to_redeem_mypoints";
   static const String POINT_CALCULATIONS = "/api/lcuser/point_calculations";
   static const String DELETE_ACCOUNT = "/api/delete_customer_account";
+  static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
+  static const String REDEMPTION_HISTORY = "/api/lcuser/redemption_history";
+
 
 
 

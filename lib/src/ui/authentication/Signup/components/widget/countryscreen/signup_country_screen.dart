@@ -236,7 +236,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                     child: Text(
                       Strings.LOGIN_LETS_COLLECT,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.primaryWhiteColor,
                         fontSize: 40,
                       ),
                     ),
@@ -267,7 +267,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   const Center(
                     child: Text(
                       Strings.VERIFY_DISCRIPTION,
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      style: TextStyle(color: AppColors.primaryWhiteColor, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -312,9 +312,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   ],
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(
-                                    color: Colors.grey,
+                                    color: AppColors.primaryGrayColor,
                                   ),
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                 ),
                                 elevation: 2,
                               ),
@@ -562,9 +562,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   ],
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(
-                                    color: Colors.grey,
+                                    color: AppColors.primaryGrayColor,
                                   ),
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                 ),
                                 elevation: 2,
                               ),
@@ -582,7 +582,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 width: 350,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(14),
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                 ),
                                 offset: const Offset(-2, -5),
                                 scrollbarTheme: ScrollbarThemeData(

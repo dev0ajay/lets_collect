@@ -57,6 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
         print(value);
       }
     });
+
   }
 
   @override

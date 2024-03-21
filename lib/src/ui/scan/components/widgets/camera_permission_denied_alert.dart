@@ -1,27 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import '../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
-import '../../../constants/colors.dart';
+import '../../../../constants/colors.dart';
 
-class LogOutAlertOverlay extends StatefulWidget {
-  const LogOutAlertOverlay({super.key});
+class CameraPermissionAlertOverlay extends StatefulWidget {
+  const CameraPermissionAlertOverlay({super.key});
 
   @override
-  State<StatefulWidget> createState() => LogOutAlertOverlayState();
+  State<StatefulWidget> createState() => CameraPermissionAlertOverlayState();
 }
 
-class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
+class CameraPermissionAlertOverlayState extends State<CameraPermissionAlertOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
-  bool isEmailNotVerifyExecuted = false;
 
   @override
   void initState() {
@@ -39,10 +37,10 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
     controller.forward();
   }
 
-  Future<void> _signOut() async {
-   await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
+  void openSettings() {
+    openAppSettings();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +65,7 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                         padding: const EdgeInsets.only(
                             top: 40.0, left: 20.0, right: 20.0),
                         child: Text(
-                          "Are you sure you want to log out?",
+                          "To upload your receipts Lets Collect need to access your camera ",
                           style: GoogleFonts.openSans(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -89,18 +87,11 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                 fixedSize: const Size(100, 40),
                                 backgroundColor: AppColors.secondaryColor,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               onPressed: () {
-                                context
-                                    .read<GoogleSignInCubit>()
-                                    .signOut();
-                                ObjectFactory().prefs.setIsLoggedIn(false);
-                                ObjectFactory().prefs.setUserName(userName: "");
-                                // ObjectFactory().prefs.clearPrefs();
-                                // ignore: use_build_context_synchronously
-                                context.go('/login');
+                                openSettings();
                               },
                               child: Text(
                                 "Yes",

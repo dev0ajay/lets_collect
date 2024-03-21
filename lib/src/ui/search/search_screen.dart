@@ -244,7 +244,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 return GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 20, bottom: 98),
+                      left: 20, right: 20, top: 20, bottom: 140),
                   itemCount: state.searchCategoryRequestResponse.data?.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

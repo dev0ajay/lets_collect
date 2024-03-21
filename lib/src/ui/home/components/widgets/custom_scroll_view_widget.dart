@@ -106,7 +106,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
-                  ObjectFactory().prefs.setIsEmailVerified(true);
+                  setState(() {
+                    ObjectFactory().prefs.setIsEmailVerified(true);
+                  });
                   // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
                   // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(

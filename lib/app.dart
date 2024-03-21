@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
+import 'package:lets_collect/src/bloc/apple_sign_in/apple_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:lets_collect/src/bloc/point_calculation/point_calculations_bloc.
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
+import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
@@ -206,6 +208,12 @@ class _AppState extends State<App> {
                 profileDataProvider: RepositoryProvider.of(context),
               ),
             ),
+            BlocProvider<AppleSignInCubit>(
+              create: (BuildContext context) => AppleSignInCubit(),
+            ),
+            BlocProvider<RedemptionHistoryBloc>(
+                create: (BuildContext context) => RedemptionHistoryBloc(
+                    profileDataProvider: RepositoryProvider.of(context))),
           ],
           child: BlocBuilder<NetworkBloc, NetworkState>(
             builder: (context, state) {

@@ -19,6 +19,9 @@ import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.da
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({super.key});
@@ -27,7 +30,8 @@ class ContactUsScreen extends StatefulWidget {
   State<ContactUsScreen> createState() => _ContactUsScreenState();
 }
 
-class _ContactUsScreenState extends State<ContactUsScreen> {
+class _ContactUsScreenState extends State<ContactUsScreen>
+    with WidgetsBindingObserver {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController subjectController = TextEditingController();
@@ -38,6 +42,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
+  bool networkSuccess = false;
 
   void _removeFile() {
     setState(() {
@@ -59,7 +64,6 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         'doc',
         'csv',
         'docx',
-        'mp4',
         'tiff',
         'tif',
         'txt',
@@ -86,7 +90,42 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     }
   }
 
-  bool networkSuccess = false;
+  ///Runtime User Access and Permission handling
+
+  Future<void> checkPermissionForGallery(
+      Permission permission, BuildContext context) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      print("Permission granted");
+      _pickFile();
+    } else if (status.isDenied) {
+      print("Permission Denied");
+      _showPermissionDialog(_scaffoldKey.currentContext!);
+    } else if (status.isPermanentlyDenied) {
+      print("Permission permanently denied");
+
+      openSettings();
+    } else if (status.isLimited) {
+      print("Permission permanently denied");
+      _pickFile();
+    }
+  }
+
+  void openSettings() {
+    openAppSettings();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -433,6 +472,56 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         return const SizedBox();
       },
     );
+  }
+
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext permissionDialogContext) {
+          return AlertDialog(
+            title: Text(
+              "Permission Denied!",
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              "To continue file upload allow access to files and storage.",
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  "Cancel",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  openSettings();
+                  context.pop();
+                },
+                child: Text(
+                  "Settings",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   void _showDialogBox({

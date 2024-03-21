@@ -51,7 +51,7 @@ class MyButton extends StatelessWidget {
                 imagePath,
                 width: imagewidth,
                 height: imageheight,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             SizedBox(width: showImage ? 8 : 0),
             Text(

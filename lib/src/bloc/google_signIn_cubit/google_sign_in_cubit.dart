@@ -17,10 +17,13 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
       //select acoount
       final userAccount = await googleSignIn.signIn();
 
+
+
       //user dismissed the dialog box
       if(userAccount == null) return null;
 
       final GoogleSignInAuthentication googleSignInAuthentication = await userAccount.authentication;
+
 
       //Create OAuth credentials from auth object
       final credential = GoogleAuthProvider.credential(
@@ -33,7 +36,11 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
       
       emit(GoogleSignInSuccess(user: userCredentials.user!));
 
+
+
+
     } catch(e) {
+      print(e);
       emit(GoogleSignInError(error: e.toString()));
     }
   }
@@ -41,10 +48,13 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
   void signOut() async{
     try {
       GoogleSignIn().signOut();
+      googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
       emit(GoogleSignInLoggedOut());
 
-    } catch(e) {}
+    } catch(e) {
+      print(e);
+    }
   }
 
 

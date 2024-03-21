@@ -39,8 +39,10 @@ class _LoginCongratsCardState extends State<LoginCongratsCard> {
                   onPressed: () {
                     setState(() {
                       // ObjectFactory().prefs.setIsEmailVerified(true);
-                      ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
-                      widget.isDone = false;
+                   setState(() {
+                     ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                     widget.isDone = false;
+                   });
                     });
                   },
                   icon: const Icon(Icons.close),

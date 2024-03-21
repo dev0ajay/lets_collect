@@ -20,6 +20,7 @@ import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../../../../bloc/apple_sign_in/apple_sign_in_cubit.dart';
 import '../../../../../components/Custome_Textfiled.dart';
 import '../../../../../components/my_button.dart';
 import '../../../../../constants/colors.dart';
@@ -124,6 +125,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final appleSignInCubit = BlocProvider.of<AppleSignInCubit>(context);
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginLoaded) {
@@ -250,20 +252,30 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             if (state is GoogleLoginLoading) {
               return Stack(
                 children: [
-                  // const ModalBarrier(
-                  //   color: Colors.black54,
-                  //   dismissible: false,
-                  // ),
+                  const Scaffold(backgroundColor: Colors.transparent),
+                  const Opacity(
+                    opacity: 0.8,
+                    child: ModalBarrier(
+                        dismissible: false, color: Colors.transparent),
+                  ),
                   Center(
-                    child:
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Container(
                           height: 90,
                           width: 90,
-                          decoration: const BoxDecoration(
-                            color: AppColors.boxShadow
-                          ),
-                            child: Lottie.asset(Assets.JUMBINGDOT, height: 90, width: 90)
+                          decoration:
+                              const BoxDecoration(color: AppColors.boxShadow),
+                          child: Lottie.asset(Assets.JUMBINGDOT,
+                              height: 90, width: 90),
                         ),
+                        const Text(
+                          "Please wait",
+                          style: TextStyle(color: AppColors.secondaryColor),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
@@ -474,47 +486,126 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Center(
-                            child: MyButton(
-                              imagePath: Assets.MAIL,
-                              Textfontsize: 16,
-                              TextColors: AppColors.iconGreyColor,
-                              text: Strings.EMAIL_SINGUP,
-                              color: AppColors.primaryWhiteColor,
-                              width: 160,
-                              height: 40,
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  PageRouteBuilder(
-                                    reverseTransitionDuration:
-                                        const Duration(milliseconds: 750),
-                                    transitionDuration:
-                                        const Duration(milliseconds: 750),
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        const SignUpScreen(
-                                      from: 'Email',
-                                      gmail: '',
-                                    ),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      const begin = Offset(0.0, 1.0);
-                                      const end = Offset.zero;
-                                      const curve = Curves.decelerate;
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              showImage: true,
-                              imagewidth: 28,
-                              imageheight: 20,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: MyButton(
+                                  imagePath: Assets.MAIL,
+                                  Textfontsize: 14,
+                                  TextColors: AppColors.iconGreyColor,
+                                  text: Strings.EMAIL_SINGUP,
+                                  color: AppColors.primaryWhiteColor,
+                                  width: 160,
+                                  height: 40,
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        reverseTransitionDuration:
+                                            const Duration(milliseconds: 750),
+                                        transitionDuration:
+                                            const Duration(milliseconds: 750),
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            const SignUpScreen(
+                                          from: 'Email',
+                                          gmail: '',
+                                        ),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          const begin = Offset(0.0, 1.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.decelerate;
+                                          var tween = Tween(
+                                                  begin: begin, end: end)
+                                              .chain(CurveTween(curve: curve));
+                                          return SlideTransition(
+                                            position: animation.drive(tween),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  showImage: true,
+                                  imagewidth: 28,
+                                  imageheight: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Platform.isIOS
+                                  ? Flexible(
+                                      child: BlocConsumer<AppleSignInCubit,
+                                          AppleSignInStatus>(
+                                        builder: (context, state) {
+                                          return state ==
+                                                  AppleSignInStatus.loading
+                                              ? const CircularProgressIndicator()
+                                              : MyButton(
+                                                  imagePath: Assets.APPLE_LOGO,
+                                                  Textfontsize: 14,
+                                                  TextColors:
+                                                      AppColors.iconGreyColor,
+                                                  text: Strings.APPLE_SINGUP,
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
+                                                  width: 160,
+                                                  height: 40,
+                                                  onTap: () {
+                                                    // appleSignInCubit
+                                                    //     .signInWithApple();
+                                                    // Navigator.of(context).push(
+                                                    //   PageRouteBuilder(
+                                                    //     reverseTransitionDuration:
+                                                    //         const Duration(
+                                                    //             milliseconds: 750),
+                                                    //     transitionDuration:
+                                                    //         const Duration(
+                                                    //             milliseconds: 750),
+                                                    //     pageBuilder: (context, animation,
+                                                    //             secondaryAnimation) =>
+                                                    //         const SignUpScreen(
+                                                    //       from: 'Email',
+                                                    //       gmail: '',
+                                                    //     ),
+                                                    //     transitionsBuilder: (context,
+                                                    //         animation,
+                                                    //         secondaryAnimation,
+                                                    //         child) {
+                                                    //       const begin = Offset(0.0, 1.0);
+                                                    //       const end = Offset.zero;
+                                                    //       const curve = Curves.decelerate;
+                                                    //       var tween = Tween(
+                                                    //               begin: begin, end: end)
+                                                    //           .chain(CurveTween(
+                                                    //               curve: curve));
+                                                    //       return SlideTransition(
+                                                    //         position:
+                                                    //             animation.drive(tween),
+                                                    //         child: child,
+                                                    //       );
+                                                    //     },
+                                                    //   ),
+                                                    // );
+                                                  },
+                                                  showImage: true,
+                                                  imagewidth: 28,
+                                                  imageheight: 20,
+                                                );
+                                        },
+                                        listener: (context, state) {
+                                          if (state ==
+                                              AppleSignInStatus.success) {
+                                            context.go('/home');
+
+                                          } else {
+                                            return;
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
                           ),
                           const SizedBox(height: 10),
                           Row(
@@ -589,7 +680,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                   ),
                                                 )
                                               : Text(
-                                                  "Sign up/Login",
+                                                  "Sign In",
                                                   style: GoogleFonts.roboto(
                                                     color: AppColors
                                                         .primaryGrayColor,

@@ -10,12 +10,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/scan_bloc/scan_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import 'components/scan_detail_screen_argument.dart';
 import 'components/widgets/scan_screen_collect_button.dart';
 import 'package:path/path.dart' as p;
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class LongRecieptScreen extends StatefulWidget {
   const LongRecieptScreen({super.key});
@@ -24,7 +27,8 @@ class LongRecieptScreen extends StatefulWidget {
   State<LongRecieptScreen> createState() => _LongRecieptScreenState();
 }
 
-class _LongRecieptScreenState extends State<LongRecieptScreen> {
+class _LongRecieptScreenState extends State<LongRecieptScreen>
+    with WidgetsBindingObserver {
   List<XFile>? galleryFile;
   File? _cameraImage;
   final _picker = ImagePicker();
@@ -32,10 +36,10 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
-
   List<File> selectedImages = [];
 
   final picker = ImagePicker();
+
   // Function to clear the picked image
   void _clearImage() {
     setState(() {
@@ -43,10 +47,96 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
     });
   }
 
+  void openSettings() {
+    openAppSettings();
+  }
+
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext permissionDialogContext) {
+          return AlertDialog(
+            title: Text(
+              "Permission Denied!",
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              "To continue file upload allow access to files and storage.",
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  "Cancel",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  openSettings();
+                  context.pop();
+                },
+                child: Text(
+                  "Settings",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  ///Runtime User Access and Permission handling
+  Future<void> checkPermissionForStorage(
+      Permission permission, BuildContext context) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      print("Permission granted");
+      _pickFile();
+    } else if (status.isDenied) {
+      print("Permission Denied");
+      _showPermissionDialog(_scaffoldKey.currentContext!);
+    } else if (status.isPermanentlyDenied) {
+      print("Permission permanently denied");
+      openSettings();
+    } else if (status.isLimited) {
+      print("Permission permanently denied");
+      _pickFile();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
           leading: IconButton(
@@ -83,21 +173,19 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                       GestureDetector(
                         onTap: () {
                           showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10)
-                                            ),
-                                            content: SizedBox(
-                                              height: getProportionateScreenHeight(260),
-                                          width: getProportionateScreenWidth(320),
-                                              child: Lottie.asset(Assets.SOON),
-                                            ),
-                                            
-                                          );
-                                        },
-                                      );
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                content: SizedBox(
+                                  height: getProportionateScreenHeight(260),
+                                  width: getProportionateScreenWidth(320),
+                                  child: Lottie.asset(Assets.SOON),
+                                ),
+                              );
+                            },
+                          );
                         },
                         // onTap: () {
                         //   _pickedFile == null
@@ -153,7 +241,8 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                       GestureDetector(
                         onTap: () {
                           selectedImages.isEmpty
-                              ? _pickFile()
+                              ? checkPermissionForStorage(
+                                  Permission.storage, context)
                               : ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     backgroundColor:
@@ -315,20 +404,21 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                             ),
                           ),
                         );
-                      }else {
+                      } else {
                         _showDialogBox(context: context);
                         BlocProvider.of<ScanBloc>(context).add(
                           ScanReceiptEvent(
-                              data: FormData.fromMap({"file": imageUploadFormated}),
+                            data:
+                                FormData.fromMap({"file": imageUploadFormated}),
                           ),
                         );
                       }
                     },
                     child: const SizedBox(
-                        child: Padding(
-                      padding: EdgeInsets.all(3.0),
-                      child: ScanScreenCollectButton(text: 'Collect'),
-                    ),
+                      child: Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: ScanScreenCollectButton(text: 'Collect'),
+                      ),
                     ),
                   ),
                 ),
@@ -337,7 +427,6 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
           ),
         ));
   }
-
 
   void _showDialogBox({
     required BuildContext context,
@@ -352,7 +441,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
           );
           return BlocBuilder<ScanBloc, ScanState>(
             builder: (context, state) {
-              if(state is ScanLoading) {
+              if (state is ScanLoading) {
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -386,7 +475,6 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 20),
                         Flexible(
                           flex: 2,
@@ -414,19 +502,17 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                         const SizedBox(height: 10),
                         Flexible(
                           flex: 3,
-                          child:
-                          Lottie.asset(Assets.SCANING),
-
+                          child: Lottie.asset(Assets.SCANING),
                         ),
-
                       ],
                     ),
                   ),
                 );
               }
-              if(state is ScanLoaded) {
-                if(state.scanReceiptRequestResponse.success == false &&
-                    state.scanReceiptRequestResponse.message == "This receipt number already exists") {
+              if (state is ScanLoaded) {
+                if (state.scanReceiptRequestResponse.success == false &&
+                    state.scanReceiptRequestResponse.message ==
+                        "This receipt number already exists") {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -437,8 +523,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                     content: SizedBox(
                         height: getProportionateScreenHeight(260),
                         width: getProportionateScreenWidth(320),
-                        child:
-                        Column(
+                        child: Column(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
@@ -478,13 +563,10 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                                 ),
                               ),
                             ),
-
                           ],
-                        )
-
-                    ),
+                        )),
                   );
-                }else {
+                } else {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -543,10 +625,8 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                                           .scanReceiptRequestResponse
                                           .data!
                                           .totalPoints!,
-                                      pointId: state
-                                          .scanReceiptRequestResponse
-                                          .data!
-                                          .pointId!,
+                                      pointId: state.scanReceiptRequestResponse
+                                          .data!.pointId!,
                                     ),
                                   );
                                   context.pop();
@@ -588,11 +668,8 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                         )),
                   );
                 }
-
-
-
               }
-              if(state is ScanError) {
+              if (state is ScanError) {
                 return AlertDialog(
                   backgroundColor: AppColors.primaryWhiteColor,
                   shape: RoundedRectangleBorder(
@@ -603,8 +680,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                   content: SizedBox(
                       height: getProportionateScreenHeight(260),
                       width: getProportionateScreenWidth(320),
-                      child:
-                      Column(
+                      child: Column(
                         children: [
                           Align(
                             alignment: Alignment.topLeft,
@@ -639,20 +715,15 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
                               ),
                             ),
                           ),
-
                         ],
-                      )
-
-                  ),
+                      )),
                 );
               }
 
               return const SizedBox();
             },
           );
-        }
-
-    );
+        });
   }
 
   void _removeFile() {
@@ -706,7 +777,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen> {
     setState(
       () {
         galleryFile = pickedFile;
-            },
+      },
     );
   }
 }

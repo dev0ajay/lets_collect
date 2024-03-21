@@ -19,6 +19,8 @@ class Assets {
   static const String DOWN_ARROW = 'assets/png_icons/down arrow.png';
   static const String NO_IMAGE = 'assets/png_icons/noImage.jpg';
   static const String NO_IMG = 'assets/png_icons/no_image.png';
+  static const String APPLE_LOGO = 'assets/png_icons/apple.png';
+
 
 
   ///Lottie

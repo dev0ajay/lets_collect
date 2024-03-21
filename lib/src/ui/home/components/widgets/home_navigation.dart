@@ -49,6 +49,7 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
         if(state is HomeLoaded) {
           if(state.homeResponse.emailVerified == 0
           && ObjectFactory().prefs.isEmailNotVerifiedStatus() == true
+          && ObjectFactory().prefs.isEmailNotVerifiedCalled() == false
               ) {
             // ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
             showDialog(
@@ -56,9 +57,9 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
                 builder: (BuildContext context) => const AlertOverlay()
             );
           }
-          // else if(state.homeResponse.emailVerified == 1 && ObjectFactory().prefs.isEmailVerifiedStatus() == true) {
-          //   isDone = true;
-          // }
+          else if(state.homeResponse.emailVerified == 1 && ObjectFactory().prefs.isEmailVerifiedStatus() == true) {
+            isDone = true;
+          }
         }
       },
       child: Stack(
@@ -69,9 +70,9 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
             },
           ),
 
-          // LoginCongratsCard(
-          //   isDone: isDone,
-          // ),
+          LoginCongratsCard(
+            isDone: isDone,
+          ),
           // LoginCongratsCard(
           //   isDone: isDone,
           //   emailVerifiedPoints: emailVerifiedPoints,

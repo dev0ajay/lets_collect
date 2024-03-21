@@ -49,6 +49,9 @@ class _MyTextFieldState extends State<MyTextField> {
     return SizedBox(
       // height: 55,
       child: TextFormField(
+        style: GoogleFonts.openSans(
+            color: AppColors.primaryGrayColor,
+        ),
         enabled: widget.enable,
         inputFormatters: widget.inputFormatter,
         focusNode: widget.focusNode,
@@ -66,15 +69,14 @@ class _MyTextFieldState extends State<MyTextField> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),
-
           ),
           hintText: widget.hintText,
           labelStyle: GoogleFonts.roboto(
               color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
           hintStyle: GoogleFonts.roboto(
               color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
-          contentPadding: const EdgeInsets.all(15),
-          fillColor: Colors.white,
+          contentPadding: const EdgeInsets.only(left: 15),
+          fillColor: AppColors.primaryWhiteColor,
           filled: true,
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon)

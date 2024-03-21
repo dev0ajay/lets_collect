@@ -15,9 +15,12 @@ import 'package:lets_collect/src/ui/profile/widgets/log_out_alert_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/country_bloc/country_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import 'components/my_profile_screen_arguments.dart';
+
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,21 +29,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserver{
   bool networkSuccess = false;
-
-  File? _image;
-  XFile? _pickedFile;
-  final _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    _pickedFile = (await _picker.pickImage(source: ImageSource.gallery));
-    if (_pickedFile != null) {
-      setState(() {
-        _image = File(_pickedFile!.path);
-      });
-    }
-  }
 
   // void showLanguageBottomSheet(BuildContext context) {
   //   showModalBottomSheet(
@@ -116,13 +106,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //   );
   // }
 
+
+
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
     BlocProvider.of<NationalityBloc>(context).add(GetNationality());
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   flex: 1,
                                   child: Text(
                                     // ObjectFactory().prefs.getUserName() ??
-                                    state.myProfileScreenResponse.data!.userName
+                                    state.myProfileScreenResponse.data!.firstName
                                         .toString(),
                                     style: GoogleFonts.openSans(
                                       color: AppColors.secondaryColor,
@@ -385,9 +386,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         gender: state.myProfileScreenResponse
                                             .data!.gender
                                             .toString(),
-                                        dob: state
-                                            .myProfileScreenResponse.data!.dob
-                                            .toString(),
+                                        dob:  state
+                                            .myProfileScreenResponse.data!.dob.toString(),
                                         nationality_name_en: state
                                             .myProfileScreenResponse
                                             .data!
@@ -455,26 +455,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.only(top: 18),
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          content: SizedBox(
-                                            height:
-                                                getProportionateScreenHeight(
-                                                    260),
-                                            width: getProportionateScreenWidth(
-                                                320),
-                                            child: Lottie.asset(Assets.SOON),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    // context.push("/Redemption_Tracker");
-                                    print("Redemption Tracker tapped!");
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (BuildContext context) {
+                                    //     return AlertDialog(
+                                    //       shape: RoundedRectangleBorder(
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(10)),
+                                    //       content: SizedBox(
+                                    //         height:
+                                    //             getProportionateScreenHeight(
+                                    //                 260),
+                                    //         width: getProportionateScreenWidth(
+                                    //             320),
+                                    //         child: Lottie.asset(Assets.SOON),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    // );
+                                    context.push("/redemption");
                                   },
                                   labelText: "Redemption Tracker",
                                   // AppLocalizations.of(context)!
@@ -636,7 +635,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ]),
                       ),
                       padding: const EdgeInsets.only(
-                          top: 25, left: 15, right: 15, bottom: 110),
+                          top: 0, left: 15, right: 15, bottom: 110),
                     ),
                   ],
                 );
@@ -671,6 +670,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+
+
 }
 
 class ProfileDetailsListTileWidget extends StatelessWidget {
@@ -705,7 +706,7 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
             BoxShadow(
               color: Color(0x4F000000),
               blurRadius: 2,
-              offset: Offset(-4, -2),
+              offset: Offset(4, 2),
               spreadRadius: 0,
             ),
           ],

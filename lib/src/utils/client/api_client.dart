@@ -472,5 +472,18 @@ class ApiClient {
   }
 
 
+  ///Redemption History
+  Future<Response> getRedemptionHistoryResponse() {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.REDEMPTION_HISTORY,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
 
 }

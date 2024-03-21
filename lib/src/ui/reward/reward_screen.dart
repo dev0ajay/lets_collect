@@ -11,7 +11,6 @@ import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
-import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lottie/lottie.dart';
 import '../../bloc/filter_bloc/filter_bloc.dart';
 import '../../constants/assets.dart';
@@ -55,7 +54,7 @@ class _RewardScreenState extends State<RewardScreen> {
   ];
 
   // int selected = 0;
-  String letsCollectTotalPoints = "";
+  String letsCollectTotalPoints = "0";
   bool lastStatus = true;
   double height = 250;
 
@@ -103,42 +102,18 @@ class _RewardScreenState extends State<RewardScreen> {
     super.dispose();
   }
 
-  // void _scrollListener() {
-  //   if (_scrollController.offset > 100 &&
-  //       _scrollController.position.userScrollDirection ==
-  //           ScrollDirection.reverse) {
-  //     setState(() {
-  //       _isAppBarVisible = true;
-  //     });
-  //   } else if (
-  //       _scrollController.position.userScrollDirection ==
-  //           ScrollDirection.forward) {
-  //     setState(() {
-  //       _isAppBarVisible = false;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocConsumer<RewardTierBloc, RewardTierState>(
       listener: (context, state) {
-        // if (state is RewardTierLoaded) {
-        //   if (state.rewardTierRequestResponse.data != null) {
-        //     ObjectFactory()
-        //         .prefs
-        //         .saveBrandTierData(state.rewardTierRequestResponse);
-        //     ObjectFactory()
-        //         .prefs
-        //         .savePartnerTierData(state.rewardTierRequestResponse);
-        //     ObjectFactory()
-        //         .prefs
-        //         .saveLetsCollectTierData(state.rewardTierRequestResponse);
-        //     letsCollectTotalPoints =
-        //         state.rewardTierRequestResponse.totalPoints.toString();
-        //   }
-        // }
+        if (state is RewardTierLoaded) {
+          if (state.rewardTierRequestResponse.data != null) {
+            letsCollectTotalPoints =
+                state.rewardTierRequestResponse.totalPoints.toString();
+          }
+        }
       },
       builder: (context, state) {
         return CustomScrollView(
@@ -4743,7 +4718,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         ],
                         borderRadius: BorderRadius.circular(5),
                         border:
-                            Border.all(color: AppColors.borderColor, width: 1)),
+                            Border.all(color: AppColors.borderColor, width: 1)
+                    ),
                     child: Center(
                       child: SizedBox(
                         width: 120,
