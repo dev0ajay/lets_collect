@@ -23,6 +23,10 @@
     "andour" : "and our",
     "privacypolicy" : "Privacy Policy",
     "enteravalidemailaddress" : "Enter a valid email address",
+    "theusernamehasalreadybeentaken" : "The user name has already been taken.",
+    "theemailhasalreadybeentaken" :  "The email has already been taken.",
+    "themobilenohasalreadybeentaken" : "The mobile no has already been taken.",
+    "enteravalidphonenumber" : "Enter a valid phone number",
 
     "next" : "Next",
     "jointodayandstartcollect" : "Join Today And Start Collect",
@@ -121,13 +125,20 @@
     "subject" : "Subject",
     "message" : "Message",
     "supportingimage" : "Supporting Image",
+    "permissiondenied" : "Permission Denied!",
+    "tocontinuefileuploadallowaccesstofilesandstorage" : "To continue file upload allow access to files and storage.",
+    "settings" : "Settings",
     "selectedfile" : "Selected file :",
     "notificationcenter" : "Notification Center",
     "referafriend" : "Refer a Friend",
     "deleteaccount" : "Delete Account",
     "logout" : "Logout",
-
+    "selectedimageisgreaterthan" : "Selected image is greater than 5MP, Please Choose < 5MP Image",
+    "selectedfileisnotavalidimage" : "Selected file is not a valid image",
+    "enteravalidphonenumber" : "Enter a valid phone number",
+    "someerrorhappend" : "Some Error Happened",
     "changepassword" : "Change Password",
+
     "aboutyou" : "About You",
     "contactinfo" : "Contact Info",
     "save" : "Save",
@@ -200,8 +211,9 @@
     "filterby" : "Filter by",
     "eligible" : "Eligible",
     "brand" : "Brand",
-    "category" : "Category"
+    "category" : "Category",
 
-
-
+    "pleasewait" : "Please wait",
+    "signin" : "Sign In",
+    "youarealmosttherewejustneedabitofinfotomakesurewecansendyoutheabsolutebestoffers" : "You're almost there, we just need a bit of info to make sure we can send you the absolute best offers"
 }

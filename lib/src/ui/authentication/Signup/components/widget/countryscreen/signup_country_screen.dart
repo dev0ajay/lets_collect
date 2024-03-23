@@ -8,8 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -23,6 +25,7 @@ import '../../../../../../constants/colors.dart';
 import '../../../../../../model/auth/get_country_response.dart';
 import '../../../../../../model/auth/sign_up_request.dart';
 import '../firstscreen/sign_up_argument_class.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NumberVerificationScreen extends StatefulWidget {
   final SignUpArgumentClass signUpArgumentClass;
@@ -51,7 +54,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
 
   String? validatePhoneNumber(String? value) {
     if (value!.length < 8 || value.isEmpty) {
-      return 'Enter a valid phone number';
+      // return 'Enter a valid phone number';
+      return AppLocalizations.of(context)!.enteravalidphonenumber;
     } else {
       return null;
     }
@@ -138,7 +142,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
           if (state.signUpRequestErrorResponse.success == false) {
             if (state.signUpRequestErrorResponse.data.userName!.isNotEmpty &&
                 state.signUpRequestErrorResponse.data.userName ==
-                    "The user name has already been taken.") {
+                    "The user name has already been taken."
+            ) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: AppColors.secondaryColor,
@@ -193,7 +198,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
             } else if (state
                     .signUpRequestErrorResponse.data.mobileNo!.isNotEmpty &&
                 state.signUpRequestErrorResponse.data.mobileNo ==
-                    "The mobile no has already been taken.") {
+                    "The mobile no has already been taken."
+            ) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: AppColors.secondaryColor,
@@ -232,8 +238,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   SizedBox(
                     height: getProportionateScreenHeight(60),
                   ),
-                  const Center(
+                  const  Center(
                     child: Text(
+                      // AppLocalizations.of(context)!.collect,
                       Strings.LOGIN_LETS_COLLECT,
                       style: TextStyle(
                         color: AppColors.primaryWhiteColor,
@@ -253,7 +260,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   ),
                   Center(
                     child: Text(
-                      "Almost Done!",
+                      AppLocalizations.of(context)!.almostdone,
+                      // "Almost Done!",
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryWhiteColor,
                         fontWeight: FontWeight.w600,
@@ -264,10 +272,11 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                   SizedBox(
                     height: getProportionateScreenHeight(20),
                   ),
-                  const Center(
+                   Center(
                     child: Text(
-                      Strings.VERIFY_DISCRIPTION,
-                      style: TextStyle(color: AppColors.primaryWhiteColor, fontSize: 14),
+                      // Strings.VERIFY_DISCRIPTION,
+                      AppLocalizations.of(context)!.justthisone,
+                      style: const TextStyle(color: AppColors.primaryWhiteColor, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -333,7 +342,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "Country you live in",
+                                      AppLocalizations.of(context)!.countryyoulivein,
+                                      // "Country you live in",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -349,7 +359,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                     (item) => DropdownMenuItem<String>(
                                       value: item.countriesId.toString(),
                                       child: Text(
-                                        item.name,
+                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                        ?item.name
+                                        :item.nameArabic,
                                         style: GoogleFonts.roboto(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
@@ -508,7 +520,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "City",
+                                      AppLocalizations.of(context)!.city,
+                                      // "City",
                                       style: GoogleFonts.roboto(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w400,
@@ -523,7 +536,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   .map((item) => DropdownMenuItem<String>(
                                         value: item.cityId.toString(),
                                         child: Text(
-                                          item.city,
+                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                              ?item.city
+                                              :item.cityArabic,
                                           style: GoogleFonts.roboto(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w400,
@@ -683,7 +698,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                         child: MyButton(
                           Textfontsize: 16,
                           TextColors: Colors.white,
-                          text: Strings.SINGUP_BUTTON_SUBMIT,
+                          text: AppLocalizations.of(context)!.submit,
+                          // text: Strings.SINGUP_BUTTON_SUBMIT,
                           color: AppColors.secondaryColor,
                           width: getProportionateScreenHeight(340),
                           height: getProportionateScreenWidth(40),
@@ -735,7 +751,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                               }
                             } else {
                               Fluttertoast.showToast(
-                                msg: "All fields are important",
+                                msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                                // msg: "All fields are important",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 backgroundColor: Colors.black87,

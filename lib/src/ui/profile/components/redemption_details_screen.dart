@@ -9,6 +9,7 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RedemptionDetailsScreen extends StatefulWidget {
   final String imageUrl;
@@ -52,8 +53,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
           ),
         ),
         title: Text(
-          "Redemption Details",
-          // AppLocalizations.of(context)!.redemptiondetails,
+          // "Redemption Details",
+          AppLocalizations.of(context)!.redemptiondetails,
           style: GoogleFonts.openSans(
             color: AppColors.primaryWhiteColor,
             fontSize: 24,
@@ -122,9 +123,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  "${widget.points} points",
-                                
-                                  // "${widget.points} ${AppLocalizations.of(context)!.points}",
+                                  // "${widget.points} points",
+                                  "${widget.points} ${AppLocalizations.of(context)!.points}",
                                   style: GoogleFonts.roboto(
                                     color: AppColors.primaryColor,
                                     fontSize: 24,
@@ -166,9 +166,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
-                                            text: "Redeemed",
-                                            // AppLocalizations.of(context)!
-                                            //     .redeemed,
+                                            // text: "Redeemed",
+                                            text : AppLocalizations.of(context)!.redeemed,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -203,7 +202,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                                     Flexible(
                                       // flex: 2,
                                       child: Text(
-                                        "Store: ",
+                                        AppLocalizations.of(context)!.store,
+                                        // "Store: ",
                                         style: GoogleFonts.roboto(
                                           color: AppColors.primaryColor,
                                           fontSize: 12,
@@ -276,7 +276,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                    // "You are not connected to the internet",
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,

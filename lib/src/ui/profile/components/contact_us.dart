@@ -160,7 +160,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                     SnackBar(
                       backgroundColor: AppColors.secondaryColor,
                       content: Text(
-                        "Some Error Happened",
+                        AppLocalizations.of(context)!.someerroroccurred,
+                        // "Some Error Happened",
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                         ),
@@ -421,9 +422,9 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                           print("Photo = $imageUploadFormated");
                                         } else {
                                           Fluttertoast.showToast(
-                                            msg: "All Fields are important",
-                                            // AppLocalizations.of(context)!
-                                            //     .allfieldsareimportant,
+                                            // msg: "All Fields are important",
+                                           msg:  AppLocalizations.of(context)!
+                                                .allfieldsareimportant,
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
                                             backgroundColor:
@@ -458,7 +459,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,
@@ -479,14 +481,16 @@ class _ContactUsScreenState extends State<ContactUsScreen>
         builder: (BuildContext permissionDialogContext) {
           return AlertDialog(
             title: Text(
-              "Permission Denied!",
+              AppLocalizations.of(context)!.permissiondenied,
+              // "Permission Denied!",
               style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
             content: Text(
-              "To continue file upload allow access to files and storage.",
+              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
+              // "To continue file upload allow access to files and storage.",
               style: GoogleFonts.openSans(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -498,7 +502,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                   context.pop();
                 },
                 child: Text(
-                  "Cancel",
+                  AppLocalizations.of(context)!.cancel,
+                  // "Cancel",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -511,7 +516,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                   context.pop();
                 },
                 child: Text(
-                  "Settings",
+                  AppLocalizations.of(context)!.settings,
+                  // "Settings",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -554,8 +560,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               ),
               const SizedBox(height: 10),
               Text(
-                "Thank you for contacting us",
-                // AppLocalizations.of(context)!.thankyouforcontactingus,
+                // "Thank you for contacting us",
+                AppLocalizations.of(context)!.thankyouforcontactingus,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 22,
@@ -565,8 +571,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               ),
               const SizedBox(height: 30),
               Text(
-                "We’ll get back to you as soon as we can. It may take up to 3 working days.",
-                // AppLocalizations.of(context)!.wewillgetbackto,
+                // "We’ll get back to you as soon as we can. It may take up to 3 working days.",
+                AppLocalizations.of(context)!.wewillgetbackto,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
@@ -579,8 +585,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                 child: MyButton(
                   Textfontsize: 16,
                   TextColors: Colors.white,
-                  text: "Ok",
-                  // AppLocalizations.of(context)!.ok,
+                  // text: "Ok",
+                  text : AppLocalizations.of(context)!.ok,
                   color: AppColors.secondaryColor,
                   height: 40,
                   // Adjust the height as needed

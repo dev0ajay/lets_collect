@@ -23,6 +23,10 @@
     "andour" :  "و",
     "privacypolicy" : "سياسة الخصوصية",
     "enteravalidemailaddress" : "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "theusernamehasalreadybeentaken" : ".تم اختيار اسم المستخدم بالفعل",
+    "theemailhasalreadybeentaken" :  ".تم استخدام البريد الإلكتروني بالفعل",
+    "themobilenohasalreadybeentaken" : ".تم استخدام رقم الجوال بالفعل",
+    "enteravalidphonenumber" : ".أدخل رقم هاتف صحيح",
 
     "next" : "التالي",
     "jointodayandstartcollect" : "انضم اليوم وابدأ بالتجميع",
@@ -120,14 +124,21 @@
     "contactus" : "اتصل بنا",
     "subject" : "الموضوع",
     "message" : "الرسالة",
+    "permissiondenied" : " !تم رفض الإذن",
+    "tocontinuefileuploadallowaccesstofilesandstorage" : ".لمتابعة تحميل الملفات، اسمح بالوصول إلى الملفات والتخزين",
+    "settings" : "Settings",
     "supportingimage" : "صورة مرفقة",
     "selectedfile" : "الملف المحدد",
     "notificationcenter" : "مركز الإشعارات",
     "referafriend" : "قم بإحالة صديق",
     "deleteaccount" : "حذف الحساب",
     "logout" : "تسجيل الخروج",
-
-    "changepassword" : "تغيير كلمة المرور",
+    "selectedimageisgreaterthan" : "الصورة المختارة حجمها أكبر من 5 م.ب ، يرجى اختيار صورة أقل من 5م.ب.",
+    "selectedfileisnotavalidimage" : " الملف المحدد ليس صورة صالحة للإستخدام.",
+    "enteravalidphonenumber" : "يرجى إدخال رقم هاتف صحيح.",
+    "someerrorhappend" : "حدث خطأ ما.",
+    "changepassword" : "تغيير كلمة المرور.",
+    
     "aboutyou" : "نبذة عنك",
     "contactinfo" : "معلومات الاتصال",
     "save" : "حفظ",
@@ -200,7 +211,9 @@
     "filterby" : "تصفية حسب",
     "eligible" : "مؤهل",
     "brand" : "العلامة التجارية",
-    "category" : "الفئة"
+    "category" : "الفئة",
 
-
+    "pleasewait" : ".يرجى الانتظار",
+    "signin" : "تسجيل الدخول",
+    "youarealmosttherewejustneedabitofinfotomakesurewecansendyoutheabsolutebestoffers" : ".أنت على بُعد خطوة واحدة، نحتاج فقط إلى بعض المعلومات للتأكد من أننا يمكننا أن نرسل لك أفضل العروض على الإطلاق"
 }

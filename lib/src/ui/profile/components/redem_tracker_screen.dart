@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/ui/profile/components/redemption_details_screen.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RedemptionTrackerScreen extends StatefulWidget {
   const RedemptionTrackerScreen({super.key});
@@ -44,8 +47,8 @@ class _RedemptionTrackerScreenState extends State<RedemptionTrackerScreen> {
           ),
         ),
         title: Text(
-          "Redemption Tracker",
-          // AppLocalizations.of(context)!.redemptiontracker,
+          // "Redemption Tracker",
+          AppLocalizations.of(context)!.redemptiontracker,
           style: GoogleFonts.openSans(
             color: AppColors.primaryWhiteColor,
             fontSize: 24,
@@ -112,14 +115,18 @@ class _RedemptionTrackerScreenState extends State<RedemptionTrackerScreen> {
                             MaterialPageRoute(
                               builder: (context) => RedemptionDetailsScreen(
                                 imageUrl: state.redemptionHistoryResponse.data![index].productImage.toString(),
-                                itemName: state.redemptionHistoryResponse.data![index]
-                                    .productName.toString(),
-                                points: state
-                                    .redemptionHistoryResponse.data![index].points!.toInt(),
-                                time: state
-                                    .redemptionHistoryResponse.data![index].redeemDate.toString(),
-                                store: state.redemptionHistoryResponse.data![index]
-                                    .supermarketName.toString(),
+
+                                itemName:context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                ?state.redemptionHistoryResponse.data![index].productName.toString()
+                                :state.redemptionHistoryResponse.data![index].productNameArabic.toString(),
+
+                                points: state.redemptionHistoryResponse.data![index].points!.toInt(),
+
+                                time: state.redemptionHistoryResponse.data![index].redeemDate.toString(),
+
+                                store:context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                 ? state.redemptionHistoryResponse.data![index].supermarketName.toString()
+                                    :state.redemptionHistoryResponse.data![index].supermarketName.toString(),
                               ),
                             ),
                           );
@@ -204,8 +211,8 @@ class _RedemptionTrackerScreenState extends State<RedemptionTrackerScreen> {
                                         textAlign: TextAlign.center,
                                       ),
                                       Text(
-                                        "Points",
-                                        // AppLocalizations.of(context)!.points,
+                                        // "Points",
+                                        AppLocalizations.of(context)!.points,
                                         style: GoogleFonts.roboto(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400,

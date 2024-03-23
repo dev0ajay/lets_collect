@@ -17,23 +17,30 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
       //select acoount
       final userAccount = await googleSignIn.signIn();
 
+
+
       //user dismissed the dialog box
       if(userAccount == null) return null;
 
       final GoogleSignInAuthentication googleSignInAuthentication = await userAccount.authentication;
 
+
       //Create OAuth credentials from auth object
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken
       );
 
       //Login to firebase using credentials
       final userCredentials = await _auth.signInWithCredential(credential);
-      
+
       emit(GoogleSignInSuccess(user: userCredentials.user!));
 
+
+
+
     } catch(e) {
+      print(e);
       emit(GoogleSignInError(error: e.toString()));
     }
   }
@@ -41,22 +48,25 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
   void signOut() async{
     try {
       GoogleSignIn().signOut();
+      googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
       emit(GoogleSignInLoggedOut());
 
-    } catch(e) {}
+    } catch(e) {
+      print(e);
+    }
   }
 
 
-  // void signInSilently() async{
-  //   try {
-  //     // final userAccount = await googleSignIn.signIn();
-  //     if(userAccount != null) {
-  //
-  //     }
-  //     // emit(GoogleSignInLoggedOut());
-  //
-  //   } catch(e) {}
-  // }
+// void signInSilently() async{
+//   try {
+//     // final userAccount = await googleSignIn.signIn();
+//     if(userAccount != null) {
+//
+//     }
+//     // emit(GoogleSignInLoggedOut());
+//
+//   } catch(e) {}
+// }
 
 }

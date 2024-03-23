@@ -14,6 +14,7 @@ import '../../../../../../bloc/country_bloc/country_bloc.dart';
 import '../../../../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import '../../../../../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../../../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpFirstScreen extends StatefulWidget {
   final String from;
@@ -55,7 +56,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
     String pattern = "[a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter first name';
+      // return 'Enter first name';
+      return AppLocalizations.of(context)!.enterfirstname;
     } else {
       return null;
     }
@@ -66,7 +68,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         "a-zA-Z]";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter last name';
+      // return 'Enter last name';
+      return AppLocalizations.of(context)!.enterlastname;
     } else {
       return null;
     }
@@ -79,7 +82,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      return 'Enter a new email address';
+      // return 'Enter a new email address';
+      return AppLocalizations.of(context)!.enteranewenailaddress;
     } else {
       return null;
     }
@@ -90,13 +94,16 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
         r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty) {
-      return 'Please enter password';
+      // return 'Please enter password';
+      return AppLocalizations.of(context)!.pleaseenterpassword;
     }
     if (value.length < 8) {
-      return "Length should be 8 or more";
+      return AppLocalizations.of(context)!.lengthshouldbe;
+      // return "Length should be 8 or more";
     }
     if (!regex.hasMatch(value)) {
-      return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
+      // return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
+      return AppLocalizations.of(context)!.mustcontainatleast;
     }
     return null;
   }
@@ -169,7 +176,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     const SizedBox(height: 20),
                     Center(
                         child: Text(
-                      Strings.SIGNUP_SUB_HEADING,
+                          AppLocalizations.of(context)!.jointodayandstartcollect,
+                      // Strings.SIGNUP_SUB_HEADING,
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryWhiteColor,
                         fontSize: 18,
@@ -183,7 +191,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                           child: MyTextField(
                             focusNode: _firstname,
                             // horizontal: 10,
-                            hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
+                            hintText: AppLocalizations.of(context)!.firstname,
+                            // hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
                             obscureText: false,
                             maxLines: 1,
                             controller: firstnameController,
@@ -204,7 +213,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                           child: MyTextField(
                             focusNode: _secondname,
                             // horizontal: 10,
-                            hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
+                            hintText: AppLocalizations.of(context)!.lastname,
+                            // hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
                             obscureText: false,
                             maxLines: 1,
                             controller: lastnameController,
@@ -224,7 +234,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _email,
-                      hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
+                      hintText: AppLocalizations.of(context)!.email,
+                      // hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
                       obscureText: false,
                       maxLines: 1,
                       controller: emailController,
@@ -241,7 +252,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _password,
-                      hintText: Strings.SINGUP_PASSWORD_LABEL_TEXT,
+                      // hintText: Strings.SINGUP_PASSWORD_LABEL_TEXT,
+                      hintText: AppLocalizations.of(context)!.password,
                       obscureText: true,
                       maxLines: 1,
                       controller: passwordController,
@@ -258,7 +270,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     MyTextField(
                       // horizontal: 20,
                       focusNode: _repassword,
-                      hintText: Strings.SINGUP_REPASSWORD_LABEL_TEXT,
+                      hintText: AppLocalizations.of(context)!.reentepassword,
+                      // hintText: Strings.SINGUP_REPASSWORD_LABEL_TEXT,
                       obscureText: true,
                       maxLines: 1,
                       controller: repasswordController,
@@ -291,7 +304,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         Expanded(
                           flex: 5,
                           child: Text(
-                            Strings.SIGNUP_TEXT1,
+                            AppLocalizations.of(context)!.wedidlovetosendyousomeamazingoffer,
+                            // Strings.SIGNUP_TEXT1,
                             style: GoogleFonts.openSans(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
@@ -307,7 +321,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                       child: MyButton(
                         Textfontsize: 16,
                         TextColors: Colors.white,
-                        text: Strings.SINGUP_BUTTON_TEXT,
+                        text: AppLocalizations.of(context)!.signup,
+                        // text: Strings.SINGUP_BUTTON_TEXT,
                         color: isChecked
                             ? AppColors.secondaryColor
                             : AppColors.primaryGrayColor,
@@ -331,7 +346,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                                     );
                                   } else {
                                     Fluttertoast.showToast(
-                                      msg: "All fields are important",
+                                      msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                                      // msg: "All fields are important",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.BOTTOM,
                                       backgroundColor: Colors.black87,
@@ -340,7 +356,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                                   }
                                 } else {
                                   Fluttertoast.showToast(
-                                    msg: "Enter correct password",
+                                    msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                                    // msg: "Enter correct password",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     backgroundColor: Colors.black87,
@@ -388,7 +405,8 @@ class TermsAndConditionWidget extends StatelessWidget {
         TextSpan(
           children: [
             TextSpan(
-              text: 'By signing up, you agree to the',
+              text :AppLocalizations.of(context)!.bysigningupyouagreetothe,
+              // text: 'By signing up, you agree to the',
               style: GoogleFonts.openSans(
                 color: AppColors.primaryWhiteColor,
                 fontSize: 12,
@@ -406,7 +424,8 @@ class TermsAndConditionWidget extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: 'Terms and Conditions\n',
+              text :AppLocalizations.of(context)!.termsandconditionds,
+              // text: 'Terms and Conditions\n',
               style: GoogleFonts.openSans(
                 color: AppColors.secondaryColor,
                 fontSize: 12,
@@ -415,7 +434,8 @@ class TermsAndConditionWidget extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: 'and our',
+              text : AppLocalizations.of(context)!.andour,
+              // text: 'and our',
               style: GoogleFonts.openSans(
                 color: AppColors.primaryWhiteColor,
                 fontSize: 12,
@@ -433,7 +453,8 @@ class TermsAndConditionWidget extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: 'Privacy Policy',
+              text: AppLocalizations.of(context)!.privacypolicy,
+              // text: 'Privacy Policy',
               style: GoogleFonts.openSans(
                 color: AppColors.secondaryColor,
                 fontSize: 12,
