@@ -1,14 +1,10 @@
-import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
-import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 
 import '../../../constants/colors.dart';
 import '../../../model/point_tracker/point_tracker_response.dart';
-import '../../../model/purchase_history/purchase_history_response.dart';
 
 class PointTrackerChart extends StatefulWidget {
   const PointTrackerChart({super.key});

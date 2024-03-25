@@ -2,10 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lets_collect/app.dart';
-import 'package:lets_collect/src/model/notification/push_notification_model.dart';
-import 'package:lets_collect/src/utils/api/firebase.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

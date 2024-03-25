@@ -45,17 +45,13 @@ class ProfileDataProvider {
       final response = await ObjectFactory().apiClient.getProfileData();
       print(response.toString());
 
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<MyProfileScreenResponse>.success(
-              MyProfileScreenResponse.fromJson(response.data));
-        } else {
-          return null;
-        }
+      if (response.statusCode == 200) {
+        return StateModel<MyProfileScreenResponse>.success(
+            MyProfileScreenResponse.fromJson(response.data));
       } else {
         return null;
       }
-    } on DioException catch (e) {
+        } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -72,6 +68,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 
@@ -84,17 +81,13 @@ class ProfileDataProvider {
           .getEditProfileData(editProfileRequest);
       print(response.toString());
 
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<EditProfileRequestResponse>.success(
-              EditProfileRequestResponse.fromJson(response.data));
-        } else {
-          return null;
-        }
+      if (response.statusCode == 200) {
+        return StateModel<EditProfileRequestResponse>.success(
+            EditProfileRequestResponse.fromJson(response.data));
       } else {
         return null;
       }
-    } on DioException catch (e) {
+        } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -111,6 +104,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
   }
 
 
@@ -119,17 +113,13 @@ class ProfileDataProvider {
     try{
       final response = await ObjectFactory().apiClient.contactUsRequestClient(contactUsRequest);
       print(response.toString());
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<ContactUsRequestResponse>.success(
-              ContactUsRequestResponse.fromJson(response.data));
-        } else {
-          return null;
-        }
+      if (response.statusCode == 200) {
+        return StateModel<ContactUsRequestResponse>.success(
+            ContactUsRequestResponse.fromJson(response.data));
       } else {
         return null;
       }
-    }on DioException catch (e) {
+        }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -146,6 +136,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 
@@ -177,6 +168,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
   }
 
   /// Point Calculations
@@ -207,6 +199,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
   }
 
 
@@ -238,6 +231,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
   }
 
 
@@ -248,17 +242,12 @@ class ProfileDataProvider {
       final response = await ObjectFactory().apiClient.getRedemptionHistoryResponse();
       print(response.toString());
 
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<RedemptionHistoryResponse>.success(
-              RedemptionHistoryResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<RedemptionHistoryResponse>.success(
+            RedemptionHistoryResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    }on DioException catch (e) {
+      }    }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -275,6 +264,7 @@ class ProfileDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 

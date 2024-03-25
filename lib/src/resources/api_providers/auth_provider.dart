@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:lets_collect/src/model/auth/apple_signin_request.dart';
+import 'package:lets_collect/src/model/auth/apple_signin_request_response.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_response.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_otp_request.dart';
@@ -19,7 +21,7 @@ import '../../model/auth/sign_up_request.dart';
 import '../../model/state_model.dart';
 import '../../utils/data/object_factory.dart';
 
-class AuthProvider{
+class AuthDataProvider{
 
 ///Register
   Future<StateModel?> registerUser(SignupRequest signupRequest) async {
@@ -59,6 +61,7 @@ class AuthProvider{
       }
       // return e;
     }
+    return null;
   }
 
 
@@ -99,6 +102,7 @@ class AuthProvider{
       }
       // return e;
     }
+    return null;
   }
 
 
@@ -255,6 +259,7 @@ class AuthProvider{
           // Something happened in setting up or sending the request that triggered an Error
         }
       }
+      return null;
 
     }
 
@@ -289,6 +294,7 @@ class AuthProvider{
           // Something happened in setting up or sending the request that triggered an Error
         }
       }
+      return null;
 
     }
 
@@ -323,6 +329,44 @@ class AuthProvider{
           // Something happened in setting up or sending the request that triggered an Error
         }
       }
+      return null;
     }
+
+
+    ///SignIn with Apple
+
+
+  Future<StateModel?> signInWithApple(
+      AppleSignInRequest appleSignInRequest) async {
+
+    try {
+      final response = await ObjectFactory().apiClient.signInWithApple(appleSignInRequest);
+      print(response.toString());
+      if (response.statusCode == 200) {
+        return StateModel<AppleSignInRequestResponse>.success(
+            AppleSignInRequestResponse.fromJson(response.data));
+      } else {
+        return StateModel.error( "The server isn't responding! Please try again later.");
+      }
+      print(response.toString());
+    } on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null && e.response!.statusCode == 500) {
+        // print(e.response!.statusCode == 500);
+        print("Error: ${e.error.toString()}");
+        print("Error msg: ${e.message}");
+        print("Error type: ${e.type}");
+        return StateModel.error(
+            "The server isn't responding! Please try again later.");
+        // return response!;
+      } else if (e.response != null && e.response!.statusCode == 408) {
+        return StateModel.error(
+            "Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!");
+        // Something happened in setting up or sending the request that triggered an Error
+      }
+    }
+    return null;
+  }
 
 }

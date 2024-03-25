@@ -70,7 +70,7 @@ class PurchaseData {
     customerId: json["customer_id"],
     supermarketId: json["supermarket_id"],
     branch: json["branch"],
-    receiptDate: json["receipt_date"] == null ? null : json["receipt_date"],
+    receiptDate: json["receipt_date"],
     totalAmount: json["total_amount"],
     currencyCode: json["currency_code"],
     receiptNumber: json["receipt_number"],

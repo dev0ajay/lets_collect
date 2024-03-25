@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +32,7 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isRewardTierSelected = false;
 
    ScrollController _scrollController = ScrollController();
-  bool _isAppBarVisible = false;
+  final bool _isAppBarVisible = false;
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -67,8 +66,7 @@ class _RewardScreenState extends State<RewardScreen> {
   }
 
   bool get _isShrink {
-    return _scrollController != null &&
-        _scrollController.hasClients &&
+    return _scrollController.hasClients &&
         _scrollController.offset > (height - kToolbarHeight);
   }
 

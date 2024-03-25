@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:lets_collect/src/model/auth/apple_signin_request.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_otp_request.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
@@ -481,6 +482,15 @@ class ApiClient {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
           }
       ),
+    );
+  }
+
+
+  ///Apple Sign In
+  Future<Response> signInWithApple(AppleSignInRequest appleSignInRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.APPLE_SIGNIN,
+      data: appleSignInRequest,
     );
   }
 

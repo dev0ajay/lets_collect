@@ -9,7 +9,7 @@ part 'country_event.dart';
 part 'country_state.dart';
 
 class CountryBloc extends Bloc<CountryEvent, CountryState> {
-  final AuthProvider authProvider;
+  final AuthDataProvider authProvider;
   CountryBloc({required this.authProvider}) : super(CountryInitial()) {
     on<GetCountryEvent>((event, emit) async{
       emit(CountryLoading());

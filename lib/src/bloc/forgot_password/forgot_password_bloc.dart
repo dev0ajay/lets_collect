@@ -15,7 +15,7 @@ part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
 
 class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
-  final AuthProvider authProvider;
+  final AuthDataProvider authProvider;
   ForgotPasswordBloc({required this.authProvider}) : super(ForgotPasswordInitial()) {
     on<ForgotPasswordEmailRequestEvent>((event, emit) async{
 

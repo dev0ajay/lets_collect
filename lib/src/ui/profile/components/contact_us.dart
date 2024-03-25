@@ -374,7 +374,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                               )
                                   .animate()
                                   .scale(delay: 200.ms, duration: 300.ms),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(

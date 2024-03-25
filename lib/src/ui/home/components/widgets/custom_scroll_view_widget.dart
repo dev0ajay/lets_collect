@@ -472,7 +472,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     left: 5,
                                                     bottom: 5),
                                                 child: Container(
-                                                  padding: EdgeInsets.all(5),
+                                                  padding: const EdgeInsets.all(5),
                                                   margin:
                                                       const EdgeInsets.all(9),
                                                   decoration:

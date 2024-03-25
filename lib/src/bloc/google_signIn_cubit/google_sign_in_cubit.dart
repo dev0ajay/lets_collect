@@ -1,10 +1,5 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -23,37 +18,30 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
       final userAccount = await googleSignIn.signIn();
 
 
+
       //user dismissed the dialog box
-      if (userAccount == null) return null;
+      if(userAccount == null) return null;
 
-
-      final GoogleSignInAuthentication googleSignInAuthentication = await userAccount
-          .authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication = await userAccount.authentication;
 
 
       //Create OAuth credentials from auth object
       final credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken
       );
 
       //Login to firebase using credentials
       final userCredentials = await _auth.signInWithCredential(credential);
-
-      if(!userCredentials.user!.emailVerified || userCredentials.user == null) {
-        emit(GoogleSignInError());
-      }
+      
       emit(GoogleSignInSuccess(user: userCredentials.user!));
-    } catch (error) {
-      // Handle sign-in failure
-      if (error is PlatformException && error.code == GoogleSignIn.kSignInCanceledError) {
-        // User denied sign-in, show appropriate feedback
-        emit(GoogleSignInError());
-        Fluttertoast.showToast(msg: error.message!);
-      } else {
-        // Handle other sign-in errors
-        print('Sign-in error: $error');
-      }
+
+
+
+
+    } catch(e) {
+      print(e);
+      emit(GoogleSignInError(error: e.toString()));
     }
   }
 

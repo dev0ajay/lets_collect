@@ -11,7 +11,7 @@ part 'city_event.dart';
 part 'city_state.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
-  AuthProvider authProvider;
+  AuthDataProvider authProvider;
   CityBloc({required this.authProvider}) : super(CityInitial()) {
     on<GetCityEvent>((event, emit) async{
       emit(CityLoading());

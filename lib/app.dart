@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
-import 'package:lets_collect/src/bloc/apple_sign_in/apple_sign_in_cubit.dart';
+import 'package:lets_collect/src/bloc/apple_sign_in_cubit/apple_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
@@ -13,7 +13,6 @@ import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/bloc/delete_account/delete_account_bloc.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
-import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/how_to_redeem/how_to_redeem_my_points_bloc.dart';
@@ -61,7 +60,7 @@ class _AppState extends State<App> {
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (create) => AuthProvider(),
+            create: (create) => AuthDataProvider(),
           ),
           RepositoryProvider(
             create: (create) => HomeDataProvider(),
@@ -169,9 +168,6 @@ class _AppState extends State<App> {
             BlocProvider<RedeemBloc>(
                 create: (BuildContext context) => RedeemBloc(
                     rewardScreenProvider: RepositoryProvider.of(context))),
-            BlocProvider<GoogleLoginBloc>(
-                create: (BuildContext context) => GoogleLoginBloc(
-                    authProvider: RepositoryProvider.of(context))),
             BlocProvider<PurchaseHistoryBloc>(
                 create: (BuildContext context) => PurchaseHistoryBloc(
                     purchaseHistoryDataProvider:
@@ -212,8 +208,10 @@ class _AppState extends State<App> {
               create: (BuildContext context) => AppleSignInCubit(),
             ),
             BlocProvider<RedemptionHistoryBloc>(
-                create: (BuildContext context) => RedemptionHistoryBloc(
-                    profileDataProvider: RepositoryProvider.of(context))),
+              create: (BuildContext context) => RedemptionHistoryBloc(
+                profileDataProvider: RepositoryProvider.of(context),
+              ),
+            ),
           ],
           child: BlocBuilder<NetworkBloc, NetworkState>(
             builder: (context, state) {
@@ -249,7 +247,6 @@ class _AppState extends State<App> {
                 builder: (context, child) {
                   // Obtain the current media query information.
                   final mediaQueryData = MediaQuery.of(context);
-
                   return MediaQuery(
                     // Set the default textScaleFactor to 1.0 for
                     // the whole subtree.
@@ -258,13 +255,6 @@ class _AppState extends State<App> {
                     child: child!,
                   );
                 },
-                // themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
-                // home: const HomeScreen(),/
-                // SplashScreen(isOffline: isOffline),
-                // home: OrderSuccessScreen(),
-                // home: LoadUrl(urlPath: "https://www.google.com",),
-                // home: PushNotify(),
-                // home:Registration(),
               );
             },
           ),

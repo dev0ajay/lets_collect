@@ -82,12 +82,11 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                     );
                   }
                   print("PointTrackerDetailsLoaded state detected");
-                  state.pointTrackerDetailsRequestResponse.data!
-                      .forEach((element) {
+                  for (var element in state.pointTrackerDetailsRequestResponse.data!) {
                     totalPoints = element.totalPoints.toString();
                     expiryDate = element.expiryDate.toString();
                     supermarkerName = element.supermarketName!;
-                  });
+                  }
                   return CustomScrollView(
                     physics: const ClampingScrollPhysics(),
                     slivers: [

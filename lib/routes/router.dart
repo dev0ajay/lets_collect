@@ -48,8 +48,6 @@ import '../src/ui/scan/components/scan_detail_screen_argument.dart';
 import '../src/ui/scan/scan_screen.dart';
 
 class AppRouter {
-  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter _router = GoRouter(
     // errorBuilder: (context, state) => ErrorScreen(error:state.error),

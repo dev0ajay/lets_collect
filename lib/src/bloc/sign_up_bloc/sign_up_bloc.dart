@@ -10,7 +10,7 @@ part 'sign_up_state.dart';
 part 'sign_up_event.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  final AuthProvider authProvider;
+  final AuthDataProvider authProvider;
   SignUpBloc({required this.authProvider}) : super(SignUpInitial()) {
     on<SignUpRequestEvent>((event, emit) async {
       // SignupRequest? signupRequest;

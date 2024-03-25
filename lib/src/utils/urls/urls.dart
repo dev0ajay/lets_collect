@@ -17,6 +17,8 @@ class UrlsLetsCollect {
   static const String  FORGOT_PASSWORD_OTP= "/api/forgotpassword_otp_verification";
   static const String  FORGOT_PASSWORD_RESET= "/api/recover_password";
   static const String  GOOGLE_LOGIN= "/api/google_login";
+  static const String  APPLE_SIGNIN= "/api/apple_login";
+
 
 
   ///Search Category

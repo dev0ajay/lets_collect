@@ -272,7 +272,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           style: Theme.of(
                                                                               context)
                                                                               .textTheme
-                                                                              .bodyText1!
+                                                                              .bodyLarge!
                                                                               .copyWith(
                                                                             fontSize:
                                                                             15,
@@ -642,7 +642,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                                     state.superMarketListResponse.data![index].supermarketName.toString(),
                                                                                     softWrap: true,
                                                                                     overflow: TextOverflow.ellipsis,
-                                                                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                       fontSize: 15,
                                                                                     ),
                                                                                   ),

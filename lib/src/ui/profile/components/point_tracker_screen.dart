@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +14,6 @@ import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
 
-import '../widgets/bar_chart_widget.dart';
 
 class PointTrackerScreen extends StatefulWidget {
   const PointTrackerScreen({super.key});
@@ -349,7 +347,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               TextOverflow.ellipsis,
                                                                           style: Theme.of(context)
                                                                               .textTheme
-                                                                              .bodyText1!
+                                                                              .bodyLarge!
                                                                               .copyWith(
                                                                                 fontSize: 15,
                                                                               ),
@@ -740,7 +738,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                                           state.superMarketListResponse.data![index].supermarketName.toString(),
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -1178,7 +1176,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                             color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            boxShadow: [
+                                            boxShadow: const [
                                               BoxShadow(
                                                 color: AppColors.boxShadow,
                                                 blurRadius: 4,

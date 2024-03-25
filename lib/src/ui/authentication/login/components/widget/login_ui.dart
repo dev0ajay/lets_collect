@@ -540,16 +540,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                         builder: (context, state) {
                                           return state ==
                                                   AppleSignInStatus.loading
-                                              ? const Center(
-                                                  child: SizedBox(
-                                                    height: 35,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: AppColors
-                                                          .secondaryColor,
-                                                    ),
-                                                  ),
-                                                )
+                                              ? const CircularProgressIndicator()
                                               : MyButton(
                                                   imagePath: Assets.APPLE_LOGO,
                                                   Textfontsize: 14,
@@ -603,13 +594,13 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                 );
                                         },
                                         listener: (context, state) {
-                                          // if (state ==
-                                          //     AppleSignInStatus.success) {
-                                          //   context.go('/home');
-                                          //
-                                          // } else {
-                                          //   return;
-                                          // }
+                                          if (state ==
+                                              AppleSignInStatus.success) {
+                                            context.go('/home');
+
+                                          } else {
+                                            return;
+                                          }
                                         },
                                       ),
                                     )
@@ -644,13 +635,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                           ),
                                         ),
                                       );
-                                    } else if (state is GoogleSignInError) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(
-                                          state.toString(),
-                                        ),
-                                      ));
                                     }
                                   },
                                   builder: (context, state) {

@@ -21,17 +21,13 @@ class PurchaseDataProvider {
       final response = await ObjectFactory().apiClient.purchaseHistoryRequest(
           purchaseHistoryRequest);
       print(response.toString());
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<PurchaseHistoryResponse>.success(
-              PurchaseHistoryResponse.fromJson(response.data));
-        } else {
-          return null;
-        }
+      if (response.statusCode == 200) {
+        return StateModel<PurchaseHistoryResponse>.success(
+            PurchaseHistoryResponse.fromJson(response.data));
       } else {
         return null;
       }
-    } on DioException catch (e) {
+        } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -48,6 +44,7 @@ class PurchaseDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
     // return null;
   }
 
@@ -58,18 +55,13 @@ class PurchaseDataProvider {
         .purchaseHistoryDetailsRequest(purchaseHistoryDetailsRequest);
     print(response.toString());
 
-    if (response != null) {
-      if (response.statusCode == 200) {
-        return StateModel<PurchaseHistoryDetailsResponse>.success(
-            PurchaseHistoryDetailsResponse.fromJson(response.data));
-      } else {
-        return null;
-      }
-    }
-    else {
+    if (response.statusCode == 200) {
+      return StateModel<PurchaseHistoryDetailsResponse>.success(
+          PurchaseHistoryDetailsResponse.fromJson(response.data));
+    } else {
       return null;
     }
-  }
+    }
 
 
   ///Super Market History Screen Filter
@@ -78,13 +70,11 @@ class PurchaseDataProvider {
       // 404
       final response =
       await ObjectFactory().apiClient.getSuperMarketList();
-      if (response != null) {
-        if (response.statusCode == 200) {
-          return StateModel<SuperMarketListResponse>.success(
-              SuperMarketListResponse.fromJson(response.data));
-        } else {}
-      }
-      print(response.toString());
+      if (response.statusCode == 200) {
+        return StateModel<SuperMarketListResponse>.success(
+            SuperMarketListResponse.fromJson(response.data));
+      } else {}
+          print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -112,17 +102,13 @@ class PurchaseDataProvider {
         .apiClient
         .pointTrackerRequest(pointTrackerRequest);
     print(response.toString());
-    if (response != null) {
-      if (response.statusCode == 200) {
-        return StateModel<PointTrackerRequestResponse>.success(
-            PointTrackerRequestResponse.fromJson(response.data));
-      } else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      return StateModel<PointTrackerRequestResponse>.success(
+          PointTrackerRequestResponse.fromJson(response.data));
     } else {
       return null;
     }
-  }
+    }
 
   ///Point Tracker Details
   Future<StateModel?> pointTrackerDetailsRequest(
@@ -131,17 +117,12 @@ class PurchaseDataProvider {
         .apiClient
         .pointTrackerDetailsRequest(pointTrackerDetailsRequest);
     print(response.toString());
-    if (response != null) {
-      if (response.statusCode == 200) {
-        return StateModel<PointTrackerDetailsRequestResponse>.success(
-            PointTrackerDetailsRequestResponse.fromJson(response.data));
-      }
-      else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      return StateModel<PointTrackerDetailsRequestResponse>.success(
+          PointTrackerDetailsRequestResponse.fromJson(response.data));
     }
     else {
       return null;
     }
-  }
+    }
 }

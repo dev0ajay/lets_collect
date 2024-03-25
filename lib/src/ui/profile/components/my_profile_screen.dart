@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -184,49 +183,39 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     final bytes = await _pickedFile.readAsBytes();
     final image = await decodeImageFromList(bytes);
 
-    if (image != null) {
-      // Calculate the dimensions of the image
-      int imageWidth = image.width;
-      int imageHeight = image.height;
-      // Calculate the total number of megapixels
-      double megapixels = (imageWidth * imageHeight) / 1000000;
+    // Calculate the dimensions of the image
+    int imageWidth = image.width;
+    int imageHeight = image.height;
+    // Calculate the total number of megapixels
+    double megapixels = (imageWidth * imageHeight) / 1000000;
 
-      print('SELECTED IMAGE HAS $megapixels MP.');
+    print('SELECTED IMAGE HAS $megapixels MP.');
 
-      if (megapixels > 5) {
-        Fluttertoast.showToast(
-          msg:
-              "Selected image is greater than 5MP, Please Choose an image size less than 5MP",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: AppColors.secondaryColor,
-          textColor: AppColors.primaryWhiteColor,
-        );
-        return;
-      }
-
-      setState(() {
-        _image = File(_pickedFile.path);
-        galleryFile = File(_pickedFile.path);
-        String img64 = base64Encode(bytes);
-        imageBase64 = img64;
-        extension = p
-            .extension(galleryFile!.path)
-            .trim()
-            .toString()
-            .replaceAll('.', '');
-        imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-      });
-    } else {
+    if (megapixels > 5) {
       Fluttertoast.showToast(
-        msg: "Please select a valid file",
+        msg:
+            "Selected image is greater than 5MP, Please Choose an image size less than 5MP",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: AppColors.secondaryColor,
         textColor: AppColors.primaryWhiteColor,
       );
+      return;
     }
-  }
+
+    setState(() {
+      _image = File(_pickedFile.path);
+      galleryFile = File(_pickedFile.path);
+      String img64 = base64Encode(bytes);
+      imageBase64 = img64;
+      extension = p
+          .extension(galleryFile!.path)
+          .trim()
+          .toString()
+          .replaceAll('.', '');
+      imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+    });
+    }
 
   // Future<void> _pickImage() async {
   //   _pickedFile = (await _picker.pickImage(source: ImageSource.gallery))!;
@@ -253,37 +242,35 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   // }
 
   myProfileArgumentData() {
-    if (widget.myProfileArguments != null) {
-      firstnameController.text = widget.myProfileArguments.first_name;
-      print("FIRST NAME : $firstnameController.text");
+    firstnameController.text = widget.myProfileArguments.first_name;
+    print("FIRST NAME : $firstnameController.text");
 
-      lastnameController.text = widget.myProfileArguments.last_name;
-      print("LASTNAME  : $lastnameController.text");
+    lastnameController.text = widget.myProfileArguments.last_name;
+    print("LASTNAME  : $lastnameController.text");
 
-      dateInputController.text = widget.myProfileArguments.dob;
+    dateInputController.text = widget.myProfileArguments.dob;
 
-      genderController.text = widget.myProfileArguments.gender;
-      print("GENDER : $genderController.text");
+    genderController.text = widget.myProfileArguments.gender;
+    print("GENDER : $genderController.text");
 
-      nationalityController.text =
-          widget.myProfileArguments.nationality_name_en;
-      print("NATIONALITY : $nationalityController.text");
+    nationalityController.text =
+        widget.myProfileArguments.nationality_name_en;
+    print("NATIONALITY : $nationalityController.text");
 
-      cityController.text = widget.myProfileArguments.city_name;
-      print("CITY : $cityController.text");
+    cityController.text = widget.myProfileArguments.city_name;
+    print("CITY : $cityController.text");
 
-      countryController.text = widget.myProfileArguments.country_name_en;
-      print("COUNTRTY : $countryController.text");
+    countryController.text = widget.myProfileArguments.country_name_en;
+    print("COUNTRTY : $countryController.text");
 
-      emailController.text = widget.myProfileArguments.email;
-      print("EMAIL : $emailController.text");
+    emailController.text = widget.myProfileArguments.email;
+    print("EMAIL : $emailController.text");
 
-      mobileController.text = widget.myProfileArguments.mobile_no == "0"
-          ? "Mobile Number"
-          : widget.myProfileArguments.mobile_no;
-      print("MOBILE NUMBER : $mobileController.text");
+    mobileController.text = widget.myProfileArguments.mobile_no == "0"
+        ? "Mobile Number"
+        : widget.myProfileArguments.mobile_no;
+    print("MOBILE NUMBER : $mobileController.text");
     }
-  }
 
   ///Runtime User Access and Permission handling
 
@@ -537,7 +524,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     },
                                                   );
                                                 } else {
-                                                  return SizedBox();
+                                                  return const SizedBox();
                                                 }
                                               },
                                             ),
@@ -849,7 +836,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 ),
                                               );
                                             } else {
-                                              return SizedBox();
+                                              return const SizedBox();
                                             }
                                           },
                                         ),
@@ -1001,7 +988,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 ),
                                               );
                                             } else {
-                                              return SizedBox();
+                                              return const SizedBox();
                                             }
                                           },
                                         ),
@@ -1254,9 +1241,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       lastName:
                                                           lastnameController
                                                               .text,
-                                                      photo: imageUploadFormated !=
-                                                                  null &&
-                                                              imageUploadFormated
+                                                      photo: imageUploadFormated
                                                                   .isNotEmpty
                                                           ? imageUploadFormated
                                                           : widget
@@ -1316,9 +1301,9 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   ),
                                                 );
                                                 print(
-                                                    'FIRST NAME = ${firstnameController}');
+                                                    'FIRST NAME = $firstnameController');
                                                 print(
-                                                    'LAST NAME = ${lastnameController}');
+                                                    'LAST NAME = $lastnameController');
                                                 print(
                                                     'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
                                                 print(
@@ -1330,11 +1315,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 print(
                                                     'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
                                                 print(
-                                                    'Email = ${emailController}');
+                                                    'Email = $emailController');
                                                 print(
-                                                    'PHONE NUMBER =  ${mobileController}');
+                                                    'PHONE NUMBER =  $mobileController');
                                                 print(
-                                                    "PHOTO  = ${imageUploadFormated != null && imageUploadFormated.isNotEmpty ? imageUploadFormated! : widget.myProfileArguments.photo}");
+                                                    "PHOTO  = ${imageUploadFormated.isNotEmpty ? imageUploadFormated : widget.myProfileArguments.photo}");
                                               } else {
                                                 Fluttertoast.showToast(
                                                   msg:
@@ -2419,12 +2404,12 @@ class DatePickerTextField extends StatefulWidget {
   final void Function() onDateIconTap;
   final String hintText;
 
-  DatePickerTextField({
-    Key? key,
+  const DatePickerTextField({
+    super.key,
     required this.controller,
     required this.onDateIconTap,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   State<DatePickerTextField> createState() => _DatePickerTextFieldState();

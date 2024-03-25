@@ -4,11 +4,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/model/notification/push_notification_model.dart';
-import '../../bloc/country_bloc/country_bloc.dart';
-import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../utils/api/firebase.dart';
@@ -22,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final splashDelay = 5;
+  final splashDelay = 3;
   late final FirebaseMessaging _messaging;
   NotificationServices notificationServices = NotificationServices();
   PushNotification? _notificationInfo;
@@ -47,8 +44,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
 
     super.initState();
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
     _loadWidget();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();

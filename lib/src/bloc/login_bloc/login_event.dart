@@ -12,3 +12,19 @@ class LoginRequestEvent extends LoginEvent{
   List<Object?> get props => [loginRequest];
 
 }
+///Google
+class GetGoogleLoginEvent extends LoginEvent {
+  final GoogleLoginRequest googleLoginRequest;
+  const GetGoogleLoginEvent({required this.googleLoginRequest});
+  @override
+  List<Object?> get props => [googleLoginRequest];
+
+}
+
+///Apple
+class AppleSignInEvent extends LoginEvent {
+  final AppleSignInRequest appleSignInRequest;
+  const AppleSignInEvent({required this.appleSignInRequest});
+  @override
+  List<Object?> get props => [appleSignInRequest];
+}

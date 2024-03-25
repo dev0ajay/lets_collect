@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +9,7 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import '../../../../../../bloc/country_bloc/country_bloc.dart';
 import '../../../../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
-import '../../../../../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../../../../../constants/colors.dart';
 
 class SignUpFirstScreen extends StatefulWidget {

@@ -1,22 +1,14 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:overlay_support/overlay_support.dart';
-
-import '../../constants/assets.dart';
-import '../../constants/colors.dart';
-import '../../model/notification/push_notification_model.dart';
 import '../data/object_factory.dart';
 
 class NotificationServices {
   //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  PushNotification? _notificationInfo;
 
   //initialising firebase message plugin
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
@@ -51,16 +43,17 @@ class NotificationServices {
         print('data:${message.data.toString()}');
       }
       // Parse the message received
-      PushNotification pushNotification = PushNotification(
-        title: message.notification?.title,
-        body: message.notification?.body,
-        dataTitle: message.data['title'],
-        dataBody: message.data['body'],
-      );
+      // PushNotification pushNotification = PushNotification(
+      //   title: message.notification?.title,
+      //   body: message.notification?.body,
+      //   dataTitle: message.data['title'],
+      //   dataBody: message.data['body'],
+      // );
 
       if (Platform.isIOS) {
         initLocalNotifications(context, message);
         showNotification(message);
+
         ///Overlay for notification
         // _notificationInfo = pushNotification;
         // if (_notificationInfo != null) {
@@ -106,6 +99,7 @@ class NotificationServices {
         initLocalNotifications(context, message);
         showNotification(message);
       }
+
       ///Overlay for notification
       // _notificationInfo = pushNotification;
       // if (_notificationInfo != null) {
@@ -251,12 +245,10 @@ class NotificationServices {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data == null) {
-      return;
-    } else if (ObjectFactory().prefs.isLoggedIn()!) {
-      context.go('/home');
-      context.push('/notification');
-    }
+    if (ObjectFactory().prefs.isLoggedIn()!) {
+    context.go('/home');
+    context.push('/notification');
+  }
   }
 
   Future forgroundMessage() async {

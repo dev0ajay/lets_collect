@@ -10,7 +10,7 @@ part 'nationality_event.dart';
 part 'nationality_state.dart';
 
 class NationalityBloc extends Bloc<NationalityEvent, NationalityState> {
-  final AuthProvider authProvider;
+  final AuthDataProvider authProvider;
   NationalityBloc({required this.authProvider}) : super(NationalityInitial()) {
     on<GetNationality>((event, emit) async{
      emit(NationalityLoading());
