@@ -798,7 +798,7 @@ class _PartnerProductListingScreenState
                             .brandAndPartnerProductRequestResponse
                             .data!
                             .rewards![index]
-                            .productImage!,
+                            .rewardImage!,
                         qrCodeGenerationUrl: "",
                         whereToRedeem: state
                             .brandAndPartnerProductRequestResponse

@@ -44,14 +44,16 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+    <string>This permission is not needed by the app, but it is required by an underlying API</string>
 	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Allow access to the documents folder to select files.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app requires access to the photo library.</string>
+	<string>Lets Collect need access to your files to upload files</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Lets Collect need access to photo library to upload the images</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Lets Collect need access to your library to retrieve files.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>To capture photos Lets Collect needs access to your device camera</string>
+	<string>Lets Collect needs access to your device camera to capture images</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

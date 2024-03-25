@@ -70,7 +70,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   Map<String, dynamic> dateAmountMap = {};
   List<String> sort = <String>[
     "Recent",
-    "Expiry First",
   ];
   List<PurchaseData> purchaseList = [];
 
@@ -309,10 +308,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                                   if (selectedSortFilter ==
                                                                                       "Recent") {
                                                                                     sortQuery = "recent";
-                                                                                  }
-                                                                                  if (selectedSortFilter ==
-                                                                                      "Expiry First") {
-                                                                                    sortQuery = "expire_first";
                                                                                   }
                                                                                 });
                                                                           },
@@ -1066,18 +1061,26 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                               child: Container(
                                 width: double.infinity,
                                 margin: const EdgeInsets.only(
-                                    left: 5, right: 5, bottom: 10, top: 0),
+                                    left: 5, right: 5, bottom: 10, top: 10),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 8,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 8,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                    border:
+                                    Border.all(color: AppColors.borderColor, width: 1)
                                 ),
                                 child: ListTile(
                                   contentPadding: const EdgeInsets.symmetric(

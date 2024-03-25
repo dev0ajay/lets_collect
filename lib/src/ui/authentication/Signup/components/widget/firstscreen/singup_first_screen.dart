@@ -117,8 +117,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
+    // BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+    // BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
 
   }
 

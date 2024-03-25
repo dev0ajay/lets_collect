@@ -90,16 +90,16 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                  enabled: true,
                ),
                // baselineY: 0,
-               titlesData:  FlTitlesData(
+               titlesData:  const FlTitlesData(
                  bottomTitles:
-                 AxisTitles(sideTitles: BarTitle.getBottomTitles()),
+                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
                  leftTitles:
-                 const AxisTitles(sideTitles: SideTitles(showTitles: true),
+                 AxisTitles(sideTitles: SideTitles(showTitles: true),
                  ),
                  topTitles:
-                 const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
                  rightTitles:
-                 const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
                  // leftTitles: BarTitle.getLeftTitle(),
                ),
                // borderData: ,

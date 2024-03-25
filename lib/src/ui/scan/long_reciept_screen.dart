@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -239,18 +240,31 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          selectedImages.isEmpty
-                              ? checkPermissionForStorage(
-                                  Permission.storage, context)
-                              : ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor:
-                                        AppColors.secondaryButtonColor,
-                                    content:
-                                        Text("Please choose either one option"),
-                                  ),
-                                );
+                        onTap: () async {
+                          if (selectedImages.isEmpty) {
+                            if (Platform.isAndroid) {
+                              final androidInfo =
+                                  await DeviceInfoPlugin().androidInfo;
+                              if (androidInfo.version.sdkInt <= 32) {
+                                checkPermissionForStorage(Permission.storage,
+                                    _scaffoldKey.currentContext!);
+                              } else {
+                                checkPermissionForStorage(Permission.photos,
+                                    _scaffoldKey.currentContext!);
+                              }
+                            } else if (Platform.isIOS) {
+                              checkPermissionForStorage(Permission.storage,
+                                  _scaffoldKey.currentContext!);
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: AppColors.secondaryButtonColor,
+                                content:
+                                    Text("Please choose either one option"),
+                              ),
+                            );
+                          }
                         },
                         child: Center(
                           child: ImageIcon(

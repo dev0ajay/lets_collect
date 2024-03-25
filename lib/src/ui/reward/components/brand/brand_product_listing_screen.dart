@@ -787,7 +787,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                         extra: BrandAndPartnerRedeemArguments(
                           rewardId: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardId!,
                             requiredPoints: state.brandAndPartnerProductRequestResponse.data!.rewards![index].requiredPoints.toString(),
-                            productImageUrl: state.brandAndPartnerProductRequestResponse.data!.rewards![index].productImage!,
+                            productImageUrl: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardImage!,
                             qrCodeGenerationUrl: "",
                             whereToRedeem: state.brandAndPartnerProductRequestResponse.data!.rewards![index].reedemStores!,
                             from: 'brand_products',

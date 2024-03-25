@@ -11,11 +11,8 @@ class GoogleSignInLoggedOut extends GoogleSignInState {}
 
 class GoogleSignInSuccess extends GoogleSignInState {
   final User user;
+
   GoogleSignInSuccess({required this.user});
 }
 
-
-class GoogleSignInError extends GoogleSignInState {
-  final String error;
-  GoogleSignInError({required this.error});
-}
+class GoogleSignInError extends GoogleSignInState {}

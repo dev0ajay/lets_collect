@@ -37,8 +37,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   String extension = "";
   String imageUploadFormated = "";
   final _picker = ImagePicker();
-  final Permission _permission = Permission.camera;
-  bool _checkingPermission = false;
 
   // Function to clear the picked image
   void _clearImage() {
@@ -80,7 +78,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       openSettings();
     } else if (status.isLimited) {
       print("Permission permanently denied");
-
       getImage(ImageSource.gallery);
     }
   }
@@ -500,7 +497,57 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                           ],
                         )),
                   );
-                } else {
+                } else if(state.scanReceiptRequestResponse.success == false) {
+                  return AlertDialog(
+                    backgroundColor: AppColors.primaryWhiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    alignment: Alignment.center,
+                    content: SizedBox(
+                        height: getProportionateScreenHeight(260),
+                        width: getProportionateScreenWidth(320),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                onPressed: () {
+                                  context.pop();
+                                  _clearImage();
+                                },
+                                icon: const Icon(Icons.close),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Flexible(
+                              flex: 3,
+                              child: Center(
+                                child: Image.asset(
+                                  Assets.APP_LOGO,
+                                  height: 95,
+                                  width: 150,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                state.scanReceiptRequestResponse.message!,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  );
+                }
+                else {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
