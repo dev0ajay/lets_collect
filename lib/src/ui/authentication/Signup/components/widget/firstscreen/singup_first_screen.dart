@@ -134,7 +134,6 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        context.read<GoogleSignInCubit>().signOut();
         context.pop();
         return false;
       },
