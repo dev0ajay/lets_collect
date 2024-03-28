@@ -5,10 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
+import 'package:lets_collect/src/bloc/referral_bloc/referral_bloc.dart';
+import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/colors.dart';
+import 'package:lets_collect/src/model/referral/referral_code_update_request.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -44,6 +48,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
   ];
   int carouselIndex = 0;
   bool networkSuccess = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController referralController = TextEditingController();
 
   @override
   void initState() {
@@ -113,11 +119,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
                   // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
-                      verifiedPoints: state.homeResponse.emailVerificationPoints
+                      verifiedPoints: state
+                          .homeResponse.emailVerificationPoints
                           .toString());
                 } else if (state.homeResponse.emailVerified == 0) {
                   ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
                 }
+
                 return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
@@ -140,7 +148,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         titlePadding: const EdgeInsets.only(
                             top: 10, bottom: 0, left: 10, right: 10),
                         title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               flex: 5,
@@ -150,7 +159,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
-                                    fontSize: 22, fontWeight: FontWeight.w600),
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
                             Flexible(
@@ -195,82 +205,202 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       ),
                     ),
                     SliverPadding(
-                      sliver: SliverToBoxAdapter(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Flexible(
-                              flex: 2,
-                              child: Container(
-                                height: 50,
-                                // width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryWhiteColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                      color: AppColors.borderColor, width: 1),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(4, 2),
-                                      spreadRadius: 0,
+                      sliver: BlocConsumer<ReferralBloc, ReferralState>(
+                        listener: (context, state) {
+                          // if (state is ReferralCodeUpdateLoading) {
+                          //   const Center(
+                          //     heightFactor: 10,
+                          //     child: RefreshProgressIndicator(
+                          //       color: AppColors.secondaryColor,
+                          //     ),
+                          //   );
+                          // }
+
+                          if (state is ReferralCodeUpdateLoaded) {
+                            if (state.referralCodeUpdateRequestResponse.success == true) {
+                              _showDialogBox(context: context);
+                            } else {
+                              if (state.referralCodeUpdateRequestResponse
+                                  .success ==
+                                  false &&
+                                  state.referralCodeUpdateRequestResponse
+                                      .message ==
+                                      "The referral code field is required") {
+                                _showDialogBox(context: context);
+                              }
+                              if (state.referralCodeUpdateRequestResponse
+                                  .success ==
+                                  false &&
+                                  state.referralCodeUpdateRequestResponse
+                                      .message ==
+                                      "Invalid Referral Code") {
+                                _showDialogBox(context: context);
+                              }
+                              if (state.referralCodeUpdateRequestResponse
+                                  .success ==
+                                  false &&
+                                  state.referralCodeUpdateRequestResponse
+                                      .message ==
+                                      "Referral code already added") {
+                                _showDialogBox(context: context);
+                              }
+                            }
+                          }
+                        },
+                        builder: (context, state) {
+                          return Form(
+                            key: _formKey,
+                            child: SliverToBoxAdapter(
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: Container(
+                                      height: 50,
+                                      // width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primaryWhiteColor,
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: AppColors.borderColor,
+                                            width: 1),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(4, 2),
+                                            spreadRadius: 0,
+                                          ),
+                                          BoxShadow(
+                                            color: AppColors.boxShadow,
+                                            blurRadius: 4,
+                                            offset: Offset(-4, -2),
+                                            spreadRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: SizedBox(
+                                        height:
+                                        getProportionateScreenHeight(
+                                            50),
+                                        child:
+                                        CupertinoTextField.borderless(
+                                          padding: const EdgeInsets.only(
+                                              left: 15,
+                                              top: 15,
+                                              right: 6,
+                                              bottom: 10),
+                                          // placeholder: 'Referral code',
+                                          controller: referralController,
+                                          placeholder:
+                                          AppLocalizations.of(context)!
+                                              .referralcode,
+                                        ),
+                                      ),
                                     ),
-                                    BoxShadow(
-                                      color: AppColors.boxShadow,
-                                      blurRadius: 4,
-                                      offset: Offset(-4, -2),
-                                      spreadRadius: 0,
-                                    ),
-                                  ],
-                                ),
-                                child: SizedBox(
-                                  height: getProportionateScreenHeight(50),
-                                  child:  CupertinoTextField.borderless(
-                                    padding: EdgeInsets.only(
-                                        left: 15,
-                                        top: 15,
-                                        right: 6,
-                                        bottom: 10),
-                                    // placeholder: 'Referral code',
-                                    placeholder: AppLocalizations.of(context)!.referralcode,
                                   ),
-                                ),
+                                  const SizedBox(width: 12),
+
+                                  Flexible(
+                                    child: BlocBuilder<ReferralBloc,
+                                        ReferralState>(
+                                      builder: (context, state) {
+                                        if (state is ReferralCodeUpdateLoading) {
+                                          return const Center(
+                                            child: RefreshProgressIndicator(
+                                              color: AppColors
+                                                  .primaryWhiteColor,
+                                              backgroundColor:
+                                              AppColors.secondaryColor,
+                                            ),
+                                          );
+                                        }
+                                        return ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            elevation: 3,
+                                            fixedSize: const Size(120, 48),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(8),
+                                            ),
+                                            backgroundColor:
+                                            AppColors.secondaryColor,
+                                          ),
+                                          onPressed: () {
+                                            if (referralController
+                                                .text.isEmpty) {
+                                              Fluttertoast.showToast(
+                                                // msg: "The referral code field is required",
+                                                msg: AppLocalizations.of(context)!.thereferralcodefieldisrequired,
+                                                toastLength:
+                                                Toast.LENGTH_LONG,
+                                                gravity:
+                                                ToastGravity.BOTTOM,
+                                                backgroundColor: AppColors
+                                                    .secondaryColor,
+                                                textColor: AppColors
+                                                    .primaryWhiteColor,
+                                              );
+                                              return;
+                                            }
+
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              BlocProvider.of<ReferralBloc>(
+                                                  context).add(GetReferralCodeUpdateEvent(
+                                                  referralCodeUpdateRequest: ReferralCodeUpdateRequest(
+                                                      referralCode: referralController.text),
+                                                ),
+                                              );
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                // msg: "The referral code field is required",
+                                                msg: AppLocalizations.of(
+                                                        context)!
+                                                    .thereferralcodefieldisrequired,
+                                                toastLength:
+                                                Toast.LENGTH_LONG,
+                                                gravity:
+                                                ToastGravity.BOTTOM,
+                                                backgroundColor: AppColors
+                                                    .secondaryColor,
+                                                textColor: AppColors
+                                                    .primaryWhiteColor,
+                                              );
+                                            }
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .bonuspoint,
+                                            // "Bonus point!",
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                color: AppColors
+                                                    .primaryWhiteColor),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Flexible(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 3,
-                                  fixedSize: const Size(120, 48),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  backgroundColor: AppColors.secondaryColor,
-                                ),
-                                onPressed: () {},
-                                child:  Text(
-                                  AppLocalizations.of(context)!.bonuspoint,
-                                  // "Bonus point!",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: AppColors.primaryWhiteColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      padding: const EdgeInsets.only(
+                          top: 10, left: 10, right: 10),
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
                         height: 200,
                         width: MediaQuery.of(context).size.width,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 0),
@@ -282,7 +412,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   widget.onIndexChanged(4);
                                 },
                                 child: Container(
-                                  height: getProportionateScreenHeight(160),
+                                  height:
+                                  getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
                                     boxShadow: const [
@@ -308,32 +439,36 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         Color(0xFFF55562),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius:
+                                    BorderRadius.circular(10),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     children: [
                                       Flexible(
                                         flex: 3,
                                         child: Center(
-                                          child:
-                                              Image.asset(Assets.SCAN, scale: 6)
-                                                  .animate()
-                                                  .shake(
-                                                    duration: const Duration(
-                                                        milliseconds: 400),
-                                                  ),
+                                          child: Image.asset(Assets.SCAN,
+                                              scale: 6)
+                                              .animate()
+                                              .shake(
+                                            duration: const Duration(
+                                                milliseconds: 400),
+                                          ),
                                         ),
                                       ),
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          AppLocalizations.of(context)!.scan,
+                                          AppLocalizations.of(context)!
+                                              .scan,
                                           // "Scan",
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors.primaryWhiteColor,
+                                            color: AppColors
+                                                .primaryWhiteColor,
                                           ),
                                         ),
                                       )
@@ -350,7 +485,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   widget.onIndexChanged(1);
                                 },
                                 child: Container(
-                                  height: getProportionateScreenHeight(160),
+                                  height:
+                                  getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
                                     boxShadow: const [
@@ -376,21 +512,24 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         Color(0xFF111B3E)
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius:
+                                    BorderRadius.circular(10),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     children: [
                                       Flexible(
                                         flex: 3,
                                         child: Center(
-                                          child: Image.asset(Assets.WALLET,
-                                                  scale: 9)
+                                          child: Image.asset(
+                                              Assets.WALLET,
+                                              scale: 9)
                                               .animate()
                                               .shake(
-                                                duration: const Duration(
-                                                    milliseconds: 400),
-                                              ),
+                                            duration: const Duration(
+                                                milliseconds: 400),
+                                          ),
                                         ),
                                       ),
                                       Flexible(
@@ -402,7 +541,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors.primaryWhiteColor,
+                                            color: AppColors
+                                                .primaryWhiteColor,
                                           ),
                                         ),
                                       ),
@@ -420,10 +560,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                            AppLocalizations.of(context)!.brands,
+                                  AppLocalizations.of(context)!.brands,
                                   // "Brands",
                                   style: GoogleFonts.roboto(
                                     fontSize: 16,
@@ -442,7 +583,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     width: 50,
                                     child: Center(
                                       child: Text(
-                                        AppLocalizations.of(context)!.viewall,
+                                        AppLocalizations.of(context)!
+                                            .viewall,
                                         // "View all",
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.roboto(
@@ -459,90 +601,101 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               children: [
                                 SizedBox(
                                   // color: Colors.green,
-                                  height: getProportionateScreenHeight(130),
+                                  height:
+                                  getProportionateScreenHeight(130),
                                   child: CarouselSlider(
                                     items: List.generate(
-                                        state.homeResponse.data!.brands!.length,
-                                        (index) => GestureDetector(
-                                              onTap: () {
-                                                _launchInBrowser(
-                                                  state
-                                                      .homeResponse
-                                                      .data!
-                                                      .brands![index]
-                                                      .brandLink!,
-                                                );
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5,
-                                                    right: 5,
-                                                    left: 5,
-                                                    bottom: 5),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(5),
-                                                  margin:
-                                                      const EdgeInsets.all(9),
-                                                  decoration:
-                                                      const BoxDecoration(
+                                        state.homeResponse.data!.brands!
+                                            .length,
+                                            (index) => GestureDetector(
+                                          onTap: () {
+                                            _launchInBrowser(
+                                              state
+                                                  .homeResponse
+                                                  .data!
+                                                  .brands![index]
+                                                  .brandLink!,
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 5,
+                                                right: 5,
+                                                left: 5,
+                                                bottom: 5),
+                                            child: Container(
+                                              padding:
+                                              EdgeInsets.all(5),
+                                              margin: const EdgeInsets
+                                                  .all(9),
+                                              decoration:
+                                              const BoxDecoration(
+                                                color: AppColors
+                                                    .primaryWhiteColor,
+                                                boxShadow: [
+                                                  BoxShadow(
                                                     color: AppColors
-                                                        .primaryWhiteColor,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color:
-                                                            AppColors.boxShadow,
-                                                        blurRadius: 4,
-                                                        offset: Offset(4, 2),
-                                                        spreadRadius: 0,
-                                                      ),
-                                                      BoxShadow(
-                                                        color:
-                                                            AppColors.boxShadow,
-                                                        blurRadius: 4,
-                                                        offset: Offset(-4, -2),
-                                                        spreadRadius: 0,
-                                                      ),
-                                                    ],
+                                                        .boxShadow,
+                                                    blurRadius: 4,
+                                                    offset:
+                                                    Offset(4, 2),
+                                                    spreadRadius: 0,
                                                   ),
-                                                  child: CachedNetworkImage(
-                                                    fadeInCurve: Curves.easeIn,
-                                                    fadeInDuration:
-                                                        const Duration(
-                                                            milliseconds: 200),
-                                                    imageUrl: state
-                                                        .homeResponse
-                                                        .data!
-                                                        .brands![index]
-                                                        .brandLogo!,
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            SizedBox(
+                                                  BoxShadow(
+                                                    color: AppColors
+                                                        .boxShadow,
+                                                    blurRadius: 4,
+                                                    offset: Offset(
+                                                        -4, -2),
+                                                    spreadRadius: 0,
+                                                  ),
+                                                ],
+                                              ),
+                                              child:
+                                              CachedNetworkImage(
+                                                fadeInCurve:
+                                                Curves.easeIn,
+                                                fadeInDuration:
+                                                const Duration(
+                                                    milliseconds:
+                                                    200),
+                                                imageUrl: state
+                                                    .homeResponse
+                                                    .data!
+                                                    .brands![index]
+                                                    .brandLogo!,
+                                                placeholder:
+                                                    (context, url) =>
+                                                    SizedBox(
                                                       // height: getProportionateScreenHeight(170),
                                                       // width: MediaQuery.of(context).size.width,
                                                       child: Center(
-                                                        child: Lottie.asset(
-                                                          Assets.JUMBINGDOT,
+                                                        child:
+                                                        Lottie.asset(
+                                                          Assets
+                                                              .JUMBINGDOT,
                                                           height: 35,
                                                           width: 35,
                                                         ),
                                                       ),
                                                     ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            const SizedBox(
-                                                      child: Center(
-                                                        child: ImageIcon(
-                                                          color: AppColors
-                                                              .hintColor,
-                                                          AssetImage(
-                                                              Assets.NO_IMG),
-                                                        ),
-                                                      ),
+                                                errorWidget: (context,
+                                                    url, error) =>
+                                                const SizedBox(
+                                                  child: Center(
+                                                    child: ImageIcon(
+                                                      color: AppColors
+                                                          .hintColor,
+                                                      AssetImage(Assets
+                                                          .NO_IMG),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
+                                          ),
+                                        ),
                                         growable: true),
                                     options: CarouselOptions(
                                       onPageChanged: (index, reason) {
@@ -557,7 +710,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       autoPlayCurve: Curves.fastOutSlowIn,
                                       enableInfiniteScroll: true,
                                       autoPlayAnimationDuration:
-                                          const Duration(milliseconds: 800),
+                                      const Duration(
+                                          milliseconds: 800),
                                       viewportFraction: 0.4,
                                     ),
                                   ),
@@ -565,8 +719,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
                                   child: DotsIndicator(
-                                    dotsCount:
-                                        state.homeResponse.data!.brands!.length,
+                                    dotsCount: state.homeResponse.data!
+                                        .brands!.length,
                                     axis: Axis.horizontal,
                                     position: carouselIndex,
                                     decorator: DotsDecorator(
@@ -574,21 +728,21 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                             left: 3, right: 3),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(5)),
+                                            BorderRadius.circular(5)),
                                         activeShape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(5)),
+                                            BorderRadius.circular(5)),
                                         size: Size(
                                             (MediaQuery.of(context).size.width -
-                                                    290) /
-                                                state.homeResponse.data!.brands!
-                                                    .length,
+                                                290) /
+                                                state.homeResponse.data!
+                                                    .brands!.length,
                                             5),
                                         activeSize: Size(
                                             (MediaQuery.of(context).size.width -
-                                                    290) /
-                                                state.homeResponse.data!.brands!
-                                                    .length,
+                                                290) /
+                                                state.homeResponse.data!
+                                                    .brands!.length,
                                             5),
                                         color: AppColors.shadow,
                                         activeColor: AppColors.secondaryColor),
@@ -605,10 +759,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     SliverPadding(
                       sliver: SliverToBoxAdapter(
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!.specialoffersforyou,
+                              AppLocalizations.of(context)!
+                                  .specialoffersforyou,
                               // "Special Offers for you",
                               style: GoogleFonts.roboto(
                                 fontSize: 16,
@@ -638,13 +794,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           ],
                         ),
                       ),
-                      padding:
-                          const EdgeInsets.only(left: 15, right: 15, top: 15),
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 15),
                     ),
                     SliverPadding(
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, index) {
+                              (BuildContext context, index) {
                             return Column(
                               children: AnimateList(
                                 effects: [
@@ -652,7 +808,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 ],
                                 children: List.generate(
                                   state.homeResponse.data!.offers!.length,
-                                  (index) => Padding(
+                                      (index) => Padding(
                                     padding: const EdgeInsets.all(15),
                                     child: GestureDetector(
                                       onTap: () {
@@ -664,8 +820,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 .data!
                                                 .offers![index]
                                                 .offerHeading!,
-                                            endDate: state.homeResponse.data!
-                                                .offers![index].endDate!,
+                                            endDate: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .endDate!,
                                             offerDetailText: state
                                                 .homeResponse
                                                 .data!
@@ -676,8 +835,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 .data!
                                                 .offers![index]
                                                 .offerImage!,
-                                            startDate: state.homeResponse.data!
-                                                .offers![index].startDate!,
+                                            startDate: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .startDate!,
                                             storeList: state
                                                 .homeResponse
                                                 .data!
@@ -688,13 +850,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       },
                                       child: Container(
                                         height:
-                                            getProportionateScreenHeight(170),
-                                        width:
-                                            MediaQuery.of(context).size.width,
+                                        getProportionateScreenHeight(
+                                            170),
+                                        width: MediaQuery.of(context)
+                                            .size
+                                            .width,
                                         // padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                          BorderRadius.circular(20),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: AppColors.shadow,
@@ -724,39 +888,43 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                          BorderRadius.circular(20),
                                           child: CachedNetworkImage(
-                                            imageUrl: state.homeResponse.data!
-                                                .offers![index].offerImage!,
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.fill,
+                                            imageUrl: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerImage!,
+                                            imageBuilder: (context,
+                                                imageProvider) =>
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
                                             placeholder: (context, url) =>
                                                 SizedBox(
-                                              height:
+                                                  height:
                                                   getProportionateScreenHeight(
                                                       170),
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Center(
-                                                child: Lottie.asset(
-                                                  Assets.JUMBINGDOT,
-                                                  height: 55,
-                                                  width: 55,
+                                                  width:
+                                                  MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  child: Center(
+                                                    child: Lottie.asset(
+                                                      Assets.JUMBINGDOT,
+                                                      height: 55,
+                                                      width: 55,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
                                             errorWidget:
                                                 (context, url, error) =>
-                                                    const ImageIcon(
+                                            const ImageIcon(
                                               color: AppColors.hintColor,
                                               AssetImage(Assets.NO_IMG),
                                             ),
@@ -800,9 +968,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                            Text(
-                          AppLocalizations.of(context)!.hisarah,
+                             AppLocalizations.of(context)!.hisarah,
                             // "Hi Sarah",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 20,
                               color: AppColors.primaryWhiteColor,
                             ),
@@ -857,8 +1025,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 child:  CupertinoTextField.borderless(
                                   padding: const EdgeInsets.only(
                                       left: 15, top: 15, right: 6, bottom: 10),
-                                  // placeholder: 'Referral code',
                                   placeholder: AppLocalizations.of(context)!.referralcode,
+                                  // placeholder: 'Referral code',
                                 ),
                               ),
                             ),
@@ -879,7 +1047,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 AppLocalizations.of(context)!.bonuspoint,
                                 // "Bonus point!",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -887,7 +1055,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       ),
                     ),
                     padding:
-                        const EdgeInsets.only(top: 10, left: 10, right: 10),
+                    const EdgeInsets.only(top: 10, left: 10, right: 10),
                   ),
                   SliverToBoxAdapter(
                     child: SizedBox(
@@ -922,9 +1090,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       child: Image.asset(Assets.SCAN, scale: 6)
                                           .animate()
                                           .shake(
-                                            duration: const Duration(
-                                                milliseconds: 400),
-                                          ),
+                                        duration: const Duration(
+                                            milliseconds: 400),
+                                      ),
                                     ),
                                   ),
                                    Flexible(
@@ -965,16 +1133,16 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     flex: 3,
                                     child: Center(
                                       child:
-                                          Image.asset(Assets.WALLET, scale: 8)
-                                              .animate()
-                                              .shake(
-                                                duration: const Duration(
-                                                    milliseconds: 400),
-                                              ),
+                                      Image.asset(Assets.WALLET, scale: 8)
+                                          .animate()
+                                          .shake(
+                                        duration: const Duration(
+                                            milliseconds: 400),
+                                      ),
                                     ),
                                   ),
                                    Text(
-                                    "${AppLocalizations.of(context)!.totalpoints} \n 1200 ${AppLocalizations.of(context)!.pts}",
+                                    "${AppLocalizations.of(context)!.referralcode} \n 1200 ${AppLocalizations.of(context)!.pts}",
                                     // "Total points \n 1200 pts",
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
@@ -999,12 +1167,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               Text(
                                 AppLocalizations.of(context)!.brands,
                                 // "Brands",
-                                style: TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 18),
                               ),
                               Text(
                                 AppLocalizations.of(context)!.viewall,
                                 // "View all",
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                               ),
                             ],
                           ),
@@ -1058,17 +1226,17 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           imageUrl: brandList[index],
                                           imageBuilder:
                                               (context, imageProvider) =>
-                                                  Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
-                                                  colorFilter:
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.cover,
+                                                      colorFilter:
                                                       const ColorFilter.mode(
                                                           Colors.red,
                                                           BlendMode.colorBurn)),
-                                            ),
-                                          ),
+                                                ),
+                                              ),
                                           // placeholder: (context, url) => CircularProgressIndicator(),
                                           // errorWidget: (context, url, error) => Icon(Icons.error),
                                         ),
@@ -1097,25 +1265,25 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   SliverPadding(
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, index) {
+                            (BuildContext context, index) {
                           return Column(
                               children: AnimateList(
                                   effects: [
-                                FadeEffect(delay: 300.ms),
-                              ],
+                                    FadeEffect(delay: 300.ms),
+                                  ],
                                   children: List.generate(
                                     offerList.length,
-                                    (index) => Padding(
+                                        (index) => Padding(
                                       padding: const EdgeInsets.all(15),
                                       child: Container(
                                         height:
-                                            getProportionateScreenHeight(110),
+                                        getProportionateScreenHeight(110),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: AppColors.borderColor,
                                               width: 1),
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: AppColors.boxShadow,
@@ -1145,20 +1313,20 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(10),
+                                          BorderRadius.circular(10),
                                           child: CachedNetworkImage(
                                             fit: BoxFit.fill,
                                             imageUrl: offerList[index],
                                             imageBuilder:
                                                 (context, imageProvider) =>
-                                                    Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.fill,
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: imageProvider,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
                                             // placeholder: (context, url) => CircularProgressIndicator(),
                                             // errorWidget: (context, url, error) => Icon(Icons.error),
                                           ),
@@ -1171,7 +1339,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       ),
                     ),
                     padding:
-                        const EdgeInsets.only(bottom: 100, left: 10, right: 10),
+                    const EdgeInsets.only(bottom: 100, left: 10, right: 10),
                   ),
                 ],
               );
@@ -1202,6 +1370,458 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
           networkSuccess = true;
         }
       },
+    );
+  }
+
+  void _showDialogBox({
+    required BuildContext context,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: BlocBuilder<ReferralBloc, ReferralState>(
+            builder: (context, state) {
+          if (state is ReferralCodeUpdateLoaded) {
+            if (state.referralCodeUpdateRequestResponse.success == true &&
+            state.referralCodeUpdateRequestResponse.message == "Referral code added successfully.") {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: AppColors.primaryWhiteColor,
+                elevation: 5,
+                alignment: Alignment.center,
+                content: SizedBox(
+                  height: getProportionateScreenHeight(260),
+                  width: getProportionateScreenWidth(320),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            referralController.clear();
+                            context.pop();
+                          },
+                          icon: const Icon(Icons.close),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Flexible(
+                        flex: 3,
+                        child: Center(
+                          child: Image.asset(
+                            Assets.APP_LOGO,
+                            height: 95,
+                            width: 150,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          AppLocalizations.of(context)!.referralcodeaddedsuccessfully,
+                          // state.referralCodeUpdateRequestResponse.message,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.openSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          AppLocalizations.of(context)!.thankyou,
+                          // "Thank You !",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      MyButton(
+                          text: AppLocalizations.of(context)!.ok,
+                          color: AppColors.secondaryColor,
+                          width: 200,
+                          height: 30,
+                          onTap: () {
+                            referralController.clear();
+                            context.pop();
+                          },
+                          TextColors: AppColors.primaryWhiteColor,
+                          Textfontsize: 16,
+                          showImage: false,
+                          imagePath: "",
+                          imagewidth: 0,
+                          imageheight: 0)
+                      // Flexible(
+                      //   flex: 3,
+                      //   child: Lottie.asset(Assets.SCANING),
+                      // ),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              if (state.referralCodeUpdateRequestResponse.success == false &&
+                  state.referralCodeUpdateRequestResponse.message ==
+                      "The referral code field is required") {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor: AppColors.primaryWhiteColor,
+                  elevation: 5,
+                  alignment: Alignment.center,
+                  content: SizedBox(
+                    height: getProportionateScreenHeight(260),
+                    width: getProportionateScreenWidth(320),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 3,
+                          child: Center(
+                            child: Image.asset(
+                              Assets.APP_LOGO,
+                              height: 95,
+                              width: 150,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            // state.referralCodeUpdateRequestResponse.message,
+                            AppLocalizations.of(context)!.thereferralcodefieldisrequired,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.openSans(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 1,
+                          child: Text(
+                            AppLocalizations.of(context)!.thankyou,
+                            // "Thank You !",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        MyButton(
+                            text: AppLocalizations.of(context)!.ok,
+                            color: AppColors.secondaryColor,
+                            width: 200,
+                            height: 30,
+                            onTap: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            TextColors: AppColors.primaryWhiteColor,
+                            Textfontsize: 16,
+                            showImage: false,
+                            imagePath: "",
+                            imagewidth: 0,
+                            imageheight: 0)
+                        // Flexible(
+                        //   flex: 3,
+                        //   child: Lottie.asset(Assets.SCANING),
+                        // ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (state.referralCodeUpdateRequestResponse.success == false &&
+                  state.referralCodeUpdateRequestResponse.message ==
+                      "Invalid Referral Code") {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor: AppColors.primaryWhiteColor,
+                  elevation: 5,
+                  alignment: Alignment.center,
+                  content: SizedBox(
+                    height: getProportionateScreenHeight(260),
+                    width: getProportionateScreenWidth(320),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 3,
+                          child: Center(
+                            child: Image.asset(
+                              Assets.APP_LOGO,
+                              height: 95,
+                              width: 150,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            AppLocalizations.of(context)!.invalidreferralcode,
+                            // state.referralCodeUpdateRequestResponse.message,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.openSans(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 1,
+                          child: Text(
+                            AppLocalizations.of(context)!.thankyou,
+                            // "Thank You !",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        MyButton(
+                            text: AppLocalizations.of(context)!.ok,
+                            color: AppColors.secondaryColor,
+                            width: 200,
+                            height: 30,
+                            onTap: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            TextColors: AppColors.primaryWhiteColor,
+                            Textfontsize: 16,
+                            showImage: false,
+                            imagePath: "",
+                            imagewidth: 0,
+                            imageheight: 0)
+                        // Flexible(
+                        //   flex: 3,
+                        //   child: Lottie.asset(Assets.SCANING),
+                        // ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (state.referralCodeUpdateRequestResponse.success == false &&
+                  state.referralCodeUpdateRequestResponse.message ==
+                      "Referral code already added") {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor: AppColors.primaryWhiteColor,
+                  elevation: 5,
+                  alignment: Alignment.center,
+                  content: SizedBox(
+                    height: getProportionateScreenHeight(260),
+                    width: getProportionateScreenWidth(320),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            onPressed: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 3,
+                          child: Center(
+                            child: Image.asset(
+                              Assets.APP_LOGO,
+                              height: 95,
+                              width: 150,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            AppLocalizations.of(context)!.referralcodealreadyadded,
+                            // state.referralCodeUpdateRequestResponse.message,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.openSans(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Flexible(
+                          flex: 1,
+                          child: Text(
+                            AppLocalizations.of(context)!.thankyou,
+                            // "Thank You !",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        MyButton(
+                            text: AppLocalizations.of(context)!.ok,
+                            color: AppColors.secondaryColor,
+                            width: 200,
+                            height: 30,
+                            onTap: () {
+                              referralController.clear();
+                              context.pop();
+                            },
+                            TextColors: AppColors.primaryWhiteColor,
+                            Textfontsize: 16,
+                            showImage: false,
+                            imagePath: "",
+                            imagewidth: 0,
+                            imageheight: 0)
+                        // Flexible(
+                        //   flex: 3,
+                        //   child: Lottie.asset(Assets.SCANING),
+                        // ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            }
+          }
+          if (state is ReferralCodeUpdateError) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              backgroundColor: AppColors.primaryWhiteColor,
+              elevation: 5,
+              alignment: Alignment.center,
+              content: SizedBox(
+                height: getProportionateScreenHeight(260),
+                width: getProportionateScreenWidth(320),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        onPressed: () {
+                          referralController.clear();
+                          context.pop();
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Flexible(
+                      flex: 3,
+                      child: Center(
+                        child: Image.asset(
+                          Assets.APP_LOGO,
+                          height: 95,
+                          width: 150,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        state.errorMsg,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.openSans(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        AppLocalizations.of(context)!.thankyou,
+                        // "Thank You !",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    MyButton(
+                        text: AppLocalizations.of(context)!.ok,
+                        color: AppColors.secondaryColor,
+                        width: 200,
+                        height: 30,
+                        onTap: () {
+                          referralController.clear();
+                          context.pop();
+                        },
+                        TextColors: AppColors.primaryWhiteColor,
+                        Textfontsize: 16,
+                        showImage: false,
+                        imagePath: "",
+                        imagewidth: 0,
+                        imageheight: 0)
+                    // Flexible(
+                    //   flex: 3,
+                    //   child: Lottie.asset(Assets.SCANING),
+                    // ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return const SizedBox();
+        }),
+      ),
     );
   }
 }
