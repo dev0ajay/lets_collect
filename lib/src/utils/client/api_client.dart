@@ -10,6 +10,8 @@ import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/sign_up_request.dart';
 import 'package:lets_collect/src/model/offer/offer_list_request.dart';
 import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
+import 'package:lets_collect/src/model/referral/referral_code_update_request.dart';
+import 'package:lets_collect/src/model/referral/referral_friend_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
@@ -476,6 +478,47 @@ class ApiClient {
   Future<Response> getRedemptionHistoryResponse() {
     return dioLetsCollect.post(
       UrlsLetsCollect.REDEMPTION_HISTORY,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
+  ///Referral List
+  Future<Response> getReferralListResponse() {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.REFERRAL_LIST,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+  ///Referral Friend
+  Future<Response> getReferralFriendRequestResponse(ReferralFriendRequest referralFriendRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.REFERRAL_FRIEND,
+      data:referralFriendRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
+
+
+
+  ///Referral Code Update
+  Future<Response> getReferralCodeUpdateClient(ReferralCodeUpdateRequest referralCodeUpdateRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.REFERRAL_CODE_UPDATE,
+      data:referralCodeUpdateRequest,
       options: Options(
           headers: {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
