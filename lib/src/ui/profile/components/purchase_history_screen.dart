@@ -5,16 +5,18 @@ import 'package:flutter_custom_month_picker/flutter_custom_month_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../bloc/filter_bloc/filter_bloc.dart';
 import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import '../../../model/purchase_history/purchase_history_response.dart';
 import '../../reward/components/widgets/custome_rounded_button.dart';
 import '../widgets/bar_chart_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
   const PurchaseHistoryScreen({super.key});
@@ -83,18 +85,18 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
 
       for (int j = i + 1; j < jsonData.data!.length; j++) {
         if (currentDate == jsonData.data![j].receiptDate) {
-            totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
-            print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
+          totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
+          print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
           print("Total amount: $totalAmount of indexes $i and $j");
           // You can do further processing here if needed
         }
       }
     }
   }
-  
 
-  
-  
+
+
+
   @override
   void initState() {
     super.initState();
@@ -112,7 +114,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
 
   }
 
-  
+
   @override
   void dispose() {
     _purchaseMonthController.dispose();
@@ -148,8 +150,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             title: Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Text(
-                "Purchase history",
-                // AppLocalizations.of(context)!.purchasehistory,
+                // "Purchase history",
+                AppLocalizations.of(context)!.purchasehistory,
                 style: GoogleFonts.openSans(
                   color: AppColors.primaryWhiteColor,
                   fontSize: 20,
@@ -186,7 +188,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           child: Padding(
                             padding: EdgeInsets.only(top: 0),
                             child: SizedBox(
-                                child: BarChartWidget(),
+                              child: BarChartWidget(),
                             ),
                           ),
                         ),
@@ -1041,8 +1043,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           child: Row(
                             children: [
                               Text(
-                                "Transaction Log",
-                                // AppLocalizations.of(context)!.transactionlog,
+                                // "Transaction Log",
+                                AppLocalizations.of(context)!.transactionlog,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
@@ -1090,8 +1092,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        state.purchaseHistoryResponse
-                                            .data![index].branch!,
+                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                       ? state.purchaseHistoryResponse.data[index].supermarketName
+                                  :state.purchaseHistoryResponse.data[index].supermarketName,
                                         style: GoogleFonts.roboto(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
@@ -1102,8 +1105,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         height: 2,
                                       ),
                                       Text(
-                                        "Total amount"
-                                        // "${AppLocalizations.of(context)!.totalamount} "
+                                        // "Total amount"
+                                        "${AppLocalizations.of(context)!.totalamount} "
                                             "  ${state.purchaseHistoryResponse.data![index].totalAmount} "
                                             "${state.purchaseHistoryResponse.data![index].currencyCode}",
                                         style: GoogleFonts.roboto(
@@ -1112,7 +1115,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 2
+                                          height: 2
                                       ),
                                       Text(
                                         state.purchaseHistoryResponse

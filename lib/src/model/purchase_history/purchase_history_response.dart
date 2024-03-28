@@ -1,5 +1,11 @@
+// /// New
 //
 //
+// // To parse this JSON data, do
+// //
+// //     final purchaseHistoryResponse = purchaseHistoryResponseFromJson(jsonString);
+//
+// import 'package:meta/meta.dart';
 // import 'dart:convert';
 //
 // PurchaseHistoryResponse purchaseHistoryResponseFromJson(String str) => PurchaseHistoryResponse.fromJson(json.decode(str));
@@ -7,62 +13,62 @@
 // String purchaseHistoryResponseToJson(PurchaseHistoryResponse data) => json.encode(data.toJson());
 //
 // class PurchaseHistoryResponse {
-//   bool? success;
-//   int? statusCode;
-//   List<PurchaseData>? data;
-//   int? totalPages;
+//   bool success;
+//   int statusCode;
+//   List<PurchaseData> data;
+//   int totalPages;
 //
 //   PurchaseHistoryResponse({
-//     this.success,
-//     this.statusCode,
-//     this.data,
-//     this.totalPages,
+//     required this.success,
+//     required this.statusCode,
+//     required this.data,
+//     required this.totalPages,
 //   });
 //
 //   factory PurchaseHistoryResponse.fromJson(Map<String, dynamic> json) => PurchaseHistoryResponse(
 //     success: json["success"],
 //     statusCode: json["status_code"],
-//     data: json["data"] == null ? [] : List<PurchaseData>.from(json["data"]!.map((x) => PurchaseData.fromJson(x))),
+//     data: List<PurchaseData>.from(json["data"].map((x) => PurchaseData.fromJson(x))),
 //     totalPages: json["total_pages"],
 //   );
 //
 //   Map<String, dynamic> toJson() => {
 //     "success": success,
 //     "status_code": statusCode,
-//     "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+//     "data": List<dynamic>.from(data.map((x) => x.toJson())),
 //     "total_pages": totalPages,
 //   };
 // }
 //
 // class PurchaseData {
-//   int? receiptId;
-//   int? customerId;
-//   int? supermarketId;
-//   String? branch;
-//   String? receiptDate;
-//   String? totalAmount;
-//   String? currencyCode;
-//   String? receiptNumber;
-//   int? totalNoOfProducts;
-//   String? totalTaxAmount;
-//   String? servedBy;
-//   String? tillNumber;
-//   String? paymentMethod;
+//   int receiptId;
+//   int customerId;
+//   int supermarketId;
+//   String branch;
+//   String receiptDate;
+//   String totalAmount;
+//   String currencyCode;
+//   String receiptNumber;
+//   int totalNoOfProducts;
+//   String totalTaxAmount;
+//   String servedBy;
+//   String tillNumber;
+//   String paymentMethod;
 //
 //   PurchaseData({
-//     this.receiptId,
-//     this.customerId,
-//     this.supermarketId,
-//     this.branch,
-//     this.receiptDate,
-//     this.totalAmount,
-//     this.currencyCode,
-//     this.receiptNumber,
-//     this.totalNoOfProducts,
-//     this.totalTaxAmount,
-//     this.servedBy,
-//     this.tillNumber,
-//     this.paymentMethod,
+//     required this.receiptId,
+//     required this.customerId,
+//     required this.supermarketId,
+//     required this.branch,
+//     required this.receiptDate,
+//     required this.totalAmount,
+//     required this.currencyCode,
+//     required this.receiptNumber,
+//     required this.totalNoOfProducts,
+//     required this.totalTaxAmount,
+//     required this.servedBy,
+//     required this.tillNumber,
+//     required this.paymentMethod,
 //   });
 //
 //   factory PurchaseData.fromJson(Map<String, dynamic> json) => PurchaseData(
@@ -99,14 +105,10 @@
 // }
 
 
-/// New
-
-
 // To parse this JSON data, do
 //
 //     final purchaseHistoryResponse = purchaseHistoryResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PurchaseHistoryResponse purchaseHistoryResponseFromJson(String str) => PurchaseHistoryResponse.fromJson(json.decode(str));
@@ -145,6 +147,7 @@ class PurchaseData {
   int receiptId;
   int customerId;
   int supermarketId;
+  String supermarketName;
   String branch;
   String receiptDate;
   String totalAmount;
@@ -160,6 +163,7 @@ class PurchaseData {
     required this.receiptId,
     required this.customerId,
     required this.supermarketId,
+    required this.supermarketName,
     required this.branch,
     required this.receiptDate,
     required this.totalAmount,
@@ -176,6 +180,7 @@ class PurchaseData {
     receiptId: json["receipt_id"],
     customerId: json["customer_id"],
     supermarketId: json["supermarket_id"],
+    supermarketName: json["supermarket_name"],
     branch: json["branch"],
     receiptDate: json["receipt_date"] == null ? null : json["receipt_date"],
     totalAmount: json["total_amount"],
@@ -192,6 +197,7 @@ class PurchaseData {
     "receipt_id": receiptId,
     "customer_id": customerId,
     "supermarket_id": supermarketId,
+    "supermarket_name": supermarketName,
     "branch": branch,
     "receipt_date": receiptDate,
     "total_amount": totalAmount,
