@@ -46,6 +46,9 @@ class UrlsLetsCollect {
   static const String DELETE_ACCOUNT = "/api/delete_customer_account";
   static const String MY_EDIT_PROFILE_DATA = "/api/lcuser/updateProfile";
   static const String REDEMPTION_HISTORY = "/api/lcuser/redemption_history";
+  static const String REFERRAL_LIST = "/api/lcuser/referral_list";
+  static const String REFERRAL_FRIEND = "/api/lcuser/refer_friend";
+  static const String REFERRAL_CODE_UPDATE = "/api/lcuser/referral_code_update";
 
 
 
