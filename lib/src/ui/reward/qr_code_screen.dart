@@ -5,7 +5,7 @@ import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import 'components/qr_code_screen_arguments.dart';
 
-class QrCodeGenerationScreen extends StatefulWidget {
+ class QrCodeGenerationScreen extends StatefulWidget {
   final QrCodeScreenArguments qrCodeScreenArguments;
   const QrCodeGenerationScreen({super.key,required this.qrCodeScreenArguments});
 

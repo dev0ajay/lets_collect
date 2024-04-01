@@ -545,11 +545,6 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                                 onPressed: () {
                                   context.pop();
                                   _removeFile();
-                                  // BlocProvider.of<ScanBloc>(context).add(
-                                  //   ScanReceiptHistoryEvent(
-                                  //       scanReceiptHistoryRequest: scanReceiptHistoryRequest
-                                  //   ),
-                                  // );
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -569,7 +564,56 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
+                                "Oops! Looks like you’ve already scanned this one.",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  );
+                } else if (state.scanReceiptRequestResponse.success == false) {
+                  return AlertDialog(
+                    backgroundColor: AppColors.primaryWhiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    alignment: Alignment.center,
+                    content: SizedBox(
+                        height: getProportionateScreenHeight(260),
+                        width: getProportionateScreenWidth(320),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                onPressed: () {
+                                  context.pop();
+                                  _removeFile();
+                                },
+                                icon: const Icon(Icons.close),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Flexible(
+                              flex: 3,
+                              child: Center(
+                                child: Image.asset(
+                                  Assets.APP_LOGO,
+                                  height: 95,
+                                  width: 150,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                "Oops! Looks like we’re facing some issue scanning this receipt",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,

@@ -242,7 +242,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                     child: const SizedBox(
                       child: Padding(
                         padding: EdgeInsets.all(3.0),
-                        child: ScanScreenCollectButton(text: 'Collect'),
+                        child: ScanScreenCollectButton(text: 'Redeem'),
                       ),
                     ),
                   ),

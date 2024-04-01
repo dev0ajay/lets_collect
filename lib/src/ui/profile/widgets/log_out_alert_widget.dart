@@ -97,6 +97,7 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                     .signOut();
                                 ObjectFactory().prefs.setIsLoggedIn(false);
                                 ObjectFactory().prefs.setUserName(userName: "");
+                                ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
                                 // ObjectFactory().prefs.clearPrefs();
                                 // ignore: use_build_context_synchronously
                                 context.go('/login');

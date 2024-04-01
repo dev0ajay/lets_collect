@@ -14,7 +14,6 @@ import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
 
-
 class PointTrackerScreen extends StatefulWidget {
   const PointTrackerScreen({super.key});
 
@@ -249,18 +248,12 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                     return Column(
                       children: [
                         const SizedBox(height: 15),
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 0),
-                            child: SizedBox(
-                              child: PointTrackerChart(),
-                            ),
-                          ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: PointTrackerChart(),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
+                        const SizedBox(height: 15),
+                        state.pointTrackerRequestResponse.data.isEmpty ? const SizedBox() : Padding(
                             padding:
                                 const EdgeInsets.only(left: 15.0, right: 15),
                             child: Row(
@@ -822,7 +815,8 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               color: AppColors.secondaryColor,
                                                                               AssetImage(Assets.DOWN_ARROW),
                                                                             ),
-                                                                      title: const Text("Month and Year"),
+                                                                      title: const Text(
+                                                                          "Month and Year"),
                                                                     ),
                                                                   ),
                                                                   isMonthFilterTileSelected ==
@@ -1004,7 +998,6 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                             child: Container(
                                                               decoration:
                                                                   const BoxDecoration(
-
                                                                 color: AppColors
                                                                     .primaryWhiteColor,
                                                                 borderRadius:
@@ -1017,7 +1010,6 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       .circular(
                                                                           20.0),
                                                                 ),
-
                                                               ),
                                                               child: Padding(
                                                                 padding: const EdgeInsets

@@ -6,14 +6,14 @@ import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_blo
 import '../../../constants/colors.dart';
 import '../../../model/purchase_history/purchase_history_response.dart';
 
-class BarChartWidget extends StatefulWidget {
-  const BarChartWidget({super.key});
+class PurchaseHistoryBarChartWidget extends StatefulWidget {
+  const PurchaseHistoryBarChartWidget({super.key});
 
   @override
-  State<BarChartWidget> createState() => _BarChartWidgetState();
+  State<PurchaseHistoryBarChartWidget> createState() => _PurchaseHistoryBarChartWidgetState();
 }
 
-class _BarChartWidgetState extends State<BarChartWidget> {
+class _PurchaseHistoryBarChartWidgetState extends State<PurchaseHistoryBarChartWidget> {
  ScrollDragController? controller;
  late double minX;
  late double maxX;
@@ -178,7 +178,6 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
       ),
     );
   });
-
   return barGroups;
 }
 

@@ -68,6 +68,10 @@ class _MyTextFieldState extends State<MyTextField> {
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),
           ),
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(color: AppColors.borderColor),
+          ),
           hintText: widget.hintText,
           labelStyle: GoogleFonts.roboto(
               color: AppColors.hintColor,

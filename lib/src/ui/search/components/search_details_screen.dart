@@ -217,24 +217,28 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
           body: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is BrandErrorState) {
-                return Center(
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: 4,
                         child: Lottie.asset(Assets.TRY_AGAIN),
                       ),
-                      Flexible(
+                      Expanded(
                         flex: 2,
                         child: Text(
                           state.msg,
-                          style: const TextStyle(
-                              color: AppColors.primaryWhiteColor),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: AppColors.primaryColor),
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       Flexible(
-                        flex: 1,
+                        flex: 4,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -244,16 +248,19 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                               backgroundColor: AppColors.primaryColor),
                           onPressed: () {
                             BlocProvider.of<SearchBloc>(context).add(
-                              GetSearchEvent(
-                                searchCategoryRequest:
-                                    SearchCategoryRequest(searchText: ''),
+                              GetBrandEvent(
+                                searchBrandRequest: SearchBrandRequest(
+                                  departmentId: widget.searchScreenArguments.categoryId,
+                                  searchText: '',
+                                  page: '1',
+                                ),
                               ),
                             );
                           },
                           child: const Text(
                             "Try again",
                             style:
-                                TextStyle(color: AppColors.primaryWhiteColor),
+                            TextStyle(color: AppColors.primaryWhiteColor),
                           ),
                         ),
                       ),
@@ -261,6 +268,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                     ],
                   ),
                 );
+
               }
               if (state is BrandLoading) {
                 return const Center(

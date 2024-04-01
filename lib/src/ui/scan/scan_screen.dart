@@ -100,111 +100,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     }
   }
 
-  // Future<void> _checkPermission(Permission permission) async {
-  //   if(Platform.isIOS){
-  //     Map<Permission, PermissionStatus> status = await [
-  //       Permission.camera,
-  //       Permission.photos,
-  //       // Permission.storage,
-  //     ].request();
-  //     if (status == PermissionStatus.granted) {
-  //       print('Permission granted');
-  //       _showPicker(context: context);
-  //     } else if (status == PermissionStatus.denied) {
-  //       print(
-  //           'Permission denied. Show a dialog and again ask for the permission');
-  //       _showPermissionDialog();
-  //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //       print('Take the user to the settings page.');
-  //       openSettings();
-  //     }
-  //   }
-  //   // if (Platform.isAndroid) {
-  //   //   final androidInfo = await DeviceInfoPlugin().androidInfo;
-  //   //   if (androidInfo.version.sdkInt <= 32) {
-  //   //     /// use [Permissions.storage.status]
-  //   //     var status = await Permission.storage.status;
-  //   //     if (status == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (status == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //
-  //   //     /// use [Permissions.photos.status]
-  //   //     var nwStatus = await Permission.photos.status;
-  //   //     if (nwStatus == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (nwStatus == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (nwStatus == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //   } else {
-  //   //     Map<Permission, PermissionStatus> status = await [
-  //   //       Permission.camera,
-  //   //       Permission.photos,
-  //   //       Permission.storage,
-  //   //     ].request();
-  //   //     if (status == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (status == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //   }
-  //   // } else if(Platform.isIOS){
-  //   //   Map<Permission, PermissionStatus> status = await [
-  //   //     Permission.camera,
-  //   //     Permission.photos,
-  //   //     // Permission.storage,
-  //   //   ].request();
-  //   //   if (status == PermissionStatus.granted) {
-  //   //     print('Permission granted');
-  //   //     _showPicker(context: context);
-  //   //   } else if (status == PermissionStatus.denied) {
-  //   //     print(
-  //   //         'Permission denied. Show a dialog and again ask for the permission');
-  //   //     _showPermissionDialog();
-  //   //   } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //     print('Take the user to the settings page.');
-  //   //     openSettings();
-  //   //   }
-  //   // }else {
-  //   //   // Map<Permission, PermissionStatus> status = await [
-  //   //   //   Permission.camera,
-  //   //   //   Permission.photos,
-  //   //   //   Permission.storage,
-  //   //   // ].request();
-  //   //   // if (status == PermissionStatus.granted) {
-  //   //   //   print('Permission granted');
-  //   //   //   _showPicker(context: context);
-  //   //   // } else if (status == PermissionStatus.denied) {
-  //   //   //   print(
-  //   //   //       'Permission denied. Show a dialog and again ask for the permission');
-  //   //   //   _showPermissionDialog();
-  //   //   // } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //   //   print('Take the user to the settings page.');
-  //   //   //   openSettings();
-  //   //   // }
-  //   // }
-  //   // final status = await permission.request();
-  // }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -486,7 +381,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
+                               "Oops! Looks like you’ve already scanned this one.",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -535,7 +430,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
+                                "Oops! Looks like we’re facing some issue scanning this receipt",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,

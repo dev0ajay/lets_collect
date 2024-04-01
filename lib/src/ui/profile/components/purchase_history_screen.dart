@@ -9,12 +9,11 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../bloc/filter_bloc/filter_bloc.dart';
 import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import '../../../model/purchase_history/purchase_history_response.dart';
 import '../../reward/components/widgets/custome_rounded_button.dart';
-import '../widgets/bar_chart_widget.dart';
+import '../widgets/purchase_history_bar_chart_widget.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
   const PurchaseHistoryScreen({super.key});
@@ -73,9 +72,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   ];
   List<PurchaseData> purchaseList = [];
 
-
-
-
   void checkSameDate(PurchaseHistoryResponse jsonData) {
     for (int i = 0; i < jsonData.data!.length; i++) {
       String currentDate = jsonData.data![i].receiptDate.toString();
@@ -132,7 +128,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             pinned: true,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Padding(
                 padding: EdgeInsets.only(top: 15.0),
@@ -172,10 +168,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                     );
                   }
                   if (state is PurchaseHistoryLoaded) {
-                    ///Sorting to do
-                    // List<PurchaseData> sortedPurchaseDataList = List.from(state.purchaseHistoryResponse.data!);
-                    // sortedPurchaseDataList = state.purchaseHistoryResponse.data?.sort((a, b) => a.receiptDate!.compareTo(b.receiptDate!));
-
                     return Column(
                       children: [
                         const SizedBox(
@@ -185,20 +177,19 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           child: Padding(
                             padding: EdgeInsets.only(top: 0),
                             child: SizedBox(
-                                child: BarChartWidget(),
+                                child: PurchaseHistoryBarChartWidget(),
                             ),
                           ),
                         ),
                         const SizedBox(
                           height: 25,
                         ),
+                        state.purchaseHistoryResponse.data!.isEmpty ? const SizedBox() :
                         Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child:Row(
                               children: [
-
                                 /// sort
-
                                 Flexible(
                                   flex: 1,
                                   child: GestureDetector(

@@ -94,29 +94,53 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                 );
               }
               if (state is HomeErrorState) {
-                return Center(
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Lottie.asset(Assets.TRY_AGAIN),
-                      const Text("state"),
+                      Expanded(
+                        flex: 4,
+                        child: Lottie.asset(Assets.TRY_AGAIN),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          state.errorMsg,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: AppColors.primaryColor),
+                        ),
+                      ),
+                      // const Spacer(),
+                      Flexible(
+                        flex: 4,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              fixedSize: const Size(100, 50),
+                              backgroundColor: AppColors.primaryColor),
+                          onPressed: () {
+                            BlocProvider.of<HomeBloc>(context)
+                                .add(GetHomeData());
+                          },
+                          child: const Text(
+                            "Try again",
+                            style:
+                                TextStyle(color: AppColors.primaryWhiteColor),
+                          ),
+                        ),
+                      ),
+                      // const Text("state"),
                     ],
                   ),
                 );
               }
 
               if (state is HomeLoaded) {
-                if (state.homeResponse.emailVerified == 1) {
-                  setState(() {
-                    ObjectFactory().prefs.setIsEmailVerified(true);
-                  });
-                  // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
-                  // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
-                  ObjectFactory().prefs.setEmailVerifiedPoints(
-                      verifiedPoints: state.homeResponse.emailVerificationPoints
-                          .toString());
-                } else if (state.homeResponse.emailVerified == 0) {
-                  ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
-                }
                 return CustomScrollView(
                   physics: const BouncingScrollPhysics(),
                   slivers: [
@@ -258,156 +282,163 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           ],
                         ),
                       ),
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 10, right: 10, bottom: 15),
                     ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 200,
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 0),
-                              child: InkWell(
-                                splashFactory: InkSplash.splashFactory,
-                                splashColor: AppColors.borderColor,
-                                onTap: () {
-                                  print("INDEX::4}");
-                                  widget.onIndexChanged(4);
-                                },
-                                child: Container(
-                                  height: getProportionateScreenHeight(160),
-                                  width: getProportionateScreenWidth(150),
-                                  decoration: BoxDecoration(
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
-                                      ),
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(-4, -2),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
-                                    // color: AppColors.primaryColor,
-                                    gradient: const RadialGradient(
-                                      center: Alignment(0, 1),
-                                      radius: 0,
-                                      colors: [
-                                        Color(0xFFFFCACE),
-                                        Color(0xFFF55562),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Flexible(
-                                        flex: 3,
-                                        child: Center(
-                                          child:
-                                              Image.asset(Assets.SCAN, scale: 6)
-                                                  .animate()
-                                                  .shake(
-                                                    duration: const Duration(
-                                                        milliseconds: 400),
-                                                  ),
+                    SliverPadding(
+                      sliver: SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 0),
+                                child: InkWell(
+                                  splashFactory: InkSplash.splashFactory,
+                                  splashColor: AppColors.borderColor,
+                                  onTap: () {
+                                    print("INDEX::4}");
+                                    widget.onIndexChanged(4);
+                                  },
+                                  child: Container(
+                                    height: getProportionateScreenHeight(160),
+                                    width: getProportionateScreenWidth(150),
+                                    decoration: BoxDecoration(
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 2),
+                                          spreadRadius: 0,
                                         ),
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(-4, -2),
+                                          spreadRadius: 0,
+                                        ),
+                                      ],
+                                      // color: AppColors.primaryColor,
+                                      gradient: const RadialGradient(
+                                        center: Alignment(0, 1),
+                                        radius: 0,
+                                        colors: [
+                                          Color(0xFFFFCACE),
+                                          Color(0xFFF55562),
+                                        ],
                                       ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: Text(
-                                          "Scan",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.primaryWhiteColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Flexible(
+                                          flex: 3,
+                                          child: Center(
+                                            child: Image.asset(Assets.SCAN,
+                                                    scale: 6)
+                                                .animate()
+                                                .shake(
+                                                  duration: const Duration(
+                                                      milliseconds: 400),
+                                                ),
                                           ),
                                         ),
-                                      )
-                                    ],
+                                        Flexible(
+                                          flex: 1,
+                                          child: Text(
+                                            "Scan",
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color:
+                                                  AppColors.primaryWhiteColor,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 0),
-                              child: InkWell(
-                                onTap: () {
-                                  print("INDEX::1}");
-                                  widget.onIndexChanged(1);
-                                },
-                                child: Container(
-                                  height: getProportionateScreenHeight(160),
-                                  width: getProportionateScreenWidth(150),
-                                  decoration: BoxDecoration(
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
-                                      ),
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(-4, -2),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
-                                    // color: AppColors.primaryColor,
-                                    gradient: const RadialGradient(
-                                      center: Alignment(0, 1),
-                                      radius: 0,
-                                      colors: [
-                                        Color(0xFF6B78A3),
-                                        Color(0xFF111B3E)
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Flexible(
-                                        flex: 3,
-                                        child: Center(
-                                          child: Image.asset(Assets.WALLET,
-                                                  scale: 9)
-                                              .animate()
-                                              .shake(
-                                                duration: const Duration(
-                                                    milliseconds: 400),
-                                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 0),
+                                child: InkWell(
+                                  onTap: () {
+                                    print("INDEX::1}");
+                                    widget.onIndexChanged(1);
+                                  },
+                                  child: Container(
+                                    height: getProportionateScreenHeight(160),
+                                    width: getProportionateScreenWidth(150),
+                                    decoration: BoxDecoration(
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 2),
+                                          spreadRadius: 0,
                                         ),
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(-4, -2),
+                                          spreadRadius: 0,
+                                        ),
+                                      ],
+                                      // color: AppColors.primaryColor,
+                                      gradient: const RadialGradient(
+                                        center: Alignment(0, 1),
+                                        radius: 0,
+                                        colors: [
+                                          Color(0xFF6B78A3),
+                                          Color(0xFF111B3E)
+                                        ],
                                       ),
-                                      Flexible(
-                                        flex: 1,
-                                        child: Text(
-                                          "Total points \n ${state.homeResponse.totalPoints} pts",
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.primaryWhiteColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Flexible(
+                                          flex: 3,
+                                          child: Center(
+                                            child: Image.asset(Assets.WALLET,
+                                                    scale: 9)
+                                                .animate()
+                                                .shake(
+                                                  duration: const Duration(
+                                                      milliseconds: 400),
+                                                ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Flexible(
+                                          flex: 1,
+                                          child: Text(
+                                            "Total points \n ${state.homeResponse.totalPoints} pts",
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w700,
+                                              color:
+                                                  AppColors.primaryWhiteColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
+                      padding: const EdgeInsets.only(top: 10),
                     ),
                     SliverPadding(
                       sliver: SliverToBoxAdapter(
@@ -451,7 +482,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               children: [
                                 SizedBox(
                                   // color: Colors.green,
-                                  height: getProportionateScreenHeight(130),
+                                  height: getProportionateScreenHeight(150),
                                   child: CarouselSlider(
                                     items: List.generate(
                                         state.homeResponse.data!.brands!.length,
@@ -472,7 +503,10 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     left: 5,
                                                     bottom: 5),
                                                 child: Container(
-                                                  padding: const EdgeInsets.all(5),
+                                                  height: 200,
+                                                  width: getProportionateScreenWidth(150),
+                                                  padding:
+                                                      const EdgeInsets.all(5),
                                                   margin:
                                                       const EdgeInsets.all(9),
                                                   decoration:
@@ -592,45 +626,50 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         ),
                       ),
                       padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 0, bottom: 8),
+                          left: 10, right: 10, top: 10, bottom: 8),
                     ),
-                    SliverPadding(
-                      sliver: SliverToBoxAdapter(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Special Offers for you",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.go('/special_offer');
-                              },
-                              child: SizedBox(
-                                height: 25,
-                                width: 50,
-                                child: Center(
-                                  child: Text(
-                                    "View all",
-                                    textAlign: TextAlign.center,
+                    state.homeResponse.data!.offers!.isEmpty
+                        ? const SliverToBoxAdapter(
+                            child: SizedBox(),
+                          )
+                        : SliverPadding(
+                            sliver: SliverToBoxAdapter(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Special Offers for you",
                                     style: GoogleFonts.roboto(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      context.go('/special_offer');
+                                    },
+                                    child: SizedBox(
+                                      height: 25,
+                                      width: 50,
+                                      child: Center(
+                                        child: Text(
+                                          "View all",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      padding:
-                          const EdgeInsets.only(left: 15, right: 15, top: 15),
-                    ),
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 15),
+                          ),
                     SliverPadding(
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -680,7 +719,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         height:
                                             getProportionateScreenHeight(170),
                                         width:
-                                            MediaQuery.of(context).size.width,
+                                            getProportionateScreenWidth(300),
+                                            // MediaQuery.of(context).size.width,
                                         // padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:

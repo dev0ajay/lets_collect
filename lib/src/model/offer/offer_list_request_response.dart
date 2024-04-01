@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final offerListRequestResponse = offerListRequestResponseFromJson(jsonString);
 
 import 'dart:convert';
 

@@ -19,14 +19,7 @@ class SpecialOfferScreenDetails extends StatefulWidget {
       _SpecialOfferScreenDetailsState();
 }
 
-
-
-
 class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,8 +76,7 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                       fadeInCurve: Curves.easeIn,
-                      fadeInDuration:
-                      const Duration(milliseconds: 200),
+                      fadeInDuration: const Duration(milliseconds: 200),
                       placeholder: (context, url) => SizedBox(
                         height: 40,
                         width: 40,
@@ -92,8 +84,7 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                           Assets.JUMBINGDOT,
                         ),
                       ),
-                      errorWidget: (context, url, error) =>
-                      const ImageIcon(
+                      errorWidget: (context, url, error) => const ImageIcon(
                         color: AppColors.hintColor,
                         AssetImage(Assets.NO_IMG),
                       ),
@@ -117,109 +108,112 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
               ),
             ),
             const SizedBox(height: 20),
-
             Flexible(
               // flex: 2,
               child: Text(
                 widget.offerDetailsArguments.offerDetailText,
-                style:  const TextStyle(
-                color: AppColors.primaryColor2,
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-              ),
+                style: const TextStyle(
+                  color: AppColors.primaryColor2,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const SizedBox(height: 20),
-
-            Flexible(child: RichText(
-              softWrap: true,
-              maxLines: 1,
-              text: TextSpan(
-                text: 'Start Date: ',
-                style: const TextStyle(
-                    color: AppColors.primaryColor2,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: "Fonarto"
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: widget.offerDetailsArguments.endDate,
-                    style: const TextStyle(
-                        color: AppColors.secondaryButtonColor,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w300,
-                        fontFamily: "Fonarto"
+            Flexible(
+              child: RichText(
+                softWrap: true,
+                maxLines: 1,
+                text: TextSpan(
+                  text: 'Start Date: ',
+                  style: const TextStyle(
+                      color: AppColors.primaryColor2,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Fonarto"),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: widget.offerDetailsArguments.endDate,
+                      style: const TextStyle(
+                          color: AppColors.secondaryButtonColor,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: "Fonarto"),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),),
+            ),
             const SizedBox(height: 20),
-
-            Flexible(child: RichText(
-              overflow: TextOverflow.clip,
-              softWrap: true,
-              maxLines: 1,
-              text: TextSpan(
-                text: 'End Date: ',
-                style: const TextStyle(
+            Flexible(
+              child: RichText(
+                overflow: TextOverflow.clip,
+                softWrap: true,
+                maxLines: 1,
+                text: TextSpan(
+                  text: 'End Date: ',
+                  style: const TextStyle(
                     color: AppColors.primaryColor2,
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
                     fontFamily: "Fonarto",
+                  ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: widget.offerDetailsArguments.endDate,
+                      style: const TextStyle(
+                        color: AppColors.secondaryButtonColor,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: "Fonarto",
+                      ),
+                    ),
+                  ],
                 ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: widget.offerDetailsArguments.endDate,
-                    style: const TextStyle(
-                      color: AppColors.secondaryButtonColor,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Fonarto",
+              ),
+            ),
+            const SizedBox(height: 20),
+            widget.offerDetailsArguments.storeList.isEmpty
+                ? const SizedBox()
+                : Flexible(
+                    // flex: 1,
+                    child: Text(
+                      "Find this exclusive offer at: ",
+                      style: GoogleFonts.openSans(
+                        decoration: TextDecoration.underline,
+                        color: AppColors.primaryColor2,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),),
-            const SizedBox(height: 20),
-
-            Flexible(
-                // flex: 1,
-                child: Text("Find this exclusive offer at: ",
-                    style: GoogleFonts.openSans(
-                      decoration: TextDecoration.underline,
-                  color: AppColors.primaryColor2,
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                ),
-                ),
-            ),
             const SizedBox(height: 10),
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                    growable: true,
-                    widget.offerDetailsArguments.storeList.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "\u2022 ${widget.offerDetailsArguments.storeList[index]}",
-                        style: GoogleFonts.openSans(
-                          color: AppColors.primaryColor2,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+            widget.offerDetailsArguments.storeList.isEmpty
+                ? const SizedBox()
+                : Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(
+                          growable: true,
+                          widget.offerDetailsArguments.storeList.length,
+                          (index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "\u2022 ${widget.offerDetailsArguments.storeList[index]}",
+                              style: GoogleFonts.openSans(
+                                color: AppColors.primaryColor2,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),

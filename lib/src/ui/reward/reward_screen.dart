@@ -32,7 +32,6 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isRewardTierSelected = false;
 
    ScrollController _scrollController = ScrollController();
-  final bool _isAppBarVisible = false;
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -51,12 +50,12 @@ class _RewardScreenState extends State<RewardScreen> {
     "Points Low",
     "Points High",
   ];
-
-  // int selected = 0;
   String letsCollectTotalPoints = "0";
   bool lastStatus = true;
   double height = 250;
 
+
+  ///Scoll Listerner
   void _scrollListener() {
     if (_isShrink != lastStatus) {
       setState(() {
@@ -83,7 +82,6 @@ class _RewardScreenState extends State<RewardScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_scrollListener);
-    // _scrollController.addListener(_scrollListener);
     BlocProvider.of<FilterBloc>(context).add(GetBrandAndCategoryFilterList());
     BlocProvider.of<RewardTierBloc>(context).add(
       RewardTierRequestEvent(
@@ -4372,17 +4370,52 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    state.errorMsg,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Try again",
+                      style:
+                      TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
@@ -4518,17 +4551,52 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                 Flexible(
+                  flex: 2,
+                  child: Text(
+                    state.errorMsg,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Try again",
+                      style:
+                      TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
@@ -4646,17 +4714,52 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                 Flexible(
+                  flex: 2,
+                  child: Text(
+                    state.errorMsg,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Try again",
+                      style:
+                      TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );

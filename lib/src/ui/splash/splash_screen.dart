@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _loadWidget() async {
     var duration = Duration(seconds: splashDelay);
     // registerNotification();
+    // initializePrefs();
     return Timer(duration, navigationPage);
   }
 
@@ -39,6 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
           : context.go('/login');
     }
   }
+
+
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
         print(value);
       }
     });
+
 
   }
 

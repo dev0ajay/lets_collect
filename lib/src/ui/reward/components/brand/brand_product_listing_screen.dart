@@ -10,7 +10,6 @@ import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_a
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 import '../widgets/custome_rounded_button.dart';
@@ -610,7 +609,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                         horizontal: 15),
                                     child: Container(
                                       // height: 40,
-                                      color: Colors.white,
+                                      color: AppColors.primaryWhiteColor,
                                       child: Column(
                                         children: [
                                           Row(
@@ -755,12 +754,56 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
           );
         }
         if (state is BrandAndPartnerProductErrorState) {
-          return Center(
-            heightFactor: getProportionateScreenHeight(15),
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
+                Expanded(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                 Expanded(
+                  flex: 2,
+                  child: Text(
+                    state.errorMsg,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                // const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<BrandAndPartnerProductBloc>(context).add(
+                        GetBrandAndPartnerProductRequest(
+                          brandAndPartnerProductRequest: BrandAndPartnerProductRequest(
+                            sort: "",
+                            eligible: "",
+                            brandId: widget.redeemScreenArguments.iD.toString(),
+                            redemptionTier: "2",
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Try again",
+                      style:
+                      TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );

@@ -755,17 +755,62 @@ class _PartnerProductListingScreenState
           );
         }
         if (state is BrandAndPartnerProductErrorState) {
-          return Center(
-            heightFactor: getProportionateScreenHeight(15),
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
+                Expanded(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                 Expanded(
+                  flex: 2,
+                  child: Text(
+                    state.errorMsg,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                // const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<BrandAndPartnerProductBloc>(context).add(
+                        GetBrandAndPartnerProductRequest(
+                          brandAndPartnerProductRequest: BrandAndPartnerProductRequest(
+                            sort: "",
+                            eligible: "",
+                            brandId: widget.redeemScreenArguments.iD.toString(),
+                            redemptionTier: "3",
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      "Try again",
+                      style:
+                      TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
         }
         if (state is BrandAndPartnerProductLoaded) {
+
           if (state.brandAndPartnerProductRequestResponse.data!.rewards!
               .isNotEmpty) {
             return GridView.builder(

@@ -107,11 +107,8 @@ class AlertOverlayState extends State<AlertOverlay>
                                 ),
                               ),
                               onPressed: () {
-                                setState(() {
-
-                                  // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
-                                  ObjectFactory().prefs.setIsEmailNotVerifiedCalled(true);
-                                });
+                                ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
+                                ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
                                 context.pop();
                               },
                             ),

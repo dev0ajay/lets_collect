@@ -26,7 +26,6 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
-
 import 'my_profile_screen_arguments.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -129,7 +128,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   final List<String> Gender = ["M", "F"];
 
   File? galleryFile;
-
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
@@ -335,7 +333,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       _pickImage();
     } else if (status.isDenied) {
       print("Permission Denied");
-      _showPermissionDialog(_scaffoldKey.currentContext!);
+      _showPermissionDialog(context);
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
 
@@ -447,7 +445,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                       floating: true,
                       delegate: CustomSliverDelegate(
                         checkPermission: checkPermissionForGallery,
-                        expandedHeight: 150,
+                        expandedHeight: 190,
                         myProfileArguments: widget.myProfileArguments,
                         filePath: _image!,
                       ),
@@ -2422,26 +2420,26 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
       child: TextFormField(
         controller: widget.controller,
         style: GoogleFonts.openSans(
-          color: AppColors.primaryBlackColor,
+          color: AppColors.primaryGrayColor,
           fontSize: 16,
           fontWeight: FontWeight.w400,
         ),
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: GoogleFonts.openSans(
-            color: AppColors.hintColor,
+            color: AppColors.primaryGrayColor,
             fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
-            borderSide: const BorderSide(width: 1, color: Color(0xFFE6ECFF)),
+            borderSide: const BorderSide(width: 1, color: AppColors.borderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.primaryColor2),
           ),
-          fillColor: Colors.white,
+          fillColor: AppColors.primaryWhiteColor,
           filled: true,
           contentPadding:
               const EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
@@ -2487,7 +2485,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
     return Stack(
       children: [
         Container(
-          height: 200,
+          height: 250,
           decoration: const BoxDecoration(
             color: AppColors.primaryColor,
             borderRadius: BorderRadius.only(
