@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,8 @@ import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart'
 import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
+
+import '../widgets/bar_chart_widget.dart';
 
 class PointTrackerScreen extends StatefulWidget {
   const PointTrackerScreen({super.key});
@@ -248,12 +251,18 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                     return Column(
                       children: [
                         const SizedBox(height: 15),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: PointTrackerChart(),
+                        const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 0),
+                            child: SizedBox(
+                              child: PointTrackerChart(),
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 15),
-                        state.pointTrackerRequestResponse.data.isEmpty ? const SizedBox() : Padding(
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
                             padding:
                                 const EdgeInsets.only(left: 15.0, right: 15),
                             child: Row(
@@ -340,7 +349,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               TextOverflow.ellipsis,
                                                                           style: Theme.of(context)
                                                                               .textTheme
-                                                                              .bodyLarge!
+                                                                              .bodyText1!
                                                                               .copyWith(
                                                                                 fontSize: 15,
                                                                               ),
@@ -731,7 +740,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                                           state.superMarketListResponse.data![index].supermarketName.toString(),
                                                                                           softWrap: true,
                                                                                           overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                                                                                 fontSize: 15,
                                                                                               ),
                                                                                         ),
@@ -815,8 +824,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               color: AppColors.secondaryColor,
                                                                               AssetImage(Assets.DOWN_ARROW),
                                                                             ),
-                                                                      title: const Text(
-                                                                          "Month and Year"),
+                                                                      title: const Text("Month and Year"),
                                                                     ),
                                                                   ),
                                                                   isMonthFilterTileSelected ==
@@ -998,6 +1006,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                             child: Container(
                                                               decoration:
                                                                   const BoxDecoration(
+
                                                                 color: AppColors
                                                                     .primaryWhiteColor,
                                                                 borderRadius:
@@ -1010,6 +1019,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       .circular(
                                                                           20.0),
                                                                 ),
+
                                                               ),
                                                               child: Padding(
                                                                 padding: const EdgeInsets
@@ -1168,7 +1178,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                             color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            boxShadow: const [
+                                            boxShadow: [
                                               BoxShadow(
                                                 color: AppColors.boxShadow,
                                                 blurRadius: 4,

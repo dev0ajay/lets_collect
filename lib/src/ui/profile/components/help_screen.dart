@@ -8,9 +8,9 @@ import 'package:lets_collect/src/ui/profile/profile_screen.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
@@ -37,7 +37,8 @@ class _HelpScreenState extends State<HelpScreen> {
               color: AppColors.primaryWhiteColor,
             )),
         title: Text(
-          "Help Center",
+          AppLocalizations.of(context)!.helpcenter,
+          // "Help Center",
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -93,8 +94,10 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/how_to_redeem');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "How to redeem my points ?"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "How to redeem my points ?"
+                          labelText: AppLocalizations.of(context)!.howtoredeemmypoints,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     // InkWell(
@@ -123,24 +126,30 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/point_calculation');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Point Calculations"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Point Calculations"
+                        labelText: AppLocalizations.of(context)!.pointcalculations,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         context.push('/terms_and_condition');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Terms and Conditions"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Terms and Conditions"
+                        labelText: AppLocalizations.of(context)!.termsandconditionds,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         context.push('/privacy_policies');
                       },
-                      child: const ProfileDetailsListTileWidget(
-                          labelText: "Privacy policies"),
+                      child:  ProfileDetailsListTileWidget(
+                          // labelText: "Privacy policies"
+                        labelText: AppLocalizations.of(context)!.privacypolicy,
+                      ),
                     ),
                     const SizedBox(height: 15),
                     GestureDetector(
@@ -148,9 +157,9 @@ class _HelpScreenState extends State<HelpScreen> {
                         context.push('/contact_us');
                         print("contact_us tapped");
                       },
-                      child: const ProfileDetailsListTileWidget(
-                        labelText: "Need more help"
-                        // AppLocalizations.of(context)!.needmorehelp,
+                      child:  ProfileDetailsListTileWidget(
+                        // labelText: "Need more help"
+                        labelText : AppLocalizations.of(context)!.needmorehelp,
                       ),
                     ),
 

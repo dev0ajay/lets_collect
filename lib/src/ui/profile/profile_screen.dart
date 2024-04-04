@@ -5,8 +5,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_event.dart';
+import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
@@ -15,10 +17,10 @@ import 'package:lets_collect/src/ui/profile/widgets/log_out_alert_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../bloc/country_bloc/country_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import 'components/my_profile_screen_arguments.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -32,79 +34,79 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserver{
   bool networkSuccess = false;
 
-  // void showLanguageBottomSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.only(
-  //         topLeft: Radius.circular(20.0),
-  //         topRight: Radius.circular(20.0),
-  //       ),
-  //     ),
-  //     builder: (context) {
-  //       return Padding(
-  //         padding: const EdgeInsets.all(16.0),
-  //         child: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Text(
-  //               AppLocalizations.of(context)!.changelanguage,
-  //               style: GoogleFonts.openSans(
-  //                 color: AppColors.secondaryColor,
-  //                 fontSize: 18,
-  //                 fontWeight: FontWeight.w700,
-  //               ),
-  //             ),
-  //             const SizedBox(height: 16.0),
-  //             BlocBuilder<LanguageBloc, LanguageState>(
-  //               builder: (context, state) {
-  //                 return ListView.separated(
-  //                   shrinkWrap: true,
-  //                   itemCount: Language.values.length,
-  //                   itemBuilder: (context, index) {
-  //                     return ListTile(
-  //                       onTap: () {
-  //                         context.read<LanguageBloc>().add(ChangeLanguage(
-  //                             selectedLanguage: Language.values[index]));
-  //                         Future.delayed(const Duration(milliseconds: 300))
-  //                             .then((value) => Navigator.of(context).pop());
-  //                       },
-  //                       leading: ClipOval(
-  //                         child: Language.values[index].image.image(
-  //                           height: 32.0,
-  //                           width: 32.0,
-  //                         ),
-  //                       ),
-  //                       title: Text(Language.values[index].text),
-  //                       trailing:
-  //                       Language.values[index] == state.selectedLanguage
-  //                           ? Icon(Icons.check_circle_rounded,
-  //                           color: AppColors.secondaryColor)
-  //                           : null,
-  //                       shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(10.0),
-  //                         side: Language.values[index] == state.selectedLanguage
-  //                             ? BorderSide(color: Colors.grey, width: 1.5)
-  //                             : BorderSide(color: Colors.grey[300]!),
-  //                       ),
-  //                       tileColor:
-  //                       Language.values[index] == state.selectedLanguage
-  //                           ? Colors.grey
-  //                           : null,
-  //                     );
-  //                   },
-  //                   separatorBuilder: (context, index) {
-  //                     return const SizedBox(height: 16.0);
-  //                   },
-  //                 );
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  void showLanguageBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.changelanguage,
+                style: GoogleFonts.openSans(
+                  color: AppColors.secondaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              BlocBuilder<LanguageBloc, LanguageState>(
+                builder: (context, state) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: Language.values.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          context.read<LanguageBloc>().add(ChangeLanguage(
+                              selectedLanguage: Language.values[index]));
+                          Future.delayed(const Duration(milliseconds: 300))
+                              .then((value) => Navigator.of(context).pop());
+                        },
+                        leading: ClipOval(
+                          child: Language.values[index].image.image(
+                            height: 32.0,
+                            width: 32.0,
+                          ),
+                        ),
+                        title: Text(Language.values[index].text),
+                        trailing:
+                        Language.values[index] == state.selectedLanguage
+                            ? const Icon(Icons.check_circle_rounded,
+                            color: AppColors.secondaryColor)
+                            : null,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: Language.values[index] == state.selectedLanguage
+                              ? const BorderSide(color: Colors.grey, width: 1.5)
+                              : BorderSide(color: Colors.grey[300]!),
+                        ),
+                        tileColor:
+                        Language.values[index] == state.selectedLanguage
+                            ? Colors.grey
+                            : null,
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 16.0);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
 
 
@@ -114,6 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
+    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
+    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
 
   @override
@@ -292,70 +296,76 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                               ),
 
                               ///Language Selection
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     showLanguageBottomSheet(context);
-                              //   },
-                              //   child: Container(
-                              //     height: 40,
-                              //     decoration: BoxDecoration(
-                              //       borderRadius: BorderRadius.circular(10.0),
-                              //       color: Colors.white,
-                              //       boxShadow: const [
-                              //         BoxShadow(
-                              //           color: Color(0x4F000000),
-                              //           blurRadius: 4.10,
-                              //           offset: Offset(2, 4),
-                              //           spreadRadius: 0,
-                              //         ),
-                              //       ],
-                              //     ),
-                              //     child: Padding(
-                              //       padding: const EdgeInsets.only(
-                              //           top: 8.0,
-                              //           bottom: 8.0,
-                              //           right: 8.0,
-                              //           left: 8.0),
-                              //       child: Row(
-                              //         mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //         children: [
-                              //           Text(
-                              //             AppLocalizations.of(context)!
-                              //                 .changelanguage,
-                              //             style: GoogleFonts.roboto(
-                              //               fontSize: 16,
-                              //               fontWeight: FontWeight.w500,
-                              //               fontStyle: FontStyle.normal,
-                              //               letterSpacing:
-                              //               0, // This is the default value for normal line height
-                              //             ),
-                              //           ),
-                              //           SizedBox(
-                              //             width: 150,
-                              //           ),
-                              //           Container(
-                              //             height: 20,
-                              //             child: BlocBuilder<LanguageBloc,
-                              //                 LanguageState>(
-                              //               builder: (context, state) {
-                              //                 return state
-                              //                     .selectedLanguage.image
-                              //                     .image();
-                              //               },
-                              //             ),
-                              //           ),
-                              //           const Icon(
-                              //             Icons.arrow_forward_ios_sharp,
-                              //             size: 19,
-                              //           )
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ).animate().then(delay: 200.ms).slideY(),
+                              GestureDetector(
+                                onTap: () {
+                                  showLanguageBottomSheet(context);
+                                },
+                                child: Container(
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: Colors.white,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 4,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: Color(0x4F000000),
+                                        blurRadius: 2,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8.0,
+                                        right: 8.0,
+                                        left: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .changelanguage,
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing:
+                                            0, // This is the default value for normal line height
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 150,
+                                        ),
+                                        Container(
+                                          height: 20,
+                                          child: BlocBuilder<LanguageBloc,
+                                              LanguageState>(
+                                            builder: (context, state) {
+                                              return state
+                                                  .selectedLanguage.image
+                                                  .image();
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ).animate().then(delay: 200.ms).slideY(),
+
                               const SizedBox(
-                                height: 20,
+                                height: 18,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 0),
@@ -419,8 +429,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     );
                                     print("MyProfile tapped!");
                                   },
-                                  labelText: "My Profile",
-                                  // AppLocalizations.of(context)!.myprofile,
+                                  // labelText: "My Profile",
+                                  labelText : AppLocalizations.of(context)!.myprofile,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -437,9 +447,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     context.push("/Point_Tracker");
                                     print("Point Tracker tapped!");
                                   },
-                                  labelText: "Point Tracker",
-                                  // AppLocalizations.of(context)!
-                                  //     .pointtracker,
+                                  // labelText: "Point Tracker",
+                                  labelText : AppLocalizations.of(context)!.pointtracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -473,9 +482,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     // );
                                     context.push("/redemption");
                                   },
-                                  labelText: "Redemption Tracker",
-                                  // AppLocalizations.of(context)!
-                                  //     .redemptiontracker,
+                                  // labelText: "Redemption Tracker",
+                                  labelText : AppLocalizations.of(context)!.redemptiontracker,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -492,9 +500,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     context.push("/Purchase_History");
                                     print("Purchase History tapped!");
                                   },
-                                  labelText: "Purchase History",
-                                  // AppLocalizations.of(context)!
-                                  //     .purchasehistory,
+                                  // labelText: "Purchase History",
+                                  labelText : AppLocalizations.of(context)!.purchasehistory,
                                   textStyle: GoogleFonts.roboto(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
@@ -511,8 +518,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     context.push('/help');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: "Help",
-                                    // AppLocalizations.of(context)!.help,
+                                    // labelText: "Help",
+                                    labelText : AppLocalizations.of(context)!.help,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -530,9 +537,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     context.push('/notification');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: "Notification center",
-                                    // AppLocalizations.of(context)!
-                                    //     .notificationcenter,
+                                    // labelText: "Notification center",
+                                    labelText : AppLocalizations.of(context)!.notificationcenter,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -547,29 +553,11 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          content: SizedBox(
-                                            height:
-                                                getProportionateScreenHeight(
-                                                    260),
-                                            width: getProportionateScreenWidth(
-                                                320),
-                                            child: Lottie.asset(Assets.SOON),
-                                          ),
-                                        );
-                                      },
-                                    );
+                                    context.push('/referral');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: "Refer a friend",
-                                    // AppLocalizations.of(context)!
-                                    //     .referafriend,
+                                    // labelText: "Refer a friend",
+                                    labelText : AppLocalizations.of(context)!.referafriend,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -591,9 +579,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     );
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    labelText: "Delete Account",
-                                    // AppLocalizations.of(context)!
-                                    //     .referafriend,
+                                    // labelText: "Delete Account",
+                                    labelText : AppLocalizations.of(context)!.deleteaccount,
                                     textStyle: GoogleFonts.roboto(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -620,8 +607,9 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                         builder: (BuildContext context) =>
                                             const LogOutAlertOverlay());
                                   },
-                                  child: const Text(
-                                    "Log out",
+                                  child:  Text(
+                                    AppLocalizations.of(context)!.logout,
+                                    // "Log out",
                                     style: TextStyle(
                                       color: AppColors.secondaryColor,
                                     ),
@@ -649,7 +637,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,

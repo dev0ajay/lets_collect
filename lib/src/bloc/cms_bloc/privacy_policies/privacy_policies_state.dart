@@ -19,3 +19,11 @@ class PrivacyPoliciesLoaded extends PrivacyPoliciesState {
   @override
   List<Object> get props => [privacyPoliciesResponse];
 }
+
+class PrivacyPoliciesErrorState extends PrivacyPoliciesState {
+  final String errorMsg;
+  const PrivacyPoliciesErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+

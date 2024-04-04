@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
-
 import '../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import '../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogOutAlertOverlay extends StatefulWidget {
   const LogOutAlertOverlay({super.key});
@@ -66,7 +66,8 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                         padding: const EdgeInsets.only(
                             top: 40.0, left: 20.0, right: 20.0),
                         child: Text(
-                          "Are you sure you want to log out?",
+                          AppLocalizations.of(context)!.areyousureyouwanttologout,
+                          // "Are you sure you want to log out?",
                           style: GoogleFonts.openSans(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -97,13 +98,13 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                     .signOut();
                                 ObjectFactory().prefs.setIsLoggedIn(false);
                                 ObjectFactory().prefs.setUserName(userName: "");
-                                ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
                                 // ObjectFactory().prefs.clearPrefs();
                                 // ignore: use_build_context_synchronously
                                 context.go('/login');
                               },
                               child: Text(
-                                "Yes",
+                                AppLocalizations.of(context)!.yes,
+                                // "Yes",
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   color: AppColors.primaryWhiteColor,
@@ -122,7 +123,8 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                 context.pop();
                               },
                               child: Text(
-                                "No",
+                                AppLocalizations.of(context)!.no,
+                                // "No",
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   color: AppColors.primaryWhiteColor,

@@ -17,6 +17,9 @@ class PrivacyPoliciesBloc extends Bloc<PrivacyPoliciesEvent, PrivacyPoliciesStat
       if(stateModel is SuccessState) {
         emit(PrivacyPoliciesLoaded(privacyPoliciesResponse: stateModel.value));
       }
+      if(stateModel is ErrorState){
+        emit(PrivacyPoliciesErrorState(errorMsg: stateModel.msg));
+      }
     });
   }
 }

@@ -27,13 +27,13 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
       //Create OAuth credentials from auth object
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken
       );
 
       //Login to firebase using credentials
       final userCredentials = await _auth.signInWithCredential(credential);
-      
+
       emit(GoogleSignInSuccess(user: userCredentials.user!));
 
 
@@ -41,7 +41,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
     } catch(e) {
       print(e);
-      emit(GoogleSignInError());
+      emit(GoogleSignInError(error: e.toString()));
     }
   }
 
@@ -58,15 +58,15 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
   }
 
 
-  // void signInSilently() async{
-  //   try {
-  //     // final userAccount = await googleSignIn.signIn();
-  //     if(userAccount != null) {
-  //
-  //     }
-  //     // emit(GoogleSignInLoggedOut());
-  //
-  //   } catch(e) {}
-  // }
+// void signInSilently() async{
+//   try {
+//     // final userAccount = await googleSignIn.signIn();
+//     if(userAccount != null) {
+//
+//     }
+//     // emit(GoogleSignInLoggedOut());
+//
+//   } catch(e) {}
+// }
 
 }

@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lets_collect/src/utils/data/object_factory.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../constants/colors.dart';

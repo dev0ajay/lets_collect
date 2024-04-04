@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/search/category/search_category_request.dart';
@@ -11,6 +14,7 @@ import 'package:lottie/lottie.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../utils/screen_size/size_config.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -21,16 +25,13 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
-  final bool _isError = false;
+  bool _isError = false;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<SearchBloc>(context).add(
-      GetSearchEvent(
-        searchCategoryRequest: SearchCategoryRequest(searchText: ''),
-      ),
-    );
+    BlocProvider.of<SearchBloc>(context).add(GetSearchEvent(
+        searchCategoryRequest: SearchCategoryRequest(searchText: '')));
   }
 
   @override
@@ -68,7 +69,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 title: Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: Text(
-                    Strings.FIND_YOUR_FAVOURITE,
+                    AppLocalizations.of(context)!.findyourfavourite,
+                    // Strings.FIND_YOUR_FAVOURITE,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryWhiteColor,
                       fontSize: 24,
@@ -93,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Expanded(
                           flex: 6,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left: 20,right: 20),
                             child: Container(
                               height: 40,
                               decoration: BoxDecoration(
@@ -135,7 +137,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   );
                                 },
                                 controller: searchController,
-                                placeholder: Strings.SEARCH_SCREEN_HINT,
+                                // placeholder: Strings.SEARCH_SCREEN_HINT,
+                                placeholder: AppLocalizations.of(context)!.searchcategory,
                                 placeholderStyle: const TextStyle(
                                   color: AppColors.primaryGrayColor,
                                 ),
@@ -184,28 +187,24 @@ class _SearchScreenState extends State<SearchScreen> {
           body: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is SearchErrorState) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
+                return Center(
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex: 3,
                         child: Lottie.asset(Assets.TRY_AGAIN),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Text(
                           state.msg,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: AppColors.primaryColor),
+                          style: const TextStyle(
+                              color: AppColors.primaryWhiteColor),
                         ),
                       ),
-                      // const Spacer(),
+                      const Spacer(),
                       Flexible(
-                        flex: 4,
+                        flex: 1,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -216,14 +215,15 @@ class _SearchScreenState extends State<SearchScreen> {
                           onPressed: () {
                             BlocProvider.of<SearchBloc>(context).add(
                               GetSearchEvent(
-                                searchCategoryRequest: SearchCategoryRequest(searchText: ''),
+                                searchCategoryRequest:
+                                    SearchCategoryRequest(searchText: ''),
                               ),
                             );
                           },
-                          child: const Text(
-                            "Try again",
-                            style:
-                                TextStyle(color: AppColors.primaryWhiteColor),
+                          child:  Text(
+                            AppLocalizations.of(context)!.tryagain,
+                            // "Try again",
+                            style: const TextStyle(color: AppColors.primaryWhiteColor),
                           ),
                         ),
                       ),
@@ -259,18 +259,18 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemBuilder: (context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        if (state
-                            .searchCategoryRequestResponse.data!.isNotEmpty) {
+                        if (state.searchCategoryRequestResponse.data!.isNotEmpty) {
                           context.push(
                             "/search_brand",
                             extra: SearchScreenArguments(
-                                categoryId: state.searchCategoryRequestResponse
-                                    .data![index].id
-                                    .toString(),
-                                category: state.searchCategoryRequestResponse
-                                    .data![index].departmentName!),
+                              categoryId: state.searchCategoryRequestResponse.data![index].id.toString(),
+                              category: context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                  ? state.searchCategoryRequestResponse.data![index].departmentName!
+                                  : state.searchCategoryRequestResponse.data![index].departmentNameArabic!,
+                            ),
                           );
-                        } else {
+                        }
+                        else {
                           print("No data available. Cannot navigate.");
                         }
                       },

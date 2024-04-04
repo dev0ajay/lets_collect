@@ -23,7 +23,7 @@ import '../../utils/data/object_factory.dart';
 
 class AuthDataProvider{
 
-///Register
+  ///Register
   Future<StateModel?> registerUser(SignupRequest signupRequest) async {
     try {
       final response = await ObjectFactory().apiClient.registerUser(signupRequest);
@@ -66,7 +66,7 @@ class AuthDataProvider{
 
 
 
-///Login
+  ///Login
   Future<StateModel?> loginRequest(LoginRequest loginRequest) async {
     try {
       final response = await ObjectFactory().apiClient.loginRequest(

@@ -2,6 +2,7 @@
 //
 //     final contactUsRequest = contactUsRequestFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ContactUsRequest contactUsRequestFromJson(String str) => ContactUsRequest.fromJson(json.decode(str));

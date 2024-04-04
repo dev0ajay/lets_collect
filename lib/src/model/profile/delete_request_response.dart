@@ -2,6 +2,7 @@
 //
 //     final deleteAccountRequestResponse = deleteAccountRequestResponseFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 DeleteAccountRequestResponse deleteAccountRequestResponseFromJson(String str) => DeleteAccountRequestResponse.fromJson(json.decode(str));

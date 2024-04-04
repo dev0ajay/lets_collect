@@ -20,3 +20,10 @@ class ContactUsLoaded extends ContactUsState {
   @override
   List<Object> get props => [contactUsRequestResponse];
 }
+
+class ContactUsErrorState extends ContactUsState {
+  final String errorMsg;
+  const ContactUsErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}

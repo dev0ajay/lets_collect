@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -240,31 +239,18 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                         ),
                       ),
                       GestureDetector(
-                        onTap: () async {
-                          if (selectedImages.isEmpty) {
-                            if (Platform.isAndroid) {
-                              final androidInfo =
-                                  await DeviceInfoPlugin().androidInfo;
-                              if (androidInfo.version.sdkInt <= 32) {
-                                checkPermissionForStorage(Permission.storage,
-                                    _scaffoldKey.currentContext!);
-                              } else {
-                                checkPermissionForStorage(Permission.photos,
-                                    _scaffoldKey.currentContext!);
-                              }
-                            } else if (Platform.isIOS) {
-                              checkPermissionForStorage(Permission.storage,
-                                  _scaffoldKey.currentContext!);
-                            }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: AppColors.secondaryButtonColor,
-                                content:
-                                    Text("Please choose either one option"),
-                              ),
-                            );
-                          }
+                        onTap: () {
+                          selectedImages.isEmpty
+                              ? checkPermissionForStorage(
+                                  Permission.storage, context)
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor:
+                                        AppColors.secondaryButtonColor,
+                                    content:
+                                        Text("Please choose either one option"),
+                                  ),
+                                );
                         },
                         child: Center(
                           child: ImageIcon(
@@ -545,6 +531,11 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                                 onPressed: () {
                                   context.pop();
                                   _removeFile();
+                                  // BlocProvider.of<ScanBloc>(context).add(
+                                  //   ScanReceiptHistoryEvent(
+                                  //       scanReceiptHistoryRequest: scanReceiptHistoryRequest
+                                  //   ),
+                                  // );
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -564,56 +555,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             Flexible(
                               flex: 2,
                               child: Text(
-                                "Oops! Looks like you’ve already scanned this one.",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.openSans(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  );
-                } else if (state.scanReceiptRequestResponse.success == false) {
-                  return AlertDialog(
-                    backgroundColor: AppColors.primaryWhiteColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    elevation: 5,
-                    alignment: Alignment.center,
-                    content: SizedBox(
-                        height: getProportionateScreenHeight(260),
-                        width: getProportionateScreenWidth(320),
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                onPressed: () {
-                                  context.pop();
-                                  _removeFile();
-                                },
-                                icon: const Icon(Icons.close),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Flexible(
-                              flex: 3,
-                              child: Center(
-                                child: Image.asset(
-                                  Assets.APP_LOGO,
-                                  height: 95,
-                                  width: 150,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            Flexible(
-                              flex: 2,
-                              child: Text(
-                                "Oops! Looks like we’re facing some issue scanning this receipt",
+                                state.scanReceiptRequestResponse.message!,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,

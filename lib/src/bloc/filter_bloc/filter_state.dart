@@ -35,6 +35,6 @@ class SupermarketFilterLoaded extends FilterState {
   final SuperMarketListResponse superMarketListResponse;
   const SupermarketFilterLoaded({required this.superMarketListResponse});
   @override
-  List<Object> get props => [SuperMarketListResponse];
+  List<Object> get props => [superMarketListResponse];
 }
 

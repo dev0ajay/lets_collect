@@ -5,7 +5,7 @@ import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firs
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
 import 'package:lets_collect/src/ui/notification/notification_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/contact_us.dart';
-import 'package:lets_collect/src/ui/profile/components/how_to_redeem_my_points.dart';
+import 'package:lets_collect/src/ui/profile/components/how_to_redeem_my_points_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_calculation_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/point_tracker_screen.dart';
@@ -13,6 +13,7 @@ import 'package:lets_collect/src/ui/profile/components/purchase_history_details_
 import 'package:lets_collect/src/ui/profile/components/purchase_history_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/redem_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/redemption_details_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/refer_a_friend.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
@@ -48,6 +49,8 @@ import '../src/ui/scan/components/scan_detail_screen_argument.dart';
 import '../src/ui/scan/scan_screen.dart';
 
 class AppRouter {
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final GoRouter _router = GoRouter(
     // errorBuilder: (context, state) => ErrorScreen(error:state.error),
@@ -69,7 +72,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -91,7 +94,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -113,7 +116,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -137,7 +140,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -158,7 +161,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -179,7 +182,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -192,7 +195,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: LetsCollectRedeemScreen(
                     redeemScreenArguments:
-                        state.extra as LetCollectRedeemScreenArguments,
+                    state.extra as LetCollectRedeemScreenArguments,
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
@@ -203,7 +206,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -216,7 +219,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: BrandProductListingScreen(
                     redeemScreenArguments:
-                        state.extra as LetCollectRedeemScreenArguments,
+                    state.extra as LetCollectRedeemScreenArguments,
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
@@ -227,7 +230,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -240,7 +243,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: PartnerProductListingScreen(
                     redeemScreenArguments:
-                        state.extra as LetCollectRedeemScreenArguments,
+                    state.extra as LetCollectRedeemScreenArguments,
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
@@ -251,7 +254,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -272,7 +275,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -293,7 +296,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -314,7 +317,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -327,7 +330,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: SearchDetailsScreen(
                       searchScreenArguments:
-                          state.extra as SearchScreenArguments),
+                      state.extra as SearchScreenArguments),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -337,7 +340,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -358,7 +361,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -379,7 +382,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -392,7 +395,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: ForgetPasswordOtpScreen(
                       forgotPasswordArguments:
-                          state.extra as ForgotPasswordArguments),
+                      state.extra as ForgotPasswordArguments),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -402,7 +405,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -423,7 +426,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -445,7 +448,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -466,7 +469,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -487,7 +490,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -508,7 +511,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -529,7 +532,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -552,7 +555,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -565,7 +568,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: RedeemScreen(
                     brandAndPartnerRedeemArguments:
-                        state.extra as BrandAndPartnerRedeemArguments,
+                    state.extra as BrandAndPartnerRedeemArguments,
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
@@ -576,7 +579,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -589,7 +592,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: ScanHistoryDetailsScreen(
                     scanDetailsScreenArgument:
-                        state.extra as ScanDetailsScreenArgument,
+                    state.extra as ScanDetailsScreenArgument,
                     onIndexChanged: (int) {},
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
@@ -601,7 +604,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -614,7 +617,7 @@ class AppRouter {
                   key: state.pageKey,
                   child: QrCodeGenerationScreen(
                       qrCodeScreenArguments:
-                          state.extra as QrCodeScreenArguments),
+                      state.extra as QrCodeScreenArguments),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -624,7 +627,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -645,7 +648,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -667,7 +670,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -688,7 +691,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -709,7 +712,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -730,7 +733,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -751,7 +754,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -772,7 +775,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -793,7 +796,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -814,7 +817,7 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -840,7 +843,28 @@ class AppRouter {
                     // value
                     return FadeTransition(
                       opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
+                      CurveTween(curve: Curves.easeIn).animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'referral',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const ReferralScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    // Change the opacity of the screen using a Curve based on the the animation's
+                    // value
+                    return FadeTransition(
+                      opacity:
+                      CurveTween(curve: Curves.easeIn).animate(animation),
                       child: child,
                     );
                   },
@@ -849,7 +873,7 @@ class AppRouter {
         ],
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>
-            const SplashScreen(),
+        const SplashScreen(),
       ),
     ],
   );

@@ -20,6 +20,7 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -159,7 +160,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                     SnackBar(
                       backgroundColor: AppColors.secondaryColor,
                       content: Text(
-                        "Some Error Happened",
+                        AppLocalizations.of(context)!.someerroroccurred,
+                        // "Some Error Happened",
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                         ),
@@ -186,8 +188,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                             color: AppColors.primaryWhiteColor,
                           )),
                       title: Text(
-                        "Contact us",
-                        // AppLocalizations.of(context)!.contactus,
+                        // "Contact us",
+                        AppLocalizations.of(context)!.contactus,
                         style: GoogleFonts.openSans(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
@@ -238,8 +240,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                   ],
                                 ),
                                 child: MyTextField(
-                                  hintText: "Subject",
-                                  // AppLocalizations.of(context)!.subject,
+                                  // hintText: "Subject",
+                                  hintText : AppLocalizations.of(context)!.subject,
                                   obscureText: false,
                                   maxLines: 1,
                                   controller: subjectController,
@@ -272,8 +274,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                 child: SizedBox(
                                   height: 150,
                                   child: MyTextField(
-                                    hintText: "Message",
-                                    // AppLocalizations.of(context)!.message,
+                                    // hintText: "Message",
+                                    hintText : AppLocalizations.of(context)!.message,
                                     obscureText: false,
                                     controller: messageController,
                                     maxLines: 10,
@@ -313,9 +315,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                                   MainAxisAlignment.spaceAround,
                                               children: [
                                                 Text(
-                                                  "Supporting image",
-                                                  // AppLocalizations.of(context)!
-                                                  //     .supportingimage,
+                                                  // "Supporting image",
+                                                  AppLocalizations.of(context)!.supportingimage,
                                                   style: GoogleFonts.roboto(
                                                     color: AppColors
                                                         .primaryBlackColor,
@@ -345,7 +346,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                                           300),
                                                   child: Center(
                                                     child: Text(
-                                                        "Selected File: ${_pickedFile!.path.split("/").last}"),
+                                                        "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
                                                     // '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
                                                   ),
                                                 ),
@@ -374,7 +375,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                               )
                                   .animate()
                                   .scale(delay: 200.ms, duration: 300.ms),
-                              const SizedBox(
+                              SizedBox(
                                 height: 20,
                               ),
                               Padding(
@@ -394,9 +395,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     return MyButton(
                                       Textfontsize: 16,
                                       TextColors: Colors.white,
-                                      text: "Submit",
-                                      // AppLocalizations.of(context)!
-                                      //     .singupbuttonsubmit,
+                                      // text: "Submit",
+                                      text : AppLocalizations.of(context)!.submit,
                                       color: AppColors.secondaryColor,
                                       width: 340,
                                       height: 40,
@@ -422,9 +422,9 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                           print("Photo = $imageUploadFormated");
                                         } else {
                                           Fluttertoast.showToast(
-                                            msg: "All Fields are important",
-                                            // AppLocalizations.of(context)!
-                                            //     .allfieldsareimportant,
+                                            // msg: "All Fields are important",
+                                           msg:  AppLocalizations.of(context)!
+                                                .allfieldsareimportant,
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
                                             backgroundColor:
@@ -459,7 +459,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,
@@ -480,14 +481,16 @@ class _ContactUsScreenState extends State<ContactUsScreen>
         builder: (BuildContext permissionDialogContext) {
           return AlertDialog(
             title: Text(
-              "Permission Denied!",
+              AppLocalizations.of(context)!.permissiondenied,
+              // "Permission Denied!",
               style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
             content: Text(
-              "To continue file upload allow access to files and storage.",
+              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
+              // "To continue file upload allow access to files and storage.",
               style: GoogleFonts.openSans(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -499,7 +502,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                   context.pop();
                 },
                 child: Text(
-                  "Cancel",
+                  AppLocalizations.of(context)!.cancel,
+                  // "Cancel",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -512,7 +516,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                   context.pop();
                 },
                 child: Text(
-                  "Settings",
+                  AppLocalizations.of(context)!.settings,
+                  // "Settings",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -555,8 +560,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               ),
               const SizedBox(height: 10),
               Text(
-                "Thank you for contacting us",
-                // AppLocalizations.of(context)!.thankyouforcontactingus,
+                // "Thank you for contacting us",
+                AppLocalizations.of(context)!.thankyouforcontactingus,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 22,
@@ -566,8 +571,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               ),
               const SizedBox(height: 30),
               Text(
-                "We’ll get back to you as soon as we can. It may take up to 3 working days.",
-                // AppLocalizations.of(context)!.wewillgetbackto,
+                // "We’ll get back to you as soon as we can. It may take up to 3 working days.",
+                AppLocalizations.of(context)!.wewillgetbackto,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
@@ -580,8 +585,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                 child: MyButton(
                   Textfontsize: 16,
                   TextColors: Colors.white,
-                  text: "Ok",
-                  // AppLocalizations.of(context)!.ok,
+                  // text: "Ok",
+                  text : AppLocalizations.of(context)!.ok,
                   color: AppColors.secondaryColor,
                   height: 40,
                   // Adjust the height as needed

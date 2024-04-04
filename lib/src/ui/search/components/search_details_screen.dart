@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
@@ -13,8 +15,8 @@ import 'package:lets_collect/src/ui/search/search_screen_arguments.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../model/search/category/search_category_request.dart'; // Import the url_launcher package
+import '../../../model/search/category/search_category_request.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchDetailsScreen extends StatefulWidget {
   final SearchScreenArguments searchScreenArguments;
@@ -123,7 +125,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                         Expanded(
                             flex: 6,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20),
+                              padding: const EdgeInsets.only(left: 20,right: 20),
                               child: Container(
                                 height: 40,
                                 decoration: BoxDecoration(
@@ -142,7 +144,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     )),
                                 child: CupertinoTextField(
                                   controller: _searchController,
-                                  placeholder: Strings.SEARCH_DETAIL_HINT,
+                                  placeholder: AppLocalizations.of(context)!.searchbrand,
+                                  // placeholder: Strings.SEARCH_DETAIL_HINT,
                                   placeholderStyle: const TextStyle(
                                     color: AppColors.primaryGrayColor,
                                   ),
@@ -217,28 +220,24 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
           body: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is BrandErrorState) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
+                return Center(
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        flex: 4,
+                        flex: 3,
                         child: Lottie.asset(Assets.TRY_AGAIN),
                       ),
-                      Expanded(
+                      Flexible(
                         flex: 2,
                         child: Text(
                           state.msg,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: AppColors.primaryColor),
+                          style: const TextStyle(
+                              color: AppColors.primaryWhiteColor),
                         ),
                       ),
-                      // const Spacer(),
+                      const Spacer(),
                       Flexible(
-                        flex: 4,
+                        flex: 1,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -248,19 +247,17 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                               backgroundColor: AppColors.primaryColor),
                           onPressed: () {
                             BlocProvider.of<SearchBloc>(context).add(
-                              GetBrandEvent(
-                                searchBrandRequest: SearchBrandRequest(
-                                  departmentId: widget.searchScreenArguments.categoryId,
-                                  searchText: '',
-                                  page: '1',
-                                ),
+                              GetSearchEvent(
+                                searchCategoryRequest:
+                                    SearchCategoryRequest(searchText: ''),
                               ),
                             );
                           },
-                          child: const Text(
-                            "Try again",
+                          child:  Text(
+                            AppLocalizations.of(context)!.tryagain,
+                            // "Try again",
                             style:
-                            TextStyle(color: AppColors.primaryWhiteColor),
+                                const TextStyle(color: AppColors.primaryWhiteColor),
                           ),
                         ),
                       ),
@@ -268,7 +265,6 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                     ],
                   ),
                 );
-
               }
               if (state is BrandLoading) {
                 return const Center(

@@ -7,6 +7,7 @@ import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.da
 import 'package:lottie/lottie.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Login_screen extends StatefulWidget {
   const Login_screen({super.key});
@@ -33,7 +34,8 @@ class _Login_screenState extends State<Login_screen> {
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryWhiteColor,
                     fontSize: 20,
