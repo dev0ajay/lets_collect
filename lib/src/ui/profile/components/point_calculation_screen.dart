@@ -5,12 +5,12 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/cms_bloc/point_calculations/point_calculations_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
+import '../../../bloc/point_calculation/point_calculations_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PointCalculationsScreen extends StatefulWidget {
@@ -43,10 +43,11 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             color: AppColors.primaryWhiteColor,
-          ),),
+          ),
+        ),
         title: Text(
-          // "Point Calculations",
           AppLocalizations.of(context)!.pointcalculations,
+          // "Point Calculations",
           style: GoogleFonts.openSans(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -61,7 +62,7 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
           }
         },
         builder: (context, state) {
-          if(state is NetworkSuccess){
+          if (state is NetworkSuccess) {
             return BlocBuilder<PointCalculationsBloc, PointCalculationsState>(
               builder: (context, state) {
                 if (state is PointCalculationsLoading) {
@@ -72,51 +73,6 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
                     ),
                   );
                 }
-
-                if (state is PointCalculationsErrorState) {
-                  return Center(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Lottie.asset(Assets.TRY_AGAIN),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Text(
-                            state.errorMsg,
-                            style: const TextStyle(
-                                color: AppColors.primaryWhiteColor),
-                          ),
-                        ),
-                        const Spacer(),
-                        Flexible(
-                          flex: 1,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(9),
-                                ),
-                                fixedSize: const Size(100, 50),
-                                backgroundColor: AppColors.primaryColor),
-                            onPressed: () {
-                              BlocProvider.of<PointCalculationsBloc>(context)
-                                  .add(GetPointCalculationsEvent());
-                            },
-                            child:  Text(
-                              // "Try again",
-                              AppLocalizations.of(context)!.tryagain,
-                              style:
-                              const TextStyle(color: AppColors.primaryWhiteColor),
-                            ),
-                          ),
-                        ),
-                        // const Text("state"),
-                      ],
-                    ),
-                  );
-                }
-
                 if (state is PointCalculationsLoaded) {
                   return SingleChildScrollView(
                     child: Html(
@@ -124,28 +80,26 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
                         data: state.pointCalculationsResponse != null
                             ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
                             ? state.pointCalculationsResponse.data.pageContent
-                            : state.pointCalculationsResponse.data.pageTitleArabic )
+                            : state.pointCalculationsResponse.data.pageContentArabic )
                             : ""
                     ),
                   );
                 }
-                // return const Center(
-                //   child: Text("No Data to show"),
-                // );
                 return  Center(
-                  child: Text(AppLocalizations.of(context)!.nodatashow),
+                    child: Text(AppLocalizations.of(context)!.nodatashow)
+                  // Text("No Data to show"),
                 );
               },
             );
-          }else if (state is NetworkFailure) {
+          } else if (state is NetworkFailure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    // "You are not connected to the internet",
                     AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                    // "You are not connected to the internet",
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,

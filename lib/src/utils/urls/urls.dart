@@ -9,14 +9,13 @@ class UrlsLetsCollect {
   static const String COUNTRY_URL = "/api/lcadmin/country_list";
 
 
-
-
   /// login screen
   static const String  LOGIN_URL= "/api/login";
   static const String  FORGOT_PASSWORD_EMAIL= "/api/forgotpassword";
   static const String  FORGOT_PASSWORD_OTP= "/api/forgotpassword_otp_verification";
   static const String  FORGOT_PASSWORD_RESET= "/api/recover_password";
   static const String  GOOGLE_LOGIN= "/api/google_login";
+  static const String  APPLE_SIGNIN= "/api/apple_login";
 
 
   ///Search Category
@@ -53,12 +52,6 @@ class UrlsLetsCollect {
 
 
 
-
-
-
-
-
-
   ///Reward Screen
   static const String BRAND_AND_CATEGORY_LIST = "/api/lcuser/brand_category_list";
   static const String REWARD_TIER_REQUEST = "/api/lcuser/rewards";
@@ -80,9 +73,6 @@ class UrlsLetsCollect {
   ///Point Tracker
   static const String POINT_TRACKER = "/api/lcuser/point_history";
   static const String POINT_TRACKER_DETAILS = "/api/lcuser/point_history_details";
-
-
-
 
 
 

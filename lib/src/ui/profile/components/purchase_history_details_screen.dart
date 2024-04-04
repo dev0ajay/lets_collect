@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
 import 'package:lottie/lottie.dart';
 import '../../../model/purchase_history/purchase_history_details_request.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PurchaseHistoryDetailsScreen extends StatefulWidget {
   final String receiptId;
@@ -28,7 +31,7 @@ class _PurchaseHistoryDetailsScreenState
     BlocProvider.of<PurchaseHistoryBloc>(context).add(
       GetPurchaseHistoryDetails(
         purchaseHistoryDetailsRequest:
-            PurchaseHistoryDetailsRequest(purchaseId: widget.receiptId),
+        PurchaseHistoryDetailsRequest(purchaseId: widget.receiptId),
       ),
     );
   }
@@ -68,8 +71,7 @@ class _PurchaseHistoryDetailsScreenState
                     ],
                   );
                 } else if (state is PurchaseHistoryDetailsLoaded) {
-                  if (state
-                      .purchaseHistoryDetailsResponse.data.itemData.isEmpty) {
+                  if (state.purchaseHistoryDetailsResponse.data.itemData.isEmpty) {
                     return Center(
                       child: Lottie.asset(Assets.OOPS),
                     );
@@ -118,13 +120,13 @@ class _PurchaseHistoryDetailsScreenState
                                     const SizedBox(height: 20),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           flex: 0,
                                           child: Text(
-                                            "Date",
-                                            // AppLocalizations.of(context)!.date,
+                                            // "Date",
+                                            AppLocalizations.of(context)!.date,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -135,9 +137,7 @@ class _PurchaseHistoryDetailsScreenState
                                         Flexible(
                                           flex: 1,
                                           child: Text(
-                                            state.purchaseHistoryDetailsResponse
-                                                .data.receiptData.receiptDate
-                                                .toString(),
+                                            state.purchaseHistoryDetailsResponse.data.receiptData.receiptDate.toString(),
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -150,14 +150,13 @@ class _PurchaseHistoryDetailsScreenState
                                     const SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           flex: 0,
                                           child: Text(
-                                            "Super market",
-                                            // AppLocalizations.of(context)!
-                                            //     .supermarket,
+                                            // "Super market",
+                                            AppLocalizations.of(context)!.supermarket,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -168,23 +167,11 @@ class _PurchaseHistoryDetailsScreenState
                                         Flexible(
                                           flex: 1,
                                           child: Text(
-                                            state.purchaseHistoryDetailsResponse
-                                                .data.receiptData.branch,
-                                            // context
-                                            //     .read<LanguageBloc>()
-                                            //     .state
-                                            //     .selectedLanguage ==
-                                            //     Language.english
-                                            //     ? state
-                                            //     .purchaseHistoryDetailsResponse
-                                            //     .data
-                                            //     .receiptData
-                                            //     .branch
-                                            //     : state
-                                            //     .purchaseHistoryDetailsResponse
-                                            //     .data
-                                            //     .receiptData
-                                            //     .branch,
+                                            // state.purchaseHistoryDetailsResponse
+                                            //     .data.receiptData.branch,
+                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                ? state.purchaseHistoryDetailsResponse.data.receiptData.branch
+                                                : state.purchaseHistoryDetailsResponse.data.receiptData.branch,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -197,14 +184,13 @@ class _PurchaseHistoryDetailsScreenState
                                     const SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Expanded(
                                           flex: 0,
                                           child: Text(
-                                            "Total item",
-                                            // AppLocalizations.of(context)!
-                                            //     .totalitem,
+                                            // "Total item",
+                                            AppLocalizations.of(context)!.totalitem,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -215,12 +201,7 @@ class _PurchaseHistoryDetailsScreenState
                                         Flexible(
                                           flex: 1,
                                           child: Text(
-                                            state
-                                                .purchaseHistoryDetailsResponse
-                                                .data
-                                                .receiptData
-                                                .totalNoOfProducts
-                                                .toString(),
+                                            state.purchaseHistoryDetailsResponse.data.receiptData.totalNoOfProducts.toString(),
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -268,26 +249,13 @@ class _PurchaseHistoryDetailsScreenState
                                         vertical: 15, horizontal: 16),
                                     leading: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          state.purchaseHistoryDetailsResponse
-                                              .data.itemData[index].itemName,
-                                          // context
-                                          //     .read<LanguageBloc>()
-                                          //     .state
-                                          //     .selectedLanguage ==
-                                          //     Language.english
-                                          //     ? state
-                                          //     .purchaseHistoryDetailsResponse
-                                          //     .data
-                                          //     .itemData[index]
-                                          //     .itemName
-                                          //     : state
-                                          //     .purchaseHistoryDetailsResponse
-                                          //     .data
-                                          //     .itemData[index]
-                                          //     .itemName,
+                                          // state.purchaseHistoryDetailsResponse.data.itemData[index].itemName,
+                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                              ? state.purchaseHistoryDetailsResponse.data.itemData[index].itemName
+                                              : state.purchaseHistoryDetailsResponse.data.itemData[index].itemName,
                                           style: GoogleFonts.roboto(
                                             color: AppColors.primaryBlackColor,
                                             fontSize: 13,
@@ -304,6 +272,7 @@ class _PurchaseHistoryDetailsScreenState
                                         ),
                                         Text(
                                           "Point Tier",
+                                          // AppLocalizations.of(context)!.pointtier,
                                           style: GoogleFonts.roboto(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
@@ -312,6 +281,7 @@ class _PurchaseHistoryDetailsScreenState
                                       ],
                                     ),
                                     trailing: Text(
+                                      // "${AppLocalizations.of(context)!.bhd} ${state.purchaseHistoryDetailsResponse.data.itemData[index].itemPrice}",
                                       "${state.purchaseHistoryDetailsResponse.data.receiptData.currencyCode} ${state.purchaseHistoryDetailsResponse.data.itemData[index].itemPrice}",
                                       style: GoogleFonts.openSans(
                                         color: AppColors.secondaryButtonColor,
@@ -366,8 +336,8 @@ class _PurchaseHistoryDetailsScreenState
                           size: 18, color: AppColors.primaryWhiteColor),
                     ),
                     Text(
-                      "Purchase History",
-                      // AppLocalizations.of(context)!.purchasehistory,
+                      // "Purchase History",
+                      AppLocalizations.of(context)!.purchasehistory,
                       style: GoogleFonts.openSans(
                         fontStyle: FontStyle.normal,
                         color: AppColors.primaryWhiteColor,

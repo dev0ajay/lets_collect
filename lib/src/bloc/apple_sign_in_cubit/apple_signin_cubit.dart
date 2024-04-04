@@ -1,11 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
-
 import '../../utils/data/object_factory.dart';
-
 part 'apple_signin_state.dart';
 
 class AppleSignInCubit extends Cubit<AppleSignInState> {

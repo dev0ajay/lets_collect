@@ -6,12 +6,12 @@ enum Language {
   english(
     Locale('en', 'US'),
     Assets.english,
-    'English',
+    'english',
   ),
   arabic(
     Locale('ar', 'ar_AE'),
     Assets.arabic,
-    'Arabic',
+    'arabic',
   );
 
   const Language(this.value, this.image, this.text);

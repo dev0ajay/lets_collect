@@ -100,27 +100,6 @@ class _HelpScreenState extends State<HelpScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // InkWell(
-                    //   onTap: () {
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) {
-                    //         return AlertDialog(
-                    //           shape: RoundedRectangleBorder(
-                    //               borderRadius:
-                    //               BorderRadius.circular(10)),
-                    //           content: SizedBox(
-                    //             height: getProportionateScreenHeight(260),
-                    //             width: getProportionateScreenWidth(320),
-                    //             child: Lottie.asset(Assets.SOON),
-                    //           ),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    //   child: const ProfileDetailsListTileWidget(
-                    //       labelText: "Point Calculations"),
-                    // ),
 
                     GestureDetector(
                       onTap: () {
@@ -138,7 +117,7 @@ class _HelpScreenState extends State<HelpScreen> {
                       },
                       child:  ProfileDetailsListTileWidget(
                           // labelText: "Terms and Conditions"
-                        labelText: AppLocalizations.of(context)!.termsandconditionds,
+                        labelText: AppLocalizations.of(context)!.termsandconditions,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -163,25 +142,6 @@ class _HelpScreenState extends State<HelpScreen> {
                       ),
                     ),
 
-                    // InkWell(
-                    //   onTap: () {
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (BuildContext context) {
-                    //         return AlertDialog(
-                    //           shape: RoundedRectangleBorder(
-                    //               borderRadius:
-                    //               BorderRadius.circular(10)),
-                    //           content: SizedBox(
-                    //             height: getProportionateScreenHeight(260),
-                    //             width: getProportionateScreenWidth(320),
-                    //             child: Lottie.asset(Assets.SOON),
-                    //           ),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    //     child: const ProfileDetailsListTileWidget(labelText: "Need more Help?")),
                   ],
                 ),
               ),

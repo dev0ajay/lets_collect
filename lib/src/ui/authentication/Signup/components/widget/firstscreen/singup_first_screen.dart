@@ -424,7 +424,7 @@ class TermsAndConditionWidget extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text :AppLocalizations.of(context)!.termsandconditionds,
+              text :AppLocalizations.of(context)!.termsandconditions,
               // text: 'Terms and Conditions\n',
               style: GoogleFonts.openSans(
                 color: AppColors.secondaryColor,

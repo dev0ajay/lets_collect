@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:meta/meta.dart';
-
 part 'google_sign_in_state.dart';
 
 class GoogleSignInCubit extends Cubit<GoogleSignInState> {
@@ -41,7 +40,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
     } catch(e) {
       print(e);
-      emit(GoogleSignInError(error: e.toString()));
+      emit(GoogleSignInError());
     }
   }
 

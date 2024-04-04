@@ -34,5 +34,7 @@ class MyProfileArguments{
         required this.city_name,
         required this.country_name_en});
 
+  get city_name_ar => null;
+
 
 }

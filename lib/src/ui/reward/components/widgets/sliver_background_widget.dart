@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/constants/assets.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../constants/colors.dart';
 
 class SliverBackgroundWidget extends StatelessWidget {
@@ -73,7 +73,8 @@ class SliverBackgroundWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Lets Collect Points",
+                  AppLocalizations.of(context)!.letscollectpoints,
+                  // "Lets Collect Points",
                   style: GoogleFonts.roboto(
                     color: AppColors.primaryWhiteColor,
                     fontSize: 12,

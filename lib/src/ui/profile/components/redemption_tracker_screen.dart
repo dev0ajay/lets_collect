@@ -117,119 +117,117 @@ class _RedemptionTrackerScreenState extends State<RedemptionTrackerScreen> {
                                 imageUrl: state.redemptionHistoryResponse.data![index].productImage.toString(),
 
                                 itemName:context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                ?state.redemptionHistoryResponse.data![index].productName.toString()
-                                :state.redemptionHistoryResponse.data![index].productNameArabic.toString(),
+                                    ?state.redemptionHistoryResponse.data![index].productName.toString()
+                                    :state.redemptionHistoryResponse.data![index].productNameArabic.toString(),
 
                                 points: state.redemptionHistoryResponse.data![index].points!.toInt(),
 
                                 time: state.redemptionHistoryResponse.data![index].redeemDate.toString(),
 
                                 store:context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                 ? state.redemptionHistoryResponse.data![index].supermarketName.toString()
+                                    ? state.redemptionHistoryResponse.data![index].supermarketName.toString()
                                     :state.redemptionHistoryResponse.data![index].supermarketName.toString(),
                               ),
                             ),
                           );
                         },
                         child: Container(
-                            // height: 110,
-                            // width: 325,
-                            margin: const EdgeInsets.only(
-                                left: 20, right: 20, bottom: 0, top: 20),
-                            decoration: BoxDecoration(
+                          // height: 110,
+                          // width: 325,
+                          margin: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 0, top: 20),
+                          decoration: BoxDecoration(
                               color: AppColors.primaryWhiteColor,
                               borderRadius: BorderRadius.circular(8.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColors.boxShadow,
-                                    blurRadius: 8,
-                                    offset: Offset(4, 2),
-                                    spreadRadius: 0,
-                                  ),
-                                  BoxShadow(
-                                    color: AppColors.boxShadow,
-                                    blurRadius: 8,
-                                    offset: Offset(-4, -2),
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                                border:
-                                Border.all(color: AppColors.borderColor, width: 1)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: 90,
-                                        height: 70,
-                                        child: CachedNetworkImage(
-                                          alignment: Alignment.center,
-                                          fadeInCurve: Curves.easeIn,
-                                          fadeInDuration:
-                                          const Duration(milliseconds: 200),
-                                          fit: BoxFit.contain,
-                                          imageUrl: state.redemptionHistoryResponse
-                                              .data![index].productImage.toString(),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.boxShadow,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 2),
+                                  spreadRadius: 0,
+                                ),
+                                BoxShadow(
+                                  color: AppColors.boxShadow,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -2),
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              border:
+                              Border.all(color: AppColors.borderColor, width: 1)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 90,
+                                      height: 70,
+                                      child: CachedNetworkImage(
+                                        alignment: Alignment.center,
+                                        fadeInCurve: Curves.easeIn,
+                                        fadeInDuration:
+                                        const Duration(milliseconds: 200),
+                                        fit: BoxFit.contain,
+                                        imageUrl: state.redemptionHistoryResponse
+                                            .data![index].productImage.toString(),
+                                        width: MediaQuery.of(context).size.width,
+                                        placeholder: (context, url) => SizedBox(
                                           width: MediaQuery.of(context).size.width,
-                                          placeholder: (context, url) => SizedBox(
-                                            width: MediaQuery.of(context).size.width,
-                                            child: Center(
-                                              child: Lottie.asset(
-                                                Assets.JUMBINGDOT,
-                                                height: 45,
-                                                width: 45,
-                                              ),
+                                          child: Center(
+                                            child: Lottie.asset(
+                                              Assets.JUMBINGDOT,
+                                              height: 45,
+                                              width: 45,
                                             ),
                                           ),
-                                          errorWidget: (context, url, error) => const ImageIcon(
-                                            color: AppColors.hintColor,
-                                            AssetImage(Assets.NO_IMG),
-                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) => const ImageIcon(
+                                          color: AppColors.hintColor,
+                                          AssetImage(Assets.NO_IMG),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        state.redemptionHistoryResponse.data![index]
-                                            .points
-                                            .toString(),
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      state.redemptionHistoryResponse.data![index].points.toString(),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      Text(
-                                        // "Points",
-                                        AppLocalizations.of(context)!.points,
-                                        style: GoogleFonts.roboto(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      // "Points",
+                                      AppLocalizations.of(context)!.points,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
                                       ),
-                                    ],
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 15,
-                                    color: AppColors.secondaryColor,
-                                  ),
-                                ],
-                              ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 15,
+                                  color: AppColors.secondaryColor,
+                                ),
+                              ],
                             ),
-                      ),
+                          ),
+                        ),
                       );
                     },
                   );
@@ -247,7 +245,8 @@ class _RedemptionTrackerScreenState extends State<RedemptionTrackerScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    "You are not connected to the internet",
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,

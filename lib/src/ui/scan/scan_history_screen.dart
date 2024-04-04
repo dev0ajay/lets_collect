@@ -8,6 +8,7 @@ import '../../bloc/scan_bloc/scan_bloc.dart';
 import '../../constants/assets.dart';
 import '../../model/scan_receipt/scan_receipt_history_request.dart';
 import 'components/scan_detail_screen_argument.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScanHistoryDetailsScreen extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -28,8 +29,8 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
     BlocProvider.of<ScanBloc>(context).add(
       ScanReceiptHistoryEvent(
         scanReceiptHistoryRequest: ScanReceiptHistoryRequest(pointId:
-            widget.scanDetailsScreenArgument.pointId
-            ),
+        widget.scanDetailsScreenArgument.pointId
+        ),
       ),
     );
   }
@@ -47,7 +48,8 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
           elevation: 0,
           backgroundColor: AppColors.primaryWhiteColor,
           title: Text(
-            "Scan details",
+            AppLocalizations.of(context)!.scandetails,
+            // "Scan details",
             style: GoogleFonts.openSans(
               color: AppColors.primaryColor,
               fontSize: 25,
@@ -59,7 +61,7 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
               context.go('/home');
             },
             icon:
-                const Icon(Icons.arrow_back_ios, color: AppColors.primaryColor),
+            const Icon(Icons.arrow_back_ios, color: AppColors.primaryColor),
           ),
         ),
         body: SafeArea(
@@ -88,9 +90,10 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text(
-                                        "Total Points",
-                                        style: TextStyle(
+                                      Text(
+                                        AppLocalizations.of(context)!.totalpoints,
+                                        // "Total Points",
+                                        style: const TextStyle(
                                           color: AppColors.primaryColor,
                                           fontSize: 30,
                                           fontWeight: FontWeight.w600,
@@ -121,7 +124,7 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                     padding: const EdgeInsets.only(top: 10),
                                     shrinkWrap: true,
                                     physics:
-                                        const NeverScrollableScrollPhysics(),
+                                    const NeverScrollableScrollPhysics(),
                                     itemCount: state.scanReceiptHistoryResponse
                                         .data!.length,
                                     itemBuilder: (context, index) {
@@ -135,7 +138,7 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                         decoration: BoxDecoration(
                                           color: AppColors.primaryWhiteColor,
                                           borderRadius:
-                                              BorderRadius.circular(8.0),
+                                          BorderRadius.circular(8.0),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: AppColors.boxShadow,
@@ -153,11 +156,11 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           children: [
                                             Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                               children: [
                                                 Text(state
                                                     .scanReceiptHistoryResponse
@@ -165,8 +168,8 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                                     .brandName!),
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
-                                                          top: 3.0),
+                                                  const EdgeInsets.only(
+                                                      top: 3.0),
                                                   child: Text(state
                                                       .scanReceiptHistoryResponse
                                                       .data![index]
@@ -174,10 +177,12 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
-                                                          top: 3.0),
+                                                  const EdgeInsets.only(
+                                                      top: 3.0),
                                                   child: Text(
-                                                      "Points: ${state.scanReceiptHistoryResponse.data![index].points.toString()}"),
+                                                      "${AppLocalizations.of(context)!.points} : ${state.scanReceiptHistoryResponse.data![index].points.toString()}"
+                                                    // "Points: ${state.scanReceiptHistoryResponse.data![index].points.toString()}"
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -196,19 +201,22 @@ class _ScanHistoryDetailsScreenState extends State<ScanHistoryDetailsScreen> {
                         bottom: 0,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.secondaryColor,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              )
-                            ),
-                            fixedSize: Size(MediaQuery.of(context).size.width, 50)
+                              backgroundColor: AppColors.secondaryColor,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  )
+                              ),
+                              fixedSize: Size(MediaQuery.of(context).size.width, 50)
                           ),
                           onPressed: () {
                             context.go('/home');
                           },
-                          child: const Text("Done"),
+                          child:  Text(
+                            AppLocalizations.of(context)!.done
+                              // "Done"
+                          ),
                         ),
                       ),
                     ],

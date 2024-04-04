@@ -54,7 +54,7 @@ class _HomeScreenNavigationState extends State<HomeScreenNavigation> {
             // ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
             showDialog(
                 context: context,
-                builder: (BuildContext context) => const AlertOverlay()
+                builder: (BuildContext context) => const EmailNotVerifiedAlertOverlay()
             );
           }
           else if(state.homeResponse.emailVerified == 1 && ObjectFactory().prefs.isEmailVerifiedStatus() == true) {

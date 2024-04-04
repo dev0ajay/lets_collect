@@ -15,6 +15,7 @@ import 'package:lets_collect/src/model/referral/referral_friend_request.dart';
 import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_request.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
+import '../../model/auth/apple_signin_request.dart';
 import '../../model/contact_us/contact_us_request.dart';
 import '../../model/edit_profile/edit_profile_request.dart';
 import '../../model/point_tracker/point_tracker_details_request.dart';
@@ -524,6 +525,14 @@ class ApiClient {
             "Authorization": ObjectFactory().prefs.getAuthToken(),
           }
       ),
+    );
+  }
+
+  ///Apple Sign In
+  Future<Response> signInWithApple(AppleSignInRequest appleSignInRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.APPLE_SIGNIN,
+      data: appleSignInRequest,
     );
   }
 

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,81 +33,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserver{
   bool networkSuccess = false;
 
-  void showLanguageBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.changelanguage,
-                style: GoogleFonts.openSans(
-                  color: AppColors.secondaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              BlocBuilder<LanguageBloc, LanguageState>(
-                builder: (context, state) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: Language.values.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          context.read<LanguageBloc>().add(ChangeLanguage(
-                              selectedLanguage: Language.values[index]));
-                          Future.delayed(const Duration(milliseconds: 300))
-                              .then((value) => Navigator.of(context).pop());
-                        },
-                        leading: ClipOval(
-                          child: Language.values[index].image.image(
-                            height: 32.0,
-                            width: 32.0,
-                          ),
-                        ),
-                        title: Text(Language.values[index].text),
-                        trailing:
-                        Language.values[index] == state.selectedLanguage
-                            ? const Icon(Icons.check_circle_rounded,
-                            color: AppColors.secondaryColor)
-                            : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          side: Language.values[index] == state.selectedLanguage
-                              ? const BorderSide(color: Colors.grey, width: 1.5)
-                              : BorderSide(color: Colors.grey[300]!),
-                        ),
-                        tileColor:
-                        Language.values[index] == state.selectedLanguage
-                            ? Colors.grey
-                            : null,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 16.0);
-                    },
-                  );
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-
 
 
   @override
@@ -116,8 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
 
   @override
@@ -304,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                   height: 40,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
+                                    color: AppColors.primaryWhiteColor,
                                     boxShadow: const [
                                       BoxShadow(
                                         color: AppColors.boxShadow,
@@ -341,10 +263,10 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                             0, // This is the default value for normal line height
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 150,
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: 20,
                                           child: BlocBuilder<LanguageBloc,
                                               LanguageState>(
@@ -610,7 +532,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                   child:  Text(
                                     AppLocalizations.of(context)!.logout,
                                     // "Log out",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.secondaryColor,
                                     ),
                                   ),
@@ -620,8 +542,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                           ),
                         ]),
                       ),
-                      padding: const EdgeInsets.only(
-                          top: 0, left: 15, right: 15, bottom: 110),
+                      padding:  EdgeInsets.only(
+                          top: 0, left: 15, right: 15, bottom: getProportionateScreenHeight(120)),
                     ),
                   ],
                 );
@@ -714,97 +636,79 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
       ),
     );
   }
+
 }
 
-// void _showDialogBox({
-//   required BuildContext context,
-// }) {
-//   showDialog(
-//     context: context,
-//     builder: (ctx) => SizedBox(
-//       width: 700,
-//       child: AlertDialog(
-//         backgroundColor: AppColors.primaryWhiteColor,
-//         // elevation: 5,
-//         alignment: Alignment.center,
-//         content: SizedBox(
-//           height: getProportionateScreenHeight(170),
-//           width: getProportionateScreenWidth(500),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: [
-//               Align(
-//                 alignment: Alignment.topLeft,
-//                 child: IconButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   icon: const Icon(Icons.close),
-//                 ),
-//               ),
-//               const SizedBox(height: 10),
-//               Text(
-//                 AppLocalizations.of(context)!.areyousureyouwanttologout,
-//                 textAlign: TextAlign.center,
-//                 style: GoogleFonts.openSans(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.w400,
-//                 ),
-//               ),
-//               const SizedBox(height: 40),
-//               Padding(
-//                 padding: const EdgeInsets.only(left: 10, right: 10),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Expanded(
-//                       child: MyButton(
-//                         Textfontsize: 16,
-//                         TextColors: Colors.white,
-//                         text: AppLocalizations.of(context)!.yes,
-//                         color: AppColors.secondaryColor,
-//                         height: 5,
-//                         onTap: () {
-//                           ObjectFactory().prefs.setIsLoggedIn(false);
-//                           ObjectFactory().prefs.clearPrefs();
-//                           context.go('/login');
-//                         },
-//                         showImage: false,
-//                         imagePath: '',
-//                         imagewidth: 0,
-//                         imageheight: 0,
-//                         width: 120,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       width: 20,
-//                     ),
-//                     Expanded(
-//                       child: MyButton(
-//                         Textfontsize: 16,
-//                         TextColors: Colors.white,
-//                         text: ""
-//                         // AppLocalizations.of(context)!.no,
-//                         color: AppColors.secondaryColor,
-//                         height: 5,
-//                         onTap: () {
-//                           Navigator.of(context).pop();
-//                         },
-//                         showImage: false,
-//                         imagePath: '',
-//                         imagewidth: 0,
-//                         imageheight: 0,
-//                         width: 120,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
+void showLanguageBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20.0),
+        topRight: Radius.circular(20.0),
+      ),
+    ),
+    builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppLocalizations.of(context)!.changelanguage,
+              style: GoogleFonts.openSans(
+                color: AppColors.secondaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            BlocBuilder<LanguageBloc, LanguageState>(
+              builder: (context, state) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: Language.values.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        context.read<LanguageBloc>().add(ChangeLanguage(
+                            selectedLanguage: Language.values[index]));
+                        Future.delayed(const Duration(milliseconds: 300))
+                            .then((value) => Navigator.of(context).pop());
+                      },
+                      leading: ClipOval(
+                        child: Language.values[index].image.image(
+                          height: 32.0,
+                          width: 32.0,
+                        ),
+                      ),
+                      title: Text(Language.values[index].text,style:  TextStyle(color:  Language.values[index] == state.selectedLanguage ? AppColors.primaryWhiteColor : AppColors.primaryBlackColor)),
+                      trailing:
+                      Language.values[index] == state.selectedLanguage
+                          ? const Icon(Icons.check_circle_rounded,
+                          color: AppColors.secondaryColor)
+                          : null,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: Language.values[index] == state.selectedLanguage
+                            ?  const BorderSide(color: AppColors.borderColor, width: 1.5)
+                            : const BorderSide(color: AppColors.boxShadow),
+                      ),
+                      tileColor:
+                      Language.values[index] == state.selectedLanguage
+                          ? AppColors.primaryColor
+                          : null,
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 16.0);
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}

@@ -13,6 +13,8 @@ import 'package:lottie/lottie.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 import '../widgets/custome_rounded_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class BrandProductListingScreen extends StatefulWidget {
   final LetCollectRedeemScreenArguments redeemScreenArguments;
@@ -397,8 +399,6 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                               eligibleFilter = "";
                             });
                           }
-
-                          // filterWidgets.clear();
                           return Stack(
                             children: [
                               SizedBox(
@@ -695,7 +695,8 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Brand",
+                  AppLocalizations.of(context)!.brand,
+                  // "Brand",
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

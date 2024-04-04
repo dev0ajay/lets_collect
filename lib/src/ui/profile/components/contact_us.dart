@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,6 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen>
     with WidgetsBindingObserver {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   TextEditingController subjectController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   final FocusNode _subjectFocus = FocusNode();
@@ -43,6 +43,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
   String imageBase64 = "";
   String extension = "";
   String imageUploadFormated = "";
+  List<File> selectedImages = [];
   bool networkSuccess = false;
 
   void _removeFile() {
@@ -91,6 +92,64 @@ class _ContactUsScreenState extends State<ContactUsScreen>
     }
   }
 
+  void openSettings() {
+    openAppSettings();
+  }
+
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    showDialog(
+        context: _scaffoldKey.currentContext!,
+        builder: (BuildContext permissionDialogContext) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.permissiondenied,
+              // "Permission Denied!",
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
+              // "To continue file upload allow access to files and storage.",
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  // "Cancel",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  openSettings();
+                  context.pop();
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.settings,
+                  // "Settings",
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   ///Runtime User Access and Permission handling
 
   Future<void> checkPermissionForGallery(
@@ -104,7 +163,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
       _showPermissionDialog(_scaffoldKey.currentContext!);
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
-
       openSettings();
     } else if (status.isLimited) {
       print("Permission permanently denied");
@@ -112,9 +170,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
     }
   }
 
-  void openSettings() {
-    openAppSettings();
-  }
 
   @override
   void initState() {
@@ -177,6 +232,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                     FocusScope.of(context).unfocus();
                   },
                   child: Scaffold(
+                    key: _scaffoldKey,
                     appBar: AppBar(
                       backgroundColor: AppColors.primaryColor,
                       leading: IconButton(
@@ -247,12 +303,12 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                   controller: subjectController,
                                   keyboardType: TextInputType.text,
                                   focusNode: _subjectFocus,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return '';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return '';
+                                  //   }
+                                  //   return null;
+                                  // },
                                 ),
                               )
                                   .animate()
@@ -281,12 +337,12 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     maxLines: 10,
                                     keyboardType: TextInputType.multiline,
                                     focusNode: null,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "";
-                                      }
-                                      return null;
-                                    },
+                                    // validator: (value) {
+                                    //   if (value == null || value.isEmpty) {
+                                    //     return "";
+                                    //   }
+                                    //   return null;
+                                    // },
                                   ),
                                 ),
                               )
@@ -296,7 +352,35 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                 height: 20,
                               ),
                               GestureDetector(
-                                onTap: _pickFile,
+                                onTap: () async{
+                                  if (selectedImages.isEmpty) {
+                                    if (Platform.isAndroid) {
+                                      final androidInfo =
+                                      await DeviceInfoPlugin().androidInfo;
+                                      if (androidInfo.version.sdkInt <= 32) {
+                                        checkPermissionForGallery(Permission.storage,
+                                            _scaffoldKey.currentContext!);
+                                      } else {
+                                        checkPermissionForGallery(Permission.photos,
+                                            _scaffoldKey.currentContext!);
+                                      }
+                                    } else if (Platform.isIOS) {
+                                      checkPermissionForGallery(Permission.storage,
+                                          _scaffoldKey.currentContext!);
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: AppColors.secondaryButtonColor,
+                                        content:
+                                        Text(
+                                          AppLocalizations.of(context)!.pleasechooseeitheroneoption,
+                                          // "Please choose either one option"
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 20),
                                   child: DottedBorder(
@@ -305,90 +389,90 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     radius: const Radius.circular(10),
                                     child: _pickedFile == null
                                         ? SizedBox(
-                                            height:
-                                                getProportionateScreenHeight(
-                                                    60),
-                                            width: getProportionateScreenWidth(
-                                                320),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  // "Supporting image",
-                                                  AppLocalizations.of(context)!.supportingimage,
-                                                  style: GoogleFonts.roboto(
-                                                    color: AppColors
-                                                        .primaryBlackColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 20),
-                                                const ImageIcon(
-                                                  AssetImage(Assets.UPLOAD),
-                                                  size: 20,
-                                                ),
-                                              ],
+                                      height:
+                                      getProportionateScreenHeight(
+                                          60),
+                                      width: getProportionateScreenWidth(
+                                          320),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            // "Supporting image",
+                                            AppLocalizations.of(context)!.supportingimage,
+                                            style: GoogleFonts.roboto(
+                                              color: AppColors
+                                                  .primaryBlackColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
                                             ),
-                                          )
-                                        : Row(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: SizedBox(
-                                                  height:
-                                                      getProportionateScreenHeight(
-                                                          60),
-                                                  width:
-                                                      getProportionateScreenWidth(
-                                                          300),
-                                                  child: Center(
-                                                    child: Text(
-                                                        "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
-                                                    // '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
-                                                  ),
-                                                ),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _pickedFile = null;
-                                                  });
-                                                },
-                                                child: const CircleAvatar(
-                                                  radius: 12,
-                                                  backgroundColor:
-                                                      AppColors.secondaryColor,
-                                                  child: Icon(
-                                                    Icons.delete,
-                                                    color: Colors.white,
-                                                    size: 16,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
                                           ),
+                                          const SizedBox(width: 20),
+                                          const ImageIcon(
+                                            AssetImage(Assets.UPLOAD),
+                                            size: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                        : Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          child: SizedBox(
+                                            height:
+                                            getProportionateScreenHeight(
+                                                60),
+                                            width:
+                                            getProportionateScreenWidth(
+                                                300),
+                                            child: Center(
+                                              child: Text(
+                                                  "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
+                                              // '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
+                                            ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            setState(() {
+                                              _pickedFile = null;
+                                            });
+                                          },
+                                          child: const CircleAvatar(
+                                            radius: 12,
+                                            backgroundColor:
+                                            AppColors.secondaryColor,
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )
                                   .animate()
                                   .scale(delay: 200.ms, duration: 300.ms),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
                                 child:
-                                    BlocBuilder<ContactUsBloc, ContactUsState>(
+                                BlocBuilder<ContactUsBloc, ContactUsState>(
                                   builder: (context, state) {
                                     if (state is ContactUsLoading) {
                                       return const Center(
                                         child: RefreshProgressIndicator(
                                           color: AppColors.primaryWhiteColor,
                                           backgroundColor:
-                                              AppColors.secondaryColor,
+                                          AppColors.secondaryColor,
                                         ),
                                       );
                                     }
@@ -401,20 +485,42 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                       width: 340,
                                       height: 40,
                                       onTap: () {
+
+
+                                        if (subjectController.text.isEmpty ||
+                                            messageController.text.isEmpty) {
+                                          Fluttertoast.showToast(
+                                            msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor: AppColors.secondaryColor,
+                                            textColor: AppColors.primaryWhiteColor,
+                                          );
+                                          return;
+                                        }
+
+
+                                        if (_pickedFile != null) {
+                                          Fluttertoast.showToast(
+                                            msg: " select a file from gallery",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            backgroundColor: AppColors.secondaryColor,
+                                            textColor: AppColors.primaryWhiteColor,
+                                          );
+                                          return; // Stop further execution
+                                        }
+
                                         if (_formKey.currentState!.validate() &&
                                             _pickedFile != null) {
-                                          BlocProvider.of<ContactUsBloc>(
-                                                  context)
-                                              .add(
-                                            GetContactUsEvent(
-                                              contactUsRequest:
-                                                  ContactUsRequest(
-                                                      subject: subjectController
-                                                          .text,
-                                                      message: messageController
-                                                          .text,
-                                                      supportPicture:
-                                                          imageUploadFormated),
+                                          BlocProvider.of<ContactUsBloc>(context).add(
+                                            GetContactUsEvent(contactUsRequest: ContactUsRequest(
+                                                subject: subjectController
+                                                    .text,
+                                                message: messageController
+                                                    .text,
+                                                supportPicture:
+                                                imageUploadFormated),
                                             ),
                                           );
                                           print("Subject = $subjectController");
@@ -423,14 +529,14 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                         } else {
                                           Fluttertoast.showToast(
                                             // msg: "All Fields are important",
-                                           msg:  AppLocalizations.of(context)!
+                                            msg:  AppLocalizations.of(context)!
                                                 .allfieldsareimportant,
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
                                             backgroundColor:
-                                                AppColors.secondaryColor,
+                                            AppColors.secondaryColor,
                                             textColor:
-                                                AppColors.primaryWhiteColor,
+                                            AppColors.primaryWhiteColor,
                                           );
                                         }
                                       },
@@ -475,59 +581,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
     );
   }
 
-  void _showPermissionDialog(BuildContext permissionDialogContext) {
-    showDialog(
-        context: _scaffoldKey.currentContext!,
-        builder: (BuildContext permissionDialogContext) {
-          return AlertDialog(
-            title: Text(
-              AppLocalizations.of(context)!.permissiondenied,
-              // "Permission Denied!",
-              style: GoogleFonts.openSans(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            content: Text(
-              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
-              // "To continue file upload allow access to files and storage.",
-              style: GoogleFonts.openSans(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  context.pop();
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.cancel,
-                  // "Cancel",
-                  style: GoogleFonts.roboto(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  openSettings();
-                  context.pop();
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.settings,
-                  // "Settings",
-                  style: GoogleFonts.roboto(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
-  }
+
 
   void _showDialogBox({
     required BuildContext context,

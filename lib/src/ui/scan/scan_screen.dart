@@ -19,6 +19,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -37,8 +38,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   String extension = "";
   String imageUploadFormated = "";
   final _picker = ImagePicker();
-  final Permission _permission = Permission.camera;
-  bool _checkingPermission = false;
 
   // Function to clear the picked image
   void _clearImage() {
@@ -80,7 +79,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       openSettings();
     } else if (status.isLimited) {
       print("Permission permanently denied");
-
       getImage(ImageSource.gallery);
     }
   }
@@ -102,111 +100,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       openSettings();
     }
   }
-
-  // Future<void> _checkPermission(Permission permission) async {
-  //   if(Platform.isIOS){
-  //     Map<Permission, PermissionStatus> status = await [
-  //       Permission.camera,
-  //       Permission.photos,
-  //       // Permission.storage,
-  //     ].request();
-  //     if (status == PermissionStatus.granted) {
-  //       print('Permission granted');
-  //       _showPicker(context: context);
-  //     } else if (status == PermissionStatus.denied) {
-  //       print(
-  //           'Permission denied. Show a dialog and again ask for the permission');
-  //       _showPermissionDialog();
-  //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //       print('Take the user to the settings page.');
-  //       openSettings();
-  //     }
-  //   }
-  //   // if (Platform.isAndroid) {
-  //   //   final androidInfo = await DeviceInfoPlugin().androidInfo;
-  //   //   if (androidInfo.version.sdkInt <= 32) {
-  //   //     /// use [Permissions.storage.status]
-  //   //     var status = await Permission.storage.status;
-  //   //     if (status == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (status == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //
-  //   //     /// use [Permissions.photos.status]
-  //   //     var nwStatus = await Permission.photos.status;
-  //   //     if (nwStatus == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (nwStatus == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (nwStatus == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //   } else {
-  //   //     Map<Permission, PermissionStatus> status = await [
-  //   //       Permission.camera,
-  //   //       Permission.photos,
-  //   //       Permission.storage,
-  //   //     ].request();
-  //   //     if (status == PermissionStatus.granted) {
-  //   //       print('Permission granted');
-  //   //       _showPicker(context: context);
-  //   //     } else if (status == PermissionStatus.denied) {
-  //   //       print(
-  //   //           'Permission denied. Show a dialog and again ask for the permission');
-  //   //       _showPermissionDialog();
-  //   //     } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //       print('Take the user to the settings page.');
-  //   //       openSettings();
-  //   //     }
-  //   //   }
-  //   // } else if(Platform.isIOS){
-  //   //   Map<Permission, PermissionStatus> status = await [
-  //   //     Permission.camera,
-  //   //     Permission.photos,
-  //   //     // Permission.storage,
-  //   //   ].request();
-  //   //   if (status == PermissionStatus.granted) {
-  //   //     print('Permission granted');
-  //   //     _showPicker(context: context);
-  //   //   } else if (status == PermissionStatus.denied) {
-  //   //     print(
-  //   //         'Permission denied. Show a dialog and again ask for the permission');
-  //   //     _showPermissionDialog();
-  //   //   } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //     print('Take the user to the settings page.');
-  //   //     openSettings();
-  //   //   }
-  //   // }else {
-  //   //   // Map<Permission, PermissionStatus> status = await [
-  //   //   //   Permission.camera,
-  //   //   //   Permission.photos,
-  //   //   //   Permission.storage,
-  //   //   // ].request();
-  //   //   // if (status == PermissionStatus.granted) {
-  //   //   //   print('Permission granted');
-  //   //   //   _showPicker(context: context);
-  //   //   // } else if (status == PermissionStatus.denied) {
-  //   //   //   print(
-  //   //   //       'Permission denied. Show a dialog and again ask for the permission');
-  //   //   //   _showPermissionDialog();
-  //   //   // } else if (status == PermissionStatus.permanentlyDenied) {
-  //   //   //   print('Take the user to the settings page.');
-  //   //   //   openSettings();
-  //   //   // }
-  //   // }
-  //   // final status = await permission.request();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -233,61 +126,61 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                   children: [
                     galleryFile == null
                         ? Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.only(
-                                  top: 20, left: 15, right: 15),
-                              height: getProportionateScreenHeight(450),
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryWhiteColor,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                    color: AppColors.borderColor, width: 1),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // checkPermission(Permission.camera,context);
-                                  // cameraPermissionStatus(context);
-                                  _showPicker(
-                                      context: _scaffoldKey.currentContext!);
-                                },
-                                child: Center(
-                                  child: ImageIcon(
-                                    const AssetImage(Assets.UPLOAD),
-                                    size: getProportionateScreenHeight(100),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              margin: const EdgeInsets.only(
-                                  top: 20, left: 15, right: 15),
-                              height: getProportionateScreenHeight(450),
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryWhiteColor,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                    color: AppColors.borderColor, width: 1),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // checkPermission(Permission.camera,context);
-                                  _showPicker(
-                                      context: _scaffoldKey.currentContext!);
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Image.file(
-                                    galleryFile!,
-                                  ),
-                                ),
-                              ),
-                              // width: getProportionateScreenWidth(360),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.only(
+                            top: 20, left: 15, right: 15),
+                        height: getProportionateScreenHeight(450),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: AppColors.borderColor, width: 1),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // checkPermission(Permission.camera,context);
+                            // cameraPermissionStatus(context);
+                            _showPicker(
+                                context: _scaffoldKey.currentContext!);
+                          },
+                          child: Center(
+                            child: ImageIcon(
+                              const AssetImage(Assets.UPLOAD),
+                              size: getProportionateScreenHeight(100),
                             ),
                           ),
+                        ),
+                      ),
+                    )
+                        : Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.only(
+                            top: 20, left: 15, right: 15),
+                        height: getProportionateScreenHeight(450),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: AppColors.borderColor, width: 1),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            // checkPermission(Permission.camera,context);
+                            _showPicker(
+                                context: _scaffoldKey.currentContext!);
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.file(
+                              galleryFile!,
+                            ),
+                          ),
+                        ),
+                        // width: getProportionateScreenWidth(360),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         context.push('/long_receipt');
@@ -306,7 +199,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "E-Reciept (or) Reciept too long?",
+                                  AppLocalizations.of(context)!.ereciept,
+                                  // "E-Reciept (or) Reciept too long?",
                                   style: GoogleFonts.roboto(
                                     color: AppColors.cardTextColor,
                                     fontSize: 16,
@@ -342,7 +236,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               SnackBar(
                                 backgroundColor: AppColors.secondaryColor,
                                 content: Text(
-                                  "Please choose a file.",
+                                  AppLocalizations.of(context)!.pleasechooseafile,
+                                  // "Please choose a file.",
                                   style: GoogleFonts.roboto(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
@@ -353,10 +248,13 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             );
                           }
                         },
-                        child: const SizedBox(
+                        child:  SizedBox(
                           child: Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: ScanScreenCollectButton(text: 'Collect'),
+                            padding: const EdgeInsets.all(3.0),
+                            child: ScanScreenCollectButton(
+                              text: AppLocalizations.of(context)!.collect,
+                              // 'Collect'
+                            ),
                           ),
                         ),
                       ),
@@ -418,7 +316,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                         Flexible(
                           flex: 2,
                           child: Text(
-                            "We are crunching those points for you",
+                            AppLocalizations.of(context)!.wearecruching,
+                            // "We are crunching those points for you",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.openSans(
                               fontSize: 16,
@@ -430,7 +329,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                         Flexible(
                           flex: 1,
                           child: Text(
-                            "Please hold tight !",
+                            AppLocalizations.of(context)!.pleaseholdtight,
+                            // "Please hold tight !",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
                               fontSize: 12,
@@ -489,7 +389,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
+                                AppLocalizations.of(context)!.oopslookslikeyouhavealready,
+                                // "Oops! Looks like you’ve already scanned this one.",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -500,7 +401,58 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                           ],
                         )),
                   );
-                } else {
+                } else if(state.scanReceiptRequestResponse.success == false) {
+                  return AlertDialog(
+                    backgroundColor: AppColors.primaryWhiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    alignment: Alignment.center,
+                    content: SizedBox(
+                        height: getProportionateScreenHeight(260),
+                        width: getProportionateScreenWidth(320),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: IconButton(
+                                onPressed: () {
+                                  context.pop();
+                                  _clearImage();
+                                },
+                                icon: const Icon(Icons.close),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Flexible(
+                              flex: 3,
+                              child: Center(
+                                child: Image.asset(
+                                  Assets.APP_LOGO,
+                                  height: 95,
+                                  width: 150,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                AppLocalizations.of(context)!.oopslookslikewearefacing,
+                                // "Oops! Looks like we’re facing some issue scanning this receipt",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  );
+                }
+                else {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -538,7 +490,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 1,
                               child: Text(
-                                "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
+                                "${AppLocalizations.of(context)!.totalpoints} : ${state.scanReceiptRequestResponse.data!.totalPoints.toString()} ",
+                                // "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -566,7 +519,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                   context.pop();
                                 },
                                 child: Text(
-                                  "View Details",
+                                  // "View Details",
+                                  AppLocalizations.of(context)!.viewdetails,
                                   style: GoogleFonts.roboto(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -666,14 +620,16 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         builder: (BuildContext permissionDialogContext) {
           return AlertDialog(
             title: Text(
-              "Permission Denied!",
+              AppLocalizations.of(context)!.permissiondenied,
+              // "Permission Denied!",
               style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
             content: Text(
-              "To continue file upload allow access to files and storage.",
+              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
+              // "To continue file upload allow access to files and storage.",
               style: GoogleFonts.openSans(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -685,7 +641,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                   context.pop();
                 },
                 child: Text(
-                  "Cancel",
+                  AppLocalizations.of(context)!.cancel,
+                  // "Cancel",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -698,7 +655,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                   context.pop();
                 },
                 child: Text(
-                  "Settings",
+                  AppLocalizations.of(context)!.settings,
+                  // "Settings",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -721,7 +679,10 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
+                title:  Text(
+                  AppLocalizations.of(context)!.photolibrary,
+                  // 'Photo Library'
+                ),
                 onTap: () async {
                   if (Platform.isAndroid) {
                     final androidInfo = await DeviceInfoPlugin().androidInfo;
@@ -738,7 +699,10 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               ),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
+                title:  Text(
+                  AppLocalizations.of(context)!.camera,
+                  // 'Camera'
+                ),
                 onTap: () async {
                   await checkPermissionForCamera(Permission.camera, context);
                   // if(Platform.isAndroid) {
@@ -762,13 +726,13 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   }
 
   Future getImage(
-    ImageSource img,
-  ) async {
+      ImageSource img,
+      ) async {
     try {
       final pickedFile = await _picker.pickImage(source: img);
       XFile? xfilePick = pickedFile;
       setState(
-        () {
+            () {
           if (xfilePick != null) {
             galleryFile = File(pickedFile!.path);
             final bytes = galleryFile!.readAsBytesSync();
@@ -784,7 +748,10 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
             });
           } else {
             ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-                const SnackBar(content: Text('Nothing is selected')));
+                SnackBar(content: Text(
+                  AppLocalizations.of(context)!.nothingisselected,
+                  // 'Nothing is selected'
+                )));
           }
         },
       );

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
-import '../../../constants/strings.dart';
 import 'widget/froget_password_email_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -32,7 +32,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           },
         ),
         title: Text(
-          Strings.FORGET_REST_PASSWORTD,
+          AppLocalizations.of(context)!.forgetpassword,
+          // Strings.FORGET_REST_PASSWORTD,
           style: GoogleFonts.openSans(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -53,4 +54,3 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     );
   }
 }
-

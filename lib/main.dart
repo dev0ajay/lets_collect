@@ -51,19 +51,3 @@ Future<void> main() async {
   });
 }
 
-// For handling notification when the app is in terminated state
-// checkForInitialMessage() async {
-//   RemoteMessage? initialMessage =
-//       await FirebaseMessaging.instance.getInitialMessage();
-//
-//   if (initialMessage != null) {
-//     PushNotification notification = PushNotification(
-//       title: initialMessage.notification?.title,
-//       body: initialMessage.notification?.body,
-//       dataTitle: initialMessage.data['title'],
-//       dataBody: initialMessage.data['body'],
-//     );
-//     print(
-//         'checkForInitialMessage _firebaseMessagingBackgroundHandler :: Message title: ${notification.title}, body: ${notification.body}');
-//   }
-// }

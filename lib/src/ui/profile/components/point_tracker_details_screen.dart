@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart';
 import 'package:lottie/lottie.dart';
 import '../../../model/point_tracker/point_tracker_details_request.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PointTrackerDetailsScreen extends StatefulWidget {
   final int pointId;
@@ -31,7 +34,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
     BlocProvider.of<PointTrackerBloc>(context).add(
       GetPointTrackerDetailEvent(
         pointTrackerDetailsRequest:
-            PointTrackerDetailsRequest(pointId: widget.pointId),
+        PointTrackerDetailsRequest(pointId: widget.pointId),
       ),
     );
   }
@@ -150,9 +153,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                     Flexible(
                                       flex: 1,
                                       child: Text(
-                                        "Total points earned!",
-                                        // AppLocalizations.of(context)!
-                                        //     .totalpointearned,
+                                        // "Total points earned!",
+                                        AppLocalizations.of(context)!.totalpointearned,
                                         style: GoogleFonts.roboto(
                                           color: AppColors.primaryColor,
                                           fontSize: 18,
@@ -165,11 +167,11 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       flex: 1,
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Date ",
-                                            // AppLocalizations.of(context)!.date,
+                                            // "Date ",
+                                            AppLocalizations.of(context)!.date,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 14,
@@ -192,11 +194,11 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       flex: 1,
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Supermarket ",
-                                            // AppLocalizations.of(context)!.supermarket,
+                                            // "Supermarket ",
+                                            AppLocalizations.of(context)!.supermarket,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -287,13 +289,10 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                         Expanded(
                                           flex: 2,
                                           child: Text(
-                                            state
-                                                .pointTrackerDetailsRequestResponse
-                                                .brandPoints![index]
-                                                .brandName!,
-                                            // context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                            //     ? state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!
-                                            //     : state.pointTrackerDetailsRequestResponse.brandPoints![index].brandNameArabic!,
+                                            // state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!,
+                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                ? state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!
+                                                : state.pointTrackerDetailsRequestResponse.brandPoints![index].brandNameArabic!,
                                             style: GoogleFonts.roboto(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 12,
@@ -305,11 +304,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                         Flexible(
                                           flex: 2,
                                           child: Text(
-                                            state
-                                                .pointTrackerDetailsRequestResponse
-                                                .brandPoints![index]
-                                                .points
-                                                .toString(),
+                                            state.pointTrackerDetailsRequestResponse.brandPoints![index].points.toString(),
                                             style: GoogleFonts.roboto(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 12,
@@ -336,12 +331,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                     ListView.builder(
                                       padding: const EdgeInsets.only(top: 20),
                                       shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: state
-                                          .pointTrackerDetailsRequestResponse
-                                          .pointDetails!
-                                          .length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: state.pointTrackerDetailsRequestResponse.pointDetails!.length,
                                       itemBuilder: (context, index) {
                                         return Container(
                                           margin: const EdgeInsets.all(
@@ -350,7 +341,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                           decoration: BoxDecoration(
                                             color: AppColors.primaryWhiteColor,
                                             borderRadius:
-                                                BorderRadius.circular(8.0),
+                                            BorderRadius.circular(8.0),
                                             boxShadow: const [
                                               BoxShadow(
                                                 color: AppColors.boxShadow,
@@ -371,7 +362,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                 vertical: 10, horizontal: 16),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                               children: [
                                                 Flexible(
                                                   child: Column(
@@ -379,20 +370,17 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        state
-                                                            .pointTrackerDetailsRequestResponse
-                                                            .pointDetails![index]
-                                                            .productName!,
                                                         overflow: TextOverflow.ellipsis,
-                                                        // context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                        //     ? state.pointTrackerDetailsRequestResponse.pointDetails![index].productName!
-                                                        //     :  state.pointTrackerDetailsRequestResponse.pointDetails![index].productNameAr!,
+                                                        // state.pointTrackerDetailsRequestResponse.pointDetails![index].productName!,
+                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].productName!
+                                                            :  state.pointTrackerDetailsRequestResponse.pointDetails![index].productNameAr!,
                                                         style: GoogleFonts.roboto(
                                                           color: AppColors
                                                               .primaryBlackColor,
                                                           fontSize: 16,
                                                           fontWeight:
-                                                              FontWeight.w500,
+                                                          FontWeight.w500,
                                                         ),
                                                       ),
                                                       const Divider(
@@ -400,18 +388,15 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                         color: Colors.transparent,
                                                       ),
                                                       Text(
-                                                        state
-                                                            .pointTrackerDetailsRequestResponse
-                                                            .pointDetails![index]
-                                                            .brandName!,
                                                         overflow: TextOverflow.ellipsis,
-                                                        // context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                        //     ? state.pointTrackerDetailsRequestResponse.pointDetails![index].brandName!
-                                                        //     : state.pointTrackerDetailsRequestResponse.pointDetails![index].brandNameAr!,
+                                                        // state.pointTrackerDetailsRequestResponse.pointDetails![index].brandName!,
+                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].brandName!
+                                                            : state.pointTrackerDetailsRequestResponse.pointDetails![index].brandNameAr!,
                                                         style: GoogleFonts.roboto(
                                                           fontSize: 13,
                                                           fontWeight:
-                                                              FontWeight.w400,
+                                                          FontWeight.w400,
                                                         ),
                                                       ),
                                                       const Divider(
@@ -419,18 +404,15 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                         color: Colors.transparent,
                                                       ),
                                                       Text(
-                                                        state
-                                                            .pointTrackerDetailsRequestResponse
-                                                            .pointDetails![index]
-                                                            .pointTierName!,
+                                                        // state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!,
                                                         overflow: TextOverflow.ellipsis,
-                                                        // context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                        //     ? state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!
-                                                        //     : state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!,
+                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!
+                                                            : state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!,
                                                         style: GoogleFonts.roboto(
                                                           fontSize: 12,
                                                           fontWeight:
-                                                              FontWeight.w400,
+                                                          FontWeight.w400,
                                                         ),
                                                       ),
                                                     ],
@@ -438,11 +420,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                 ),
                                                 Flexible(
                                                   child: Text(
-                                                    state
-                                                        .pointTrackerDetailsRequestResponse
-                                                        .pointDetails![index]
-                                                        .points
-                                                        .toString(),
+                                                    state.pointTrackerDetailsRequestResponse.pointDetails![index].points.toString(),
                                                     overflow: TextOverflow.ellipsis,
                                                     style: GoogleFonts.openSans(
                                                       color: AppColors
@@ -489,20 +467,17 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                     IconButton(
                       onPressed: () {
                         BlocProvider.of<PointTrackerBloc>(context).add(
-                            GetPointTrackerEvent(
-                                pointTrackerRequest: PointTrackerRequest(
-                                    sort: '',
-                                    superMarketId: '',
-                                    month: '',
-                                    year: '')));
+                          GetPointTrackerEvent(
+                            pointTrackerRequest: PointTrackerRequest(
+                              sort: '', superMarketId: '', month: '', year: '',),),);
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.arrow_back_ios_rounded,
                           size: 18, color: AppColors.primaryWhiteColor),
                     ),
                     Text(
-                      "Point Tracker",
-                      // AppLocalizations.of(context)!.pointtracker,
+                      // "Point Tracker",
+                      AppLocalizations.of(context)!.pointtracker,
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryWhiteColor,
                         fontSize: 24,

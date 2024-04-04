@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
-import 'package:lets_collect/src/bloc/apple_sign_in/apple_sign_in_cubit.dart';
+import 'package:lets_collect/src/bloc/apple_sign_in_cubit/apple_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/how_to_redeem_my_points/how_to_redeem_my_points_bloc.dart';
@@ -15,7 +15,6 @@ import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/bloc/delete_account/delete_account_bloc.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
-import 'package:lets_collect/src/bloc/google_login/google_login_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
@@ -29,6 +28,7 @@ import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
+import 'package:lets_collect/src/bloc/referral_bloc/referral_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
@@ -42,6 +42,7 @@ import 'package:lets_collect/src/resources/api_providers/home_screen_provider.da
 import 'package:lets_collect/src/resources/api_providers/notification_providers.dart';
 import 'package:lets_collect/src/resources/api_providers/profile_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/purchase_data_provider.dart';
+import 'package:lets_collect/src/resources/api_providers/referral_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/reward_screen_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/scan_receipt_provider.dart';
 import 'package:lets_collect/src/resources/api_providers/search_provider.dart';
@@ -50,7 +51,6 @@ import 'package:lets_collect/src/utils/network_connectivity/network_helper.dart'
 import 'package:lottie/lottie.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -66,7 +66,7 @@ class _AppState extends State<App> {
       child: MultiRepositoryProvider(
         providers: [
           RepositoryProvider(
-            create: (create) => AuthProvider(),
+            create: (create) => AuthDataProvider(),
           ),
           RepositoryProvider(
             create: (create) => HomeDataProvider(),
@@ -91,6 +91,9 @@ class _AppState extends State<App> {
           ),
           RepositoryProvider(
             create: (create) => NotificationProvider(),
+          ),
+          RepositoryProvider(
+            create: (create) => ReferralProvider(),
           ),
         ],
         child: MultiBlocProvider(
@@ -177,9 +180,6 @@ class _AppState extends State<App> {
             BlocProvider<RedeemBloc>(
                 create: (BuildContext context) => RedeemBloc(
                     rewardScreenProvider: RepositoryProvider.of(context))),
-            BlocProvider<GoogleLoginBloc>(
-                create: (BuildContext context) => GoogleLoginBloc(
-                    authProvider: RepositoryProvider.of(context))),
             BlocProvider<PurchaseHistoryBloc>(
                 create: (BuildContext context) => PurchaseHistoryBloc(
                     purchaseHistoryDataProvider:
@@ -222,6 +222,10 @@ class _AppState extends State<App> {
             BlocProvider<RedemptionHistoryBloc>(
                 create: (BuildContext context) => RedemptionHistoryBloc(
                     profileDataProvider: RepositoryProvider.of(context))),
+            BlocProvider<ReferralBloc>(
+              create: (BuildContext context) => ReferralBloc(
+                  referralProvider: RepositoryProvider.of(context)),
+            ),
           ],
           child: BlocBuilder<NetworkBloc, NetworkState>(
             builder: (context, state) {
@@ -247,7 +251,7 @@ class _AppState extends State<App> {
                     locale: state.selectedLanguage.value,
                     supportedLocales: AppLocalizations.supportedLocales,
                     localizationsDelegates:
-                    AppLocalizations.localizationsDelegates,
+                        AppLocalizations.localizationsDelegates,
                     themeAnimationCurve: Curves.easeIn,
                     themeAnimationDuration: const Duration(milliseconds: 750),
                     // routerConfig: AppRouter.router,
@@ -257,7 +261,6 @@ class _AppState extends State<App> {
                     routeInformationParser:
                         AppRouter.router.routeInformationParser,
                     debugShowCheckedModeBanner: false,
-
                     title: 'Lets Collect',
                     theme: AppTheme.lightTheme,
                     themeMode: ThemeMode.light,

@@ -15,7 +15,7 @@ import '../../../bloc/filter_bloc/filter_bloc.dart';
 import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
 import '../../../model/purchase_history/purchase_history_response.dart';
 import '../../reward/components/widgets/custome_rounded_button.dart';
-import '../widgets/bar_chart_widget.dart';
+import '../widgets/purchase_history_bar_chart_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PurchaseHistoryScreen extends StatefulWidget {
@@ -50,8 +50,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
       lastEnabledMonth: 10,
       firstYear: 2000,
       lastYear: 2025,
-      selectButtonText: 'OK',
-      cancelButtonText: 'Cancel',
+      selectButtonText: AppLocalizations.of(context)!.ok,
+      // selectButtonText: 'OK',
+      cancelButtonText: AppLocalizations.of(context)!.cancel,
+      // cancelButtonText: 'Cancel',
       highlightColor: AppColors.secondaryColor,
       textColor: AppColors.primaryBlackColor,
       contentBackgroundColor: AppColors.primaryWhiteColor,
@@ -70,14 +72,11 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   List<String> selectedMonthAndYearVariants = <String>[];
   late  String totalAmount = "0";
   Map<String, dynamic> dateAmountMap = {};
-  List<String> sort = <String>[
-    "Recent",
-    "Expiry First",
-  ];
+
+  List<String> sort = <String>["Recent",];
+  List<String> sort_ar = <String>["الأحدث",];
+
   List<PurchaseData> purchaseList = [];
-
-
-
 
   void checkSameDate(PurchaseHistoryResponse jsonData) {
     for (int i = 0; i < jsonData.data!.length; i++) {
@@ -135,7 +134,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
             pinned: true,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Padding(
                 padding: EdgeInsets.only(top: 15.0),
@@ -175,10 +174,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                     );
                   }
                   if (state is PurchaseHistoryLoaded) {
-                    ///Sorting to do
-                    // List<PurchaseData> sortedPurchaseDataList = List.from(state.purchaseHistoryResponse.data!);
-                    // sortedPurchaseDataList = state.purchaseHistoryResponse.data?.sort((a, b) => a.receiptDate!.compareTo(b.receiptDate!));
-
                     return Column(
                       children: [
                         const SizedBox(
@@ -188,20 +183,19 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           child: Padding(
                             padding: EdgeInsets.only(top: 0),
                             child: SizedBox(
-                              child: BarChartWidget(),
+                              child: PurchaseHistoryBarChartWidget(),
                             ),
                           ),
                         ),
                         const SizedBox(
                           height: 25,
                         ),
+                        state.purchaseHistoryResponse.data!.isEmpty ? const SizedBox() :
                         Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child:Row(
                               children: [
-
                                 /// sort
-
                                 Flexible(
                                   flex: 1,
                                   child: GestureDetector(
@@ -266,7 +260,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           .max,
                                                                       children: <Widget>[
                                                                         Text(
-                                                                          sort[index],
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ? sort[index]
+                                                                              : sort_ar[index],
                                                                           softWrap:
                                                                           true,
                                                                           overflow:
@@ -275,7 +271,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           style: Theme.of(
                                                                               context)
                                                                               .textTheme
-                                                                              .bodyText1!
+                                                                              .bodyLarge!
                                                                               .copyWith(
                                                                             fontSize:
                                                                             15,
@@ -283,7 +279,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         ),
                                                                         selectedSortVariants
                                                                             .contains(
-                                                                            sort[index])
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ? sort[index]
+                                                                              : sort_ar[index],
+                                                                        )
                                                                             ? InkWell(
                                                                           onTap:
                                                                               () {
@@ -311,10 +310,6 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                                   if (selectedSortFilter ==
                                                                                       "Recent") {
                                                                                     sortQuery = "recent";
-                                                                                  }
-                                                                                  if (selectedSortFilter ==
-                                                                                      "Expiry First") {
-                                                                                    sortQuery = "expire_first";
                                                                                   }
                                                                                 });
                                                                           },
@@ -368,7 +363,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                   );
                                                                 },
                                                                 child: Text(
-                                                                  "Clear All",
+                                                                  AppLocalizations.of(context)!.clearall,
+                                                                  // "Clear All",
                                                                   style: GoogleFonts
                                                                       .roboto(
                                                                     color: AppColors
@@ -417,7 +413,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                   context.pop();
                                                                 },
                                                                 child: Text(
-                                                                  "Apply",
+                                                                  // "Apply",
+                                                                  AppLocalizations.of(context)!.apply,
                                                                   style: GoogleFonts
                                                                       .roboto(
                                                                     color: AppColors
@@ -454,7 +451,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                     .center,
                                                                 children: [
                                                                   Text(
-                                                                    "Sort by",
+                                                                    AppLocalizations.of(context)!.sortby,
+                                                                    // "Sort by",
                                                                     style: GoogleFonts
                                                                         .roboto(
                                                                       fontSize: 16,
@@ -517,9 +515,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Sort",
-                                            style: TextStyle(
+                                          Text(
+                                            AppLocalizations.of(context)!.sort,
+                                            // "Sort",
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
@@ -609,18 +608,18 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                     },
                                                                     child:
                                                                     ListTile(
-                                                                      trailing: !isSuperMarketFilterTileSelected ==
-                                                                          true
-                                                                          ? const ImageIcon(
-                                                                        color: AppColors.secondaryColor,
-                                                                        AssetImage(Assets.SIDE_ARROW),
-                                                                      )
-                                                                          : const ImageIcon(
-                                                                        color: AppColors.secondaryColor,
-                                                                        AssetImage(Assets.DOWN_ARROW),
-                                                                      ),
-                                                                      title: const Text(
-                                                                          "SuperMarket"),
+                                                                        trailing: !isSuperMarketFilterTileSelected ==
+                                                                            true
+                                                                            ? const ImageIcon(
+                                                                          color: AppColors.secondaryColor,
+                                                                          AssetImage(Assets.SIDE_ARROW),
+                                                                        )
+                                                                            : const ImageIcon(
+                                                                          color: AppColors.secondaryColor,
+                                                                          AssetImage(Assets.DOWN_ARROW),
+                                                                        ),
+                                                                        title: Text(AppLocalizations.of(context)!.supermarket)
+                                                                      // Text("SuperMarket"),
                                                                     ),
                                                                   ),
                                                                   isSuperMarketFilterTileSelected ==
@@ -646,10 +645,12 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                                 mainAxisSize: MainAxisSize.max,
                                                                                 children: <Widget>[
                                                                                   Text(
-                                                                                    state.superMarketListResponse.data![index].supermarketName.toString(),
+                                                                                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                                        ? state.superMarketListResponse.data![index].supermarketName.toString()
+                                                                                        : state.superMarketListResponse.data![index].supermarketName.toString(),
                                                                                     softWrap: true,
                                                                                     overflow: TextOverflow.ellipsis,
-                                                                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                                                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                       fontSize: 15,
                                                                                     ),
                                                                                   ),
@@ -729,8 +730,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         color: AppColors.secondaryColor,
                                                                         AssetImage(Assets.DOWN_ARROW),
                                                                       ),
-                                                                      title: const Text(
-                                                                          "Month and Year"),
+                                                                      title: Text(AppLocalizations.of(context)!.monthandyear),
+                                                                      // Text("Month and Year"),
                                                                     ),
                                                                   ),
                                                                   isMonthFilterTileSelected ==
@@ -747,7 +748,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                       Row(
                                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                                         children: [
-                                                                          const Text('Month: '),
+                                                                          Text(AppLocalizations.of(context)!.month),
+                                                                          // Text('Month: '),
                                                                           SizedBox(
                                                                             width: 50,
                                                                             child: TextField(
@@ -761,7 +763,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                             ),
                                                                           ),
                                                                           const SizedBox(width: 20),
-                                                                          const Text('Year: '),
+                                                                          Text(AppLocalizations.of(context)!.monthandyear),
+                                                                          // const Text('Year: '),
                                                                           SizedBox(
                                                                             width: 70,
                                                                             child: TextField(
@@ -839,7 +842,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         },
                                                                         child:
                                                                         Text(
-                                                                          "Clear All",
+                                                                          AppLocalizations.of(context)!.clearall,
+                                                                          // "Clear All",
                                                                           style:
                                                                           GoogleFonts.roboto(
                                                                             color:
@@ -888,7 +892,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         },
                                                                         child:
                                                                         Text(
-                                                                          "Apply",
+                                                                          AppLocalizations.of(context)!.apply,
+                                                                          // "Apply",
                                                                           style:
                                                                           GoogleFonts.roboto(
                                                                             color:
@@ -944,7 +949,8 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                         CrossAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            "Filter by",
+                                                                            AppLocalizations.of(context)!.filterby,
+                                                                            // "Filter by",
                                                                             style:
                                                                             GoogleFonts.roboto(
                                                                               fontSize: 16,
@@ -1014,9 +1020,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Filter",
-                                            style: TextStyle(
+                                          Text(
+                                            AppLocalizations.of(context)!.filter,
+                                            // "Filter",
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
@@ -1063,23 +1070,32 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                context.push('/purchase_history_details',extra: state.purchaseHistoryResponse.data![index].receiptId.toString());
+                                context.push('/purchase_history_details',
+                                    extra: state.purchaseHistoryResponse.data[index].receiptId.toString());
                               },
                               child: Container(
                                 width: double.infinity,
                                 margin: const EdgeInsets.only(
-                                    left: 5, right: 5, bottom: 10, top: 0),
+                                    left: 5, right: 5, bottom: 10, top: 10),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
+                                    color: AppColors.primaryWhiteColor,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 8,
+                                        offset: Offset(4, 2),
+                                        spreadRadius: 0,
+                                      ),
+                                      BoxShadow(
+                                        color: AppColors.boxShadow,
+                                        blurRadius: 8,
+                                        offset: Offset(-4, -2),
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                    border:
+                                    Border.all(color: AppColors.borderColor, width: 1)
                                 ),
                                 child: ListTile(
                                   contentPadding: const EdgeInsets.symmetric(
@@ -1092,9 +1108,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
+                                        // state.purchaseHistoryResponse.data[index].supermarketName,
                                         context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                       ? state.purchaseHistoryResponse.data[index].supermarketName
-                                  :state.purchaseHistoryResponse.data[index].supermarketName,
+                                            ? state.purchaseHistoryResponse.data[index].supermarketName
+                                            :state.purchaseHistoryResponse.data[index].supermarketName,
                                         style: GoogleFonts.roboto(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500,
@@ -1107,8 +1124,9 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                       Text(
                                         // "Total amount"
                                         "${AppLocalizations.of(context)!.totalamount} "
-                                            "  ${state.purchaseHistoryResponse.data![index].totalAmount} "
-                                            "${state.purchaseHistoryResponse.data![index].currencyCode}",
+                                            "  ${state.purchaseHistoryResponse.data[index].totalAmount} "
+                                            "${AppLocalizations.of(context)!.bhd} ",
+                                        // "${state.purchaseHistoryResponse.data[index].currencyCode}",
                                         style: GoogleFonts.roboto(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -1119,7 +1137,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                       ),
                                       Text(
                                         state.purchaseHistoryResponse
-                                            .data![index].receiptDate.toString(),
+                                            .data[index].receiptDate.toString(),
                                         style: GoogleFonts.roboto(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w500,

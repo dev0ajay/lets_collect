@@ -74,11 +74,10 @@ dependencies:
   flutter_native_splash: ^2.3.10
   permission_handler: ^11.3.0
   device_info_plus: ^9.1.2
-  sign_in_with_apple: ^5.0.0
   intl:
   flutter_localizations:
     sdk: flutter
-  image_cropper: ^5.0.1
+  the_apple_sign_in: ^1.1.1
 
 dev_dependencies:
   flutter_test:

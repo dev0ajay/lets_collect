@@ -6,14 +6,14 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../../constants/colors.dart';
 
-class AlertOverlay extends StatefulWidget {
-  const AlertOverlay({super.key});
+class EmailNotVerifiedAlertOverlay extends StatefulWidget {
+  const EmailNotVerifiedAlertOverlay({super.key});
 
   @override
-  State<StatefulWidget> createState() => AlertOverlayState();
+  State<StatefulWidget> createState() => EmailNotVerifiedAlertOverlayState();
 }
 
-class AlertOverlayState extends State<AlertOverlay>
+class EmailNotVerifiedAlertOverlayState extends State<EmailNotVerifiedAlertOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;

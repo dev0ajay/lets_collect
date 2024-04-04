@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,7 +5,9 @@ import 'package:flutter_custom_month_picker/flutter_custom_month_picker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
@@ -14,8 +15,7 @@ import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart'
 import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
 import 'package:lottie/lottie.dart';
-
-import '../widgets/bar_chart_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PointTrackerScreen extends StatefulWidget {
   const PointTrackerScreen({super.key});
@@ -42,15 +42,17 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
         });
       },
       initialSelectedMonth:
-          int.tryParse(_pointMonthController.text) ?? DateTime.now().month,
+      int.tryParse(_pointMonthController.text) ?? DateTime.now().month,
       initialSelectedYear:
-          int.tryParse(_pointYearController.text) ?? DateTime.now().year,
+      int.tryParse(_pointYearController.text) ?? DateTime.now().year,
       firstEnabledMonth: 3,
       lastEnabledMonth: 10,
       firstYear: 2000,
       lastYear: 2025,
-      selectButtonText: 'OK',
-      cancelButtonText: 'Cancel',
+      selectButtonText: AppLocalizations.of(context)!.ok,
+      // selectButtonText: 'OK',
+      cancelButtonText: AppLocalizations.of(context)!.cancel,
+      // cancelButtonText: 'Cancel',
       highlightColor: AppColors.secondaryColor,
       textColor: AppColors.primaryBlackColor,
       contentBackgroundColor: AppColors.primaryWhiteColor,
@@ -71,6 +73,11 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
   List<String> sort = <String>[
     "Recent",
     "Expiry First",
+  ];
+
+  List<String> sort_ar = <String>[
+    "الأحدث",
+    "الانتهاء أولا",
   ];
 
   @override
@@ -94,6 +101,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryWhiteColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -113,7 +121,8 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
             automaticallyImplyLeading: false,
             backgroundColor: AppColors.primaryColor,
             title: Text(
-              "Point Tracker",
+              AppLocalizations.of(context)!.pointtracker,
+              // "Point Tracker",
               style: GoogleFonts.openSans(
                 color: AppColors.primaryWhiteColor,
                 fontSize: 20,
@@ -152,7 +161,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
                               margin:
-                                  const EdgeInsets.only(left: 15, right: 15),
+                              const EdgeInsets.only(left: 15, right: 15),
                               height: MediaQuery.of(context).size.height,
                               padding: const EdgeInsets.only(
                                   top: 2, bottom: 2, left: 25, right: 25),
@@ -190,19 +199,10 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                   Expanded(
                                     flex: 2,
                                     child: Text(
-                                      state.pointTrackerRequestResponse
-                                          .brandPoints[index].brandName,
-                                      // context
-                                      //     .read<LanguageBloc>()
-                                      //     .state
-                                      //     .selectedLanguage ==
-                                      //     Language.english
-                                      //     ? state.pointTrackerRequestResponse
-                                      //     .brandPoints[index].brandName
-                                      //     : state
-                                      //     .pointTrackerRequestResponse
-                                      //     .brandPoints[index]
-                                      //     .brandNameArabic,
+                                      // state.pointTrackerRequestResponse.brandPoints[index].brandName,
+                                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                          ? state.pointTrackerRequestResponse.brandPoints[index].brandName
+                                          : state.pointTrackerRequestResponse.brandPoints[index].brandNameArabic,
                                       style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12,
@@ -213,9 +213,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                   Flexible(
                                     flex: 2,
                                     child: Text(
-                                      state.pointTrackerRequestResponse
-                                          .brandPoints[index].points
-                                          .toString(),
+                                      state.pointTrackerRequestResponse.brandPoints[index].points.toString(),
                                       style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12,
@@ -251,20 +249,14 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                     return Column(
                       children: [
                         const SizedBox(height: 15),
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 0),
-                            child: SizedBox(
-                              child: PointTrackerChart(),
-                            ),
-                          ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10),
+                          child: PointTrackerChart(),
                         ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Padding(
+                        const SizedBox(height: 15),
+                        state.pointTrackerRequestResponse.data.isEmpty ? const SizedBox() : Padding(
                             padding:
-                                const EdgeInsets.only(left: 15.0, right: 15),
+                            const EdgeInsets.only(left: 15.0, right: 15),
                             child: Row(
                               children: [
                                 /// sort
@@ -281,7 +273,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                             ),
                                           ),
                                           backgroundColor:
-                                              AppColors.primaryWhiteColor,
+                                          AppColors.primaryWhiteColor,
                                           barrierColor: Colors.black38,
                                           elevation: 2,
                                           isScrollControlled: true,
@@ -293,7 +285,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                 void clearFilter() {
                                                   setState(() {
                                                     selectedSortVariants =
-                                                        <String>[];
+                                                    <String>[];
                                                   });
                                                 }
 
@@ -301,92 +293,89 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                 return Stack(
                                                   children: [
                                                     SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              3,
+                                                      height: MediaQuery.of(context).size.height / 3,
                                                       child:
-                                                          SingleChildScrollView(
+                                                      SingleChildScrollView(
                                                         child: Column(
                                                           children: [
                                                             const SizedBox(
                                                                 height: 60),
                                                             Column(
                                                               children:
-                                                                  List.generate(
+                                                              List.generate(
                                                                 sort.length,
-                                                                (index) =>
+                                                                    (index) =>
                                                                     Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal:
                                                                           8,
-                                                                      vertical:
+                                                                          vertical:
                                                                           6),
-                                                                  child:
+                                                                      child:
                                                                       Container(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
+                                                                        padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                            horizontal:
                                                                             10,
-                                                                        vertical:
+                                                                            vertical:
                                                                             6),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
+                                                                        child: Row(
+                                                                          mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .spaceBetween,
-                                                                      mainAxisSize:
+                                                                          mainAxisSize:
                                                                           MainAxisSize
                                                                               .max,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          sort[
-                                                                              index],
-                                                                          softWrap:
+                                                                          children: <Widget>[
+                                                                            Text(
+                                                                              context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                                  ? sort[index]
+                                                                                  : sort_ar[index],
+                                                                              softWrap:
                                                                               true,
-                                                                          overflow:
+                                                                              overflow:
                                                                               TextOverflow.ellipsis,
-                                                                          style: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyText1!
-                                                                              .copyWith(
+                                                                              style: Theme.of(context)
+                                                                                  .textTheme
+                                                                                  .bodyLarge!
+                                                                                  .copyWith(
                                                                                 fontSize: 15,
                                                                               ),
-                                                                        ),
-                                                                        selectedSortVariants.contains(sort[index])
-                                                                            ? InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.remove(sort[index]);
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(enabled: true),
-                                                                              )
-                                                                            : InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.add(sort[index]);
-                                                                                    if (selectedSortVariants.length > 1) {
-                                                                                      selectedSortVariants.removeAt(0);
-                                                                                    }
-                                                                                    selectedSortFilter = selectedSortVariants[0];
-                                                                                    if (selectedSortFilter == "Recent") {
-                                                                                      sortQuery = "recent";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Expiry First") {
-                                                                                      sortQuery = "expire_first";
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(
-                                                                                  enabled: false,
-                                                                                ),
+                                                                            ),
+                                                                            selectedSortVariants.contains(sort[index])
+                                                                                ? InkWell(
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  selectedSortVariants.remove(sort[index]);
+                                                                                });
+                                                                              },
+                                                                              child: const CustomRoundedButton(enabled: true),
+                                                                            )
+                                                                                : InkWell(
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  selectedSortVariants.add(sort[index]);
+                                                                                  if (selectedSortVariants.length > 1) {
+                                                                                    selectedSortVariants.removeAt(0);
+                                                                                  }
+                                                                                  selectedSortFilter = selectedSortVariants[0];
+                                                                                  if (selectedSortFilter == "Recent") {
+                                                                                    sortQuery = "recent";
+                                                                                  }
+                                                                                  if (selectedSortFilter == "Expiry First") {
+                                                                                    sortQuery = "expire_first";
+                                                                                  }
+                                                                                });
+                                                                              },
+                                                                              child: const CustomRoundedButton(
+                                                                                enabled: false,
                                                                               ),
-                                                                      ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ),
                                                               ),
                                                             ),
                                                             const SizedBox(
@@ -402,50 +391,51 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                       child: SafeArea(
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 10),
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 20,
+                                                              right: 20,
+                                                              bottom: 10),
                                                           child: Row(
                                                             mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                             children: [
                                                               TextButton(
                                                                 onPressed: () {
                                                                   clearFilter();
                                                                   BlocProvider.of<
-                                                                              PointTrackerBloc>(
-                                                                          context)
+                                                                      PointTrackerBloc>(
+                                                                      context)
                                                                       .add(
                                                                     GetPointTrackerEvent(
                                                                       pointTrackerRequest:
-                                                                          PointTrackerRequest(
+                                                                      PointTrackerRequest(
                                                                         sort:
-                                                                            '',
+                                                                        '',
                                                                         superMarketId:
-                                                                            '',
+                                                                        '',
                                                                         month:
-                                                                            '',
+                                                                        '',
                                                                         year:
-                                                                            '',
+                                                                        '',
                                                                       ),
                                                                     ),
                                                                   );
                                                                 },
                                                                 child: Text(
-                                                                  "Clear All",
+                                                                  AppLocalizations.of(context)!.clearall,
+                                                                  // "Clear All",
                                                                   style:
-                                                                      GoogleFonts
-                                                                          .roboto(
+                                                                  GoogleFonts
+                                                                      .roboto(
                                                                     color: AppColors
                                                                         .primaryColor,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
+                                                                    FontWeight
+                                                                        .w400,
                                                                     fontSize:
-                                                                        14,
+                                                                    14,
                                                                   ),
                                                                 ),
                                                               ),
@@ -453,18 +443,18 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                 style: ElevatedButton
                                                                     .styleFrom(
                                                                   fixedSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
+                                                                  const Size(
+                                                                      100,
+                                                                      40),
                                                                   shape:
-                                                                      RoundedRectangleBorder(
+                                                                  RoundedRectangleBorder(
                                                                     borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
+                                                                    BorderRadius
+                                                                        .circular(8),
                                                                   ),
                                                                   backgroundColor:
-                                                                      AppColors
-                                                                          .secondaryColor,
+                                                                  AppColors
+                                                                      .secondaryColor,
                                                                 ),
                                                                 onPressed:
                                                                     () async {
@@ -472,37 +462,38 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       selectedSortFilter);
 
                                                                   BlocProvider.of<
-                                                                              PointTrackerBloc>(
-                                                                          context)
+                                                                      PointTrackerBloc>(
+                                                                      context)
                                                                       .add(
                                                                     GetPointTrackerEvent(
                                                                       pointTrackerRequest:
-                                                                          PointTrackerRequest(
+                                                                      PointTrackerRequest(
                                                                         sort:
-                                                                            sortQuery,
+                                                                        sortQuery,
                                                                         superMarketId:
-                                                                            '',
+                                                                        '',
                                                                         month:
-                                                                            '',
+                                                                        '',
                                                                         year:
-                                                                            '',
+                                                                        '',
                                                                       ),
                                                                     ),
                                                                   );
                                                                   context.pop();
                                                                 },
                                                                 child: Text(
-                                                                  "Apply",
+                                                                  AppLocalizations.of(context)!.apply,
+                                                                  // "Apply",
                                                                   style:
-                                                                      GoogleFonts
-                                                                          .roboto(
+                                                                  GoogleFonts
+                                                                      .roboto(
                                                                     color: AppColors
                                                                         .primaryWhiteColor,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
+                                                                    FontWeight
+                                                                        .w400,
                                                                     fontSize:
-                                                                        14,
+                                                                    14,
                                                                   ),
                                                                 ),
                                                               ),
@@ -519,29 +510,30 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                       child: SafeArea(
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15),
                                                           child: Column(
                                                             children: [
                                                               Row(
                                                                 mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
                                                                 crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
+                                                                CrossAxisAlignment
+                                                                    .center,
                                                                 children: [
                                                                   Text(
-                                                                    "Sort by",
+                                                                    AppLocalizations.of(context)!.sortby,
+                                                                    // "Sort by",
                                                                     style: GoogleFonts
                                                                         .roboto(
                                                                       fontSize:
-                                                                          16,
+                                                                      16,
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
+                                                                      FontWeight
+                                                                          .w400,
                                                                       color: AppColors
                                                                           .primaryGrayColor,
                                                                     ),
@@ -553,7 +545,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                           .pop();
                                                                     },
                                                                     icon:
-                                                                        const Icon(
+                                                                    const Icon(
                                                                       Icons
                                                                           .close,
                                                                       color: AppColors
@@ -601,11 +593,12 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Sort",
-                                            style: TextStyle(
+                                          Text(
+                                            AppLocalizations.of(context)!.sort,
+                                            // "Sort",
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
@@ -637,7 +630,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                             ),
                                           ),
                                           backgroundColor:
-                                              AppColors.primaryWhiteColor,
+                                          AppColors.primaryWhiteColor,
                                           barrierColor: Colors.black38,
                                           elevation: 2,
                                           isScrollControlled: true,
@@ -653,11 +646,11 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                     _pointYearController
                                                         .clear();
                                                     selectedSuperMarketVariants =
-                                                        <String>[];
+                                                    <String>[];
                                                     selectedMonthAndYearVariants =
-                                                        <String>[];
+                                                    <String>[];
                                                     selectedSuperMarketFilters =
-                                                        "";
+                                                    "";
                                                   });
                                                 }
 
@@ -665,7 +658,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                     FilterState>(
                                                   builder: (context, state) {
                                                     if (state
-                                                        is SupermarketFilterLoading) {
+                                                    is SupermarketFilterLoading) {
                                                       return Center(
                                                         child: Lottie.asset(
                                                             Assets.JUMBINGDOT,
@@ -674,217 +667,219 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                       );
                                                     }
                                                     if (state
-                                                        is SupermarketFilterLoaded) {
+                                                    is SupermarketFilterLoaded) {
                                                       return Stack(
                                                         children: [
                                                           SizedBox(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                1.6,
+                                                            height: MediaQuery.of(context).size.height / 1.6,
                                                             child:
-                                                                SingleChildScrollView(
+                                                            SingleChildScrollView(
                                                               child: Column(
                                                                 children: [
                                                                   const SizedBox(
                                                                       height:
-                                                                          60),
+                                                                      60),
                                                                   GestureDetector(
                                                                     onTap: () {
                                                                       setState(
-                                                                          () {
-                                                                        isSuperMarketFilterTileSelected =
+                                                                              () {
+                                                                            isSuperMarketFilterTileSelected =
                                                                             !isSuperMarketFilterTileSelected;
-                                                                      });
+                                                                          });
                                                                     },
                                                                     child:
-                                                                        ListTile(
+                                                                    ListTile(
                                                                       trailing: !isSuperMarketFilterTileSelected ==
-                                                                              true
+                                                                          true
                                                                           ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
+                                                                        color: AppColors.secondaryColor,
+                                                                        AssetImage(Assets.SIDE_ARROW),
+                                                                      )
                                                                           : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title: const Text(
-                                                                          "SuperMarket"),
+                                                                        color: AppColors.secondaryColor,
+                                                                        AssetImage(Assets.DOWN_ARROW),
+                                                                      ),
+                                                                      title:  Text(AppLocalizations.of(context)!.supermarket),
+                                                                      // Text("SuperMarket"),
                                                                     ),
                                                                   ),
                                                                   isSuperMarketFilterTileSelected ==
-                                                                          true
+                                                                      true
                                                                       ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Column(
-                                                                              children: List.generate(
-                                                                                state.superMarketListResponse.data!.length,
-                                                                                (index) => Padding(
-                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                                  child: Container(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          state.superMarketListResponse.data![index].supermarketName.toString(),
-                                                                                          softWrap: true,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                                                                                                fontSize: 15,
-                                                                                              ),
-                                                                                        ),
-                                                                                        selectedSuperMarketVariants.contains(state.superMarketListResponse.data![index].id.toString())
-                                                                                            ? InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedSuperMarketVariants.remove(state.superMarketListResponse.data![index].id.toString());
-                                                                                                    selectedSuperMarketFilters = "";
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                      scale: 6,
-                                                                                                    ),
-                                                                                                    color: AppColors.secondaryColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            : InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedSuperMarketVariants.add(state.superMarketListResponse.data![index].id.toString());
-                                                                                                    if (selectedSuperMarketVariants.length > 1) {
-                                                                                                      selectedSuperMarketVariants.removeAt(0);
-                                                                                                    }
-                                                                                                    selectedSuperMarketFilters = selectedSuperMarketVariants[0].toString();
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    color: AppColors.primaryWhiteColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(
-                                                                                                        blurRadius: 1.5,
-                                                                                                        color: Colors.black38,
-                                                                                                        offset: Offset(0, 1),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                      ],
+                                                                    child:
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                          right: 15,
+                                                                          left: 15,
+                                                                          bottom: 5,
+                                                                          top: 5),
+                                                                      child:
+                                                                      Column(
+                                                                        children: List.generate(
+                                                                          state.superMarketListResponse.data!.length,
+                                                                              (index) => Padding(
+                                                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                            child: Container(
+                                                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                mainAxisSize: MainAxisSize.max,
+                                                                                children: <Widget>[
+                                                                                  Text(
+                                                                                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                                        ? state.superMarketListResponse.data![index].supermarketName.toString()
+                                                                                        :state.superMarketListResponse.data![index].supermarketName.toString(),
+                                                                                    softWrap: true,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                                      fontSize: 15,
                                                                                     ),
                                                                                   ),
-                                                                                ),
+                                                                                  selectedSuperMarketVariants.contains(state.superMarketListResponse.data![index].id.toString())
+                                                                                      ? InkWell(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        selectedSuperMarketVariants.remove(state.superMarketListResponse.data![index].id.toString());
+                                                                                        selectedSuperMarketFilters = "";
+                                                                                      });
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 20,
+                                                                                      width: 20,
+                                                                                      decoration: const BoxDecoration(
+                                                                                        shape: BoxShape.rectangle,
+                                                                                        image: DecorationImage(
+                                                                                          image: AssetImage(Assets.DISABLED_TICK),
+                                                                                          fit: BoxFit.contain,
+                                                                                          scale: 6,
+                                                                                        ),
+                                                                                        color: AppColors.secondaryColor,
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  )
+                                                                                      : InkWell(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        selectedSuperMarketVariants.add(state.superMarketListResponse.data![index].id.toString());
+                                                                                        if (selectedSuperMarketVariants.length > 1) {
+                                                                                          selectedSuperMarketVariants.removeAt(0);
+                                                                                        }
+                                                                                        selectedSuperMarketFilters = selectedSuperMarketVariants[0].toString();
+                                                                                      });
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 20,
+                                                                                      width: 20,
+                                                                                      decoration: const BoxDecoration(
+                                                                                        shape: BoxShape.rectangle,
+                                                                                        color: AppColors.primaryWhiteColor,
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(
+                                                                                            blurRadius: 1.5,
+                                                                                            color: Colors.black38,
+                                                                                            offset: Offset(0, 1),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                        )
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  )
                                                                       : const SizedBox(),
                                                                   GestureDetector(
                                                                     onTap: () {
                                                                       setState(
-                                                                          () {
-                                                                        isMonthFilterTileSelected =
+                                                                              () {
+                                                                            isMonthFilterTileSelected =
                                                                             !isMonthFilterTileSelected;
-                                                                      });
+                                                                          });
                                                                     },
                                                                     child:
-                                                                        ListTile(
+                                                                    ListTile(
                                                                       trailing: !isMonthFilterTileSelected ==
-                                                                              true
+                                                                          true
                                                                           ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
+                                                                        color: AppColors.secondaryColor,
+                                                                        AssetImage(Assets.SIDE_ARROW),
+                                                                      )
                                                                           : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title: const Text("Month and Year"),
+                                                                        color: AppColors.secondaryColor,
+                                                                        AssetImage(Assets.DOWN_ARROW),
+                                                                      ),
+                                                                      title:
+                                                                      Text(AppLocalizations.of(context)!.monthandyear),
+                                                                      // Text("Month and Year"),
                                                                     ),
                                                                   ),
                                                                   isMonthFilterTileSelected ==
-                                                                          true
+                                                                      true
                                                                       ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                const Text('Month: '),
-                                                                                SizedBox(
-                                                                                  width: 50,
-                                                                                  child: TextField(
-                                                                                    readOnly: true,
-                                                                                    controller: _pointMonthController,
-                                                                                    keyboardType: TextInputType.number,
-                                                                                    textAlign: TextAlign.center,
-                                                                                    onChanged: (value) {
-                                                                                      // Add any validation or formatting if needed
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                const SizedBox(width: 20),
-                                                                                const Text('Year: '),
-                                                                                SizedBox(
-                                                                                  width: 70,
-                                                                                  child: TextField(
-                                                                                    readOnly: true,
-                                                                                    controller: _pointYearController,
-                                                                                    keyboardType: TextInputType.number,
-                                                                                    textAlign: TextAlign.center,
-                                                                                    onChanged: (value) {
-                                                                                      // Add any validation or formatting if needed
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                const SizedBox(width: 100),
-                                                                                GestureDetector(
-                                                                                    onTap: () {
-                                                                                      showMonthPickerDialog(context, _pointMonthController, _pointYearController);
-                                                                                    },
-                                                                                    child: const ImageIcon(
-                                                                                      AssetImage(Assets.CALENDER),
-                                                                                      color: AppColors.secondaryColor,
-                                                                                    )),
-                                                                              ],
+                                                                    child:
+                                                                    Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                          right: 15,
+                                                                          left: 15,
+                                                                          bottom: 5,
+                                                                          top: 5),
+                                                                      child:
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Text(AppLocalizations.of(context)!.month),
+                                                                          //  Text('Month: '),
+                                                                          SizedBox(
+                                                                            width: 50,
+                                                                            child: TextField(
+                                                                              readOnly: true,
+                                                                              controller: _pointMonthController,
+                                                                              keyboardType: TextInputType.number,
+                                                                              textAlign: TextAlign.center,
+                                                                              onChanged: (value) {
+                                                                                // Add any validation or formatting if needed
+                                                                              },
                                                                             ),
                                                                           ),
-                                                                        )
+                                                                          const SizedBox(width: 20),
+                                                                          Text(AppLocalizations.of(context)!.year),
+                                                                          // const Text('Year: '),
+                                                                          SizedBox(
+                                                                            width: 70,
+                                                                            child: TextField(
+                                                                              readOnly: true,
+                                                                              controller: _pointYearController,
+                                                                              keyboardType: TextInputType.number,
+                                                                              textAlign: TextAlign.center,
+                                                                              onChanged: (value) {
+                                                                                // Add any validation or formatting if needed
+                                                                              },
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(width: 100),
+                                                                          GestureDetector(
+                                                                              onTap: () {
+                                                                                showMonthPickerDialog(context, _pointMonthController, _pointYearController);
+                                                                              },
+                                                                              child: const ImageIcon(
+                                                                                AssetImage(Assets.CALENDER),
+                                                                                color: AppColors.secondaryColor,
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  )
                                                                       : const SizedBox(),
                                                                   const SizedBox(
                                                                       height:
-                                                                          80),
+                                                                      80),
                                                                 ],
                                                               ),
                                                             ),
@@ -896,7 +891,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                             child: SafeArea(
                                                               child: Container(
                                                                 decoration:
-                                                                    const BoxDecoration(
+                                                                const BoxDecoration(
                                                                   color: AppColors
                                                                       .primaryWhiteColor,
                                                                   boxShadow: [
@@ -904,13 +899,13 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       color: AppColors
                                                                           .boxShadow,
                                                                       blurRadius:
-                                                                          4,
+                                                                      4,
                                                                       offset:
-                                                                          Offset(
-                                                                              4,
-                                                                              2),
+                                                                      Offset(
+                                                                          4,
+                                                                          2),
                                                                       spreadRadius:
-                                                                          0,
+                                                                      0,
                                                                     ),
                                                                   ],
                                                                 ),
@@ -920,11 +915,11 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       left: 20,
                                                                       right: 20,
                                                                       bottom:
-                                                                          10),
+                                                                      10),
                                                                   child: Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                     children: [
                                                                       TextButton(
                                                                         onPressed:
@@ -932,16 +927,17 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                           clearFilter();
                                                                         },
                                                                         child:
-                                                                            Text(
-                                                                          "Clear All",
+                                                                        Text(
+                                                                          AppLocalizations.of(context)!.clearall,
+                                                                          // "Clear All",
                                                                           style:
-                                                                              GoogleFonts.roboto(
+                                                                          GoogleFonts.roboto(
                                                                             color:
-                                                                                AppColors.underlineColor,
+                                                                            AppColors.underlineColor,
                                                                             fontWeight:
-                                                                                FontWeight.w400,
+                                                                            FontWeight.w400,
                                                                             fontSize:
-                                                                                14,
+                                                                            14,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -952,12 +948,12 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               100,
                                                                               40),
                                                                           shape:
-                                                                              RoundedRectangleBorder(
+                                                                          RoundedRectangleBorder(
                                                                             borderRadius:
-                                                                                BorderRadius.circular(8),
+                                                                            BorderRadius.circular(8),
                                                                           ),
                                                                           backgroundColor:
-                                                                              AppColors.secondaryColor,
+                                                                          AppColors.secondaryColor,
                                                                         ),
                                                                         onPressed:
                                                                             () {
@@ -980,16 +976,17 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               .pop();
                                                                         },
                                                                         child:
-                                                                            Text(
-                                                                          "Apply",
+                                                                        Text(
+                                                                          AppLocalizations.of(context)!.apply,
+                                                                          // "Apply",
                                                                           style:
-                                                                              GoogleFonts.roboto(
+                                                                          GoogleFonts.roboto(
                                                                             color:
-                                                                                AppColors.primaryWhiteColor,
+                                                                            AppColors.primaryWhiteColor,
                                                                             fontWeight:
-                                                                                FontWeight.w400,
+                                                                            FontWeight.w400,
                                                                             fontSize:
-                                                                                14,
+                                                                            14,
                                                                           ),
                                                                         ),
                                                                       ),
@@ -1005,29 +1002,27 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                             right: 0,
                                                             child: Container(
                                                               decoration:
-                                                                  const BoxDecoration(
-
+                                                              const BoxDecoration(
                                                                 color: AppColors
                                                                     .primaryWhiteColor,
                                                                 borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
+                                                                BorderRadius
+                                                                    .only(
                                                                   topLeft: Radius
                                                                       .circular(
-                                                                          20.0),
+                                                                      20.0),
                                                                   topRight: Radius
                                                                       .circular(
-                                                                          20.0),
+                                                                      20.0),
                                                                 ),
-
                                                               ),
                                                               child: Padding(
                                                                 padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
-                                                                        15),
+                                                                    15),
                                                                 child:
-                                                                    Container(
+                                                                Container(
                                                                   // height: 40,
                                                                   color: Colors
                                                                       .white,
@@ -1035,14 +1030,15 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                     children: [
                                                                       Row(
                                                                         mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                        MainAxisAlignment.spaceBetween,
                                                                         crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
+                                                                        CrossAxisAlignment.center,
                                                                         children: [
                                                                           Text(
-                                                                            "Filter by",
+                                                                            AppLocalizations.of(context)!.filterby,
+                                                                            // "Filter by",
                                                                             style:
-                                                                                GoogleFonts.roboto(
+                                                                            GoogleFonts.roboto(
                                                                               fontSize: 16,
                                                                               fontWeight: FontWeight.w400,
                                                                               color: AppColors.primaryGrayColor,
@@ -1054,7 +1050,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                               context.pop();
                                                                             },
                                                                             icon:
-                                                                                const Icon(
+                                                                            const Icon(
                                                                               Icons.close,
                                                                               color: AppColors.primaryGrayColor,
                                                                             ),
@@ -1063,7 +1059,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                                       ),
                                                                       const Divider(
                                                                           color:
-                                                                              AppColors.primaryGrayColor),
+                                                                          AppColors.primaryGrayColor),
                                                                     ],
                                                                   ),
                                                                 ),
@@ -1107,11 +1103,12 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
-                                          const Text(
-                                            "Filter",
-                                            style: TextStyle(
+                                          Text(
+                                            AppLocalizations.of(context)!.filter,
+                                            // "Filter",
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),
@@ -1137,8 +1134,8 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                           child: Row(
                             children: [
                               Text(
-                                "Transaction log",
-                                // AppLocalizations.of(context)!.transactionlog,
+                                // "Transaction log",
+                                AppLocalizations.of(context)!.transactionlog,
                                 style: GoogleFonts.openSans(
                                   fontSize: 19,
                                   fontWeight: FontWeight.w700,
@@ -1149,116 +1146,116 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                         ),
                         state is PointTrackerLoaded
                             ? state.pointTrackerRequestResponse.data.isNotEmpty
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: state.pointTrackerRequestResponse
-                                        .data.length,
-                                    padding: const EdgeInsets.only(
-                                        bottom: 120, top: 10),
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          context.push("/point_tracker_details",
-                                              extra: state
-                                                  .pointTrackerRequestResponse
-                                                  .data[index]
-                                                  .id);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          margin: const EdgeInsets.only(
-                                              left: 5,
-                                              right: 5,
-                                              bottom: 10,
-                                              top: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: AppColors.boxShadow,
-                                                blurRadius: 4,
-                                                offset: Offset(4, 2),
-                                                spreadRadius: 0,
-                                              ),
-                                              BoxShadow(
-                                                color: AppColors.boxShadow,
-                                                blurRadius: 4,
-                                                offset: Offset(-4, -2),
-                                                spreadRadius: 0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20, horizontal: 16),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${state.pointTrackerRequestResponse.data[index].totalPoints} "
-                                                      "points",
-                                                      // "${state.pointTrackerRequestResponse.data[index].totalPoints} "
-                                                      //     "${AppLocalizations.of(context)!.points}",
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    const Divider(
-                                                      color: Colors.transparent,
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      state
-                                                          .pointTrackerRequestResponse
-                                                          .data[index]
-                                                          .expiryDate,
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  size: 15,
-                                                  color:
-                                                      AppColors.secondaryColor,
-                                                ),
-                                              ],
+                            ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.pointTrackerRequestResponse
+                              .data.length,
+                          padding: const EdgeInsets.only(
+                              bottom: 120, top: 10),
+                          physics:
+                          const NeverScrollableScrollPhysics(),
+                          itemBuilder:
+                              (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context.push("/point_tracker_details",
+                                    extra: state
+                                        .pointTrackerRequestResponse
+                                        .data[index]
+                                        .id);
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(
+                                    left: 5,
+                                    right: 5,
+                                    bottom: 10,
+                                    top: 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.circular(8.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(4, 2),
+                                      spreadRadius: 0,
+                                    ),
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(-4, -2),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20, horizontal: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            // "${state.pointTrackerRequestResponse.data[index].totalPoints} "
+                                            // "points",
+                                            "${state.pointTrackerRequestResponse.data[index].totalPoints} "
+                                                "${AppLocalizations.of(context)!.points}",
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 19,
+                                              fontWeight:
+                                              FontWeight.w500,
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Lottie.asset(Assets.OOPS,
-                                            width: 300, height: 310),
-                                      ],
-                                    ),
-                                  )
+                                          const Divider(
+                                            color: Colors.transparent,
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            state
+                                                .pointTrackerRequestResponse
+                                                .data[index]
+                                                .expiryDate,
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              fontWeight:
+                                              FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Icon(
+                                        Icons
+                                            .arrow_forward_ios_rounded,
+                                        size: 15,
+                                        color:
+                                        AppColors.secondaryColor,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                            : Center(
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset(Assets.OOPS,
+                                  width: 300, height: 310),
+                            ],
+                          ),
+                        )
                             : const SizedBox(),
                       ],
                     );

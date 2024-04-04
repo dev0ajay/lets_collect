@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/search_bloc/search_bloc.dart';
-import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/search/category/search_category_request.dart';
-import 'package:lets_collect/src/ui/search/search_screen_arguments.dart';
+import 'package:lets_collect/src/ui/search/components/search_screen_arguments.dart';
 import 'package:lottie/lottie.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -25,13 +23,16 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
-  bool _isError = false;
+  final bool _isError = false;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<SearchBloc>(context).add(GetSearchEvent(
-        searchCategoryRequest: SearchCategoryRequest(searchText: '')));
+    BlocProvider.of<SearchBloc>(context).add(
+      GetSearchEvent(
+        searchCategoryRequest: SearchCategoryRequest(searchText: ''),
+      ),
+    );
   }
 
   @override
@@ -118,7 +119,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   BlocProvider.of<SearchBloc>(context).add(
                                     GetSearchEvent(
                                       searchCategoryRequest:
-                                          SearchCategoryRequest(
+                                      SearchCategoryRequest(
                                         searchText: text.length != null
                                             ? searchController.text
                                             : "",
@@ -130,15 +131,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                   BlocProvider.of<SearchBloc>(context).add(
                                     GetSearchEvent(
                                       searchCategoryRequest:
-                                          SearchCategoryRequest(
+                                      SearchCategoryRequest(
                                         searchText: searchController.text,
                                       ),
                                     ),
                                   );
                                 },
                                 controller: searchController,
-                                // placeholder: Strings.SEARCH_SCREEN_HINT,
                                 placeholder: AppLocalizations.of(context)!.searchcategory,
+                                // placeholder: Strings.SEARCH_SCREEN_HINT,
                                 placeholderStyle: const TextStyle(
                                   color: AppColors.primaryGrayColor,
                                 ),
@@ -146,7 +147,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   BlocProvider.of<SearchBloc>(context).add(
                                     GetSearchEvent(
                                       searchCategoryRequest:
-                                          SearchCategoryRequest(
+                                      SearchCategoryRequest(
                                         searchText: text.length != null
                                             ? searchController.text
                                             : "",
@@ -166,8 +167,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 BlocProvider.of<SearchBloc>(context).add(
                                   GetSearchEvent(
                                     searchCategoryRequest:
-                                        SearchCategoryRequest(
-                                            searchText: searchController.text),
+                                    SearchCategoryRequest(
+                                        searchText: searchController.text),
                                   ),
                                 );
                               }
@@ -187,24 +188,28 @@ class _SearchScreenState extends State<SearchScreen> {
           body: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
               if (state is SearchErrorState) {
-                return Center(
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        flex: 3,
+                        flex: 4,
                         child: Lottie.asset(Assets.TRY_AGAIN),
                       ),
-                      Flexible(
+                      Expanded(
                         flex: 2,
                         child: Text(
                           state.msg,
-                          style: const TextStyle(
-                              color: AppColors.primaryWhiteColor),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: AppColors.primaryColor),
                         ),
                       ),
-                      const Spacer(),
+                      // const Spacer(),
                       Flexible(
-                        flex: 1,
+                        flex: 4,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -215,14 +220,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           onPressed: () {
                             BlocProvider.of<SearchBloc>(context).add(
                               GetSearchEvent(
-                                searchCategoryRequest:
-                                    SearchCategoryRequest(searchText: ''),
+                                searchCategoryRequest: SearchCategoryRequest(searchText: ''),
                               ),
                             );
                           },
                           child:  Text(
-                            AppLocalizations.of(context)!.tryagain,
                             // "Try again",
+                            AppLocalizations.of(context)!.tryagain,
                             style: const TextStyle(color: AppColors.primaryWhiteColor),
                           ),
                         ),
@@ -259,18 +263,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemBuilder: (context, int index) {
                     return GestureDetector(
                       onTap: () {
-                        if (state.searchCategoryRequestResponse.data!.isNotEmpty) {
+                        if (state
+                            .searchCategoryRequestResponse.data!.isNotEmpty) {
                           context.push(
                             "/search_brand",
                             extra: SearchScreenArguments(
-                              categoryId: state.searchCategoryRequestResponse.data![index].id.toString(),
+                              categoryId: state.searchCategoryRequestResponse
+                                  .data![index].id
+                                  .toString(),
                               category: context.read<LanguageBloc>().state.selectedLanguage == Language.english
                                   ? state.searchCategoryRequestResponse.data![index].departmentName!
                                   : state.searchCategoryRequestResponse.data![index].departmentNameArabic!,
                             ),
                           );
-                        }
-                        else {
+                        } else {
                           print("No data available. Cannot navigate.");
                         }
                       },
@@ -297,10 +303,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: CircleAvatar(
                                   radius: 60,
                                   backgroundColor: AppColors.secondaryColor,
-                                  backgroundImage: NetworkImage(state
-                                      .searchCategoryRequestResponse
-                                      .data![index]
-                                      .departmentImage!),
+                                  backgroundImage: NetworkImage(
+                                      state.searchCategoryRequestResponse.data![index].departmentImage!),
                                 ),
                               ),
                             ),
@@ -308,8 +312,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             Expanded(
                               flex: 1,
                               child: Text(
-                                state.searchCategoryRequestResponse.data![index]
-                                    .departmentName!,
+                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                    ? state.searchCategoryRequestResponse.data![index].departmentName!
+                                    : state.searchCategoryRequestResponse.data![index].departmentNameArabic!,
                                 style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 15,

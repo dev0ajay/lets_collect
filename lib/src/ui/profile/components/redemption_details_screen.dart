@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/redemption_history/redemption_history_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
@@ -98,8 +100,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                           width: getProportionateScreenWidth(380),
                           height: getProportionateScreenHeight(370),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
                               boxShadow: const [
                                 BoxShadow(
                                   color: AppColors.boxShadow,
@@ -167,7 +169,7 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                                         children: [
                                           TextSpan(
                                             // text: "Redeemed",
-                                            text : AppLocalizations.of(context)!.redeemed,
+                                            text :AppLocalizations.of(context)!.redeemed,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -202,8 +204,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                                     Flexible(
                                       // flex: 2,
                                       child: Text(
-                                        AppLocalizations.of(context)!.store,
                                         // "Store: ",
+                                        AppLocalizations.of(context)!.store,
                                         style: GoogleFonts.roboto(
                                           color: AppColors.primaryColor,
                                           fontSize: 12,
@@ -215,12 +217,15 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                                     Flexible(
                                       // flex: 3,
                                       child: Text(
-                                        widget.store,
+                                        // widget.store,
+                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                            ? widget.store
+                                            : widget.store,
                                         style: GoogleFonts.roboto(
-                                                    color: AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
+                                          color: AppColors.primaryColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                     // RichText(
@@ -276,8 +281,8 @@ class _RedemptionDetailsScreenState extends State<RedemptionDetailsScreen> {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     // "You are not connected to the internet",
+                    AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,

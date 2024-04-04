@@ -11,7 +11,7 @@ import 'package:lets_collect/src/ui/profile/components/point_tracker_details_scr
 import 'package:lets_collect/src/ui/profile/components/point_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/purchase_history_screen.dart';
-import 'package:lets_collect/src/ui/profile/components/redem_tracker_screen.dart';
+import 'package:lets_collect/src/ui/profile/components/redemption_tracker_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/redemption_details_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/refer_a_friend.dart';
 import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_arguments.dart';
@@ -32,9 +32,9 @@ import 'package:lets_collect/src/ui/reward/components/partner/partner_product_li
 import 'package:lets_collect/src/ui/reward/components/redeem_screen.dart';
 import 'package:lets_collect/src/ui/reward/reward_screen.dart';
 import 'package:lets_collect/src/ui/scan/long_reciept_screen.dart';
-import 'package:lets_collect/src/ui/search/components/search_details_screen.dart';
+import 'package:lets_collect/src/ui/search/search_details_screen.dart';
 import 'package:lets_collect/src/ui/search/search_screen.dart';
-import 'package:lets_collect/src/ui/search/search_screen_arguments.dart';
+import 'package:lets_collect/src/ui/search/components/search_screen_arguments.dart';
 import 'package:lets_collect/src/ui/splash/splash_screen.dart';
 import '../src/ui/authentication/Signup/components/widget/calenderscreen/singup_calender_screen.dart';
 import '../src/ui/authentication/Signup/components/widget/firstscreen/singup_first_screen.dart';

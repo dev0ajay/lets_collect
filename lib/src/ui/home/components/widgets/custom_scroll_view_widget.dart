@@ -22,6 +22,9 @@ import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'alert_overlay_widget.dart';
+import 'email_verified_alert_overlay.dart';
+
 class CustomScrollViewWidget extends StatefulWidget {
   final Function(int) onIndexChanged;
 
@@ -48,25 +51,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
   ];
   int carouselIndex = 0;
   bool networkSuccess = false;
+  late bool _isEmailVerified = false;
+  late bool _isEmailNotVerifyExecuted = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController referralController = TextEditingController();
 
-  @override
-  void initState() {
-    BlocProvider.of<HomeBloc>(context).add(GetHomeData());
-    print(ObjectFactory().prefs.getEmailVerifiedPoints());
-    print("IS EMAIL VERIFIED: ${ObjectFactory().prefs.isEmailVerified()}");
-    print(
-        "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
-
-    print(
-        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory().prefs.isEmailNotVerifiedStatus()}");
-
-    print(
-        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()}");
-    super.initState();
-  }
-
+  ///Url Launcher
   Future<void> _launchInBrowser(String url) async {
     if (await canLaunchUrlString(url)) {
       await launchUrlString(
@@ -86,10 +76,25 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         if (state is NetworkSuccess) {
           return BlocConsumer<HomeBloc, HomeState>(
             listener: (context, state) {
-              ///If and only if Network success
-              // if(state is NetworkSuccess) {
-              //   BlocProvider.of<HomeBloc>(context).add(GetHomeData());
-              // }
+              if (state is HomeLoaded) {
+                if (!_isEmailVerified && !_isEmailNotVerifyExecuted) {
+                  if (state.homeResponse.emailVerified == 1) {
+                    _isEmailVerified = true;
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const EmailVerifiedAlertOverlay());
+                  } else if (state.homeResponse.emailVerified == 0 &&
+                      !_isEmailNotVerifyExecuted) {
+                    _isEmailNotVerifyExecuted = true;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          const EmailNotVerifiedAlertOverlay(),
+                    );
+                  }
+                }
+              }
             },
             builder: (context, state) {
               if (state is HomeLoading) {
@@ -113,14 +118,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
 
               if (state is HomeLoaded) {
                 if (state.homeResponse.emailVerified == 1) {
-                  setState(() {
-                    ObjectFactory().prefs.setIsEmailVerified(true);
-                  });
-                  // // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
-                  // ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
                   ObjectFactory().prefs.setEmailVerifiedPoints(
-                      verifiedPoints: state
-                          .homeResponse.emailVerificationPoints
+                      verifiedPoints: state.homeResponse.emailVerificationPoints
                           .toString());
                 } else if (state.homeResponse.emailVerified == 0) {
                   ObjectFactory().prefs.setIsEmailNotVerifiedStatus(true);
@@ -148,8 +147,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         titlePadding: const EdgeInsets.only(
                             top: 10, bottom: 0, left: 10, right: 10),
                         title: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               flex: 5,
@@ -159,8 +157,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 textAlign: TextAlign.start,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 22, fontWeight: FontWeight.w600),
                               ),
                             ),
                             Flexible(
@@ -207,40 +204,34 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     SliverPadding(
                       sliver: BlocConsumer<ReferralBloc, ReferralState>(
                         listener: (context, state) {
-                          // if (state is ReferralCodeUpdateLoading) {
-                          //   const Center(
-                          //     heightFactor: 10,
-                          //     child: RefreshProgressIndicator(
-                          //       color: AppColors.secondaryColor,
-                          //     ),
-                          //   );
-                          // }
 
                           if (state is ReferralCodeUpdateLoaded) {
-                            if (state.referralCodeUpdateRequestResponse.success == true) {
+                            if (state.referralCodeUpdateRequestResponse
+                                    .success ==
+                                true) {
                               _showDialogBox(context: context);
                             } else {
                               if (state.referralCodeUpdateRequestResponse
-                                  .success ==
-                                  false &&
+                                          .success ==
+                                      false &&
                                   state.referralCodeUpdateRequestResponse
-                                      .message ==
+                                          .message ==
                                       "The referral code field is required") {
                                 _showDialogBox(context: context);
                               }
                               if (state.referralCodeUpdateRequestResponse
-                                  .success ==
-                                  false &&
+                                          .success ==
+                                      false &&
                                   state.referralCodeUpdateRequestResponse
-                                      .message ==
+                                          .message ==
                                       "Invalid Referral Code") {
                                 _showDialogBox(context: context);
                               }
                               if (state.referralCodeUpdateRequestResponse
-                                  .success ==
-                                  false &&
+                                          .success ==
+                                      false &&
                                   state.referralCodeUpdateRequestResponse
-                                      .message ==
+                                          .message ==
                                       "Referral code already added") {
                                 _showDialogBox(context: context);
                               }
@@ -253,17 +244,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                             child: SliverToBoxAdapter(
                               child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Flexible(
                                     flex: 2,
                                     child: Container(
-                                      height: 50,
-                                      // width: MediaQuery.of(context).size.width,
+                                      height: getProportionateScreenHeight(50),
                                       decoration: BoxDecoration(
                                         color: AppColors.primaryWhiteColor,
-                                        borderRadius:
-                                        BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                             color: AppColors.borderColor,
                                             width: 1),
@@ -284,10 +273,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       ),
                                       child: SizedBox(
                                         height:
-                                        getProportionateScreenHeight(
-                                            50),
-                                        child:
-                                        CupertinoTextField.borderless(
+                                            getProportionateScreenHeight(50),
+                                        child: CupertinoTextField.borderless(
                                           padding: const EdgeInsets.only(
                                               left: 15,
                                               top: 15,
@@ -296,25 +283,25 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           // placeholder: 'Referral code',
                                           controller: referralController,
                                           placeholder:
-                                          AppLocalizations.of(context)!
-                                              .referralcode,
+                                              AppLocalizations.of(context)!
+                                                  .referralcode,
                                         ),
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 12),
-
                                   Flexible(
                                     child: BlocBuilder<ReferralBloc,
                                         ReferralState>(
                                       builder: (context, state) {
-                                        if (state is ReferralCodeUpdateLoading) {
+                                        if (state
+                                            is ReferralCodeUpdateLoading) {
                                           return const Center(
                                             child: RefreshProgressIndicator(
-                                              color: AppColors
-                                                  .primaryWhiteColor,
+                                              color:
+                                                  AppColors.primaryWhiteColor,
                                               backgroundColor:
-                                              AppColors.secondaryColor,
+                                                  AppColors.secondaryColor,
                                             ),
                                           );
                                         }
@@ -324,25 +311,25 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                             fixedSize: const Size(120, 48),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(8),
+                                                  BorderRadius.circular(8),
                                             ),
                                             backgroundColor:
-                                            AppColors.secondaryColor,
+                                                AppColors.secondaryColor,
                                           ),
                                           onPressed: () {
                                             if (referralController
                                                 .text.isEmpty) {
                                               Fluttertoast.showToast(
                                                 // msg: "The referral code field is required",
-                                                msg: AppLocalizations.of(context)!.thereferralcodefieldisrequired,
-                                                toastLength:
-                                                Toast.LENGTH_LONG,
-                                                gravity:
-                                                ToastGravity.BOTTOM,
-                                                backgroundColor: AppColors
-                                                    .secondaryColor,
-                                                textColor: AppColors
-                                                    .primaryWhiteColor,
+                                                msg: AppLocalizations.of(
+                                                        context)!
+                                                    .thereferralcodefieldisrequired,
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.BOTTOM,
+                                                backgroundColor:
+                                                    AppColors.secondaryColor,
+                                                textColor:
+                                                    AppColors.primaryWhiteColor,
                                               );
                                               return;
                                             }
@@ -350,9 +337,14 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                             if (_formKey.currentState!
                                                 .validate()) {
                                               BlocProvider.of<ReferralBloc>(
-                                                  context).add(GetReferralCodeUpdateEvent(
-                                                  referralCodeUpdateRequest: ReferralCodeUpdateRequest(
-                                                      referralCode: referralController.text),
+                                                      context)
+                                                  .add(
+                                                GetReferralCodeUpdateEvent(
+                                                  referralCodeUpdateRequest:
+                                                      ReferralCodeUpdateRequest(
+                                                          referralCode:
+                                                              referralController
+                                                                  .text),
                                                 ),
                                               );
                                             } else {
@@ -361,14 +353,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 msg: AppLocalizations.of(
                                                         context)!
                                                     .thereferralcodefieldisrequired,
-                                                toastLength:
-                                                Toast.LENGTH_LONG,
-                                                gravity:
-                                                ToastGravity.BOTTOM,
-                                                backgroundColor: AppColors
-                                                    .secondaryColor,
-                                                textColor: AppColors
-                                                    .primaryWhiteColor,
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.BOTTOM,
+                                                backgroundColor:
+                                                    AppColors.secondaryColor,
+                                                textColor:
+                                                    AppColors.primaryWhiteColor,
                                               );
                                             }
                                           },
@@ -391,16 +381,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           );
                         },
                       ),
-                      padding: const EdgeInsets.only(
-                          top: 10, left: 10, right: 10),
+                      padding:
+                           EdgeInsets.only(top: 10, left: 10, right: 10,bottom: getProportionateScreenHeight(10)),
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(
                         height: 200,
                         width: MediaQuery.of(context).size.width,
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 0),
@@ -412,8 +401,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   widget.onIndexChanged(4);
                                 },
                                 child: Container(
-                                  height:
-                                  getProportionateScreenHeight(160),
+                                  height: getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
                                     boxShadow: const [
@@ -439,36 +427,32 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         Color(0xFFF55562),
                                       ],
                                     ),
-                                    borderRadius:
-                                    BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Flexible(
                                         flex: 3,
                                         child: Center(
-                                          child: Image.asset(Assets.SCAN,
-                                              scale: 6)
-                                              .animate()
-                                              .shake(
-                                            duration: const Duration(
-                                                milliseconds: 400),
-                                          ),
+                                          child:
+                                              Image.asset(Assets.SCAN, scale: 6)
+                                                  .animate()
+                                                  .shake(
+                                                    duration: const Duration(
+                                                        milliseconds: 400),
+                                                  ),
                                         ),
                                       ),
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          AppLocalizations.of(context)!
-                                              .scan,
+                                          AppLocalizations.of(context)!.scan,
                                           // "Scan",
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors
-                                                .primaryWhiteColor,
+                                            color: AppColors.primaryWhiteColor,
                                           ),
                                         ),
                                       )
@@ -485,8 +469,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   widget.onIndexChanged(1);
                                 },
                                 child: Container(
-                                  height:
-                                  getProportionateScreenHeight(160),
+                                  height: getProportionateScreenHeight(160),
                                   width: getProportionateScreenWidth(150),
                                   decoration: BoxDecoration(
                                     boxShadow: const [
@@ -512,24 +495,21 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         Color(0xFF111B3E)
                                       ],
                                     ),
-                                    borderRadius:
-                                    BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Flexible(
                                         flex: 3,
                                         child: Center(
-                                          child: Image.asset(
-                                              Assets.WALLET,
-                                              scale: 9)
+                                          child: Image.asset(Assets.WALLET,
+                                                  scale: 9)
                                               .animate()
                                               .shake(
-                                            duration: const Duration(
-                                                milliseconds: 400),
-                                          ),
+                                                duration: const Duration(
+                                                    milliseconds: 400),
+                                              ),
                                         ),
                                       ),
                                       Flexible(
@@ -541,8 +521,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700,
-                                            color: AppColors
-                                                .primaryWhiteColor,
+                                            color: AppColors.primaryWhiteColor,
                                           ),
                                         ),
                                       ),
@@ -560,8 +539,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   AppLocalizations.of(context)!.brands,
@@ -583,8 +561,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     width: 50,
                                     child: Center(
                                       child: Text(
-                                        AppLocalizations.of(context)!
-                                            .viewall,
+                                        AppLocalizations.of(context)!.viewall,
                                         // "View all",
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.roboto(
@@ -601,101 +578,90 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               children: [
                                 SizedBox(
                                   // color: Colors.green,
-                                  height:
-                                  getProportionateScreenHeight(130),
+                                  height: getProportionateScreenHeight(130),
                                   child: CarouselSlider(
                                     items: List.generate(
-                                        state.homeResponse.data!.brands!
-                                            .length,
-                                            (index) => GestureDetector(
-                                          onTap: () {
-                                            _launchInBrowser(
-                                              state
-                                                  .homeResponse
-                                                  .data!
-                                                  .brands![index]
-                                                  .brandLink!,
-                                            );
-                                          },
-                                          child: Padding(
-                                            padding:
-                                            const EdgeInsets.only(
-                                                top: 5,
-                                                right: 5,
-                                                left: 5,
-                                                bottom: 5),
-                                            child: Container(
-                                              padding:
-                                              EdgeInsets.all(5),
-                                              margin: const EdgeInsets
-                                                  .all(9),
-                                              decoration:
-                                              const BoxDecoration(
-                                                color: AppColors
-                                                    .primaryWhiteColor,
-                                                boxShadow: [
-                                                  BoxShadow(
+                                        state.homeResponse.data!.brands!.length,
+                                        (index) => GestureDetector(
+                                              onTap: () {
+                                                _launchInBrowser(
+                                                  state
+                                                      .homeResponse
+                                                      .data!
+                                                      .brands![index]
+                                                      .brandLink!,
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5,
+                                                    right: 5,
+                                                    left: 5,
+                                                    bottom: 5),
+                                                child: Container(
+                                                  padding: EdgeInsets.all(5),
+                                                  margin:
+                                                      const EdgeInsets.all(9),
+                                                  decoration:
+                                                      const BoxDecoration(
                                                     color: AppColors
-                                                        .boxShadow,
-                                                    blurRadius: 4,
-                                                    offset:
-                                                    Offset(4, 2),
-                                                    spreadRadius: 0,
+                                                        .primaryWhiteColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(4, 2),
+                                                        spreadRadius: 0,
+                                                      ),
+                                                      BoxShadow(
+                                                        color:
+                                                            AppColors.boxShadow,
+                                                        blurRadius: 4,
+                                                        offset: Offset(-4, -2),
+                                                        spreadRadius: 0,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  BoxShadow(
-                                                    color: AppColors
-                                                        .boxShadow,
-                                                    blurRadius: 4,
-                                                    offset: Offset(
-                                                        -4, -2),
-                                                    spreadRadius: 0,
-                                                  ),
-                                                ],
-                                              ),
-                                              child:
-                                              CachedNetworkImage(
-                                                fadeInCurve:
-                                                Curves.easeIn,
-                                                fadeInDuration:
-                                                const Duration(
-                                                    milliseconds:
-                                                    200),
-                                                imageUrl: state
-                                                    .homeResponse
-                                                    .data!
-                                                    .brands![index]
-                                                    .brandLogo!,
-                                                placeholder:
-                                                    (context, url) =>
-                                                    SizedBox(
+                                                  child: CachedNetworkImage(
+                                                    fadeInCurve: Curves.easeIn,
+                                                    fadeInDuration:
+                                                        const Duration(
+                                                            milliseconds: 200),
+                                                    imageUrl: state
+                                                        .homeResponse
+                                                        .data!
+                                                        .brands![index]
+                                                        .brandLogo!,
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            SizedBox(
                                                       // height: getProportionateScreenHeight(170),
                                                       // width: MediaQuery.of(context).size.width,
                                                       child: Center(
-                                                        child:
-                                                        Lottie.asset(
-                                                          Assets
-                                                              .JUMBINGDOT,
+                                                        child: Lottie.asset(
+                                                          Assets.JUMBINGDOT,
                                                           height: 35,
                                                           width: 35,
                                                         ),
                                                       ),
                                                     ),
-                                                errorWidget: (context,
-                                                    url, error) =>
-                                                const SizedBox(
-                                                  child: Center(
-                                                    child: ImageIcon(
-                                                      color: AppColors
-                                                          .hintColor,
-                                                      AssetImage(Assets
-                                                          .NO_IMG),
+                                                    errorWidget:
+                                                        (context, url, error) =>
+                                                            const SizedBox(
+                                                      child: Center(
+                                                        child: ImageIcon(
+                                                          color: AppColors
+                                                              .hintColor,
+                                                          AssetImage(
+                                                              Assets.NO_IMG),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
                                         growable: true),
                                     options: CarouselOptions(
                                       onPageChanged: (index, reason) {
@@ -710,8 +676,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       autoPlayCurve: Curves.fastOutSlowIn,
                                       enableInfiniteScroll: true,
                                       autoPlayAnimationDuration:
-                                      const Duration(
-                                          milliseconds: 800),
+                                          const Duration(milliseconds: 800),
                                       viewportFraction: 0.4,
                                     ),
                                   ),
@@ -719,8 +684,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
                                   child: DotsIndicator(
-                                    dotsCount: state.homeResponse.data!
-                                        .brands!.length,
+                                    dotsCount:
+                                        state.homeResponse.data!.brands!.length,
                                     axis: Axis.horizontal,
                                     position: carouselIndex,
                                     decorator: DotsDecorator(
@@ -728,21 +693,21 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                             left: 3, right: 3),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(5)),
+                                                BorderRadius.circular(5)),
                                         activeShape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(5)),
+                                                BorderRadius.circular(5)),
                                         size: Size(
                                             (MediaQuery.of(context).size.width -
-                                                290) /
-                                                state.homeResponse.data!
-                                                    .brands!.length,
+                                                    290) /
+                                                state.homeResponse.data!.brands!
+                                                    .length,
                                             5),
                                         activeSize: Size(
                                             (MediaQuery.of(context).size.width -
-                                                290) /
-                                                state.homeResponse.data!
-                                                    .brands!.length,
+                                                    290) /
+                                                state.homeResponse.data!.brands!
+                                                    .length,
                                             5),
                                         color: AppColors.shadow,
                                         activeColor: AppColors.secondaryColor),
@@ -754,17 +719,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         ),
                       ),
                       padding: const EdgeInsets.only(
-                          left: 10, right: 10, top: 0, bottom: 8),
+                          left: 20, right: 20, top: 10, bottom: 8),
                     ),
                     SliverPadding(
                       sliver: SliverToBoxAdapter(
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .specialoffersforyou,
+                              AppLocalizations.of(context)!.specialoffersforyou,
                               // "Special Offers for you",
                               style: GoogleFonts.roboto(
                                 fontSize: 16,
@@ -794,13 +757,13 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           ],
                         ),
                       ),
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 15),
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, top: 15),
                     ),
                     SliverPadding(
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, index) {
+                          (BuildContext context, index) {
                             return Column(
                               children: AnimateList(
                                 effects: [
@@ -808,7 +771,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 ],
                                 children: List.generate(
                                   state.homeResponse.data!.offers!.length,
-                                      (index) => Padding(
+                                  (index) => Padding(
                                     padding: const EdgeInsets.all(15),
                                     child: GestureDetector(
                                       onTap: () {
@@ -820,11 +783,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 .data!
                                                 .offers![index]
                                                 .offerHeading!,
-                                            endDate: state
-                                                .homeResponse
-                                                .data!
-                                                .offers![index]
-                                                .endDate!,
+                                            endDate: state.homeResponse.data!
+                                                .offers![index].endDate!,
                                             offerDetailText: state
                                                 .homeResponse
                                                 .data!
@@ -835,30 +795,35 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                 .data!
                                                 .offers![index]
                                                 .offerImage!,
-                                            startDate: state
-                                                .homeResponse
-                                                .data!
-                                                .offers![index]
-                                                .startDate!,
+                                            startDate: state.homeResponse.data!
+                                                .offers![index].startDate!,
                                             storeList: state
                                                 .homeResponse
                                                 .data!
                                                 .offers![index]
                                                 .superMartketName!,
+                                            offerHeadingArabic: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerHeadingArabic!,
+                                            offerDetailTextArabic: state
+                                                .homeResponse
+                                                .data!
+                                                .offers![index]
+                                                .offerDetailsArabic!,
                                           ),
                                         );
                                       },
                                       child: Container(
                                         height:
-                                        getProportionateScreenHeight(
-                                            170),
-                                        width: MediaQuery.of(context)
-                                            .size
-                                            .width,
+                                            getProportionateScreenHeight(170),
+                                        width:
+                                            getProportionateScreenWidth(320),
                                         // padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                          BorderRadius.circular(20),
+                                              BorderRadius.circular(20),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: AppColors.shadow,
@@ -888,43 +853,39 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(20),
+                                              BorderRadius.circular(20),
                                           child: CachedNetworkImage(
-                                            imageUrl: state
-                                                .homeResponse
-                                                .data!
-                                                .offers![index]
-                                                .offerImage!,
-                                            imageBuilder: (context,
-                                                imageProvider) =>
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
+                                            imageUrl: state.homeResponse.data!
+                                                .offers![index].offerImage!,
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill,
                                                 ),
+                                              ),
+                                            ),
                                             placeholder: (context, url) =>
                                                 SizedBox(
-                                                  height:
+                                              height:
                                                   getProportionateScreenHeight(
                                                       170),
-                                                  width:
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: Center(
-                                                    child: Lottie.asset(
-                                                      Assets.JUMBINGDOT,
-                                                      height: 55,
-                                                      width: 55,
-                                                    ),
-                                                  ),
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Center(
+                                                child: Lottie.asset(
+                                                  Assets.JUMBINGDOT,
+                                                  height: 55,
+                                                  width: 55,
                                                 ),
+                                              ),
+                                            ),
                                             errorWidget:
                                                 (context, url, error) =>
-                                            const ImageIcon(
+                                                    const ImageIcon(
                                               color: AppColors.hintColor,
                                               AssetImage(Assets.NO_IMG),
                                             ),
@@ -967,8 +928,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                           Text(
-                             AppLocalizations.of(context)!.hisarah,
+                          Text(
+                            AppLocalizations.of(context)!.hisarah,
                             // "Hi Sarah",
                             style: const TextStyle(
                               fontSize: 20,
@@ -1022,10 +983,11 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               ),
                               child: SizedBox(
                                 height: getProportionateScreenHeight(50),
-                                child:  CupertinoTextField.borderless(
+                                child: CupertinoTextField.borderless(
                                   padding: const EdgeInsets.only(
                                       left: 15, top: 15, right: 6, bottom: 10),
-                                  placeholder: AppLocalizations.of(context)!.referralcode,
+                                  placeholder: AppLocalizations.of(context)!
+                                      .referralcode,
                                   // placeholder: 'Referral code',
                                 ),
                               ),
@@ -1043,7 +1005,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 backgroundColor: AppColors.secondaryButtonColor,
                               ),
                               onPressed: () {},
-                              child:  Text(
+                              child: Text(
                                 AppLocalizations.of(context)!.bonuspoint,
                                 // "Bonus point!",
                                 textAlign: TextAlign.center,
@@ -1055,7 +1017,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       ),
                     ),
                     padding:
-                    const EdgeInsets.only(top: 10, left: 10, right: 10),
+                        const EdgeInsets.only(top: 10, left: 10, right: 10),
                   ),
                   SliverToBoxAdapter(
                     child: SizedBox(
@@ -1090,12 +1052,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       child: Image.asset(Assets.SCAN, scale: 6)
                                           .animate()
                                           .shake(
-                                        duration: const Duration(
-                                            milliseconds: 400),
-                                      ),
+                                            duration: const Duration(
+                                                milliseconds: 400),
+                                          ),
                                     ),
                                   ),
-                                   Flexible(
+                                  Flexible(
                                     flex: 1,
                                     child: Text(
                                       AppLocalizations.of(context)!.scan,
@@ -1133,15 +1095,15 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                     flex: 3,
                                     child: Center(
                                       child:
-                                      Image.asset(Assets.WALLET, scale: 8)
-                                          .animate()
-                                          .shake(
-                                        duration: const Duration(
-                                            milliseconds: 400),
-                                      ),
+                                          Image.asset(Assets.WALLET, scale: 8)
+                                              .animate()
+                                              .shake(
+                                                duration: const Duration(
+                                                    milliseconds: 400),
+                                              ),
                                     ),
                                   ),
-                                   Text(
+                                  Text(
                                     "${AppLocalizations.of(context)!.referralcode} \n 1200 ${AppLocalizations.of(context)!.pts}",
                                     // "Total points \n 1200 pts",
                                     textAlign: TextAlign.center,
@@ -1161,7 +1123,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     sliver: SliverToBoxAdapter(
                       child: Column(
                         children: [
-                           Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -1226,17 +1188,17 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                           imageUrl: brandList[index],
                                           imageBuilder:
                                               (context, imageProvider) =>
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.cover,
-                                                      colorFilter:
+                                                  Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                  colorFilter:
                                                       const ColorFilter.mode(
                                                           Colors.red,
                                                           BlendMode.colorBurn)),
-                                                ),
-                                              ),
+                                            ),
+                                          ),
                                           // placeholder: (context, url) => CircularProgressIndicator(),
                                           // errorWidget: (context, url, error) => Icon(Icons.error),
                                         ),
@@ -1265,25 +1227,25 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                   SliverPadding(
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, index) {
+                        (BuildContext context, index) {
                           return Column(
                               children: AnimateList(
                                   effects: [
-                                    FadeEffect(delay: 300.ms),
-                                  ],
+                                FadeEffect(delay: 300.ms),
+                              ],
                                   children: List.generate(
                                     offerList.length,
-                                        (index) => Padding(
+                                    (index) => Padding(
                                       padding: const EdgeInsets.all(15),
                                       child: Container(
                                         height:
-                                        getProportionateScreenHeight(110),
+                                            getProportionateScreenHeight(110),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                               color: AppColors.borderColor,
                                               width: 1),
                                           borderRadius:
-                                          BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                           boxShadow: const [
                                             BoxShadow(
                                               color: AppColors.boxShadow,
@@ -1313,20 +1275,20 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         ),
                                         child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(10),
+                                              BorderRadius.circular(10),
                                           child: CachedNetworkImage(
                                             fit: BoxFit.fill,
                                             imageUrl: offerList[index],
                                             imageBuilder:
                                                 (context, imageProvider) =>
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: imageProvider,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ),
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill,
                                                 ),
+                                              ),
+                                            ),
                                             // placeholder: (context, url) => CircularProgressIndicator(),
                                             // errorWidget: (context, url, error) => Icon(Icons.error),
                                           ),
@@ -1339,7 +1301,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       ),
                     ),
                     padding:
-                    const EdgeInsets.only(bottom: 100, left: 10, right: 10),
+                        const EdgeInsets.only(bottom: 100, left: 10, right: 10),
                   ),
                 ],
               );
@@ -1383,11 +1345,12 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         onWillPop: () async {
           return false;
         },
-        child: BlocBuilder<ReferralBloc, ReferralState>(
-            builder: (context, state) {
+        child:
+            BlocBuilder<ReferralBloc, ReferralState>(builder: (context, state) {
           if (state is ReferralCodeUpdateLoaded) {
             if (state.referralCodeUpdateRequestResponse.success == true &&
-            state.referralCodeUpdateRequestResponse.message == "Referral code added successfully.") {
+                state.referralCodeUpdateRequestResponse.message ==
+                    "Referral code added successfully.") {
               return AlertDialog(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -1425,7 +1388,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                       Flexible(
                         flex: 2,
                         child: Text(
-                          AppLocalizations.of(context)!.referralcodeaddedsuccessfully,
+                          AppLocalizations.of(context)!
+                              .referralcodeaddedsuccessfully,
                           // state.referralCodeUpdateRequestResponse.message,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
@@ -1513,7 +1477,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           flex: 2,
                           child: Text(
                             // state.referralCodeUpdateRequestResponse.message,
-                            AppLocalizations.of(context)!.thereferralcodefieldisrequired,
+                            AppLocalizations.of(context)!
+                                .thereferralcodefieldisrequired,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.openSans(
                               fontSize: 16,
@@ -1686,7 +1651,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         Flexible(
                           flex: 2,
                           child: Text(
-                            AppLocalizations.of(context)!.referralcodealreadyadded,
+                            AppLocalizations.of(context)!
+                                .referralcodealreadyadded,
                             // state.referralCodeUpdateRequestResponse.message,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.openSans(
