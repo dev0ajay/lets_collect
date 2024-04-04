@@ -41,7 +41,7 @@ class GoogleSignInCubit extends Cubit<GoogleSignInState> {
 
     } catch(e) {
       print(e);
-      emit(GoogleSignInError(error: e.toString()));
+      emit(GoogleSignInError());
     }
   }
 

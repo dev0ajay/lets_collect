@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -11,10 +12,11 @@ import 'package:lets_collect/src/ui/reward/reward_screen.dart';
 import 'package:lets_collect/src/ui/scan/scan_screen.dart';
 import 'package:lets_collect/src/ui/search/search_screen.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
+import '../../bloc/home_bloc/home_bloc.dart';
 import '../../constants/assets.dart';
 
 class HomeScreen extends StatefulWidget {
-   const HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -41,14 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
       currentBackPressTime = now;
       Fluttertoast.showToast(
         backgroundColor: AppColors.secondaryColor,
-          textColor: AppColors.primaryWhiteColor,
-          gravity: ToastGravity.BOTTOM,
-          msg: "Press again to exit the app.",
+        textColor: AppColors.primaryWhiteColor,
+        gravity: ToastGravity.BOTTOM,
+        msg: "Press again to exit the app.",
       );
       return Future.value(false);
     }
     exit(0);
   }
+
   bool isSortTapped = true;
 
   void _onItemTapped(int index) {
@@ -60,52 +63,48 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    BlocProvider.of<HomeBloc>(context).add(GetHomeData());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // children = [
-    //   const RewardScreen(),
-    //   const SearchScreen(),
-    //   const ProfileScreen(),
-    //   const ScanScreen(from: 'HomeNav'),
-    // ];
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        key: _scaffoldKey,
-        backgroundColor: AppColors.primaryWhiteColor,
-        extendBody: true,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          height: 70,
-          width: 70,
-          child: FittedBox(
-            child: FloatingActionButton(
-              elevation: 10,
-              backgroundColor: AppColors.primaryColor,
-              shape: const CircleBorder(),
-              onPressed: () {
-                setState(() {
-                  selectedNavIndex= 4;
-                  print("bottomNavindex: $selectedNavIndex");
-                });
-                // context.go('/scan');
-              },
-              child: ImageIcon(
-                const AssetImage(Assets.SCAN_ICON),
-                size: selectedNavIndex == 4 ? 29 : 25,
-                color: selectedNavIndex == 4
-                    ? AppColors.secondaryColor
-                    : AppColors.primaryWhiteColor,
+          resizeToAvoidBottomInset: false,
+          key: _scaffoldKey,
+          backgroundColor: AppColors.primaryWhiteColor,
+          extendBody: true,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: SizedBox(
+            height: 70,
+            width: 70,
+            child: FittedBox(
+              child: FloatingActionButton(
+                elevation: 10,
+                backgroundColor: AppColors.primaryColor,
+                shape: const CircleBorder(),
+                onPressed: () {
+                  setState(() {
+                    selectedNavIndex = 4;
+                    print("bottomNavindex: $selectedNavIndex");
+                  });
+                  // context.go('/scan');
+                },
+                child: ImageIcon(
+                  const AssetImage(Assets.SCAN_ICON),
+                  size: selectedNavIndex == 4 ? 29 : 25,
+                  color: selectedNavIndex == 4
+                      ? AppColors.secondaryColor
+                      : AppColors.primaryWhiteColor,
+                ),
               ),
             ),
           ),
-        ),
-        bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+          bottomNavigationBar: AnimatedBottomNavigationBar.builder(
             itemCount: iconList.length,
             tabBuilder: (int index, bool isActive) {
               return ImageIcon(
@@ -120,23 +119,26 @@ class _HomeScreenState extends State<HomeScreen> {
             notchSmoothness: NotchSmoothness.defaultEdge,
             onTap: _onItemTapped,
             //other params
-            ),
-        body:
-        selectedNavIndex == 0 ?
-        HomeScreenNavigation(onIndexChanged: (index) {
-          _onItemTapped(index);
-        },) :
-        // selectedNavIndex == 4 ? const ScanScreen(from: 'HomeNav') :
-        selectedNavIndex == 1 ? const RewardScreen() :
-        selectedNavIndex == 2 ? const SearchScreen() :
-        selectedNavIndex == 4 ? const ScanScreen(from: "HomeNav"):
-        const ProfileScreen()
-            // children[
-            // selectedNavIndex
-            // ],
-      ),
+          ),
+          body: selectedNavIndex == 0
+              ? HomeScreenNavigation(
+                  onIndexChanged: (index) {
+                    _onItemTapped(index);
+                  },
+                )
+              :
+              // selectedNavIndex == 4 ? const ScanScreen(from: 'HomeNav') :
+              selectedNavIndex == 1
+                  ? const RewardScreen()
+                  : selectedNavIndex == 2
+                      ? const SearchScreen()
+                      : selectedNavIndex == 4
+                          ? const ScanScreen(from: "HomeNav")
+                          : const ProfileScreen()
+          // children[
+          // selectedNavIndex
+          // ],
+          ),
     );
   }
 }
-
-

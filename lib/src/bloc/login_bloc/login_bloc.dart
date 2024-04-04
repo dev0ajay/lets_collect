@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request_response.dart';
-
 import '../../model/auth/apple_signin_request.dart';
 import '../../model/auth/apple_signin_request_response.dart';
 import '../../model/auth/google_login_request.dart';

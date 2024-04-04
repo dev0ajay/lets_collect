@@ -16,6 +16,8 @@ import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
+import 'alert_overlay_widget.dart';
+import 'email_verified_alert_overlay.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
   final Function(int) onIndexChanged;
@@ -43,21 +45,24 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
   ];
   int carouselIndex = 0;
   bool networkSuccess = false;
+  late bool _isEmailVerified = false;
+  late bool _isEmailNotVerifyExecuted = false;
+
+  // @override
+  // void initState() {
+  //   BlocProvider.of<HomeBloc>(context).add(GetHomeData());
+  //   super.initState();
+  // }
 
   @override
-  void initState() {
-    BlocProvider.of<HomeBloc>(context).add(GetHomeData());
-    print(ObjectFactory().prefs.getEmailVerifiedPoints());
-    print("IS EMAIL VERIFIED: ${ObjectFactory().prefs.isEmailVerified()}");
-    print(
-        "IS EMAIL VERIFIED STATUS: ${ObjectFactory().prefs.isEmailVerifiedStatus()}");
+  void dispose() {
+    _resetDialogFlags();
+    super.dispose();
+  }
 
-    print(
-        "IS EMAIL NOT VERIFIED STATUS: ${ObjectFactory().prefs.isEmailNotVerifiedStatus()}");
-
-    print(
-        "IS EMAIL NOT VERIFIED CALLED: ${ObjectFactory().prefs.isEmailNotVerifiedCalled()}");
-    super.initState();
+  void _resetDialogFlags() {
+    _isEmailVerified = false;
+    _isEmailNotVerifyExecuted = false;
   }
 
   Future<void> _launchInBrowser(String url) async {
@@ -79,10 +84,24 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
         if (state is NetworkSuccess) {
           return BlocConsumer<HomeBloc, HomeState>(
             listener: (context, state) {
-              ///If and only if Network success
-              // if(state is NetworkSuccess) {
-              //   BlocProvider.of<HomeBloc>(context).add(GetHomeData());
-              // }
+              if (state is HomeLoaded) {
+                if (!_isEmailVerified && !_isEmailNotVerifyExecuted) {
+                  if (state.homeResponse.emailVerified == 1) {
+                    _isEmailVerified = true;
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            const EmailVerifiedAlertOverlay());
+                  } else if (state.homeResponse.emailVerified == 0 &&
+                      !_isEmailNotVerifyExecuted) {
+                    _isEmailNotVerifyExecuted = true;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const EmailNotVerifiedAlertOverlay(),
+                    );
+                  }
+                }
+              }
             },
             builder: (context, state) {
               if (state is HomeLoading) {
@@ -504,7 +523,9 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                     bottom: 5),
                                                 child: Container(
                                                   height: 200,
-                                                  width: getProportionateScreenWidth(150),
+                                                  width:
+                                                      getProportionateScreenWidth(
+                                                          150),
                                                   padding:
                                                       const EdgeInsets.all(5),
                                                   margin:
@@ -718,9 +739,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       child: Container(
                                         height:
                                             getProportionateScreenHeight(170),
-                                        width:
-                                            getProportionateScreenWidth(300),
-                                            // MediaQuery.of(context).size.width,
+                                        width: getProportionateScreenWidth(300),
+                                        // MediaQuery.of(context).size.width,
                                         // padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           borderRadius:

@@ -6,14 +6,15 @@ import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../../constants/colors.dart';
 
-class AlertOverlay extends StatefulWidget {
-  const AlertOverlay({super.key});
+class EmailNotVerifiedAlertOverlay extends StatefulWidget {
+  const EmailNotVerifiedAlertOverlay({super.key});
 
   @override
-  State<StatefulWidget> createState() => AlertOverlayState();
+  State<StatefulWidget> createState() => EmailNotVerifiedAlertOverlayState();
 }
 
-class AlertOverlayState extends State<AlertOverlay>
+class EmailNotVerifiedAlertOverlayState
+    extends State<EmailNotVerifiedAlertOverlay>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> scaleAnimation;
@@ -52,70 +53,74 @@ class AlertOverlayState extends State<AlertOverlay>
                       borderRadius: BorderRadius.circular(15.0))),
               child: Column(
                 children: <Widget>[
-                   Expanded(
-                    flex: 1,
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
-                    child: Text(
-                      "Hurry Up!",
-                      style: GoogleFonts.openSans(
-                        fontSize: 19,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.secondaryColor,
-                      ),
-                    ),
-                  )),
-                   Expanded(
-                    flex: 2,
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
-                    child: Text(
-                      "Please verify the mail we have send to you and earn points.",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.roboto(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.cardTextColor,
-                      ),
-                    ),
-                  )),
                   Expanded(
-                    flex: 1,
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ButtonTheme(
-                            height: 35.0,
-                            minWidth: 110.0,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.secondaryColor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
-                              ),
-                              child:  Text(
-                                'Close',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.roboto(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.primaryWhiteColor,
-                                ),
-                              ),
-                              onPressed: () {
-                                ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
-                                ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
-                                context.pop();
-                              },
-                            ),
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 30.0, left: 20.0, right: 20.0),
+                        child: Text(
+                          "Hurry Up!",
+                          style: GoogleFonts.openSans(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.secondaryColor,
+                          ),
                         ),
-                      ),
-                    ],
-                  ))
+                      )),
+                  Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 30.0, left: 20.0, right: 20.0),
+                        child: Text(
+                          "Please verify the mail we have send to you and earn points.",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardTextColor,
+                          ),
+                        ),
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ButtonTheme(
+                              height: 35.0,
+                              minWidth: 110.0,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.secondaryColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                                child: Text(
+                                  'Close',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.primaryWhiteColor,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  ObjectFactory()
+                                      .prefs
+                                      .setIsEmailNotVerifiedStatus(false);
+                                  ObjectFactory()
+                                      .prefs
+                                      .setIsEmailNotVerifiedCalled(false);
+                                  context.pop();
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ))
                 ],
               )),
         ),

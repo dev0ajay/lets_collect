@@ -31,7 +31,7 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isScrolledToExtend = false;
   bool isRewardTierSelected = false;
 
-   ScrollController _scrollController = ScrollController();
+  ScrollController _scrollController = ScrollController();
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -54,7 +54,6 @@ class _RewardScreenState extends State<RewardScreen> {
   bool lastStatus = true;
   double height = 250;
 
-
   ///Scoll Listerner
   void _scrollListener() {
     if (_isShrink != lastStatus) {
@@ -72,7 +71,8 @@ class _RewardScreenState extends State<RewardScreen> {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(_scrollController.position.minScrollExtent,
-          duration: const Duration(milliseconds: 300), curve: Curves.elasticOut);
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.elasticOut);
     } else {
       Timer(const Duration(milliseconds: 400), () => _scrollToBottom());
     }
@@ -97,7 +97,6 @@ class _RewardScreenState extends State<RewardScreen> {
     _scrollController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +150,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                             selectedSortVariants = <String>[];
                                           });
                                         }
+
                                         // filterWidgets.clear();
                                         return Stack(
                                           children: [
@@ -380,11 +380,11 @@ class _RewardScreenState extends State<RewardScreen> {
                                                     children: [
                                                       Row(
                                                         mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
+                                                            CrossAxisAlignment
+                                                                .center,
                                                         children: [
                                                           Text(
                                                             "Sort by",
@@ -392,8 +392,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                 .roboto(
                                                               fontSize: 16,
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .w400,
+                                                                  FontWeight
+                                                                      .w400,
                                                               color: AppColors
                                                                   .primaryGrayColor,
                                                             ),
@@ -1194,7 +1194,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                             // filterWidgets.clear();
                                             return Stack(
                                               children: [
-
                                                 SizedBox(
                                                   height: MediaQuery.of(context)
                                                           .size
@@ -1424,33 +1423,32 @@ class _RewardScreenState extends State<RewardScreen> {
                                                         children: [
                                                           Row(
                                                             mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
                                                             crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
+                                                                CrossAxisAlignment
+                                                                    .center,
                                                             children: [
                                                               Text(
                                                                 "Sort by",
                                                                 style:
-                                                                GoogleFonts
-                                                                    .roboto(
+                                                                    GoogleFonts
+                                                                        .roboto(
                                                                   fontSize: 16,
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                                      FontWeight
+                                                                          .w400,
                                                                   color: AppColors
                                                                       .primaryGrayColor,
                                                                 ),
                                                               ),
                                                               IconButton(
-                                                                onPressed:
-                                                                    () {
+                                                                onPressed: () {
                                                                   context.pop();
                                                                   clearFilter();
-                                                                    },
+                                                                },
                                                                 icon:
-                                                                const Icon(
+                                                                    const Icon(
                                                                   Icons.close,
                                                                   color: AppColors
                                                                       .primaryGrayColor,
@@ -2006,7 +2004,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       context
                                                                           .pop();
                                                                       _scrollToBottom();
-
                                                                     },
                                                                     child: Text(
                                                                       "Apply",
@@ -2195,7 +2192,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                 // filterWidgets.clear();
                                                 return Stack(
                                                   children: [
-
                                                     SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -2421,29 +2417,29 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       child: SafeArea(
                                                         child: Padding(
                                                           padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal:
-                                                              15),
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      15),
                                                           child: Column(
                                                             children: [
                                                               Row(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
                                                                   Text(
                                                                     "Sort by",
                                                                     style: GoogleFonts
                                                                         .roboto(
                                                                       fontSize:
-                                                                      16,
+                                                                          16,
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                                          FontWeight
+                                                                              .w400,
                                                                       color: AppColors
                                                                           .primaryGrayColor,
                                                                     ),
@@ -2451,12 +2447,12 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   IconButton(
                                                                     onPressed:
                                                                         () {
-                                                                      context.pop();
-                                                                          clearFilter();
-
-                                                                        },
+                                                                      context
+                                                                          .pop();
+                                                                      clearFilter();
+                                                                    },
                                                                     icon:
-                                                                    const Icon(
+                                                                        const Icon(
                                                                       Icons
                                                                           .close,
                                                                       color: AppColors
@@ -2759,7 +2755,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
                                                                                                     color: AppColors.primaryWhiteColor,
-
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -2870,7 +2865,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
                                                                                                     color: AppColors.primaryWhiteColor,
-
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -2984,7 +2978,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           context
                                                                               .pop();
                                                                           _scrollToBottom();
-
                                                                         },
                                                                         child:
                                                                             Text(
@@ -3057,9 +3050,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             onPressed:
                                                                                 () {
                                                                               context.pop();
-                                                                                  clearFilter();
-
-                                                                                },
+                                                                              clearFilter();
+                                                                            },
                                                                             icon:
                                                                                 const Icon(
                                                                               Icons.close,
@@ -3184,7 +3176,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                 // filterWidgets.clear();
                                                 return Stack(
                                                   children: [
-
                                                     SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -3410,29 +3401,29 @@ class _RewardScreenState extends State<RewardScreen> {
                                                       child: SafeArea(
                                                         child: Padding(
                                                           padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal:
-                                                              15),
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      15),
                                                           child: Column(
                                                             children: [
                                                               Row(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
                                                                   Text(
                                                                     "Sort by",
                                                                     style: GoogleFonts
                                                                         .roboto(
                                                                       fontSize:
-                                                                      16,
+                                                                          16,
                                                                       fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
+                                                                          FontWeight
+                                                                              .w400,
                                                                       color: AppColors
                                                                           .primaryGrayColor,
                                                                     ),
@@ -3440,11 +3431,12 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   IconButton(
                                                                     onPressed:
                                                                         () {
-                                                                      context.pop();
+                                                                      context
+                                                                          .pop();
                                                                       clearFilter();
                                                                     },
                                                                     icon:
-                                                                    const Icon(
+                                                                        const Icon(
                                                                       Icons
                                                                           .close,
                                                                       color: AppColors
@@ -3746,7 +3738,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                                   decoration: const BoxDecoration(
                                                                                                     shape: BoxShape.rectangle,
                                                                                                     color: AppColors.primaryWhiteColor,
-
                                                                                                     boxShadow: [
                                                                                                       BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
                                                                                                     ],
@@ -4042,7 +4033,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             onPressed:
                                                                                 () {
                                                                               context.pop();
-                                                                                },
+                                                                            },
                                                                             icon:
                                                                                 const Icon(
                                                                               Icons.close,
@@ -4215,6 +4206,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             onTap: () {
                               _scrollToBottom();
                               setState(() {
+                                isRewardTierSelected = true;
                                 isLetsCollectSelected = false;
                                 isBrandSelected = true;
                                 isPartnerSelected = false;
@@ -4272,6 +4264,7 @@ class _RewardScreenState extends State<RewardScreen> {
                               _scrollToBottom();
 
                               setState(() {
+                                isRewardTierSelected = true;
                                 isLetsCollectSelected = false;
                                 isBrandSelected = false;
                                 isPartnerSelected = true;
@@ -4386,8 +4379,7 @@ class _RewardScreenState extends State<RewardScreen> {
                     state.errorMsg,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        color: AppColors.primaryColor),
+                    style: const TextStyle(color: AppColors.primaryColor),
                   ),
                 ),
                 const Spacer(),
@@ -4404,14 +4396,16 @@ class _RewardScreenState extends State<RewardScreen> {
                       BlocProvider.of<RewardTierBloc>(context).add(
                         RewardTierRequestEvent(
                           rewardTierRequest: RewardTierRequest(
-                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                              sort: "",
+                              eligible: "",
+                              categoryId: "",
+                              brandId: ""),
                         ),
                       );
                     },
                     child: const Text(
                       "Try again",
-                      style:
-                      TextStyle(color: AppColors.primaryWhiteColor),
+                      style: TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 ),
@@ -4440,7 +4434,9 @@ class _RewardScreenState extends State<RewardScreen> {
                       context.push(
                         '/lets_collect_redeem',
                         extra: LetCollectRedeemScreenArguments(
-                          totalPoint: state.rewardTierRequestResponse.totalPoints.toString(),
+                          totalPoint: state
+                              .rewardTierRequestResponse.totalPoints
+                              .toString(),
                           rewardId: state.rewardTierRequestResponse.data!
                               .letsCollect![index].rewardId,
                           requiredPoint: state.rewardTierRequestResponse.data!
@@ -4561,14 +4557,13 @@ class _RewardScreenState extends State<RewardScreen> {
                   flex: 4,
                   child: Lottie.asset(Assets.TRY_AGAIN),
                 ),
-                 Flexible(
+                Flexible(
                   flex: 2,
                   child: Text(
                     state.errorMsg,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        color: AppColors.primaryColor),
+                    style: const TextStyle(color: AppColors.primaryColor),
                   ),
                 ),
                 const Spacer(),
@@ -4585,14 +4580,16 @@ class _RewardScreenState extends State<RewardScreen> {
                       BlocProvider.of<RewardTierBloc>(context).add(
                         RewardTierRequestEvent(
                           rewardTierRequest: RewardTierRequest(
-                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                              sort: "",
+                              eligible: "",
+                              categoryId: "",
+                              brandId: ""),
                         ),
                       );
                     },
                     child: const Text(
                       "Try again",
-                      style:
-                      TextStyle(color: AppColors.primaryWhiteColor),
+                      style: TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 ),
@@ -4724,14 +4721,13 @@ class _RewardScreenState extends State<RewardScreen> {
                   flex: 4,
                   child: Lottie.asset(Assets.TRY_AGAIN),
                 ),
-                 Flexible(
+                Flexible(
                   flex: 2,
                   child: Text(
                     state.errorMsg,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        color: AppColors.primaryColor),
+                    style: const TextStyle(color: AppColors.primaryColor),
                   ),
                 ),
                 const Spacer(),
@@ -4748,14 +4744,16 @@ class _RewardScreenState extends State<RewardScreen> {
                       BlocProvider.of<RewardTierBloc>(context).add(
                         RewardTierRequestEvent(
                           rewardTierRequest: RewardTierRequest(
-                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                              sort: "",
+                              eligible: "",
+                              categoryId: "",
+                              brandId: ""),
                         ),
                       );
                     },
                     child: const Text(
                       "Try again",
-                      style:
-                      TextStyle(color: AppColors.primaryWhiteColor),
+                      style: TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 ),
@@ -4819,8 +4817,7 @@ class _RewardScreenState extends State<RewardScreen> {
                         ],
                         borderRadius: BorderRadius.circular(5),
                         border:
-                            Border.all(color: AppColors.borderColor, width: 1)
-                    ),
+                            Border.all(color: AppColors.borderColor, width: 1)),
                     child: Center(
                       child: SizedBox(
                         width: 120,

@@ -114,8 +114,6 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
-    BlocProvider.of<NationalityBloc>(context).add(GetNationality());
-    BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
   }
 
   @override

@@ -52,7 +52,8 @@ class EmailVerifiedAlertOverlayState extends State<EmailVerifiedAlertOverlay>
                 child: Container(
                   margin: const EdgeInsets.all(20.0),
                   padding: const EdgeInsets.all(15.0),
-                  height: getProportionateScreenHeight(300),
+                  height: getProportionateScreenHeight(400),
+                  width: getProportionateScreenWidth(300),
                   decoration: ShapeDecoration(
                       color: AppColors.primaryWhiteColor,
                       shape: RoundedRectangleBorder(
@@ -60,63 +61,81 @@ class EmailVerifiedAlertOverlayState extends State<EmailVerifiedAlertOverlay>
                   child: Column(
                     children: [
                       // const SizedBox(height: 40),
-                      Image.asset(Assets.GIFT_ICON),
+                      Expanded(
+                        flex: 7,
+                          child: Image.asset(Assets.GIFT_ICON)),
                       const SizedBox(height: 10),
-                      Text(
-                        "Congratulations !",
-                        style: GoogleFonts.openSans(
-                          color: AppColors.secondaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "You have earned",
-                        style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.cardTextColor,
-                        ),
-                      ),
-                      Text(
-                        state.homeResponse.emailVerificationPoints.toString(),
-                        style: GoogleFonts.openSans(
-                          color: AppColors.cardTextColor,
-                          fontSize: 44,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "Points",
-                        style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.cardTextColor,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          fixedSize: const Size(121, 36),
-                          backgroundColor: AppColors.secondaryColor,
-                        ),
-                        onPressed: () {
-                          ObjectFactory().prefs.setIsEmailVerified(false);
-                          ObjectFactory().prefs.setIsEmailVerifiedStatus(true);
-                        },
+                      Expanded(
+                        flex: 2,
                         child: Text(
-                          "Yay!",
-                          style: GoogleFonts.roboto(
+                          "Congratulations !",
+                          style: GoogleFonts.openSans(
+                            color: AppColors.secondaryColor,
                             fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryWhiteColor,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          "You have earned",
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardTextColor,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          state.homeResponse.emailVerificationPoints.toString(),
+                          style: GoogleFonts.openSans(
+                            color: AppColors.cardTextColor,
+                            fontSize: 44,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          "Points",
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardTextColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Flexible(
+                        flex: 2,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            fixedSize: const Size(121, 46),
+                            backgroundColor: AppColors.secondaryColor,
+                          ),
+                          onPressed: () {
+                            ObjectFactory().prefs.setIsEmailVerified(false);
+                            ObjectFactory().prefs.setIsEmailVerifiedStatus(false);
+                            context.pop();
+                          },
+                          child: Text(
+                            "Yay!",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.primaryWhiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // const SizedBox(height: 20),
                     ],
                   ),
                 ),
