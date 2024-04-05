@@ -142,7 +142,7 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                       fontFamily: "Fonarto"),
                   children: <TextSpan>[
                     TextSpan(
-                      text: "${widget.offerDetailsArguments.startDate}",
+                      text: widget.offerDetailsArguments.startDate,
                       style: const TextStyle(
                           color: AppColors.secondaryButtonColor,
                           fontSize: 17,
@@ -188,7 +188,7 @@ class _SpecialOfferScreenDetailsState extends State<SpecialOfferScreenDetails> {
                 : Flexible(
               // flex: 1,
               child: Text(
-                "${AppLocalizations.of(context)!.findthisexclusiveofferat}",
+                AppLocalizations.of(context)!.findthisexclusiveofferat,
                 // "Find this exclusive offer at: ",
                 style: GoogleFonts.openSans(
                   decoration: TextDecoration.underline,

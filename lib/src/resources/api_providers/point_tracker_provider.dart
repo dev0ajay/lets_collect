@@ -12,17 +12,13 @@ class PointTrackerProvider {
         .apiClient
         .pointTrackerRequest(pointTrackerRequest);
     print(response.toString());
-    if (response != null) {
-      if (response.statusCode == 200) {
-        return StateModel<PointTrackerRequestResponse>.success(
-            PointTrackerRequestResponse.fromJson(response.data));
-      } else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      return StateModel<PointTrackerRequestResponse>.success(
+          PointTrackerRequestResponse.fromJson(response.data));
     } else {
       return null;
     }
-  }
+    }
 
   Future<StateModel?> pointTrackerDetailsRequest(
       PointTrackerDetailsRequest pointTrackerDetailsRequest) async {
@@ -30,19 +26,14 @@ class PointTrackerProvider {
         .apiClient
         .pointTrackerDetailsRequest(pointTrackerDetailsRequest);
     print(response.toString());
-    if (response!= null) {
-      if (response.statusCode == 200) {
-        return StateModel<PointTrackerDetailsRequestResponse>.success(
-            PointTrackerDetailsRequestResponse.fromJson(response.data));
-      }
-      else {
-        return null;
-      }
+    if (response.statusCode == 200) {
+      return StateModel<PointTrackerDetailsRequestResponse>.success(
+          PointTrackerDetailsRequestResponse.fromJson(response.data));
     }
-   else{
+    else {
       return null;
     }
-  }
+    }
 
 
 

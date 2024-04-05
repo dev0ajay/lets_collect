@@ -16,8 +16,6 @@ import 'package:lets_collect/src/ui/profile/widgets/log_out_alert_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
-import '../../bloc/country_bloc/country_bloc.dart';
-import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import 'components/my_profile_screen_arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -27,10 +27,10 @@ class _PurchaseHistoryBarChartWidgetState extends State<PurchaseHistoryBarChartW
 
 
  void checkSameDate(PurchaseHistoryResponse jsonData) {
-   for (int i = 0; i < jsonData.data!.length; i++) {
-     String currentDate = jsonData.data![i].receiptDate.toString();
-     for (int j = i + 1; j < jsonData.data!.length; j++) {
-       if (currentDate == jsonData.data![j].receiptDate) {
+   for (int i = 0; i < jsonData.data.length; i++) {
+     String currentDate = jsonData.data[i].receiptDate.toString();
+     for (int j = i + 1; j < jsonData.data.length; j++) {
+       if (currentDate == jsonData.data[j].receiptDate) {
 
          // totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
          // print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
@@ -57,7 +57,7 @@ class _PurchaseHistoryBarChartWidgetState extends State<PurchaseHistoryBarChartW
   },
   builder: (context, state) {
    if(state is PurchaseHistoryLoaded) {
-     if(state.purchaseHistoryResponse.data!.isNotEmpty) {
+     if(state.purchaseHistoryResponse.data.isNotEmpty) {
        return AspectRatio(
          aspectRatio: 16 / 9,
          child: BarChart(
@@ -117,8 +117,8 @@ class _PurchaseHistoryBarChartWidgetState extends State<PurchaseHistoryBarChartW
 
 double _getMaxTotalAmount(PurchaseHistoryResponse purchaseData) {
   double maxTotalAmount = 0;
-  for (var data in purchaseData.data!) {
-    double amount = double.tryParse(data.totalAmount!) ?? 0;
+  for (var data in purchaseData.data) {
+    double amount = double.tryParse(data.totalAmount) ?? 0;
     if (amount > maxTotalAmount) {
       maxTotalAmount = amount;
     }
@@ -137,9 +137,9 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
   ];
 
   // Group data by receipt_date
-  for (var data in purchaseData.data!) {
-    groupedData.putIfAbsent(data.receiptDate!, () => []);
-    groupedData[data.receiptDate!]!.add(data);
+  for (var data in purchaseData.data) {
+    groupedData.putIfAbsent(data.receiptDate, () => []);
+    groupedData[data.receiptDate]!.add(data);
   }
 
   // Create BarChartGroupData for each receipt_date
@@ -147,7 +147,7 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
     double totalAmount = 0;
     List<BarChartRodData> rods = [];
     for (int i = 0; i < items.length; i++) {
-      double amount = double.tryParse(items[i].totalAmount!) ?? 0;
+      double amount = double.tryParse(items[i].totalAmount) ?? 0;
       totalAmount += amount;
       rods.add(
         BarChartRodData(

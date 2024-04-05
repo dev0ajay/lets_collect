@@ -32,7 +32,7 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isRewardTierSelected = false;
 
   ScrollController _scrollController = ScrollController();
-  bool _isAppBarVisible = false;
+  final bool _isAppBarVisible = false;
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -66,8 +66,7 @@ class _RewardScreenState extends State<RewardScreen> {
   }
 
   bool get _isShrink {
-    return _scrollController != null &&
-        _scrollController.hasClients &&
+    return _scrollController.hasClients &&
         _scrollController.offset > (height - kToolbarHeight);
   }
 
@@ -3501,7 +3500,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                           Text(
                                             AppLocalizations.of(context)!.sort,
                                             // "Sort",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: AppColors.iconGreyColor,
                                               fontSize: 13,
                                             ),

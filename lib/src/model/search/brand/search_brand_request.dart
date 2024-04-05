@@ -2,7 +2,6 @@
 //
 //     final searchBrandRequest = searchBrandRequestFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SearchBrandRequest searchBrandRequestFromJson(String str) => SearchBrandRequest.fromJson(json.decode(str));

@@ -62,7 +62,7 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
   }
 
   String? validateCountryCodeNumber(String? value) {
-    if (value!.length == 0 || value.isEmpty) {
+    if (value!.isEmpty || value.isEmpty) {
       return '';
     } else {
       return null;

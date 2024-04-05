@@ -236,7 +236,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                           ),
                         ),
                       ),
-                      Text("${(AppLocalizations.of(context)!.or)}",
+                      Text((AppLocalizations.of(context)!.or),
                         // "(Or)",
                         style: GoogleFonts.roboto(
                           color: AppColors.cardTextColor,

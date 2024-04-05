@@ -9,17 +9,12 @@ class RedemptionHistoryDataProvider {
       final response = await ObjectFactory().apiClient.getRedemptionHistoryResponse();
       print(response.toString());
 
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<RedemptionHistoryResponse>.success(
-              RedemptionHistoryResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<RedemptionHistoryResponse>.success(
+            RedemptionHistoryResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    }on DioException catch (e) {
+      }    }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -36,6 +31,7 @@ class RedemptionHistoryDataProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 

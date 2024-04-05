@@ -191,7 +191,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16)),
                         const SizedBox(height: 5),
-                        Text(
+                        const Text(
                             "By participating in the [Your App Name] Referral Program ('Program'), you agree to be bound by these terms and conditions. Please read them carefully before participating."),
                         const SizedBox(height: 15),
                         Text("Eligibility:",
@@ -200,13 +200,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16)),
                         const SizedBox(height: 5),
-                        Text(
+                        const Text(
                             "The Program is open to all users of the [Your App Name] mobile application."),
                         const SizedBox(height: 5),
-                        Text(
+                        const Text(
                             "Participants must be of legal age in their jurisdiction to participate."),
                         const SizedBox(height: 5),
-                        Text(
+                        const Text(
                             "Employees, contractors, and affiliates of [Your Company Name] are not eligible to participate"),
                         const SizedBox(
                           height: 35,
@@ -328,7 +328,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                         //     },
                         //   ),
                         // ).animate().scale(delay: 200.ms, duration: 300.ms),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
 

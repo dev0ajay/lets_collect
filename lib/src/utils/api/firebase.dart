@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:overlay_support/overlay_support.dart';
 
-import '../../constants/assets.dart';
-import '../../constants/colors.dart';
 import '../../model/notification/push_notification_model.dart';
 import '../data/object_factory.dart';
 
@@ -251,12 +247,10 @@ class NotificationServices {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data == null) {
-      return;
-    } else if (ObjectFactory().prefs.isLoggedIn()!) {
-      context.go('/home');
-      context.push('/notification');
-    }
+    if (ObjectFactory().prefs.isLoggedIn()!) {
+    context.go('/home');
+    context.push('/notification');
+  }
   }
 
   Future forgroundMessage() async {

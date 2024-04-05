@@ -2,7 +2,6 @@
 //
 //     final howToRedeemMyPointsResponse = howToRedeemMyPointsResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 HowToRedeemMyPointsResponse howToRedeemMyPointsResponseFromJson(String str) => HowToRedeemMyPointsResponse.fromJson(json.decode(str));

@@ -79,13 +79,13 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
   List<PurchaseData> purchaseList = [];
 
   void checkSameDate(PurchaseHistoryResponse jsonData) {
-    for (int i = 0; i < jsonData.data!.length; i++) {
-      String currentDate = jsonData.data![i].receiptDate.toString();
+    for (int i = 0; i < jsonData.data.length; i++) {
+      String currentDate = jsonData.data[i].receiptDate.toString();
 
-      for (int j = i + 1; j < jsonData.data!.length; j++) {
-        if (currentDate == jsonData.data![j].receiptDate) {
-          totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
-          print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
+      for (int j = i + 1; j < jsonData.data.length; j++) {
+        if (currentDate == jsonData.data[j].receiptDate) {
+          totalAmount = (jsonData.data[i].totalAmount + jsonData.data[j].totalAmount);
+          print("Date ${jsonData.data[j].receiptDate} found at indexes $i and $j");
           print("Total amount: $totalAmount of indexes $i and $j");
           // You can do further processing here if needed
         }
@@ -190,7 +190,7 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         const SizedBox(
                           height: 25,
                         ),
-                        state.purchaseHistoryResponse.data!.isEmpty ? const SizedBox() :
+                        state.purchaseHistoryResponse.data.isEmpty ? const SizedBox() :
                         Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child:Row(
@@ -1061,10 +1061,10 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                           ),
                         ),
                         state is PurchaseHistoryLoaded
-                            ? state.purchaseHistoryResponse.data!.isNotEmpty
+                            ? state.purchaseHistoryResponse.data.isNotEmpty
                             ?ListView.builder(
                           shrinkWrap: true,
-                          itemCount: state.purchaseHistoryResponse.data!.length,
+                          itemCount: state.purchaseHistoryResponse.data.length,
                           padding: const EdgeInsets.only(bottom: 120, top: 10),
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {

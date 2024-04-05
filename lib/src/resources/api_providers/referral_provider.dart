@@ -15,17 +15,12 @@ class ReferralProvider {
       final response = await ObjectFactory().apiClient.getReferralListResponse();
       print(response.toString());
 
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<ReferralListResponse>.success(
-              ReferralListResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<ReferralListResponse>.success(
+            ReferralListResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    }on DioException catch (e) {
+      }    }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -42,6 +37,7 @@ class ReferralProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 
@@ -51,17 +47,12 @@ class ReferralProvider {
       final response = await ObjectFactory().apiClient.getReferralFriendRequestResponse(referralFriendRequest);
       print(response.toString());
 
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<ReferralFriendRequestResponse>.success(
-              ReferralFriendRequestResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<ReferralFriendRequestResponse>.success(
+            ReferralFriendRequestResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    }on DioException catch (e) {
+      }    }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -78,6 +69,7 @@ class ReferralProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 
@@ -88,17 +80,12 @@ class ReferralProvider {
       final response = await ObjectFactory().apiClient.getReferralCodeUpdateClient(referralCodeUpdateRequest);
       print(response.toString());
 
-      if(response!=null){
-        if (response.statusCode == 200) {
-          return StateModel<ReferralCodeUpdateRequestResponse>.success(
-              ReferralCodeUpdateRequestResponse.fromJson(response.data));
-        } else {
-          return null;
-        }}
-      else{
+      if (response.statusCode == 200) {
+        return StateModel<ReferralCodeUpdateRequestResponse>.success(
+            ReferralCodeUpdateRequestResponse.fromJson(response.data));
+      } else {
         return null;
-      }
-    }on DioException catch (e) {
+      }    }on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
@@ -115,6 +102,7 @@ class ReferralProvider {
         // Something happened in setting up or sending the request that triggered an Error
       }
     }
+    return null;
 
   }
 }

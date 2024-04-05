@@ -20,7 +20,6 @@ import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
-import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
