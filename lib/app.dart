@@ -13,6 +13,7 @@ import 'package:lets_collect/src/bloc/cms_bloc/terms_and_condition_bloc.dart';
 import 'package:lets_collect/src/bloc/contact_us_bloc/contact_us_bloc.dart';
 import 'package:lets_collect/src/bloc/country_bloc/country_bloc.dart';
 import 'package:lets_collect/src/bloc/delete_account/delete_account_bloc.dart';
+import 'package:lets_collect/src/bloc/facebook_cubit/facebook_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/filter_bloc/filter_bloc.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
@@ -225,6 +226,9 @@ class _AppState extends State<App> {
             BlocProvider<ReferralBloc>(
               create: (BuildContext context) => ReferralBloc(
                   referralProvider: RepositoryProvider.of(context)),
+            ),
+            BlocProvider<FacebookSignInCubit>(
+              create: (BuildContext context) => FacebookSignInCubit(),
             ),
           ],
           child: BlocBuilder<NetworkBloc, NetworkState>(

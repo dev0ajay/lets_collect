@@ -125,7 +125,6 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
     super.initState();
     BlocProvider.of<NationalityBloc>(context).add(GetNationality());
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
-
   }
 
 
@@ -135,9 +134,6 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
       };
-      // if (states.any(interactiveStates.contains)) {
-      //   return Colors.blue;
-      // }
       return Colors.white;
     }
 

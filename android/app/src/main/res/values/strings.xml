@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">1234</string>
-    <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token">56789</string>
+    <string name="app_name">Letscollect login</string>
+    <string name="facebook_app_id">344439704762577</string>
+    <string name="fb_login_protocol_scheme">fb344439704762577</string>
+    <string name="facebook_client_token">f30dbb81ebdd775161ba6c53e45787bd</string>
 </resources>

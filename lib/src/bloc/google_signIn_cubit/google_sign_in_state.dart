@@ -16,3 +16,5 @@ class GoogleSignInSuccess extends GoogleSignInState {
 }
 
 class GoogleSignInError extends GoogleSignInState {}
+class GoogleSignInDenied extends GoogleSignInState {}
+
