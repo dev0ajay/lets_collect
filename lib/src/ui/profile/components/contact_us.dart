@@ -485,8 +485,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                       width: 340,
                                       height: 40,
                                       onTap: () {
-
-
                                         if (subjectController.text.isEmpty ||
                                             messageController.text.isEmpty) {
                                           Fluttertoast.showToast(
@@ -498,19 +496,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                           );
                                           return;
                                         }
-
-
-                                        if (_pickedFile != null) {
-                                          Fluttertoast.showToast(
-                                            msg: " select a file from gallery",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.BOTTOM,
-                                            backgroundColor: AppColors.secondaryColor,
-                                            textColor: AppColors.primaryWhiteColor,
-                                          );
-                                          return; // Stop further execution
-                                        }
-
                                         if (_formKey.currentState!.validate() &&
                                             _pickedFile != null) {
                                           BlocProvider.of<ContactUsBloc>(context).add(

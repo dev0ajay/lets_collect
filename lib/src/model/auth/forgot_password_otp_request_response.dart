@@ -9,12 +9,14 @@ class ForgotPasswordOtpRequestResponse {
   final bool success;
   final int statusCode;
   final String message;
+  final String messageArabic;
   final String token;
 
   ForgotPasswordOtpRequestResponse({
     required this.success,
     required this.statusCode,
     required this.message,
+    required this.messageArabic,
     required this.token,
   });
 
@@ -22,6 +24,7 @@ class ForgotPasswordOtpRequestResponse {
     success: json["success"],
     statusCode: json["status_code"],
     message: json["message"],
+    messageArabic: json["message_arabic"],
     token: json["token"],
   );
 
@@ -29,6 +32,7 @@ class ForgotPasswordOtpRequestResponse {
     "success": success,
     "status_code": statusCode,
     "message": message,
+    "message_arabic": messageArabic,
     "token": token,
   };
 }

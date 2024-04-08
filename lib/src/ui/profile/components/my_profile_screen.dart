@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +21,7 @@ import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
+import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/get_city_request.dart';
 import 'package:lets_collect/src/model/edit_profile/edit_profile_request.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
@@ -149,6 +151,38 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   String? selectedCountry;
   String? selectedCityID;
 
+  // Future<void> _pickImage() async {
+  //   final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  //
+  //   if (pickedFile == null) {
+  //     // No image selected
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Nothing is selected'))
+  //     );
+  //     return;
+  //   }
+  //
+  //   final File pickedImage = File(pickedFile.path);
+  //   final bytes = await pickedImage.readAsBytes();
+  //   final decodedImage = await decodeImageFromList(bytes);
+  //
+  //   // Check if image dimensions exceed 2MP
+  //   if (decodedImage.width! * decodedImage.height! > 2 * 1024 * 1024) {
+  //     // Image exceeds 2MP limit
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Selected image exceeds 2MP limit'))
+  //     );
+  //     return;
+  //   }
+  //
+  //   setState(() {
+  //     _pickedFile = pickedFile;
+  //     _image = pickedImage;
+  //     imageBase64 = base64Encode(bytes);
+  //     extension = p.extension(pickedFile.path).trim().replaceAll('.', '');
+  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //   });
+  // }
 
   Future<void> _pickImage() async {
     _pickedFile = (await _picker.pickImage(
@@ -205,7 +239,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
     nationalityController.text = context.read<LanguageBloc>().state.selectedLanguage == Language.english
         ? widget.myProfileArguments.nationality_name_en
-        :widget.myProfileArguments.nationality_name_en;
+        :widget.myProfileArguments.nationality_name_ar;
     print("NATIONALITY : $nationalityController.text");
 
     cityController.text = context.read<LanguageBloc>().state.selectedLanguage == Language.english
@@ -215,7 +249,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
     countryController.text = context.read<LanguageBloc>().state.selectedLanguage == Language.english
         ? widget.myProfileArguments.country_name_en
-        : widget.myProfileArguments.country_name_en;
+        : widget.myProfileArguments.country_name_ar;
     print("COUNTRTY : $countryController.text");
 
     emailController.text = widget.myProfileArguments.email;
@@ -233,14 +267,16 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     openAppSettings();
   }
 
+
   void _showPermissionDialog(BuildContext permissionDialogContext) {
-    showDialog(
-        context: _scaffoldKey.currentContext!,
-        builder: (BuildContext permissionDialogContext) {
+    final currentContext = _scaffoldKey.currentContext;
+    if (currentContext != null) {
+      showDialog(
+        context: currentContext,
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
               AppLocalizations.of(context)!.permissiondenied,
-              // "Permission Denied!",
               style: GoogleFonts.openSans(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -248,7 +284,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
             ),
             content: Text(
               AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
-              // "To continue file upload allow access to files and storage.",
               style: GoogleFonts.openSans(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
@@ -257,11 +292,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  context.pop();
+                  Navigator.pop(context); // Use Navigator to pop the dialog
                 },
                 child: Text(
                   AppLocalizations.of(context)!.cancel,
-                  // "Cancel",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -269,13 +303,9 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  openSettings();
-                  context.pop();
-                },
+                onPressed: openSettings,
                 child: Text(
                   AppLocalizations.of(context)!.settings,
-                  // "Settings",
                   style: GoogleFonts.roboto(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
@@ -284,7 +314,9 @@ class MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ],
           );
-        });
+        },
+      );
+    }
   }
 
   Future<void> checkPermissionForGallery(BuildContext context) async {
@@ -294,7 +326,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       _pickImage();
     } else if (status.isDenied) {
       print("Permission Denied");
-      _showPermissionDialog(context);
+      // _showPermissionDialog(context);
+      openSettings();
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
       openSettings();
@@ -320,2074 +353,1074 @@ class MyProfileScreenState extends State<MyProfileScreen> {
             if (state is NetworkSuccess) {
               networkSuccess = true;
             }
-          }, builder: (context, state) {
-        if (state is NetworkSuccess) {
-          return BlocConsumer<MyProfileBloc, MyProfileState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is MyEditProfileLoading) {
-                return const Center(
-                  heightFactor: 25,
-                  child: RefreshProgressIndicator(
-                    color: AppColors.secondaryColor,
-                    backgroundColor: AppColors.primaryWhiteColor,
-                  ),
-                );
-              }
-              if (state is MyEditProfileErrorState) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Lottie.asset(Assets.TRY_AGAIN),
+          },
+          builder: (context, state) {
+            if (state is NetworkSuccess) {
+              return BlocConsumer<MyProfileBloc, MyProfileState>(
+                listener: (context, state) {
+                  if(state is MyEditProfileLoaded){
+                    if(state.editProfileRequestResponse.status == true &&
+                        state.editProfileRequestResponse.message == "Updated Successfully"){
+                      Fluttertoast.showToast(
+                        // msg: "All fields are important",
+                        msg: AppLocalizations.of(context)!.updatesuccessfully,
+                        toastLength:
+                        Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor:
+                        Colors.black87,
+                        textColor: Colors.white,
+                      );
+                    }
+                  }
+                },
+                builder: (context, state) {
+                  if (state is MyEditProfileLoading) {
+                    return const Center(
+                      heightFactor: 25,
+                      child: RefreshProgressIndicator(
+                        color: AppColors.secondaryColor,
+                        backgroundColor: AppColors.primaryWhiteColor,
                       ),
-                      Flexible(
-                        flex: 2,
-                        child: Text(
-                          state.errorMsg,
-                          style: const TextStyle(
-                              color: AppColors.primaryWhiteColor),
-                        ),
-                      ),
-                      const Spacer(),
-                      Flexible(
-                        flex: 1,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9),
+                    );
+                  }
+                  if (state is MyEditProfileErrorState) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Lottie.asset(Assets.TRY_AGAIN),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Text(
+                              state.errorMsg,
+                              style: const TextStyle(
+                                  color: AppColors.primaryWhiteColor),
+                            ),
+                          ),
+                          const Spacer(),
+                          Flexible(
+                            flex: 1,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(9),
+                                  ),
+                                  fixedSize: const Size(100, 50),
+                                  backgroundColor: AppColors.primaryColor),
+                              onPressed: () {
+                                BlocProvider.of<MyProfileBloc>(context)
+                                    .add(GetProfileDataEvent());
+                              },
+                              child:  Text(
+                                AppLocalizations.of(context)!.tryagain,
+                                // "Try again",
+                                style: const TextStyle(color: AppColors.primaryWhiteColor),
                               ),
-                              fixedSize: const Size(100, 50),
-                              backgroundColor: AppColors.primaryColor),
-                          onPressed: () {
-                            BlocProvider.of<MyProfileBloc>(context)
-                                .add(GetProfileDataEvent());
-                          },
-                          child:  Text(
-                            AppLocalizations.of(context)!.tryagain,
-                            // "Try again",
-                            style: const TextStyle(color: AppColors.primaryWhiteColor),
+                            ),
+                          ),
+                          // const Text("state"),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (state is MyEditProfileLoaded) {
+                    if (state.editProfileRequestResponse.status == true) {
+                      BlocProvider.of<MyProfileBloc>(context)
+                          .add(GetProfileDataEvent());
+                    }
+                  } else if (state is MyEditProfileLoaded) {
+                    if (state.editProfileRequestResponse.status == false) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.secondaryColor,
+                          content: Text(
+                            AppLocalizations.of(context)!.someerrorhappend,
+                            // "Some Error Happened",
+                            style: GoogleFonts.openSans(
+                              color: AppColors.primaryWhiteColor,
+                            ),
                           ),
                         ),
-                      ),
-                      // const Text("state"),
-                    ],
-                  ),
-                );
-              }
-
-              if (state is MyEditProfileLoaded) {
-                if (state.editProfileRequestResponse.status == true) {
-                  BlocProvider.of<MyProfileBloc>(context)
-                      .add(GetProfileDataEvent());
-                }
-              } else if (state is MyEditProfileLoaded) {
-                if (state.editProfileRequestResponse.status == false) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: AppColors.secondaryColor,
-                      content: Text(
-                        AppLocalizations.of(context)!.someerrorhappend,
-                        // "Some Error Happened",
-                        style: GoogleFonts.openSans(
-                          color: AppColors.primaryWhiteColor,
+                      );
+                    }
+                  }
+                  return Form(
+                    key: _formKey,
+                    child: CustomScrollView(
+                      slivers: <Widget>[
+                        SliverPersistentHeader(
+                          pinned: true,
+                          floating: true,
+                          delegate: CustomSliverDelegate(
+                            checkPermission: checkPermissionForGallery,
+                            expandedHeight: 190,
+                            myProfileArguments: widget.myProfileArguments,
+                            filePath: _image!,
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }
-              }
-              return Form(
-                key: _formKey,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverPersistentHeader(
-                      pinned: true,
-                      floating: true,
-                      delegate: CustomSliverDelegate(
-                        checkPermission: checkPermissionForGallery,
-                        expandedHeight: 190,
-                        myProfileArguments: widget.myProfileArguments,
-                        filePath: _image!,
-                      ),
-                    ),
-                    SliverPadding(
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate([
-                          BlocBuilder<MyProfileBloc, MyProfileState>(
-                            builder: (context, state) {
-                              if (state is MyProfileLoading) {
-                                return const Center(
-                                  heightFactor: 10,
-                                  child: RefreshProgressIndicator(
-                                    color: AppColors.secondaryColor,
-                                  ),
-                                );
-                              }
-                              if (state is MyProfileErrorState) {
-                                return Center(
-                                  child: Column(
-                                    children: [
-                                      Lottie.asset(Assets.TRY_AGAIN),
-                                      Text(state.errorMsg),
-                                    ],
-                                  ),
-                                );
-                              }
-                              if (state is MyProfileLoaded) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // SizedBox(height: 30,),
-                                    Text(
-                                      AppLocalizations.of(context)!.aboutyou,
-                                      // "About You",
-                                      style: GoogleFonts.openSans(
-                                        color: AppColors.primaryBlackColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
+                        SliverPadding(
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate([
+                              BlocBuilder<MyProfileBloc, MyProfileState>(
+                                builder: (context, state) {
+                                  if (state is MyProfileLoading) {
+                                    return const Center(
+                                      heightFactor: 10,
+                                      child: RefreshProgressIndicator(
+                                        color: AppColors.secondaryColor,
                                       ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    const SizedBox(height: 20),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 11),
-                                      child: Row(
+                                    );
+                                  }
+                                  if (state is MyProfileErrorState) {
+                                    return Center(
+                                      child: Column(
                                         children: [
-                                          Flexible(
-                                            child: BlocBuilder<MyProfileBloc,
-                                                MyProfileState>(
-                                              builder: (context, state) {
-                                                if (state is MyProfileLoaded) {
-                                                  return MyTextField(
-                                                    enable: true,
-                                                    focusNode: _firstname,
-                                                    // horizontal: 10,
-                                                    hintText: AppLocalizations.of(context)!.firstname,
-                                                    // hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
-                                                    obscureText: false,
-                                                    maxLines: 1,
-                                                    controller: firstnameController,
-                                                    keyboardType:
-                                                    TextInputType.text,
-                                                    validator: (value) {
-                                                      String? err =
-                                                      validateFirstname(
-                                                          value);
-                                                      if (err != null) {
-                                                        _firstname
-                                                            .requestFocus();
-                                                      }
-                                                      return err;
-                                                    },
-                                                  );
-                                                } else {
-                                                  return const SizedBox();
-                                                }
-                                              },
-                                            ),
-                                          )
-                                              .animate()
-                                              .then(delay: 200.ms)
-                                              .slideY(),
-                                          const SizedBox(width: 20),
-                                          Flexible(
-                                            child: BlocBuilder<MyProfileBloc,
-                                                MyProfileState>(
-                                              builder: (context, state) {
-                                                if (state is MyProfileLoaded) {
-                                                  return MyTextField(
-                                                    enable: true,
-                                                    focusNode: _secondname,
-                                                    // horizontal: 10,
-                                                    hintText : AppLocalizations.of(context)!.lastname,
-                                                    // hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
-                                                    obscureText: false,
-                                                    maxLines: 1,
-                                                    controller:
-                                                    lastnameController,
-                                                    keyboardType:
-                                                    TextInputType.text,
-                                                    validator: (value) {
-                                                      String? err =
-                                                      validateLastname(
-                                                          value);
-                                                      if (err != null) {
-                                                        _secondname
-                                                            .requestFocus();
-                                                      }
-                                                      return err;
-                                                    },
-                                                  );
-                                                } else {
-                                                  return const SizedBox();
-                                                }
-                                              },
-                                            ),
-                                          )
-                                              .animate()
-                                              .then(delay: 200.ms)
-                                              .slideY(),
+                                          Lottie.asset(Assets.TRY_AGAIN),
+                                          Text(state.errorMsg),
                                         ],
                                       ),
-                                    ),
-                                    // SizedBox(height: 5,),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15, horizontal: 11),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          _showDatePicker(context);
-                                          print(
-                                              "DATE OF BIRTH :$selectedDate ");
-                                        },
-                                        child: DatePickerTextField(
-                                          controller: dateInputController,
-                                          // hintText: "Date of Birth",
-                                          hintText : AppLocalizations.of(context)!.dateofbirth,
-                                          onDateIconTap: () {
-                                            _showDatePicker(context);
-                                          },
-                                        ),
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
+                                    );
+                                  }
+                                  if (state is MyProfileLoaded) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // SizedBox(height: 30,),
+                                        Text(
+                                          AppLocalizations.of(context)!.aboutyou,
+                                          // "About You",
+                                          style: GoogleFonts.openSans(
+                                            color: AppColors.primaryBlackColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
 
-                                    // SizedBox(height: getProportionateScreenHeight(5)),
-
-                                    /// Gender
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11),
-                                        child: DropdownButtonHideUnderline(
-                                          child: DropdownButton2<String>(
-                                            isExpanded: true,
-                                            hint: Text(
-                                              genderController.text.isEmpty
-                                              // ? "Gender"
-                                                  ? AppLocalizations.of(context)!.gender
-                                                  : genderController.text,
-                                              style: GoogleFonts.openSans(
-                                                color:
-                                                AppColors.primaryGrayColor,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            items: context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                ? Gender.map(
-                                                  (item) =>
-                                                  DropdownMenuItem<String>(
-                                                    value: item,
-                                                    child: Text(
-                                                      item,
-                                                      style: GoogleFonts.openSans(
-                                                        color: AppColors
-                                                            .primaryBlackColor,
-                                                        fontSize: 14,
-                                                      ),
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                            ).toList()
-                                                : Gender_ar.map(
-                                                  (item) =>
-                                                  DropdownMenuItem<String>(
-                                                    value: item,
-                                                    child: Text(
-                                                      item,
-                                                      style: GoogleFonts.openSans(
-                                                        color: AppColors
-                                                            .primaryBlackColor,
-                                                        fontSize: 14,
-                                                      ),
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                            ).toList(),
-                                            value: selectedGender,
-                                            onChanged: (String? value) {
-                                              setState(() {
-                                                selectedGender = value!;
-                                                print(
-                                                    "SELECTED GENDER :$selectedGender");
-                                              });
-                                            },
-                                            buttonStyleData: ButtonStyleData(
-                                              width: 340,
-                                              height: 50,
-                                              padding: const EdgeInsets.only(
-                                                  left: 14, right: 14),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(5),
-                                                border: Border.all(
-                                                  width: 1,
-                                                  color:
-                                                  const Color(0xFFE6ECFF),
+                                        const SizedBox(height: 20),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 11),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: BlocBuilder<MyProfileBloc,
+                                                    MyProfileState>(
+                                                  builder: (context, state) {
+                                                    if (state is MyProfileLoaded) {
+                                                      return MyTextField(
+                                                        enable: true,
+                                                        focusNode: _firstname,
+                                                        // horizontal: 10,
+                                                        hintText: AppLocalizations.of(context)!.firstname,
+                                                        // hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
+                                                        obscureText: false,
+                                                        maxLines: 1,
+                                                        controller: firstnameController,
+                                                        keyboardType:
+                                                        TextInputType.text,
+                                                        validator: (value) {
+                                                          String? err =
+                                                          validateFirstname(
+                                                              value);
+                                                          if (err != null) {
+                                                            _firstname
+                                                                .requestFocus();
+                                                          }
+                                                          return err;
+                                                        },
+                                                      );
+                                                    } else {
+                                                      return const SizedBox();
+                                                    }
+                                                  },
                                                 ),
-                                                color:
-                                                AppColors.primaryWhiteColor,
-                                              ),
-                                              elevation: 0,
-                                            ),
-                                            iconStyleData: const IconStyleData(
-                                              icon: Icon(
-                                                Icons.arrow_drop_down_rounded,
-                                                size: 35,
-                                              ),
-                                              iconSize: 14,
-                                              iconEnabledColor:
-                                              AppColors.secondaryColor,
-                                              iconDisabledColor:
-                                              AppColors.primaryGrayColor,
-                                            ),
-                                            dropdownStyleData:
-                                            DropdownStyleData(
-                                              maxHeight: 200,
-                                              width: 350,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(14),
-                                                color:
-                                                AppColors.primaryWhiteColor,
-                                              ),
-                                              offset: const Offset(-2, -5),
-                                              scrollbarTheme:
-                                              ScrollbarThemeData(
-                                                radius:
-                                                const Radius.circular(40),
-                                                thickness: MaterialStateProperty
-                                                    .all<double>(6),
-                                                thumbVisibility:
-                                                MaterialStateProperty.all<
-                                                    bool>(true),
-                                              ),
-                                            ),
-                                            menuItemStyleData:
-                                            const MenuItemStyleData(
-                                              height: 40,
-                                              padding: EdgeInsets.only(
-                                                  left: 14, right: 14),
-                                            ),
+                                              )
+                                                  .animate()
+                                                  .then(delay: 200.ms)
+                                                  .slideY(),
+                                              const SizedBox(width: 20),
+                                              Flexible(
+                                                child: BlocBuilder<MyProfileBloc,
+                                                    MyProfileState>(
+                                                  builder: (context, state) {
+                                                    if (state is MyProfileLoaded) {
+                                                      return MyTextField(
+                                                        enable: true,
+                                                        focusNode: _secondname,
+                                                        // horizontal: 10,
+                                                        hintText : AppLocalizations.of(context)!.lastname,
+                                                        // hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
+                                                        obscureText: false,
+                                                        maxLines: 1,
+                                                        controller:
+                                                        lastnameController,
+                                                        keyboardType:
+                                                        TextInputType.text,
+                                                        validator: (value) {
+                                                          String? err =
+                                                          validateLastname(
+                                                              value);
+                                                          if (err != null) {
+                                                            _secondname
+                                                                .requestFocus();
+                                                          }
+                                                          return err;
+                                                        },
+                                                      );
+                                                    } else {
+                                                      return const SizedBox();
+                                                    }
+                                                  },
+                                                ),
+                                              )
+                                                  .animate()
+                                                  .then(delay: 200.ms)
+                                                  .slideY(),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    const SizedBox(height: 15),
-
-                                    /// Nationality
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11),
-                                        child: BlocBuilder<NationalityBloc,
-                                            NationalityState>(
-                                          builder: (context, state) {
-                                            if (state is NationalityLoaded) {
-                                              return DropdownButtonHideUnderline(
-                                                child: DropdownButton2<String>(
-                                                  isExpanded: true,
-                                                  hint: Text(
-                                                    nationalityController
-                                                        .text.isEmpty
-                                                        ? AppLocalizations.of(context)!.nationality
-                                                    // ? "Nationality"
-                                                        : nationalityController
-                                                        .text,
-                                                    style: GoogleFonts.openSans(
-                                                      color: AppColors
-                                                          .primaryGrayColor,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  items: state
-                                                      .nationalityResponse.data
-                                                      .map(
-                                                        (item) =>
-                                                        DropdownMenuItem<
-                                                            String>(
-                                                          value: item.id
-                                                              .toString(),
-                                                          child: Text(
-                                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                                ?item.nationality
-                                                                :item.nationalityArabic,
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color: AppColors
-                                                                  .primaryBlackColor,
-                                                              fontSize: 14,
-                                                            ),
-                                                            overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                          ),
-                                                        ),
-                                                  )
-                                                      .toList(),
-                                                  value:
-                                                  selectedNationalityValue,
-                                                  onChanged: (String? value) {
-                                                    setState(() {
-                                                      selectedNationalityValue =
-                                                      value!;
-                                                      selectedNationality =
-                                                      selectedNationalityValue!;
-                                                      selectedNationalityID =
-                                                          int.tryParse(
-                                                              selectedNationality!);
-                                                    });
-                                                    print(
-                                                        'Selected Nationality ID: $selectedNationalityID');
-
-                                                    print(
-                                                        'Selected Nationalityvalue : $selectedNationality');
-                                                  },
-                                                  buttonStyleData:
-                                                  ButtonStyleData(
-                                                    width: 340,
-                                                    height: 50,
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        left: 14,
-                                                        right: 14),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color: const Color(
-                                                            0xFFE6ECFF),
-                                                      ),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    elevation: 0,
-                                                  ),
-                                                  iconStyleData:
-                                                  const IconStyleData(
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_drop_down_rounded,
-                                                      size: 35,
-                                                    ),
-                                                    iconSize: 14,
-                                                    iconEnabledColor: AppColors
-                                                        .secondaryColor,
-                                                    iconDisabledColor: AppColors
-                                                        .primaryGrayColor,
-                                                  ),
-                                                  dropdownStyleData:
-                                                  DropdownStyleData(
-                                                    maxHeight: 200,
-                                                    width: 350,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          14),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    offset:
-                                                    const Offset(-2, -5),
-                                                    scrollbarTheme:
-                                                    ScrollbarThemeData(
-                                                      radius:
-                                                      const Radius.circular(
-                                                          40),
-                                                      thickness:
-                                                      MaterialStateProperty
-                                                          .all<double>(6),
-                                                      thumbVisibility:
-                                                      MaterialStateProperty
-                                                          .all<bool>(true),
-                                                    ),
-                                                  ),
-                                                  menuItemStyleData:
-                                                  const MenuItemStyleData(
-                                                    height: 40,
-                                                    padding: EdgeInsets.only(
-                                                        left: 14, right: 14),
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
-                                              return const SizedBox();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    SizedBox(
-                                        height:
-                                        getProportionateScreenHeight(15)),
-
-                                    /// Country
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11),
-                                        child: BlocBuilder<CountryBloc,
-                                            CountryState>(
-                                          builder: (context, state) {
-                                            if (state is CountryLoaded) {
-                                              return DropdownButtonHideUnderline(
-                                                child: DropdownButton2<String>(
-                                                  isExpanded: true,
-                                                  hint: Text(
-                                                    countryController
-                                                        .text.isEmpty
-                                                    // ? "Country you live in"
-                                                        ? AppLocalizations.of(context)!.countryyoulivein
-                                                        : countryController
-                                                        .text,
-                                                    style: GoogleFonts.openSans(
-                                                      color: AppColors
-                                                          .primaryGrayColor,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  items:
-                                                  state.countryResponse.data
-                                                      .map(
-                                                        (item) =>
-                                                        DropdownMenuItem<
-                                                            String>(
-                                                          value: item
-                                                              .countriesId
-                                                              .toString(),
-                                                          child: Text(
-                                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                                ?item.name
-                                                                :item.nameArabic,
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color: AppColors
-                                                                  .primaryBlackColor,
-                                                              fontSize: 14,
-                                                            ),
-                                                            overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                          ),
-                                                        ),
-                                                  )
-                                                      .toList(),
-                                                  value: selectedCountryValue,
-                                                  onChanged: (String? value) {
-                                                    setState(() {
-                                                      selectedCountryValue =
-                                                          value;
-                                                      selectedCountry =
-                                                      selectedCountryValue!;
-                                                      selectedCountryID =
-                                                          int.tryParse(
-                                                              selectedCountry!);
-                                                    });
-                                                    print(
-                                                        'Selected Country ID: $selectedCountryID');
-                                                    BlocProvider.of<CityBloc>(
-                                                        context)
-                                                        .add(
-                                                      GetCityEvent(
-                                                          getCityRequest:
-                                                          GetCityRequest(
-                                                              countriesId:
-                                                              selectedCountryID!)),
-                                                    );
-                                                  },
-                                                  buttonStyleData:
-                                                  ButtonStyleData(
-                                                    width: 340,
-                                                    height: 50,
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        left: 14,
-                                                        right: 14),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color: const Color(
-                                                            0xFFE6ECFF),
-                                                      ),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    elevation: 0,
-                                                  ),
-                                                  iconStyleData:
-                                                  const IconStyleData(
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_drop_down_rounded,
-                                                      size: 35,
-                                                    ),
-                                                    iconSize: 14,
-                                                    iconEnabledColor: AppColors
-                                                        .secondaryColor,
-                                                    iconDisabledColor: AppColors
-                                                        .primaryGrayColor,
-                                                  ),
-                                                  dropdownStyleData:
-                                                  DropdownStyleData(
-                                                    maxHeight: 200,
-                                                    width: 350,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          14),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    offset:
-                                                    const Offset(-2, -5),
-                                                    scrollbarTheme:
-                                                    ScrollbarThemeData(
-                                                      radius:
-                                                      const Radius.circular(
-                                                          40),
-                                                      thickness:
-                                                      MaterialStateProperty
-                                                          .all<double>(6),
-                                                      thumbVisibility:
-                                                      MaterialStateProperty
-                                                          .all<bool>(true),
-                                                    ),
-                                                  ),
-                                                  menuItemStyleData:
-                                                  const MenuItemStyleData(
-                                                    height: 40,
-                                                    padding: EdgeInsets.only(
-                                                        left: 14, right: 14),
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
-                                              return const SizedBox();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    SizedBox(
-                                        height:
-                                        getProportionateScreenHeight(15)),
-
-                                    /// City
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 11),
-                                        child: BlocBuilder<CityBloc, CityState>(
-                                          builder: (context, state) {
-                                            if (state is CityLoading) {
-                                              return Center(
-                                                child: Lottie.asset(
-                                                  Assets.JUMBINGDOT,
-                                                  height: 70,
-                                                  width: 90,
-                                                ),
-                                              );
-                                            } else if (state is CityLoaded) {
-                                              return DropdownButtonHideUnderline(
-                                                child: DropdownButton2<String>(
-                                                  isExpanded: true,
-                                                  hint: Text(
-                                                    cityController.text.isEmpty
-                                                    // ? "City"
-                                                        ? AppLocalizations.of(context)!.city
-                                                        : cityController.text,
-                                                    style: GoogleFonts.openSans(
-                                                      color: AppColors
-                                                          .primaryGrayColor,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  items:
-                                                  state.getCityResponse.data
-                                                      .map(
-                                                        (item) =>
-                                                        DropdownMenuItem<
-                                                            String>(
-                                                          value: item.cityId
-                                                              .toString(),
-                                                          child: Text(
-                                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                                ?item.city
-                                                                :item.cityArabic,
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color: AppColors
-                                                                  .primaryBlackColor,
-                                                              fontSize: 14,
-                                                            ),
-                                                            overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                          ),
-                                                        ),
-                                                  )
-                                                      .toList(),
-                                                  value: selectedCityID,
-                                                  onChanged: (String? value) {
-                                                    setState(() {
-                                                      selectedCityID = value!;
-                                                      print(
-                                                          "SELECTED CITY ID :$selectedCityID");
-                                                    });
-                                                  },
-                                                  buttonStyleData:
-                                                  ButtonStyleData(
-                                                    width: 340,
-                                                    height: 50,
-                                                    padding:
-                                                    const EdgeInsets.only(
-                                                        left: 14,
-                                                        right: 14),
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          5),
-                                                      border: Border.all(
-                                                        width: 1,
-                                                        color: const Color(
-                                                            0xFFE6ECFF),
-                                                      ),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    elevation: 0,
-                                                  ),
-                                                  iconStyleData:
-                                                  const IconStyleData(
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_drop_down_rounded,
-                                                      size: 35,
-                                                    ),
-                                                    iconSize: 14,
-                                                    iconEnabledColor: AppColors
-                                                        .secondaryColor,
-                                                    iconDisabledColor: AppColors
-                                                        .primaryGrayColor,
-                                                  ),
-                                                  dropdownStyleData:
-                                                  DropdownStyleData(
-                                                    maxHeight: 200,
-                                                    width: 350,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          14),
-                                                      color: AppColors
-                                                          .primaryWhiteColor,
-                                                    ),
-                                                    offset:
-                                                    const Offset(-2, -5),
-                                                    scrollbarTheme:
-                                                    ScrollbarThemeData(
-                                                      radius:
-                                                      const Radius.circular(
-                                                          40),
-                                                      thickness:
-                                                      MaterialStateProperty
-                                                          .all<double>(6),
-                                                      thumbVisibility:
-                                                      MaterialStateProperty
-                                                          .all<bool>(true),
-                                                    ),
-                                                  ),
-                                                  menuItemStyleData:
-                                                  const MenuItemStyleData(
-                                                    height: 40,
-                                                    padding: EdgeInsets.only(
-                                                        left: 14, right: 14),
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
-                                              return const SizedBox();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    const SizedBox(height: 20),
-                                    Text(
-                                      AppLocalizations.of(context)!.contactinfo,
-                                      // "Contact Info",
-                                      style: GoogleFonts.openSans(
-                                        color: AppColors.primaryBlackColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-                                    const SizedBox(height: 20),
-
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 11),
-                                      child: MyTextField(
-                                        enable: false,
-                                        focusNode: _email,
-                                        // horizontal: 10,
-                                        // hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
-                                        hintText:  AppLocalizations.of(context)!.email,
-                                        obscureText: false,
-                                        maxLines: 1,
-                                        controller: emailController,
-                                        keyboardType: TextInputType.text,
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-
-                                    const SizedBox(height: 15),
-
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 11),
-                                      child: BlocBuilder<MyProfileBloc,
-                                          MyProfileState>(
-                                        builder: (context, state) {
-                                          if (state is MyProfileLoaded) {
-                                            return MyTextField(
-                                              inputFormatter: [
-                                                LengthLimitingTextInputFormatter(
-                                                    10)
-                                              ],
-                                              enable: true,
-                                              focusNode: _phone,
-                                              // horizontal: 10,
-                                              // hintText: Strings.PHONE_NUMBER,
-                                              hintText: AppLocalizations.of(context)!.phonenumber,
-                                              obscureText: false,
-                                              maxLines: 1,
-                                              controller: mobileController,
-
-                                              keyboardType:
-                                              TextInputType.number,
-                                              validator: (value) {
-                                                String? err =
-                                                validatePhoneNumber(value);
-                                                if (err != null) {
-                                                  _phone.requestFocus();
-                                                }
-                                                return err;
-                                              },
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        },
-                                      ),
-                                    ).animate().then(delay: 200.ms).slideY(),
-                                    const SizedBox(height: 20),
-
-                                    BlocBuilder<MyProfileBloc, MyProfileState>(
-                                      builder: (context, state) {
-                                        if (state is MyEditProfileLoading) {
-                                          return const Center(
-                                            child: RefreshProgressIndicator(
-                                              color: AppColors.secondaryColor,
-                                              // backgroundColor: AppColors.secondaryColor,
-                                            ),
-                                          );
-                                        }
-                                        return Center(
-                                          child: MyButton(
-                                            Textfontsize: 16,
-                                            TextColors:
-                                            AppColors.primaryWhiteColor,
-                                            // text: "save",
-                                            text: AppLocalizations.of(context)!.save,
-                                            color: AppColors.secondaryColor,
-                                            width: 340,
-                                            height: 40,
+                                        // SizedBox(height: 5,),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 11),
+                                          child: GestureDetector(
                                             onTap: () {
-                                              // BlocProvider.of<MyProfileBloc>(context)
-                                              //     .add(GetProfileDataEvent());
-                                              if (_formKey.currentState
-                                                  ?.validate() ??
-                                                  false) {
-                                                BlocProvider.of<MyProfileBloc>(
-                                                    context)
-                                                    .add(
-                                                  EditProfileDataEvent(
-                                                    editProfileRequest:
-                                                    EditProfileRequest(
-                                                      firstName:
-                                                      firstnameController
-                                                          .text,
-                                                      lastName:
-                                                      lastnameController
-                                                          .text,
-                                                      photo: imageUploadFormated
-                                                          .isNotEmpty
-                                                          ? imageUploadFormated
-                                                          : widget
-                                                          .myProfileArguments
-                                                          .photo,
-                                                      dob: selectedDate !=
-                                                          null &&
-                                                          selectedDate
-                                                              .toString()
-                                                              .isNotEmpty
-                                                          ? selectedDate
-                                                          .toString()
-                                                          : dateInputController
-                                                          .text,
-                                                      gender: selectedGender !=
-                                                          null &&
-                                                          selectedGender
-                                                              .toString()
-                                                              .isNotEmpty
-                                                          ? selectedGender
-                                                          .toString()
-                                                          : genderController
-                                                          .text,
-                                                      mobileNo: int.parse(
-                                                          mobileController
-                                                              .text),
-                                                      nationalityId:
-                                                      selectedNationalityID !=
-                                                          null
-                                                          ? selectedNationalityID!
-                                                          : int.parse(widget
-                                                          .myProfileArguments
-                                                          .nationality_id
-                                                          .toString()),
-                                                      city: selectedCityID != null &&
-                                                          selectedCityID
-                                                              .toString()
-                                                              .isNotEmpty
-                                                          ? selectedCityID
-                                                          .toString()
-                                                          : widget
-                                                          .myProfileArguments
-                                                          .city
-                                                          .toString(),
-                                                      countryId: selectedCountryID !=
-                                                          null
-                                                          ? selectedCountryID!
-                                                          : int.parse(widget
-                                                          .myProfileArguments
-                                                          .country_id
-                                                          .toString()),
-                                                      userName: widget
-                                                          .myProfileArguments
-                                                          .user_name,
-                                                      status: 1,
-                                                    ),
+                                              _showDatePicker(context);
+                                              print(
+                                                  "DATE OF BIRTH :$selectedDate ");
+                                            },
+                                            child: DatePickerTextField(
+                                              controller: dateInputController,
+                                              // hintText: "Date of Birth",
+                                              hintText : AppLocalizations.of(context)!.dateofbirth,
+                                              onDateIconTap: () {
+                                                _showDatePicker(context);
+                                              },
+                                            ),
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        // SizedBox(height: getProportionateScreenHeight(5)),
+
+                                        /// Gender
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11),
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton2<String>(
+                                                isExpanded: true,
+                                                hint: Text(
+                                                  genderController.text.isEmpty
+                                                  // ? "Gender"
+                                                      ? AppLocalizations.of(context)!.gender
+                                                      : genderController.text,
+                                                  style: GoogleFonts.openSans(
+                                                    color:
+                                                    AppColors.primaryGrayColor,
+                                                    fontSize: 14,
                                                   ),
+                                                ),
+                                                items: context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                    ? Gender.map(
+                                                      (item) =>
+                                                      DropdownMenuItem<String>(
+                                                        value: item,
+                                                        child: Text(
+                                                          item,
+                                                          style: GoogleFonts.openSans(
+                                                            color: AppColors
+                                                                .primaryBlackColor,
+                                                            fontSize: 14,
+                                                          ),
+                                                          overflow:
+                                                          TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                ).toList()
+                                                    : Gender_ar.map(
+                                                      (item) =>
+                                                      DropdownMenuItem<String>(
+                                                        value: item,
+                                                        child: Text(
+                                                          item,
+                                                          style: GoogleFonts.openSans(
+                                                            color: AppColors
+                                                                .primaryBlackColor,
+                                                            fontSize: 14,
+                                                          ),
+                                                          overflow:
+                                                          TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                ).toList(),
+                                                value: selectedGender,
+                                                onChanged: (String? value) {
+                                                  setState(() {
+                                                    selectedGender = value!;
+                                                    print(
+                                                        "SELECTED GENDER :$selectedGender");
+                                                  });
+                                                },
+                                                buttonStyleData: ButtonStyleData(
+                                                  width: 340,
+                                                  height: 50,
+                                                  padding: const EdgeInsets.only(
+                                                      left: 14, right: 14),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(5),
+                                                    border: Border.all(
+                                                      width: 1,
+                                                      color:
+                                                      const Color(0xFFE6ECFF),
+                                                    ),
+                                                    color:
+                                                    AppColors.primaryWhiteColor,
+                                                  ),
+                                                  elevation: 0,
+                                                ),
+                                                iconStyleData: const IconStyleData(
+                                                  icon: Icon(
+                                                    Icons.arrow_drop_down_rounded,
+                                                    size: 35,
+                                                  ),
+                                                  iconSize: 14,
+                                                  iconEnabledColor:
+                                                  AppColors.secondaryColor,
+                                                  iconDisabledColor:
+                                                  AppColors.primaryGrayColor,
+                                                ),
+                                                dropdownStyleData:
+                                                DropdownStyleData(
+                                                  maxHeight: 200,
+                                                  width: 350,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(14),
+                                                    color:
+                                                    AppColors.primaryWhiteColor,
+                                                  ),
+                                                  offset: const Offset(-2, -5),
+                                                  scrollbarTheme:
+                                                  ScrollbarThemeData(
+                                                    radius:
+                                                    const Radius.circular(40),
+                                                    thickness: MaterialStateProperty
+                                                        .all<double>(6),
+                                                    thumbVisibility:
+                                                    MaterialStateProperty.all<
+                                                        bool>(true),
+                                                  ),
+                                                ),
+                                                menuItemStyleData:
+                                                const MenuItemStyleData(
+                                                  height: 40,
+                                                  padding: EdgeInsets.only(
+                                                      left: 14, right: 14),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        const SizedBox(height: 15),
+
+                                        /// Nationality
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11),
+                                            child: BlocBuilder<NationalityBloc,
+                                                NationalityState>(
+                                              builder: (context, state) {
+                                                if (state is NationalityLoaded) {
+                                                  return DropdownButtonHideUnderline(
+                                                    child: DropdownButton2<String>(
+                                                      isExpanded: true,
+                                                      hint: Text(
+                                                        nationalityController
+                                                            .text.isEmpty
+                                                            ? AppLocalizations.of(context)!.nationality
+                                                        // ? "Nationality"
+                                                            : nationalityController
+                                                            .text,
+                                                        style: GoogleFonts.openSans(
+                                                          color: AppColors
+                                                              .primaryGrayColor,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                      items: state
+                                                          .nationalityResponse.data
+                                                          .map(
+                                                            (item) =>
+                                                            DropdownMenuItem<
+                                                                String>(
+                                                              value: item.id
+                                                                  .toString(),
+                                                              child: Text(
+                                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                    ?item.nationality
+                                                                    :item.nationalityArabic,
+                                                                style: GoogleFonts
+                                                                    .openSans(
+                                                                  color: AppColors
+                                                                      .primaryBlackColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                                overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                              ),
+                                                            ),
+                                                      )
+                                                          .toList(),
+                                                      value:
+                                                      selectedNationalityValue,
+                                                      onChanged: (String? value) {
+                                                        setState(() {
+                                                          selectedNationalityValue =
+                                                          value!;
+                                                          selectedNationality =
+                                                          selectedNationalityValue!;
+                                                          selectedNationalityID =
+                                                              int.tryParse(
+                                                                  selectedNationality!);
+                                                        });
+                                                        print(
+                                                            'Selected Nationality ID: $selectedNationalityID');
+
+                                                        print(
+                                                            'Selected Nationalityvalue : $selectedNationality');
+                                                      },
+                                                      buttonStyleData:
+                                                      ButtonStyleData(
+                                                        width: 340,
+                                                        height: 50,
+                                                        padding:
+                                                        const EdgeInsets.only(
+                                                            left: 14,
+                                                            right: 14),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: const Color(
+                                                                0xFFE6ECFF),
+                                                          ),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        elevation: 0,
+                                                      ),
+                                                      iconStyleData:
+                                                      const IconStyleData(
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_drop_down_rounded,
+                                                          size: 35,
+                                                        ),
+                                                        iconSize: 14,
+                                                        iconEnabledColor: AppColors
+                                                            .secondaryColor,
+                                                        iconDisabledColor: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                      dropdownStyleData:
+                                                      DropdownStyleData(
+                                                        maxHeight: 200,
+                                                        width: 350,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        offset:
+                                                        const Offset(-2, -5),
+                                                        scrollbarTheme:
+                                                        ScrollbarThemeData(
+                                                          radius:
+                                                          const Radius.circular(
+                                                              40),
+                                                          thickness:
+                                                          MaterialStateProperty
+                                                              .all<double>(6),
+                                                          thumbVisibility:
+                                                          MaterialStateProperty
+                                                              .all<bool>(true),
+                                                        ),
+                                                      ),
+                                                      menuItemStyleData:
+                                                      const MenuItemStyleData(
+                                                        height: 40,
+                                                        padding: EdgeInsets.only(
+                                                            left: 14, right: 14),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        SizedBox(
+                                            height:
+                                            getProportionateScreenHeight(15)),
+
+                                        /// Country
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11),
+                                            child: BlocBuilder<CountryBloc,
+                                                CountryState>(
+                                              builder: (context, state) {
+                                                if (state is CountryLoaded) {
+                                                  return DropdownButtonHideUnderline(
+                                                    child: DropdownButton2<String>(
+                                                      isExpanded: true,
+                                                      hint: Text(
+                                                        countryController
+                                                            .text.isEmpty
+                                                        // ? "Country you live in"
+                                                            ? AppLocalizations.of(context)!.countryyoulivein
+                                                            : countryController
+                                                            .text,
+                                                        style: GoogleFonts.openSans(
+                                                          color: AppColors
+                                                              .primaryGrayColor,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                      items:
+                                                      state.countryResponse.data
+                                                          .map(
+                                                            (item) =>
+                                                            DropdownMenuItem<
+                                                                String>(
+                                                              value: item
+                                                                  .countriesId
+                                                                  .toString(),
+                                                              child: Text(
+                                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                    ?item.name
+                                                                    :item.nameArabic,
+                                                                style: GoogleFonts
+                                                                    .openSans(
+                                                                  color: AppColors
+                                                                      .primaryBlackColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                                overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                              ),
+                                                            ),
+                                                      )
+                                                          .toList(),
+                                                      value: selectedCountryValue,
+                                                      onChanged: (String? value) {
+                                                        setState(() {
+                                                          selectedCountryValue =
+                                                              value;
+                                                          selectedCountry =
+                                                          selectedCountryValue!;
+                                                          selectedCountryID =
+                                                              int.tryParse(
+                                                                  selectedCountry!);
+                                                        });
+                                                        print(
+                                                            'Selected Country ID: $selectedCountryID');
+                                                        BlocProvider.of<CityBloc>(
+                                                            context)
+                                                            .add(
+                                                          GetCityEvent(
+                                                              getCityRequest:
+                                                              GetCityRequest(
+                                                                  countriesId:
+                                                                  selectedCountryID!)),
+                                                        );
+                                                      },
+                                                      buttonStyleData:
+                                                      ButtonStyleData(
+                                                        width: 340,
+                                                        height: 50,
+                                                        padding:
+                                                        const EdgeInsets.only(
+                                                            left: 14,
+                                                            right: 14),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: const Color(
+                                                                0xFFE6ECFF),
+                                                          ),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        elevation: 0,
+                                                      ),
+                                                      iconStyleData:
+                                                      const IconStyleData(
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_drop_down_rounded,
+                                                          size: 35,
+                                                        ),
+                                                        iconSize: 14,
+                                                        iconEnabledColor: AppColors
+                                                            .secondaryColor,
+                                                        iconDisabledColor: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                      dropdownStyleData:
+                                                      DropdownStyleData(
+                                                        maxHeight: 200,
+                                                        width: 350,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        offset:
+                                                        const Offset(-2, -5),
+                                                        scrollbarTheme:
+                                                        ScrollbarThemeData(
+                                                          radius:
+                                                          const Radius.circular(
+                                                              40),
+                                                          thickness:
+                                                          MaterialStateProperty
+                                                              .all<double>(6),
+                                                          thumbVisibility:
+                                                          MaterialStateProperty
+                                                              .all<bool>(true),
+                                                        ),
+                                                      ),
+                                                      menuItemStyleData:
+                                                      const MenuItemStyleData(
+                                                        height: 40,
+                                                        padding: EdgeInsets.only(
+                                                            left: 14, right: 14),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        SizedBox(
+                                            height:
+                                            getProportionateScreenHeight(15)),
+
+                                        /// City
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 11),
+                                            child: BlocBuilder<CityBloc, CityState>(
+                                              builder: (context, state) {
+                                                if (state is CityLoading) {
+                                                  return Center(
+                                                    child: Lottie.asset(
+                                                      Assets.JUMBINGDOT,
+                                                      height: 70,
+                                                      width: 90,
+                                                    ),
+                                                  );
+                                                } else if (state is CityLoaded) {
+                                                  return DropdownButtonHideUnderline(
+                                                    child: DropdownButton2<String>(
+                                                      isExpanded: true,
+                                                      hint: Text(
+                                                        cityController.text.isEmpty
+                                                        // ? "City"
+                                                            ? AppLocalizations.of(context)!.city
+                                                            : cityController.text,
+                                                        style: GoogleFonts.openSans(
+                                                          color: AppColors
+                                                              .primaryGrayColor,
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                      items:
+                                                      state.getCityResponse.data
+                                                          .map(
+                                                            (item) =>
+                                                            DropdownMenuItem<
+                                                                String>(
+                                                              value: item.cityId
+                                                                  .toString(),
+                                                              child: Text(
+                                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                    ?item.city
+                                                                    :item.cityArabic,
+                                                                style: GoogleFonts
+                                                                    .openSans(
+                                                                  color: AppColors
+                                                                      .primaryBlackColor,
+                                                                  fontSize: 14,
+                                                                ),
+                                                                overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                              ),
+                                                            ),
+                                                      )
+                                                          .toList(),
+                                                      value: selectedCityID,
+                                                      onChanged: (String? value) {
+                                                        setState(() {
+                                                          selectedCityID = value!;
+                                                          print(
+                                                              "SELECTED CITY ID :$selectedCityID");
+                                                        });
+                                                      },
+                                                      buttonStyleData:
+                                                      ButtonStyleData(
+                                                        width: 340,
+                                                        height: 50,
+                                                        padding:
+                                                        const EdgeInsets.only(
+                                                            left: 14,
+                                                            right: 14),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: const Color(
+                                                                0xFFE6ECFF),
+                                                          ),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        elevation: 0,
+                                                      ),
+                                                      iconStyleData:
+                                                      const IconStyleData(
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_drop_down_rounded,
+                                                          size: 35,
+                                                        ),
+                                                        iconSize: 14,
+                                                        iconEnabledColor: AppColors
+                                                            .secondaryColor,
+                                                        iconDisabledColor: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                      dropdownStyleData:
+                                                      DropdownStyleData(
+                                                        maxHeight: 200,
+                                                        width: 350,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              14),
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                        ),
+                                                        offset:
+                                                        const Offset(-2, -5),
+                                                        scrollbarTheme:
+                                                        ScrollbarThemeData(
+                                                          radius:
+                                                          const Radius.circular(
+                                                              40),
+                                                          thickness:
+                                                          MaterialStateProperty
+                                                              .all<double>(6),
+                                                          thumbVisibility:
+                                                          MaterialStateProperty
+                                                              .all<bool>(true),
+                                                        ),
+                                                      ),
+                                                      menuItemStyleData:
+                                                      const MenuItemStyleData(
+                                                        height: 40,
+                                                        padding: EdgeInsets.only(
+                                                            left: 14, right: 14),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox();
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        const SizedBox(height: 20),
+                                        Text(
+                                          AppLocalizations.of(context)!.contactinfo,
+                                          // "Contact Info",
+                                          style: GoogleFonts.openSans(
+                                            color: AppColors.primaryBlackColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+                                        const SizedBox(height: 20),
+
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 11),
+                                          child: MyTextField(
+                                            enable: false,
+                                            focusNode: _email,
+                                            // horizontal: 10,
+                                            // hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
+                                            hintText:  AppLocalizations.of(context)!.email,
+                                            obscureText: false,
+                                            maxLines: 1,
+                                            controller: emailController,
+                                            keyboardType: TextInputType.text,
+                                          ),
+                                        ).animate().then(delay: 200.ms).slideY(),
+
+                                        const SizedBox(height: 15),
+
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 11),
+                                          child: BlocBuilder<MyProfileBloc,
+                                              MyProfileState>(
+                                            builder: (context, state) {
+                                              if (state is MyProfileLoaded) {
+                                                return MyTextField(
+                                                  inputFormatter: [
+                                                    LengthLimitingTextInputFormatter(
+                                                        10)
+                                                  ],
+                                                  enable: true,
+                                                  focusNode: _phone,
+                                                  // horizontal: 10,
+                                                  // hintText: Strings.PHONE_NUMBER,
+                                                  hintText: AppLocalizations.of(context)!.phonenumber,
+                                                  obscureText: false,
+                                                  maxLines: 1,
+                                                  controller: mobileController,
+
+                                                  keyboardType:
+                                                  TextInputType.number,
+                                                  validator: (value) {
+                                                    String? err =
+                                                    validatePhoneNumber(value);
+                                                    if (err != null) {
+                                                      _phone.requestFocus();
+                                                    }
+                                                    return err;
+                                                  },
                                                 );
-                                                print(
-                                                    'FIRST NAME = $firstnameController');
-                                                print(
-                                                    'LAST NAME = $lastnameController');
-                                                print(
-                                                    'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
-                                                print(
-                                                    'GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
-                                                print(
-                                                    'NATIONALITY  = ${selectedNationalityID != null ? selectedNationalityID! : int.parse(widget.myProfileArguments.nationality_id.toString())}');
-                                                print(
-                                                    'COUNTRY = ${selectedCountryID != null ? selectedCountryID! : int.parse(widget.myProfileArguments.country_id.toString())}');
-                                                print(
-                                                    'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
-                                                print(
-                                                    'Email = $emailController');
-                                                print(
-                                                    'PHONE NUMBER =  $mobileController');
-                                                print(
-                                                    "PHOTO  = ${imageUploadFormated.isNotEmpty ? imageUploadFormated : widget.myProfileArguments.photo}");
                                               } else {
-                                                Fluttertoast.showToast(
-                                                  // msg: "All fields are important",
-                                                  msg: AppLocalizations.of(context)!.allfieldsareimportant,
-                                                  toastLength:
-                                                  Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  backgroundColor:
-                                                  Colors.black87,
-                                                  textColor: Colors.white,
-                                                );
+                                                return const SizedBox();
                                               }
                                             },
-                                            showImage: false,
-                                            imagePath: '',
-                                            imagewidth: 0,
-                                            imageheight: 0,
                                           ),
-                                        );
-                                      },
-                                    ).animate().then(delay: 200.ms).slideY(),
-                                  ],
-                                );
-                              } else {
-                                return const SizedBox();
-                              }
-                            },
+                                        ).animate().then(delay: 200.ms).slideY(),
+                                        const SizedBox(height: 20),
+
+                                        BlocBuilder<MyProfileBloc, MyProfileState>(
+                                          builder: (context, state) {
+                                            if (state is MyEditProfileLoading) {
+                                              return const Center(
+                                                child: RefreshProgressIndicator(
+                                                  color: AppColors.secondaryColor,
+                                                  // backgroundColor: AppColors.secondaryColor,
+                                                ),
+                                              );
+                                            }
+                                            return Center(
+                                              child: MyButton(
+                                                Textfontsize: 16,
+                                                TextColors:
+                                                AppColors.primaryWhiteColor,
+                                                // text: "save",
+                                                text: AppLocalizations.of(context)!.save,
+                                                color: AppColors.secondaryColor,
+                                                width: 340,
+                                                height: 40,
+                                                onTap: () {
+                                                  // BlocProvider.of<MyProfileBloc>(context)
+                                                  //     .add(GetProfileDataEvent());
+                                                  if (_formKey.currentState
+                                                      ?.validate() ??
+                                                      false) {
+                                                    BlocProvider.of<MyProfileBloc>(
+                                                        context)
+                                                        .add(
+                                                      EditProfileDataEvent(
+                                                        editProfileRequest:
+                                                        EditProfileRequest(
+                                                          firstName:
+                                                          firstnameController
+                                                              .text,
+                                                          lastName:
+                                                          lastnameController
+                                                              .text,
+                                                          photo: imageUploadFormated
+                                                              .isNotEmpty
+                                                              ? imageUploadFormated
+                                                              : widget
+                                                              .myProfileArguments
+                                                              .photo,
+                                                          dob: selectedDate !=
+                                                              null &&
+                                                              selectedDate
+                                                                  .toString()
+                                                                  .isNotEmpty
+                                                              ? selectedDate
+                                                              .toString()
+                                                              : dateInputController
+                                                              .text,
+                                                          gender: selectedGender !=
+                                                              null &&
+                                                              selectedGender
+                                                                  .toString()
+                                                                  .isNotEmpty
+                                                              ? selectedGender
+                                                              .toString()
+                                                              : genderController
+                                                              .text,
+                                                          mobileNo: int.parse(
+                                                              mobileController
+                                                                  .text),
+                                                          nationalityId:
+                                                          selectedNationalityID !=
+                                                              null
+                                                              ? selectedNationalityID!
+                                                              : int.parse(widget
+                                                              .myProfileArguments
+                                                              .nationality_id
+                                                              .toString()),
+                                                          city: selectedCityID != null &&
+                                                              selectedCityID
+                                                                  .toString()
+                                                                  .isNotEmpty
+                                                              ? selectedCityID
+                                                              .toString()
+                                                              : widget
+                                                              .myProfileArguments
+                                                              .city
+                                                              .toString(),
+                                                          countryId: selectedCountryID !=
+                                                              null
+                                                              ? selectedCountryID!
+                                                              : int.parse(widget
+                                                              .myProfileArguments
+                                                              .country_id
+                                                              .toString()),
+                                                          userName: widget
+                                                              .myProfileArguments
+                                                              .user_name,
+                                                          status: 1,
+                                                        ),
+                                                      ),
+                                                    );
+                                                    print(
+                                                        'FIRST NAME = $firstnameController');
+                                                    print(
+                                                        'LAST NAME = $lastnameController');
+                                                    print(
+                                                        'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
+                                                    print(
+                                                        'GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
+                                                    print(
+                                                        'NATIONALITY  = ${selectedNationalityID != null ? selectedNationalityID! : int.parse(widget.myProfileArguments.nationality_id.toString())}');
+                                                    print(
+                                                        'COUNTRY = ${selectedCountryID != null ? selectedCountryID! : int.parse(widget.myProfileArguments.country_id.toString())}');
+                                                    print(
+                                                        'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
+                                                    print(
+                                                        'Email = $emailController');
+                                                    print(
+                                                        'PHONE NUMBER =  $mobileController');
+                                                    print(
+                                                        "PHOTO  = ${imageUploadFormated.isNotEmpty ? imageUploadFormated : widget.myProfileArguments.photo}");
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                      // msg: "All fields are important",
+                                                      msg: AppLocalizations.of(context)!.allfieldsareimportant,
+                                                      toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                      gravity: ToastGravity.BOTTOM,
+                                                      backgroundColor:
+                                                      Colors.black87,
+                                                      textColor: Colors.white,
+                                                    );
+                                                  }
+                                                },
+                                                showImage: false,
+                                                imagePath: '',
+                                                imagewidth: 0,
+                                                imageheight: 0,
+                                              ),
+                                            );
+                                          },
+                                        ).animate().then(delay: 200.ms).slideY(),
+                                      ],
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                },
+                              ),
+                            ]),
                           ),
-                        ]),
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 15, right: 15, bottom: 30),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
+            } else if (state is NetworkFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(Assets.NO_INTERNET),
+                    Text(
+                      // "You are not connected to the internet",
+                      AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryGrayColor,
+                        fontSize: 20,
                       ),
-                      padding: const EdgeInsets.only(
-                          top: 15, left: 15, right: 15, bottom: 30),
-                    )
+                    ).animate().scale(delay: 200.ms, duration: 300.ms),
                   ],
                 ),
               );
-            },
-          );
-        } else if (state is NetworkFailure) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Lottie.asset(Assets.NO_INTERNET),
-                Text(
-                  // "You are not connected to the internet",
-                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
-                  style: GoogleFonts.openSans(
-                    color: AppColors.primaryGrayColor,
-                    fontSize: 20,
-                  ),
-                ).animate().scale(delay: 200.ms, duration: 300.ms),
-              ],
-            ),
-          );
-        }
-        return const SizedBox();
-      }),
+            }
+            return const SizedBox();
+          }),
     );
 
-    // BlocConsumer<NetworkBloc, NetworkState>(
-    //   listener: (BuildContext context, NetworkState state) {
-    //     if (state is NetworkSuccess) {
-    //       networkSuccess = true;
-    //     }
-    //   },
-    //   builder: (context, state) {
-    //     if (state is NetworkSuccess) {
-    //       return BlocConsumer<MyProfileBloc, MyProfileState>(
-    //         listener: (context, state) {
-    //           // if (state is MyEditProfileLoaded) {
-    //           //   if (state.editProfileRequestResponse.status == true) {
-    //           //     BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
-    //           //   }
-    //           // } else if (state is MyEditProfileLoaded) {
-    //           //   if (state.editProfileRequestResponse.status == false) {
-    //           //     ScaffoldMessenger.of(context).showSnackBar(
-    //           //       SnackBar(
-    //           //         backgroundColor: AppColors.secondaryColor,
-    //           //         content: Text(
-    //           //           "Some Error Happened",
-    //           //           style: GoogleFonts.openSans(
-    //           //             color: AppColors.primaryWhiteColor,
-    //           //           ),
-    //           //         ),
-    //           //       ),
-    //           //     );
-    //           //   }
-    //           // }
-    //         },
-    //         builder: (context, state) {
-    //           if (state is MyEditProfileLoading) {
-    //             return const Center(
-    //               child: RefreshProgressIndicator(
-    //                 color: AppColors.secondaryColor,
-    //                 backgroundColor: AppColors.primaryWhiteColor,
-    //               ),
-    //             );
-    //           }
-    //           if (state is MyEditProfileLoading) {
-    //             return Center(
-    //               child: Column(
-    //                 children: [
-    //                   Lottie.asset(Assets.TRY_AGAIN),
-    //                   const Text("state"),
-    //                 ],
-    //               ),
-    //             );
-    //           }
-    //
-    //           if (state is MyEditProfileLoaded) {
-    //             if (state.editProfileRequestResponse.status == true) {
-    //               BlocProvider.of<MyProfileBloc>(context)
-    //                   .add(GetProfileDataEvent());
-    //             }
-    //           } else if (state is MyEditProfileLoaded) {
-    //             if (state.editProfileRequestResponse.status == false) {
-    //               ScaffoldMessenger.of(context).showSnackBar(
-    //                 SnackBar(
-    //                   backgroundColor: AppColors.secondaryColor,
-    //                   content: Text(
-    //                     "Some Error Happened",
-    //                     style: GoogleFonts.openSans(
-    //                       color: AppColors.primaryWhiteColor,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               );
-    //             }
-    //           }
-    //
-    //           return Scaffold(
-    //             body: Form(
-    //               key: _formKey,
-    //               child: CustomScrollView(
-    //                 slivers: <Widget>[
-    //                   SliverPersistentHeader(
-    //                     pinned: true,
-    //                     floating: true,
-    //                     delegate: CustomSliverDelegate(
-    //                       pickImage: _pickImage,
-    //                       expandedHeight: 150,
-    //                       myProfileArguments: widget.myProfileArguments,
-    //                       filePath: _image!,
-    //                     ),
-    //                   ),
-    //                   SliverPadding(
-    //                     sliver: SliverList(
-    //                       delegate: SliverChildListDelegate([
-    //                         BlocBuilder<MyProfileBloc, MyProfileState>(
-    //                           builder: (context, state) {
-    //                             if (state is MyProfileLoading) {
-    //                               return const Center(
-    //                                 heightFactor: 10,
-    //                                 child: RefreshProgressIndicator(
-    //                                   color: AppColors.secondaryColor,
-    //                                 ),
-    //                               );
-    //                             }
-    //                             if (state is MyProfileErrorState) {
-    //                               return Center(
-    //                                 child: Column(
-    //                                   children: [
-    //                                     Lottie.asset(Assets.TRY_AGAIN),
-    //                                     const Text("state"),
-    //                                   ],
-    //                                 ),
-    //                               );
-    //                             }
-    //                             if (state is MyProfileLoaded) {
-    //                               return Column(
-    //                                 crossAxisAlignment:
-    //                                     CrossAxisAlignment.start,
-    //                                 children: [
-    //                                   // SizedBox(height: 30,),
-    //                                   Text(
-    //                                     "About You",
-    //                                     style: GoogleFonts.openSans(
-    //                                       color: AppColors.primaryBlackColor,
-    //                                       fontSize: 20,
-    //                                       fontWeight: FontWeight.w700,
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   const SizedBox(height: 20),
-    //                                   Padding(
-    //                                     padding: const EdgeInsets.symmetric(
-    //                                         horizontal: 11),
-    //                                     child: Row(
-    //                                       children: [
-    //                                         Flexible(
-    //                                           child: BlocBuilder<MyProfileBloc,
-    //                                               MyProfileState>(
-    //                                             builder: (context, state) {
-    //                                               if (state
-    //                                                   is MyProfileLoaded) {
-    //                                                 return MyTextField(
-    //                                                   enable: true,
-    //                                                   focusNode: _firstname,
-    //                                                   // horizontal: 10,
-    //                                                   hintText: Strings
-    //                                                       .SIGNUP_FIRSTNAME_LABEL_TEXT,
-    //                                                   obscureText: false,
-    //                                                   maxLines: 1,
-    //                                                   controller:
-    //                                                       firstnameController,
-    //                                                   keyboardType:
-    //                                                       TextInputType.text,
-    //                                                   validator: (value) {
-    //                                                     String? err =
-    //                                                         validateFirstname(
-    //                                                             value);
-    //                                                     if (err != null) {
-    //                                                       _firstname
-    //                                                           .requestFocus();
-    //                                                     }
-    //                                                     return err;
-    //                                                   },
-    //                                                 );
-    //                                               } else {
-    //                                                 return SizedBox();
-    //                                               }
-    //                                             },
-    //                                           ),
-    //                                         )
-    //                                             .animate()
-    //                                             .then(delay: 200.ms)
-    //                                             .slideY(),
-    //                                         const SizedBox(width: 20),
-    //                                         Flexible(
-    //                                           child: BlocBuilder<MyProfileBloc,
-    //                                               MyProfileState>(
-    //                                             builder: (context, state) {
-    //                                               if (state
-    //                                                   is MyProfileLoaded) {
-    //                                                 return MyTextField(
-    //                                                   enable: true,
-    //                                                   focusNode: _secondname,
-    //                                                   // horizontal: 10,
-    //                                                   hintText: Strings
-    //                                                       .SIGNUP_LASTNAME_LABEL_TEXT,
-    //                                                   obscureText: false,
-    //                                                   maxLines: 1,
-    //                                                   controller:
-    //                                                       lastnameController,
-    //                                                   keyboardType:
-    //                                                       TextInputType.text,
-    //                                                   validator: (value) {
-    //                                                     String? err =
-    //                                                         validateLastname(
-    //                                                             value);
-    //                                                     if (err != null) {
-    //                                                       _secondname
-    //                                                           .requestFocus();
-    //                                                     }
-    //                                                     return err;
-    //                                                   },
-    //                                                 );
-    //                                               } else {
-    //                                                 return SizedBox();
-    //                                               }
-    //                                             },
-    //                                           ),
-    //                                         )
-    //                                             .animate()
-    //                                             .then(delay: 200.ms)
-    //                                             .slideY(),
-    //                                       ],
-    //                                     ),
-    //                                   ),
-    //                                   // SizedBox(height: 5,),
-    //                                   Padding(
-    //                                     padding: const EdgeInsets.symmetric(
-    //                                         vertical: 15, horizontal: 11),
-    //                                     child: GestureDetector(
-    //                                       onTap: () {
-    //                                         _showDatePicker(context);
-    //                                         print(
-    //                                             "DATE OF BIRTH :$selectedDate ");
-    //                                       },
-    //                                       child: DatePickerTextField(
-    //                                         controller: dateInputController,
-    //                                         hintText: "Date of Birth",
-    //                                         onDateIconTap: () {
-    //                                           _showDatePicker(context);
-    //                                         },
-    //                                       ),
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   // SizedBox(height: getProportionateScreenHeight(5)),
-    //
-    //                                   /// Gender
-    //                                   Center(
-    //                                     child: Padding(
-    //                                       padding: const EdgeInsets.symmetric(
-    //                                           horizontal: 11),
-    //                                       child: DropdownButtonHideUnderline(
-    //                                         child: DropdownButton2<String>(
-    //                                           isExpanded: true,
-    //                                           hint: Text(
-    //                                             genderController.text,
-    //                                             style: const TextStyle(
-    //                                               fontSize: 14,
-    //                                               color: Colors.black,
-    //                                             ),
-    //                                           ),
-    //                                           items: Gender.map(
-    //                                             (item) =>
-    //                                                 DropdownMenuItem<String>(
-    //                                               value: item,
-    //                                               child: Text(
-    //                                                 item,
-    //                                                 style: const TextStyle(
-    //                                                   fontSize: 14,
-    //                                                   color: AppColors
-    //                                                       .primaryBlackColor,
-    //                                                 ),
-    //                                                 overflow:
-    //                                                     TextOverflow.ellipsis,
-    //                                               ),
-    //                                             ),
-    //                                           ).toList(),
-    //                                           value: selectedGender,
-    //                                           onChanged: (String? value) {
-    //                                             setState(() {
-    //                                               selectedGender = value!;
-    //                                               print(
-    //                                                   "SELECTED GENDER :$selectedGender");
-    //                                             });
-    //                                           },
-    //                                           buttonStyleData: ButtonStyleData(
-    //                                             width: 340,
-    //                                             height: 50,
-    //                                             padding: const EdgeInsets.only(
-    //                                                 left: 14, right: 14),
-    //                                             decoration: BoxDecoration(
-    //                                               borderRadius:
-    //                                                   BorderRadius.circular(5),
-    //                                               border: Border.all(
-    //                                                 width: 1,
-    //                                                 color:
-    //                                                     const Color(0xFFE6ECFF),
-    //                                               ),
-    //                                               color: AppColors
-    //                                                   .primaryWhiteColor,
-    //                                             ),
-    //                                             elevation: 0,
-    //                                           ),
-    //                                           iconStyleData:
-    //                                               const IconStyleData(
-    //                                             icon: Icon(
-    //                                               Icons.arrow_drop_down_rounded,
-    //                                               size: 35,
-    //                                             ),
-    //                                             iconSize: 14,
-    //                                             iconEnabledColor:
-    //                                                 AppColors.secondaryColor,
-    //                                             iconDisabledColor:
-    //                                                 AppColors.primaryGrayColor,
-    //                                           ),
-    //                                           dropdownStyleData:
-    //                                               DropdownStyleData(
-    //                                             maxHeight: 200,
-    //                                             width: 350,
-    //                                             decoration: BoxDecoration(
-    //                                               borderRadius:
-    //                                                   BorderRadius.circular(14),
-    //                                               color: AppColors
-    //                                                   .primaryWhiteColor,
-    //                                             ),
-    //                                             offset: const Offset(-2, -5),
-    //                                             scrollbarTheme:
-    //                                                 ScrollbarThemeData(
-    //                                               radius:
-    //                                                   const Radius.circular(40),
-    //                                               thickness:
-    //                                                   MaterialStateProperty.all<
-    //                                                       double>(6),
-    //                                               thumbVisibility:
-    //                                                   MaterialStateProperty.all<
-    //                                                       bool>(true),
-    //                                             ),
-    //                                           ),
-    //                                           menuItemStyleData:
-    //                                               const MenuItemStyleData(
-    //                                             height: 40,
-    //                                             padding: EdgeInsets.only(
-    //                                                 left: 14, right: 14),
-    //                                           ),
-    //                                         ),
-    //                                       ),
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   const SizedBox(height: 15),
-    //
-    //                                   /// Nationality
-    //                                   Center(
-    //                                     child: Padding(
-    //                                       padding: const EdgeInsets.symmetric(
-    //                                           horizontal: 11),
-    //                                       child: BlocBuilder<NationalityBloc,
-    //                                           NationalityState>(
-    //                                         builder: (context, state) {
-    //                                           if (state is NationalityLoaded) {
-    //                                             return DropdownButtonHideUnderline(
-    //                                               child:
-    //                                                   DropdownButton2<String>(
-    //                                                 isExpanded: true,
-    //                                                 hint: Text(
-    //                                                   nationalityController
-    //                                                       .text,
-    //                                                   style: const TextStyle(
-    //                                                     fontSize: 14,
-    //                                                     color: Colors.black,
-    //                                                   ),
-    //                                                 ),
-    //                                                 items: state
-    //                                                     .nationalityResponse
-    //                                                     .data
-    //                                                     .map(
-    //                                                       (item) =>
-    //                                                           DropdownMenuItem<
-    //                                                               String>(
-    //                                                         value: item.id
-    //                                                             .toString(),
-    //                                                         child: Text(
-    //                                                           item.nationality,
-    //                                                           style:
-    //                                                               const TextStyle(
-    //                                                             fontSize: 14,
-    //                                                             color: AppColors
-    //                                                                 .primaryBlackColor,
-    //                                                           ),
-    //                                                           overflow:
-    //                                                               TextOverflow
-    //                                                                   .ellipsis,
-    //                                                         ),
-    //                                                       ),
-    //                                                     )
-    //                                                     .toList(),
-    //                                                 value:
-    //                                                     selectedNationalityValue,
-    //                                                 onChanged: (String? value) {
-    //                                                   setState(() {
-    //                                                     selectedNationalityValue =
-    //                                                         value!;
-    //                                                     selectedNationality =
-    //                                                         selectedNationalityValue!;
-    //                                                     selectedNationalityID =
-    //                                                         int.tryParse(
-    //                                                             selectedNationality!);
-    //                                                   });
-    //                                                   print(
-    //                                                       'Selected Nationality ID: $selectedNationalityID');
-    //
-    //                                                   print(
-    //                                                       'Selected Nationalityvalue : $selectedNationality');
-    //                                                 },
-    //                                                 buttonStyleData:
-    //                                                     ButtonStyleData(
-    //                                                   width: 340,
-    //                                                   height: 50,
-    //                                                   padding:
-    //                                                       const EdgeInsets.only(
-    //                                                           left: 14,
-    //                                                           right: 14),
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(5),
-    //                                                     border: Border.all(
-    //                                                       width: 1,
-    //                                                       color: const Color(
-    //                                                           0xFFE6ECFF),
-    //                                                     ),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   elevation: 0,
-    //                                                 ),
-    //                                                 iconStyleData:
-    //                                                     const IconStyleData(
-    //                                                   icon: Icon(
-    //                                                     Icons
-    //                                                         .arrow_drop_down_rounded,
-    //                                                     size: 35,
-    //                                                   ),
-    //                                                   iconSize: 14,
-    //                                                   iconEnabledColor:
-    //                                                       AppColors
-    //                                                           .secondaryColor,
-    //                                                   iconDisabledColor:
-    //                                                       AppColors
-    //                                                           .primaryGrayColor,
-    //                                                 ),
-    //                                                 dropdownStyleData:
-    //                                                     DropdownStyleData(
-    //                                                   maxHeight: 200,
-    //                                                   width: 350,
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(14),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   offset:
-    //                                                       const Offset(-2, -5),
-    //                                                   scrollbarTheme:
-    //                                                       ScrollbarThemeData(
-    //                                                     radius: const Radius
-    //                                                         .circular(40),
-    //                                                     thickness:
-    //                                                         MaterialStateProperty
-    //                                                             .all<double>(6),
-    //                                                     thumbVisibility:
-    //                                                         MaterialStateProperty
-    //                                                             .all<bool>(
-    //                                                                 true),
-    //                                                   ),
-    //                                                 ),
-    //                                                 menuItemStyleData:
-    //                                                     const MenuItemStyleData(
-    //                                                   height: 40,
-    //                                                   padding: EdgeInsets.only(
-    //                                                       left: 14, right: 14),
-    //                                                 ),
-    //                                               ),
-    //                                             );
-    //                                           } else {
-    //                                             return SizedBox();
-    //                                           }
-    //                                         },
-    //                                       ),
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   SizedBox(
-    //                                       height:
-    //                                           getProportionateScreenHeight(15)),
-    //
-    //                                   /// Country
-    //                                   Center(
-    //                                     child: Padding(
-    //                                       padding: const EdgeInsets.symmetric(
-    //                                           horizontal: 11),
-    //                                       child: BlocBuilder<CountryBloc,
-    //                                           CountryState>(
-    //                                         builder: (context, state) {
-    //                                           if (state is CountryLoaded) {
-    //                                             return DropdownButtonHideUnderline(
-    //                                               child:
-    //                                                   DropdownButton2<String>(
-    //                                                 isExpanded: true,
-    //                                                 hint: Text(
-    //                                                   countryController.text,
-    //                                                   style: const TextStyle(
-    //                                                     fontSize: 14,
-    //                                                     color: Colors.black,
-    //                                                   ),
-    //                                                 ),
-    //                                                 items: state
-    //                                                     .countryResponse.data
-    //                                                     .map(
-    //                                                       (item) =>
-    //                                                           DropdownMenuItem<
-    //                                                               String>(
-    //                                                         value: item
-    //                                                             .countriesId
-    //                                                             .toString(),
-    //                                                         child: Text(
-    //                                                           item.name,
-    //                                                           style:
-    //                                                               const TextStyle(
-    //                                                             fontSize: 14,
-    //                                                             color: AppColors
-    //                                                                 .primaryBlackColor,
-    //                                                           ),
-    //                                                           overflow:
-    //                                                               TextOverflow
-    //                                                                   .ellipsis,
-    //                                                         ),
-    //                                                       ),
-    //                                                     )
-    //                                                     .toList(),
-    //                                                 value: selectedCountryValue,
-    //                                                 onChanged: (String? value) {
-    //                                                   setState(() {
-    //                                                     selectedCountryValue =
-    //                                                         value;
-    //                                                     selectedCountry =
-    //                                                         selectedCountryValue!;
-    //                                                     selectedCountryID =
-    //                                                         int.tryParse(
-    //                                                             selectedCountry!);
-    //                                                   });
-    //                                                   print(
-    //                                                       'Selected Country ID: $selectedCountryID');
-    //                                                   BlocProvider.of<CityBloc>(
-    //                                                           context)
-    //                                                       .add(
-    //                                                     GetCityEvent(
-    //                                                         getCityRequest:
-    //                                                             GetCityRequest(
-    //                                                                 countriesId:
-    //                                                                     selectedCountryID!)),
-    //                                                   );
-    //                                                 },
-    //                                                 buttonStyleData:
-    //                                                     ButtonStyleData(
-    //                                                   width: 340,
-    //                                                   height: 50,
-    //                                                   padding:
-    //                                                       const EdgeInsets.only(
-    //                                                           left: 14,
-    //                                                           right: 14),
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(5),
-    //                                                     border: Border.all(
-    //                                                       width: 1,
-    //                                                       color: const Color(
-    //                                                           0xFFE6ECFF),
-    //                                                     ),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   elevation: 0,
-    //                                                 ),
-    //                                                 iconStyleData:
-    //                                                     const IconStyleData(
-    //                                                   icon: Icon(
-    //                                                     Icons
-    //                                                         .arrow_drop_down_rounded,
-    //                                                     size: 35,
-    //                                                   ),
-    //                                                   iconSize: 14,
-    //                                                   iconEnabledColor:
-    //                                                       AppColors
-    //                                                           .secondaryColor,
-    //                                                   iconDisabledColor:
-    //                                                       AppColors
-    //                                                           .primaryGrayColor,
-    //                                                 ),
-    //                                                 dropdownStyleData:
-    //                                                     DropdownStyleData(
-    //                                                   maxHeight: 200,
-    //                                                   width: 350,
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(14),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   offset:
-    //                                                       const Offset(-2, -5),
-    //                                                   scrollbarTheme:
-    //                                                       ScrollbarThemeData(
-    //                                                     radius: const Radius
-    //                                                         .circular(40),
-    //                                                     thickness:
-    //                                                         MaterialStateProperty
-    //                                                             .all<double>(6),
-    //                                                     thumbVisibility:
-    //                                                         MaterialStateProperty
-    //                                                             .all<bool>(
-    //                                                                 true),
-    //                                                   ),
-    //                                                 ),
-    //                                                 menuItemStyleData:
-    //                                                     const MenuItemStyleData(
-    //                                                   height: 40,
-    //                                                   padding: EdgeInsets.only(
-    //                                                       left: 14, right: 14),
-    //                                                 ),
-    //                                               ),
-    //                                             );
-    //                                           } else {
-    //                                             return SizedBox();
-    //                                           }
-    //                                         },
-    //                                       ),
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   SizedBox(
-    //                                       height:
-    //                                           getProportionateScreenHeight(15)),
-    //
-    //                                   /// City
-    //                                   Center(
-    //                                     child: Padding(
-    //                                       padding: const EdgeInsets.symmetric(
-    //                                           horizontal: 11),
-    //                                       child:
-    //                                           BlocBuilder<CityBloc, CityState>(
-    //                                         builder: (context, state) {
-    //                                           if (state is CityLoading) {
-    //                                             return Center(
-    //                                               child: Lottie.asset(
-    //                                                 Assets.JUMBINGDOT,
-    //                                                 height: 70,
-    //                                                 width: 90,
-    //                                               ),
-    //                                             );
-    //                                           } else if (state is CityLoaded) {
-    //                                             return DropdownButtonHideUnderline(
-    //                                               child:
-    //                                                   DropdownButton2<String>(
-    //                                                 isExpanded: true,
-    //                                                 hint: Text(
-    //                                                   cityController.text,
-    //                                                   style: const TextStyle(
-    //                                                     fontSize: 14,
-    //                                                     color: Colors.black,
-    //                                                   ),
-    //                                                 ),
-    //                                                 items: state
-    //                                                     .getCityResponse.data
-    //                                                     .map(
-    //                                                       (item) =>
-    //                                                           DropdownMenuItem<
-    //                                                               String>(
-    //                                                         value: item.cityId
-    //                                                             .toString(),
-    //                                                         child: Text(
-    //                                                           item.city,
-    //                                                           style:
-    //                                                               const TextStyle(
-    //                                                             fontSize: 14,
-    //                                                             color: AppColors
-    //                                                                 .primaryBlackColor,
-    //                                                           ),
-    //                                                           overflow:
-    //                                                               TextOverflow
-    //                                                                   .ellipsis,
-    //                                                         ),
-    //                                                       ),
-    //                                                     )
-    //                                                     .toList(),
-    //                                                 value: selectedCityID,
-    //                                                 onChanged: (String? value) {
-    //                                                   setState(() {
-    //                                                     selectedCityID = value!;
-    //                                                     print(
-    //                                                         "SELECTED CITY ID :$selectedCityID");
-    //                                                   });
-    //                                                 },
-    //                                                 buttonStyleData:
-    //                                                     ButtonStyleData(
-    //                                                   width: 340,
-    //                                                   height: 50,
-    //                                                   padding:
-    //                                                       const EdgeInsets.only(
-    //                                                           left: 14,
-    //                                                           right: 14),
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(5),
-    //                                                     border: Border.all(
-    //                                                       width: 1,
-    //                                                       color: const Color(
-    //                                                           0xFFE6ECFF),
-    //                                                     ),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   elevation: 0,
-    //                                                 ),
-    //                                                 iconStyleData:
-    //                                                     const IconStyleData(
-    //                                                   icon: Icon(
-    //                                                     Icons
-    //                                                         .arrow_drop_down_rounded,
-    //                                                     size: 35,
-    //                                                   ),
-    //                                                   iconSize: 14,
-    //                                                   iconEnabledColor:
-    //                                                       AppColors
-    //                                                           .secondaryColor,
-    //                                                   iconDisabledColor:
-    //                                                       AppColors
-    //                                                           .primaryGrayColor,
-    //                                                 ),
-    //                                                 dropdownStyleData:
-    //                                                     DropdownStyleData(
-    //                                                   maxHeight: 200,
-    //                                                   width: 350,
-    //                                                   decoration: BoxDecoration(
-    //                                                     borderRadius:
-    //                                                         BorderRadius
-    //                                                             .circular(14),
-    //                                                     color: AppColors
-    //                                                         .primaryWhiteColor,
-    //                                                   ),
-    //                                                   offset:
-    //                                                       const Offset(-2, -5),
-    //                                                   scrollbarTheme:
-    //                                                       ScrollbarThemeData(
-    //                                                     radius: const Radius
-    //                                                         .circular(40),
-    //                                                     thickness:
-    //                                                         MaterialStateProperty
-    //                                                             .all<double>(6),
-    //                                                     thumbVisibility:
-    //                                                         MaterialStateProperty
-    //                                                             .all<bool>(
-    //                                                                 true),
-    //                                                   ),
-    //                                                 ),
-    //                                                 menuItemStyleData:
-    //                                                     const MenuItemStyleData(
-    //                                                   height: 40,
-    //                                                   padding: EdgeInsets.only(
-    //                                                       left: 14, right: 14),
-    //                                                 ),
-    //                                               ),
-    //                                             );
-    //                                           } else {
-    //                                             return SizedBox();
-    //                                           }
-    //                                         },
-    //                                       ),
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   const SizedBox(height: 20),
-    //                                   Text(
-    //                                     "Contact Info",
-    //                                     style: GoogleFonts.openSans(
-    //                                       color: AppColors.primaryBlackColor,
-    //                                       fontSize: 20,
-    //                                       fontWeight: FontWeight.w700,
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //                                   const SizedBox(height: 20),
-    //
-    //                                   Padding(
-    //                                     padding: const EdgeInsets.symmetric(
-    //                                         horizontal: 11),
-    //                                     child: MyTextField(
-    //                                       enable: false,
-    //                                       focusNode: _email,
-    //                                       // horizontal: 10,
-    //                                       hintText:
-    //                                           Strings.SIGNUP_EMAIL_LABEL_TEXT,
-    //                                       obscureText: false,
-    //                                       maxLines: 1,
-    //                                       controller: emailController,
-    //                                       keyboardType: TextInputType.text,
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //
-    //                                   const SizedBox(height: 15),
-    //
-    //                                   Padding(
-    //                                     padding: const EdgeInsets.symmetric(
-    //                                         horizontal: 11),
-    //                                     child: BlocBuilder<MyProfileBloc,
-    //                                         MyProfileState>(
-    //                                       builder: (context, state) {
-    //                                         if (state is MyProfileLoaded) {
-    //                                           return MyTextField(
-    //                                             inputFormatter: [
-    //                                               LengthLimitingTextInputFormatter(
-    //                                                   10)
-    //                                             ],
-    //                                             enable: true,
-    //                                             focusNode: _phone,
-    //                                             // horizontal: 10,
-    //                                             hintText: Strings.PHONE_NUMBER,
-    //                                             obscureText: false,
-    //                                             maxLines: 1,
-    //                                             controller: mobileController,
-    //                                             keyboardType:
-    //                                                 TextInputType.number,
-    //                                             validator: (value) {
-    //                                               String? err =
-    //                                                   validatePhoneNumber(
-    //                                                       value);
-    //                                               if (err != null) {
-    //                                                 _phone.requestFocus();
-    //                                               }
-    //                                               return err;
-    //                                             },
-    //                                           );
-    //                                         } else {
-    //                                           return SizedBox();
-    //                                         }
-    //                                       },
-    //                                     ),
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //                                   const SizedBox(height: 20),
-    //
-    //                                   BlocBuilder<MyProfileBloc,
-    //                                       MyProfileState>(
-    //                                     builder: (context, state) {
-    //                                       if (state is MyEditProfileLoading) {
-    //                                         return const Center(
-    //                                           child: RefreshProgressIndicator(
-    //                                             color: AppColors.secondaryColor,
-    //                                             // backgroundColor: AppColors.secondaryColor,
-    //                                           ),
-    //                                         );
-    //                                       }
-    //                                       return Center(
-    //                                         child: MyButton(
-    //                                           Textfontsize: 16,
-    //                                           TextColors: Colors.white,
-    //                                           text: "save",
-    //                                           color: AppColors.secondaryColor,
-    //                                           width: 340,
-    //                                           height: 40,
-    //                                           onTap: () {
-    //                                             // BlocProvider.of<MyProfileBloc>(context)
-    //                                             //     .add(GetProfileDataEvent());
-    //                                             if (_formKey.currentState
-    //                                                     ?.validate() ??
-    //                                                 false) {
-    //                                               BlocProvider.of<
-    //                                                           MyProfileBloc>(
-    //                                                       context)
-    //                                                   .add(
-    //                                                 EditProfileDataEvent(
-    //                                                   editProfileRequest:
-    //                                                       EditProfileRequest(
-    //                                                     firstName:
-    //                                                         firstnameController
-    //                                                             .text,
-    //                                                     lastName:
-    //                                                         lastnameController
-    //                                                             .text,
-    //                                                     photo: imageUploadFormated !=
-    //                                                                 null &&
-    //                                                             imageUploadFormated
-    //                                                                 .isNotEmpty
-    //                                                         ? imageUploadFormated!
-    //                                                         : widget
-    //                                                             .myProfileArguments
-    //                                                             .photo,
-    //                                                     dob: selectedDate !=
-    //                                                                 null &&
-    //                                                             selectedDate
-    //                                                                 .toString()
-    //                                                                 .isNotEmpty
-    //                                                         ? selectedDate
-    //                                                             .toString()
-    //                                                         : dateInputController
-    //                                                             .text,
-    //                                                     gender: selectedGender !=
-    //                                                                 null &&
-    //                                                             selectedGender
-    //                                                                 .toString()
-    //                                                                 .isNotEmpty
-    //                                                         ? selectedGender
-    //                                                             .toString()
-    //                                                         : genderController
-    //                                                             .text,
-    //                                                     mobileNo: int.parse(
-    //                                                         mobileController
-    //                                                             .text),
-    //                                                     nationalityId: selectedNationalityID !=
-    //                                                             null
-    //                                                         ? selectedNationalityID!
-    //                                                         : int.parse(widget
-    //                                                             .myProfileArguments
-    //                                                             .nationality_id
-    //                                                             .toString()),
-    //                                                     city: selectedCityID != null &&
-    //                                                             selectedCityID
-    //                                                                 .toString()
-    //                                                                 .isNotEmpty
-    //                                                         ? selectedCityID
-    //                                                             .toString()
-    //                                                         : widget
-    //                                                             .myProfileArguments
-    //                                                             .city
-    //                                                             .toString(),
-    //                                                     countryId: selectedCountryID !=
-    //                                                             null
-    //                                                         ? selectedCountryID!
-    //                                                         : int.parse(widget
-    //                                                             .myProfileArguments
-    //                                                             .country_id
-    //                                                             .toString()),
-    //                                                     userName: widget
-    //                                                         .myProfileArguments
-    //                                                         .user_name,
-    //                                                     status: 1,
-    //                                                   ),
-    //                                                 ),
-    //                                               );
-    //                                               print(
-    //                                                   'FIRST NAME = ${firstnameController}');
-    //                                               print(
-    //                                                   'LAST NAME = ${lastnameController}');
-    //                                               print(
-    //                                                   'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
-    //                                               print(
-    //                                                   'GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
-    //                                               print(
-    //                                                   'NATIONALITY  = ${selectedNationalityID != null ? selectedNationalityID! : int.parse(widget.myProfileArguments.nationality_id.toString())}');
-    //                                               print(
-    //                                                   'COUNTRY = ${selectedCountryID != null ? selectedCountryID! : int.parse(widget.myProfileArguments.country_id.toString())}');
-    //                                               print(
-    //                                                   'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
-    //                                               print(
-    //                                                   'Email = ${emailController}');
-    //                                               print(
-    //                                                   'PHONE NUMBER =  ${mobileController}');
-    //                                               print(
-    //                                                   "PHOTO  = ${imageUploadFormated != null && imageUploadFormated.isNotEmpty ? imageUploadFormated! : widget.myProfileArguments.photo}");
-    //                                             } else {
-    //                                               Fluttertoast.showToast(
-    //                                                 msg:
-    //                                                     "All fields are important",
-    //                                                 toastLength:
-    //                                                     Toast.LENGTH_SHORT,
-    //                                                 gravity:
-    //                                                     ToastGravity.BOTTOM,
-    //                                                 backgroundColor:
-    //                                                     Colors.black87,
-    //                                                 textColor: Colors.white,
-    //                                               );
-    //                                             }
-    //                                           },
-    //                                           showImage: false,
-    //                                           imagePath: '',
-    //                                           imagewidth: 0,
-    //                                           imageheight: 0,
-    //                                         ),
-    //                                       );
-    //                                     },
-    //                                   ).animate().then(delay: 200.ms).slideY(),
-    //                                 ],
-    //                               );
-    //                             } else {
-    //                               return SizedBox();
-    //                             }
-    //                           },
-    //                         ),
-    //                       ]),
-    //                     ),
-    //                     padding: const EdgeInsets.only(
-    //                         top: 15, left: 15, right: 15, bottom: 30),
-    //                   )
-    //                 ],
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       );
-    //     } else if (state is NetworkFailure) {
-    //       return Center(
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             Lottie.asset(Assets.NO_INTERNET),
-    //             Text(
-    //               "You are not connected to the internet",
-    //               style: GoogleFonts.openSans(
-    //                 color: AppColors.primaryGrayColor,
-    //                 fontSize: 20,
-    //               ),
-    //             ).animate().scale(delay: 200.ms, duration: 300.ms),
-    //           ],
-    //         ),
-    //       );
-    //     }
-    //     return const SizedBox();
-    //   },
-    // );
   }
 }
 
@@ -2622,7 +1655,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                                 const SizedBox(height: 10),
                                 GestureDetector(
                                   onTap: (){
-
+                                    context.push("/changePassword");
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)!.changepassword,

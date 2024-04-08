@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:lets_collect/src/model/auth/facebook_sign_in_request.dart';
+import 'package:lets_collect/src/model/auth/facebook_sign_in_response.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request_response.dart';
 import '../../model/auth/apple_signin_request.dart';
@@ -51,6 +53,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(SignInWithAppleLoaded(appleSignInRequestResponse: stateModel.value));
       }else if(stateModel is ErrorState) {
         emit(SignInWithAppleError(errorMsg: stateModel.msg));
+      }
+    });
+
+
+    ///Facebook
+    on<FacebookSignInEvent>((event, emit) async{
+      emit(SignInWithFacebookLoading());
+      final StateModel? stateModel = await authProvider.signInWithFacebook(event.facebookSignInRequest);
+      if(stateModel is SuccessState) {
+        emit(SignInWithFacebookLoaded(facebookSignInResponse: stateModel.value,));
+      }else if(stateModel is ErrorState) {
+        emit(SignInWithFacebookError(errorMsg: stateModel.msg));
       }
     });
   }

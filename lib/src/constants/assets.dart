@@ -52,6 +52,13 @@ class Assets {
   static const String MAIL_SVG = 'assets/svg/msg.svg';
   static const String CONTACT_US_SVG = 'assets/svg/message_icon.svg';
   static const String SHADE_SVG = 'assets/svg/shade.svg';
+  static const String HOME_SVG = 'assets/svg/home.svg';
+  static const String REWARD_SVG = 'assets/svg/reward.svg';
+  static const String SEARCH_SVG = 'assets/svg/search.svg';
+  static const String PROFILE_SVG = 'assets/svg/profile.svg';
+  static const String SCAN_SVG = 'assets/svg/scan.svg';
+
+
 
 
 

@@ -28,3 +28,10 @@ class AppleSignInEvent extends LoginEvent {
   @override
   List<Object?> get props => [appleSignInRequest];
 }
+///Facebook
+class FacebookSignInEvent extends LoginEvent {
+  final FacebookSignInRequest facebookSignInRequest;
+  const FacebookSignInEvent({required this.facebookSignInRequest});
+  @override
+  List<Object?> get props => [facebookSignInRequest];
+}

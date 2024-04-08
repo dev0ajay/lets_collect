@@ -5,15 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
-
 import '../../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgetPasswordEmailWidget extends StatefulWidget {
   const ForgetPasswordEmailWidget({super.key});
@@ -87,7 +89,9 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  state.forgotPasswordEmailRequestResponse.message,
+                  context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                      ? state.forgotPasswordEmailRequestResponse.message
+                      : state.forgotPasswordEmailRequestResponse.messageArabic,
                   style: const TextStyle(
                     color: AppColors.secondaryColor,
                   ),
@@ -106,7 +110,9 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  state.forgotPasswordEmailRequestResponse.message,
+                  context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                      ? state.forgotPasswordEmailRequestResponse.message
+                      : state.forgotPasswordEmailRequestResponse.messageArabic,
                   style: const TextStyle(
                     color: AppColors.secondaryColor,
                   ),
@@ -138,15 +144,17 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                       .then(delay: 200.ms)
                       .slideX()
                       .scale(
-                        duration: const Duration(milliseconds: 300),
-                      )
+                    duration: const Duration(milliseconds: 300),
+                  )
                       .then()
                       .shake(duration: const Duration(milliseconds: 300)),
                   const SizedBox(
-                    height: 20
+                      height: 20
                   ),
                   Center(
-                      child: Text(Strings.FORGOT_PASSWORD_DISCRIPTION,
+                      child: Text(
+                          AppLocalizations.of(context)!.donotworrywewillhelpyou,
+                          // Strings.FORGOT_PASSWORD_DISCRIPTION,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.openSans(
                             fontSize: 16,
@@ -197,13 +205,14 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                                   .add(
                                 ForgotPasswordEmailRequestEvent(
                                   forgotPasswordEmailRequest:
-                                      ForgotPasswordEmailRequest(
-                                          email: emailController.text),
+                                  ForgotPasswordEmailRequest(
+                                      email: emailController.text),
                                 ),
                               );
                             } else {
                               Fluttertoast.showToast(
-                                msg: "Please enter a valid mail.",
+                                msg: AppLocalizations.of(context)!.pleaseenteravalidmail,
+                                // msg: "Please enter a valid mail.",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 backgroundColor: AppColors.primaryWhiteColor,

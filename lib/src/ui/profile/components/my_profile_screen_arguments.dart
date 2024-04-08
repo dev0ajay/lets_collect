@@ -7,8 +7,11 @@ class MyProfileArguments{
   final String gender;
   final String dob;
   final String nationality_name_en;
+  final String nationality_name_ar;
   final String city_name;
+  final String city_name_ar;
   final String country_name_en;
+  final String country_name_ar;
   final String photo;
   final int nationality_id;
   final int country_id;
@@ -31,10 +34,12 @@ class MyProfileArguments{
         required this.gender,
         required this.dob,
         required this.nationality_name_en,
+        required this.nationality_name_ar,
         required this.city_name,
-        required this.country_name_en});
-
-  get city_name_ar => null;
+        required this.city_name_ar,
+        required this.country_name_en,
+        required this.country_name_ar
+      });
 
 
 }

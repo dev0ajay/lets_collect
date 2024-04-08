@@ -1,23 +1,24 @@
+
 import 'dart:convert';
 
-ReferralFriendRequestResponse referralFriendRequestResponseFromJson(String str) => ReferralFriendRequestResponse.fromJson(json.decode(str));
+ChangePasswordRequestResponse changePasswordRequestResponseFromJson(String str) => ChangePasswordRequestResponse.fromJson(json.decode(str));
 
-String referralFriendRequestResponseToJson(ReferralFriendRequestResponse data) => json.encode(data.toJson());
+String changePasswordRequestResponseToJson(ChangePasswordRequestResponse data) => json.encode(data.toJson());
 
-class ReferralFriendRequestResponse {
+class ChangePasswordRequestResponse {
   bool success;
   int statusCode;
   String message;
   String messageArabic;
 
-  ReferralFriendRequestResponse({
+  ChangePasswordRequestResponse({
     required this.success,
     required this.statusCode,
     required this.message,
     required this.messageArabic,
   });
 
-  factory ReferralFriendRequestResponse.fromJson(Map<String, dynamic> json) => ReferralFriendRequestResponse(
+  factory ChangePasswordRequestResponse.fromJson(Map<String, dynamic> json) => ChangePasswordRequestResponse(
     success: json["success"],
     statusCode: json["status_code"],
     message: json["message"],

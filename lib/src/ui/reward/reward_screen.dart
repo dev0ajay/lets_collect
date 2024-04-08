@@ -1,10 +1,13 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/reward_tier_bloc/reward_tier_bloc.dart';
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
@@ -32,7 +35,6 @@ class _RewardScreenState extends State<RewardScreen> {
   bool isRewardTierSelected = false;
 
   ScrollController _scrollController = ScrollController();
-  final bool _isAppBarVisible = false;
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -52,11 +54,18 @@ class _RewardScreenState extends State<RewardScreen> {
     "Points High",
   ];
 
-  // int selected = 0;
+  List<String> sort_ar = <String>[
+    "الأحدث",
+    "الانتهاء أولا",
+    "النقاط المنخفضة",
+    "النقاط العالية",
+  ];
   String letsCollectTotalPoints = "0";
   bool lastStatus = true;
   double height = 250;
 
+
+  ///Scoll Listerner
   void _scrollListener() {
     if (_isShrink != lastStatus) {
       setState(() {
@@ -73,8 +82,7 @@ class _RewardScreenState extends State<RewardScreen> {
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(_scrollController.position.minScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.elasticOut);
+          duration: const Duration(milliseconds: 300), curve: Curves.elasticOut);
     } else {
       Timer(const Duration(milliseconds: 400), () => _scrollToBottom());
     }
@@ -84,7 +92,6 @@ class _RewardScreenState extends State<RewardScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_scrollListener);
-    // _scrollController.addListener(_scrollListener);
     BlocProvider.of<FilterBloc>(context).add(GetBrandAndCategoryFilterList());
     BlocProvider.of<RewardTierBloc>(context).add(
       RewardTierRequestEvent(
@@ -100,6 +107,7 @@ class _RewardScreenState extends State<RewardScreen> {
     _scrollController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -126,468 +134,609 @@ class _RewardScreenState extends State<RewardScreen> {
               titleTextStyle: const TextStyle(fontSize: 18),
               title: _isShrink && isLetsCollectSelected == true
                   ? Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  backgroundColor: AppColors.primaryWhiteColor,
-                                  barrierColor: Colors.black38,
-                                  elevation: 2,
-                                  isScrollControlled: true,
-                                  isDismissible: true,
-                                  builder: (BuildContext bc) {
-                                    return StatefulBuilder(
-                                      builder:
-                                          (BuildContext context, setState) {
-                                        void clearFilter() {
-                                          setState(() {
-                                            selectedSortVariants = <String>[];
-                                          });
-                                        }
-
-                                        // filterWidgets.clear();
-                                        return Stack(
-                                          children: [
-                                            SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2,
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    const SizedBox(height: 60),
-                                                    Column(
-                                                      children: List.generate(
-                                                        sort.length,
-                                                        (index) => Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal: 8,
-                                                                  vertical: 6),
-                                                          child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        6),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  sort[index],
-                                                                  softWrap:
-                                                                      true,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .bodyLarge!
-                                                                      .copyWith(
-                                                                        fontSize:
-                                                                            15,
-                                                                      ),
-                                                                ),
-                                                                selectedSortVariants
-                                                                        .contains(
-                                                                            sort[index])
-                                                                    ? InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedSortVariants.remove(sort[index]);
-                                                                          });
-                                                                        },
-                                                                        child: const CustomRoundedButton(
-                                                                            enabled:
-                                                                                true),
-                                                                      )
-                                                                    : InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedSortVariants.add(sort[index]);
-                                                                            if (selectedSortVariants.length >
-                                                                                1) {
-                                                                              selectedSortVariants.removeAt(0);
-                                                                            }
-                                                                            selectedSortFilter =
-                                                                                selectedSortVariants[0];
-                                                                            if (selectedSortFilter ==
-                                                                                "Recent") {
-                                                                              sortQuery = "recent";
-                                                                            }
-                                                                            if (selectedSortFilter ==
-                                                                                "Expiry First") {
-                                                                              sortQuery = "expire_first";
-                                                                            }
-                                                                            if (selectedSortFilter ==
-                                                                                "Points Low") {
-                                                                              sortQuery = "points_low";
-                                                                            }
-                                                                            if (selectedSortFilter ==
-                                                                                "Points High") {
-                                                                              sortQuery = "points_high";
-                                                                            }
-                                                                          });
-                                                                        },
-                                                                        child:
-                                                                            const CustomRoundedButton(
-                                                                          enabled:
-                                                                              false,
-                                                                        ),
-                                                                      ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 80),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned(
-                                              bottom: 0,
-                                              right: 0,
-                                              left: 0,
-                                              child: SafeArea(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20,
-                                                          right: 20,
-                                                          bottom: 10),
-                                                  child: Row(
-                                                    mainAxisAlignment:
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor: AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder:
+                                    (BuildContext context, setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedSortVariants = <String>[];
+                                    });
+                                  }
+                                  // filterWidgets.clear();
+                                  return Stack(
+                                    children: [
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height /
+                                            2,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(height: 60),
+                                              Column(
+                                                children: List.generate(
+                                                  sort.length,
+                                                      (index) => Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 6),
+                                                    child: Container(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          10,
+                                                          vertical:
+                                                          6),
+                                                      child: Row(
+                                                        mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
-                                                    children: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          clearFilter();
-                                                          context.pop();
-                                                          BlocProvider.of<
-                                                                      RewardTierBloc>(
-                                                                  context)
-                                                              .add(
-                                                            RewardTierRequestEvent(
-                                                              rewardTierRequest:
-                                                                  RewardTierRequest(
-                                                                sort: "",
-                                                                eligible: "",
-                                                                categoryId: "",
-                                                                brandId: "",
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                        child: Text(
-                                                          // AppLocalizations.of(context)!.,
-                                                          "Clear All",
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            color: AppColors
-                                                                .primaryColor,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      ElevatedButton(
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          fixedSize: const Size(
-                                                              100, 40),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                          ),
-                                                          backgroundColor:
-                                                              AppColors
-                                                                  .secondaryColor,
-                                                        ),
-                                                        onPressed: () async {
-                                                          print(
-                                                              selectedSortFilter);
-                                                          BlocProvider.of<
-                                                                      RewardTierBloc>(
-                                                                  context)
-                                                              .add(
-                                                            RewardTierRequestEvent(
-                                                              rewardTierRequest:
-                                                                  RewardTierRequest(
-                                                                sort: sortQuery,
-                                                                eligible: "",
-                                                                categoryId: "",
-                                                                brandId: "",
-                                                              ),
-                                                            ),
-                                                          );
-                                                          context.pop();
-                                                          clearFilter();
-                                                        },
-                                                        child: Text(
-                                                          "Apply",
-                                                          style: GoogleFonts
-                                                              .roboto(
-                                                            color: AppColors
-                                                                .primaryWhiteColor,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: 4,
-                                              left: 0,
-                                              right: 0,
-                                              // bottom: 20,
-                                              child: SafeArea(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 15),
-                                                  child: Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
+                                                        mainAxisSize:
+                                                        MainAxisSize
+                                                            .max,
+                                                        children: <Widget>[
                                                           Text(
-                                                            "Sort by",
-                                                            style: GoogleFonts
-                                                                .roboto(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: AppColors
-                                                                  .primaryGrayColor,
+                                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                ? sort[index]
+                                                                : sort_ar[index],
+                                                            softWrap:
+                                                            true,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                            style: Theme.of(
+                                                                context)
+                                                                .textTheme
+                                                                .bodyLarge!
+                                                                .copyWith(
+                                                              fontSize:
+                                                              15,
                                                             ),
                                                           ),
-                                                          IconButton(
-                                                            onPressed: () {
-                                                              context.pop();
-                                                              clearFilter();
+                                                          selectedSortVariants
+                                                              .contains(
+                                                              sort[index]
+
+                                                          )
+                                                              ? InkWell(
+                                                            onTap:
+                                                                () {
+                                                              setState(
+                                                                      () {
+                                                                    selectedSortVariants.remove(
+                                                                        sort[index]
+
+                                                                    );
+                                                                  });
                                                             },
-                                                            icon: const Icon(
-                                                              Icons.close,
-                                                              color: AppColors
-                                                                  .primaryGrayColor,
+                                                            child: const CustomRoundedButton(
+                                                                enabled:
+                                                                true),
+                                                          )
+                                                              : InkWell(
+                                                            onTap:
+                                                                () {
+                                                              setState(
+                                                                      () {
+                                                                    selectedSortVariants.add(
+                                                                        sort[index]
+
+                                                                    );
+                                                                    if (selectedSortVariants.length >
+                                                                        1) {
+                                                                      selectedSortVariants.removeAt(0);
+                                                                    }
+                                                                    selectedSortFilter =
+                                                                    selectedSortVariants[0];
+                                                                    if (selectedSortFilter ==
+                                                                        "Recent") {
+                                                                      sortQuery = "recent";
+                                                                    }
+                                                                    if (selectedSortFilter ==
+                                                                        "Expiry First") {
+                                                                      sortQuery = "expire_first";
+                                                                    }
+                                                                    if (selectedSortFilter ==
+                                                                        "Points Low") {
+                                                                      sortQuery = "points_low";
+                                                                    }
+                                                                    if (selectedSortFilter ==
+                                                                        "Points High") {
+                                                                      sortQuery = "points_high";
+                                                                    }
+                                                                  });
+                                                            },
+                                                            child:
+                                                            const CustomRoundedButton(
+                                                              enabled:
+                                                              false,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
-                                                      const Divider(
-                                                          color: AppColors
-                                                              .primaryGrayColor),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
+                                              const SizedBox(height: 80),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
+                                                bottom: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    clearFilter();
+                                                    context.pop();
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort: "",
+                                                          eligible: "",
+                                                          categoryId: "",
+                                                          brandId: "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    AppLocalizations.of(context)!.clearall,
+                                                    // "Clear All",
+                                                    style: GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                      FontWeight.w400,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  style: ElevatedButton
+                                                      .styleFrom(
+                                                    fixedSize: const Size(
+                                                        100, 40),
+                                                    shape:
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          8),
+                                                    ),
+                                                    backgroundColor:
+                                                    AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                  onPressed: () async {
+                                                    print(
+                                                        selectedSortFilter);
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort: sortQuery,
+                                                          eligible: "",
+                                                          categoryId: "",
+                                                          brandId: "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                    context.pop();
+                                                    clearFilter();
+                                                  },
+                                                  child: Text(
+                                                    AppLocalizations.of(context)!.apply,
+                                                    // "Apply",
+                                                    style: GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryWhiteColor,
+                                                      fontWeight:
+                                                      FontWeight.w400,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              height: 20,
-                              width: 68,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryWhiteColor,
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColors.boxShadow,
-                                    blurRadius: 4,
-                                    offset: Offset(4, 2),
-                                    spreadRadius: 0,
-                                  ),
-                                  BoxShadow(
-                                    color: AppColors.boxShadow,
-                                    blurRadius: 4,
-                                    offset: Offset(-4, -2),
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Sort",
-                                    style: TextStyle(
-                                      color: AppColors.iconGreyColor,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    Assets.SORT_SVG,
-                                    height: 10,
-                                    width: 10,
-                                  ),
-                                ],
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 4,
+                                        left: 0,
+                                        right: 0,
+                                        // bottom: 20,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 15),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Text(
+                                                      AppLocalizations.of(context)!.sortby,
+                                                      // "Sort by",
+                                                      style: GoogleFonts
+                                                          .roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        context.pop();
+                                                        clearFilter();
+                                                      },
+                                                      icon: const Icon(
+                                                        Icons.close,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                    color: AppColors
+                                                        .primaryGrayColor),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              // "Sort",
+                              AppLocalizations.of(context)!.sort,
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
                               ),
                             ),
-                          ),
+                            SvgPicture.asset(
+                              Assets.SORT_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 15),
-                        Flexible(
-                          flex: 1,
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                  ),
-                                  backgroundColor: AppColors.primaryWhiteColor,
-                                  barrierColor: Colors.black38,
-                                  elevation: 2,
-                                  isScrollControlled: true,
-                                  isDismissible: true,
-                                  builder: (BuildContext bc) {
-                                    return StatefulBuilder(
-                                      builder:
-                                          (BuildContext context, setState) {
-                                        void clearFilter() {
-                                          setState(() {
-                                            selectedBrandVariants = <String>[];
-                                            selectedCategoryVariants =
-                                                <String>[];
-                                          });
-                                        }
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor: AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder:
+                                    (BuildContext context, setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedBrandVariants = <String>[];
+                                      selectedCategoryVariants =
+                                      <String>[];
+                                    });
+                                  }
 
-                                        // filterWidgets.clear();
+                                  // filterWidgets.clear();
 
-                                        return BlocBuilder<FilterBloc,
-                                            FilterState>(
-                                          builder: (context, state) {
-                                            if (state is BrandLoading) {
-                                              return Center(
-                                                child: Lottie.asset(
-                                                    Assets.JUMBINGDOT,
-                                                    height: 100,
-                                                    width: 100),
-                                              );
-                                            }
-                                            if (state is BrandLoaded) {
-                                              return Stack(
-                                                children: [
-                                                  SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            1.6,
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        children: [
-                                                          const SizedBox(
-                                                              height: 60),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical:
-                                                                        6),
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          10,
-                                                                      vertical:
-                                                                          6),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .max,
-                                                                children: <Widget>[
-                                                                  Text(
-                                                                    "Eligible",
-                                                                    softWrap:
-                                                                        true,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .bodyLarge!
-                                                                        .copyWith(
-                                                                          fontSize:
-                                                                              15,
-                                                                        ),
+                                  return BlocBuilder<FilterBloc,
+                                      FilterState>(
+                                    builder: (context, state) {
+                                      if (state is BrandLoading) {
+                                        return Center(
+                                          child: Lottie.asset(
+                                              Assets.JUMBINGDOT,
+                                              height: 100,
+                                              width: 100),
+                                        );
+                                      }
+                                      if (state is BrandLoaded) {
+                                        return Stack(
+                                          children: [
+                                            SizedBox(
+                                              height:
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                                  1.6,
+                                              child:
+                                              SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                        height: 60),
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          8,
+                                                          vertical:
+                                                          6),
+                                                      child: Container(
+                                                        padding:
+                                                        const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            10,
+                                                            vertical:
+                                                            6),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          mainAxisSize:
+                                                          MainAxisSize
+                                                              .max,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              AppLocalizations.of(context)!.eligible,
+                                                              // "Eligible",
+                                                              softWrap:
+                                                              true,
+                                                              overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                              style: Theme.of(
+                                                                  context)
+                                                                  .textTheme
+                                                                  .bodyLarge!
+                                                                  .copyWith(
+                                                                fontSize:
+                                                                15,
+                                                              ),
+                                                            ),
+                                                            eligibleFilter ==
+                                                                "Eligible"
+                                                                ? InkWell(
+                                                              onTap:
+                                                                  () {
+                                                                setState(() {
+                                                                  eligibleFilter = "";
+                                                                  // selectedFilters[]
+                                                                });
+                                                              },
+                                                              child:
+                                                              Container(
+                                                                height:
+                                                                20,
+                                                                width:
+                                                                20,
+                                                                decoration:
+                                                                const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  image: DecorationImage(
+                                                                    image: AssetImage(Assets.DISABLED_TICK),
+                                                                    fit: BoxFit.contain,
+                                                                    scale: 6,
                                                                   ),
-                                                                  eligibleFilter ==
-                                                                          "Eligible"
-                                                                      ? InkWell(
-                                                                          onTap:
-                                                                              () {
+                                                                  color: AppColors.secondaryColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                                : InkWell(
+                                                              onTap:
+                                                                  () {
+                                                                setState(() {
+                                                                  eligibleFilter = "Eligible";
+                                                                });
+                                                              },
+                                                              child:
+                                                              Container(
+                                                                height:
+                                                                20,
+                                                                width:
+                                                                20,
+                                                                decoration:
+                                                                const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  color: AppColors.primaryWhiteColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isBrandFilterTileSelected =
+                                                          !isBrandFilterTileSelected;
+                                                        });
+                                                      },
+                                                      child: ListTile(
+                                                        trailing: !isBrandFilterTileSelected ==
+                                                            true
+                                                            ? const ImageIcon(
+                                                          color: AppColors
+                                                              .secondaryColor,
+                                                          AssetImage(
+                                                              Assets
+                                                                  .SIDE_ARROW),
+                                                        )
+                                                            : const ImageIcon(
+                                                          color: AppColors
+                                                              .secondaryColor,
+                                                          AssetImage(
+                                                              Assets
+                                                                  .DOWN_ARROW),
+                                                        ),
+                                                        title: Text(AppLocalizations.of(context)!.brand),
+                                                        // Text("Brand"),
+                                                      ),
+                                                    ),
+                                                    isBrandFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .only(
+                                                            right:
+                                                            15,
+                                                            left:
+                                                            15,
+                                                            bottom:
+                                                            5,
+                                                            top: 5),
+                                                        child:
+                                                        Column(
+                                                          children:
+                                                          List.generate(
+                                                            state
+                                                                .brandAndCategoryFilterResponse
+                                                                .data
+                                                                .brands
+                                                                .length,
+                                                                (index) =>
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal: 8,
+                                                                      vertical: 6),
+                                                                  child:
+                                                                  Container(
+                                                                    padding:
+                                                                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                    child:
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      mainAxisSize: MainAxisSize.max,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ?state.brandAndCategoryFilterResponse.data.brands[index].brandName
+                                                                              :state.brandAndCategoryFilterResponse.data.brands[index].brandNameArabic,
+                                                                          softWrap: true,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                            fontSize: 15,
+                                                                          ),
+                                                                        ),
+                                                                        selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                            ? InkWell(
+                                                                          onTap: () {
                                                                             setState(() {
-                                                                              eligibleFilter = "";
-                                                                              // selectedFilters[]
+                                                                              selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                              selectedBrandFilters = "";
                                                                             });
                                                                           },
-                                                                          child:
-                                                                              Container(
-                                                                            height:
-                                                                                20,
-                                                                            width:
-                                                                                20,
-                                                                            decoration:
-                                                                                const BoxDecoration(
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
                                                                               shape: BoxShape.rectangle,
                                                                               image: DecorationImage(
                                                                                 image: AssetImage(Assets.DISABLED_TICK),
@@ -601,21 +750,20 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             ),
                                                                           ),
                                                                         )
-                                                                      : InkWell(
-                                                                          onTap:
-                                                                              () {
+                                                                            : InkWell(
+                                                                          onTap: () {
                                                                             setState(() {
-                                                                              eligibleFilter = "Eligible";
+                                                                              selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                              if (selectedBrandVariants.length > 1) {
+                                                                                selectedBrandVariants.removeAt(0);
+                                                                              }
+                                                                              selectedBrandFilters = selectedBrandVariants[0].toString();
                                                                             });
                                                                           },
-                                                                          child:
-                                                                              Container(
-                                                                            height:
-                                                                                20,
-                                                                            width:
-                                                                                20,
-                                                                            decoration:
-                                                                                const BoxDecoration(
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
                                                                               shape: BoxShape.rectangle,
                                                                               color: AppColors.primaryWhiteColor,
                                                                               boxShadow: [
@@ -624,1005 +772,3041 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                             ),
                                                                           ),
                                                                         ),
-                                                                ],
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isCategoryFilterTileSelected =
+                                                          !isCategoryFilterTileSelected;
+                                                        });
+                                                      },
+                                                      child: ListTile(
+                                                        trailing: !isCategoryFilterTileSelected ==
+                                                            true
+                                                            ? const ImageIcon(
+                                                          color: AppColors
+                                                              .secondaryColor,
+                                                          AssetImage(
+                                                              Assets
+                                                                  .SIDE_ARROW),
+                                                        )
+                                                            : const ImageIcon(
+                                                          color: AppColors
+                                                              .secondaryColor,
+                                                          AssetImage(
+                                                              Assets
+                                                                  .DOWN_ARROW),
+                                                        ),
+                                                        title: Text(AppLocalizations.of(context)!.category),
+                                                        // Text("Category"),
+                                                      ),
+                                                    ),
+                                                    isCategoryFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .only(
+                                                            right:
+                                                            15,
+                                                            left:
+                                                            15,
+                                                            bottom:
+                                                            5,
+                                                            top: 5),
+                                                        child:
+                                                        Column(
+                                                          children:
+                                                          List.generate(
+                                                            state
+                                                                .brandAndCategoryFilterResponse
+                                                                .data
+                                                                .category
+                                                                .length,
+                                                                (index) =>
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal: 8,
+                                                                      vertical: 6),
+                                                                  child:
+                                                                  Container(
+                                                                    padding:
+                                                                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                    child:
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      mainAxisSize: MainAxisSize.max,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ? state.brandAndCategoryFilterResponse.data.category[index].category
+                                                                              : state.brandAndCategoryFilterResponse.data.category[index].categoryNameArabic,
+                                                                          softWrap: true,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                            fontSize: 15,
+                                                                          ),
+                                                                        ),
+                                                                        selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                            ? InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                              selectedCategoryFilters = "";
+                                                                              // selectedFilters[]
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              image: DecorationImage(
+                                                                                image: AssetImage(Assets.DISABLED_TICK),
+                                                                                fit: BoxFit.contain,
+                                                                                scale: 6,
+                                                                              ),
+                                                                              color: AppColors.secondaryColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                            : InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                              if (selectedCategoryVariants.length > 1) {
+                                                                                selectedCategoryVariants.removeAt(0);
+                                                                              }
+                                                                              selectedCategoryFilters = selectedCategoryVariants[0].toString();
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              color: AppColors.primaryWhiteColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    const SizedBox(
+                                                        height: 80),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              left: 0,
+                                              child: SafeArea(
+                                                child: Container(
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    color: AppColors
+                                                        .primaryWhiteColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppColors
+                                                            .boxShadow,
+                                                        blurRadius: 4,
+                                                        offset:
+                                                        Offset(4, 2),
+                                                        spreadRadius: 0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .only(
+                                                        left: 20,
+                                                        right: 20,
+                                                        bottom: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            clearFilter();
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.clearall,
+                                                            // "Clear All",
+                                                            style:
+                                                            GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .underlineColor,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            fixedSize:
+                                                            const Size(
+                                                                100,
+                                                                40),
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                            ),
+                                                            backgroundColor:
+                                                            AppColors
+                                                                .secondaryColor,
+                                                          ),
+                                                          onPressed: () {
+                                                            print(
+                                                                "Selected Category: $selectedCategoryFilters");
+                                                            print(
+                                                                "Selected Brand: $selectedBrandFilters");
+
+                                                            BlocProvider.of<
+                                                                RewardTierBloc>(
+                                                                context)
+                                                                .add(
+                                                              RewardTierRequestEvent(
+                                                                rewardTierRequest:
+                                                                RewardTierRequest(
+                                                                  sort:
+                                                                  "",
+                                                                  eligible: eligibleFilter ==
+                                                                      "Eligible"
+                                                                      ? "1"
+                                                                      : "",
+                                                                  categoryId: selectedCategoryFilters.isEmpty
+                                                                      ? ""
+                                                                      : selectedCategoryFilters,
+                                                                  brandId: selectedBrandFilters.isEmpty
+                                                                      ? ""
+                                                                      : selectedBrandFilters,
+                                                                ),
+                                                              ),
+                                                            );
+                                                            context.pop();
+                                                            _scrollToBottom();
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.apply,
+                                                            // "Apply",
+                                                            style:
+                                                            GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .primaryWhiteColor,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              child: Container(
+                                                decoration:
+                                                const BoxDecoration(
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
+                                                  borderRadius:
+                                                  BorderRadius.only(
+                                                    topLeft:
+                                                    Radius.circular(
+                                                        20.0),
+                                                    topRight:
+                                                    Radius.circular(
+                                                        20.0),
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 15),
+                                                  child: Container(
+                                                    // height: 40,
+                                                    color: Colors.white,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                              AppLocalizations.of(context)!.filterby,
+                                                              // "Filter by",
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                fontSize:
+                                                                16,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w400,
+                                                                color: AppColors
+                                                                    .primaryGrayColor,
                                                               ),
                                                             ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              setState(() {
-                                                                isBrandFilterTileSelected =
-                                                                    !isBrandFilterTileSelected;
-                                                              });
-                                                            },
-                                                            child: ListTile(
-                                                              trailing: !isBrandFilterTileSelected ==
-                                                                      true
-                                                                  ? const ImageIcon(
-                                                                      color: AppColors
-                                                                          .secondaryColor,
-                                                                      AssetImage(
-                                                                          Assets
-                                                                              .SIDE_ARROW),
-                                                                    )
-                                                                  : const ImageIcon(
-                                                                      color: AppColors
-                                                                          .secondaryColor,
-                                                                      AssetImage(
-                                                                          Assets
-                                                                              .DOWN_ARROW),
-                                                                    ),
-                                                              title: const Text(
-                                                                  "Brand"),
+                                                            IconButton(
+                                                              onPressed:
+                                                                  () {
+                                                                context
+                                                                    .pop();
+                                                              },
+                                                              icon:
+                                                              const Icon(
+                                                                Icons
+                                                                    .close,
+                                                                color: AppColors
+                                                                    .primaryGrayColor,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const Divider(
+                                                            color: AppColors
+                                                                .primaryGrayColor),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    },
+                                  );
+                                },
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x0F000000),
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: Color(0x0F000000),
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.filter,
+                              // "Filter",
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              Assets.FILTER_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(flex: 1),
+                  Flexible(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.letscollect,
+                          // "LetsCollect",
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        Text(letsCollectTotalPoints.toString()),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+                  : _isShrink && isBrandSelected == true
+                  ? Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor:
+                            AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder:
+                                    (BuildContext context, setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedSortVariants =
+                                      <String>[];
+                                    });
+                                  }
+
+                                  // filterWidgets.clear();
+                                  return Stack(
+                                    children: [
+
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height /
+                                            2,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                  height: 60),
+                                              Column(
+                                                children:
+                                                List.generate(
+                                                  sort.length,
+                                                      (index) => Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal:
+                                                        8,
+                                                        vertical:
+                                                        6),
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          10,
+                                                          vertical:
+                                                          6),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                        mainAxisSize:
+                                                        MainAxisSize
+                                                            .max,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                ? sort[index]
+                                                                : sort_ar[index],
+                                                            softWrap:
+                                                            true,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                            style: Theme.of(
+                                                                context)
+                                                                .textTheme
+                                                                .bodyLarge!
+                                                                .copyWith(
+                                                              fontSize:
+                                                              15,
                                                             ),
                                                           ),
-                                                          isBrandFilterTileSelected ==
-                                                                  true
-                                                              ? SingleChildScrollView(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            15,
-                                                                        left:
-                                                                            15,
-                                                                        bottom:
-                                                                            5,
-                                                                        top: 5),
-                                                                    child:
-                                                                        Column(
-                                                                      children:
-                                                                          List.generate(
-                                                                        state
-                                                                            .brandAndCategoryFilterResponse
-                                                                            .data
-                                                                            .brands
-                                                                            .length,
-                                                                        (index) =>
-                                                                            Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 8,
-                                                                              vertical: 6),
-                                                                          child:
-                                                                              Container(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              mainAxisSize: MainAxisSize.max,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                  softWrap: true,
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                        fontSize: 15,
-                                                                                      ),
-                                                                                ),
-                                                                                selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                    ? InkWell(
-                                                                                        onTap: () {
-                                                                                          setState(() {
-                                                                                            selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                            selectedBrandFilters = "";
-                                                                                          });
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          height: 20,
-                                                                                          width: 20,
-                                                                                          decoration: const BoxDecoration(
-                                                                                            shape: BoxShape.rectangle,
-                                                                                            image: DecorationImage(
-                                                                                              image: AssetImage(Assets.DISABLED_TICK),
-                                                                                              fit: BoxFit.contain,
-                                                                                              scale: 6,
-                                                                                            ),
-                                                                                            color: AppColors.secondaryColor,
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      )
-                                                                                    : InkWell(
-                                                                                        onTap: () {
-                                                                                          setState(() {
-                                                                                            selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                            if (selectedBrandVariants.length > 1) {
-                                                                                              selectedBrandVariants.removeAt(0);
-                                                                                            }
-                                                                                            selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                          });
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          height: 20,
-                                                                                          width: 20,
-                                                                                          decoration: const BoxDecoration(
-                                                                                            shape: BoxShape.rectangle,
-                                                                                            color: AppColors.primaryWhiteColor,
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : const SizedBox(),
-                                                          GestureDetector(
-                                                            onTap: () {
+                                                          selectedSortVariants
+                                                              .contains(
+                                                              sort[index]
+
+                                                          )
+                                                              ? InkWell(
+                                                            onTap:
+                                                                () {
                                                               setState(() {
-                                                                isCategoryFilterTileSelected =
-                                                                    !isCategoryFilterTileSelected;
+                                                                selectedSortVariants.remove(
+                                                                    sort[index]
+
+                                                                );
                                                               });
                                                             },
-                                                            child: ListTile(
-                                                              trailing: !isCategoryFilterTileSelected ==
-                                                                      true
-                                                                  ? const ImageIcon(
-                                                                      color: AppColors
-                                                                          .secondaryColor,
-                                                                      AssetImage(
-                                                                          Assets
-                                                                              .SIDE_ARROW),
-                                                                    )
-                                                                  : const ImageIcon(
-                                                                      color: AppColors
-                                                                          .secondaryColor,
-                                                                      AssetImage(
-                                                                          Assets
-                                                                              .DOWN_ARROW),
-                                                                    ),
-                                                              title: const Text(
-                                                                  "Category"),
+                                                            child:
+                                                            const CustomRoundedButton(enabled: true),
+                                                          )
+                                                              : InkWell(
+                                                            onTap:
+                                                                () {
+                                                              setState(() {
+                                                                selectedSortVariants.add(
+                                                                  context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                      ? sort[index]
+                                                                      : sort_ar[index],
+                                                                );
+                                                                if (selectedSortVariants.length > 1) {
+                                                                  selectedSortVariants.removeAt(0);
+                                                                }
+                                                                selectedSortFilter = selectedSortVariants[0];
+                                                                if (selectedSortFilter == "Recent") {
+                                                                  sortQuery = "recent";
+                                                                }
+                                                                if (selectedSortFilter == "Expiry First") {
+                                                                  sortQuery = "expire_first";
+                                                                }
+                                                                if (selectedSortFilter == "Points Low") {
+                                                                  sortQuery = "points_low";
+                                                                }
+                                                                if (selectedSortFilter == "Points High") {
+                                                                  sortQuery = "points_high";
+                                                                }
+                                                              });
+                                                            },
+                                                            child:
+                                                            const CustomRoundedButton(
+                                                              enabled: false,
                                                             ),
                                                           ),
-                                                          isCategoryFilterTileSelected ==
-                                                                  true
-                                                              ? SingleChildScrollView(
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            15,
-                                                                        left:
-                                                                            15,
-                                                                        bottom:
-                                                                            5,
-                                                                        top: 5),
-                                                                    child:
-                                                                        Column(
-                                                                      children:
-                                                                          List.generate(
-                                                                        state
-                                                                            .brandAndCategoryFilterResponse
-                                                                            .data
-                                                                            .category
-                                                                            .length,
-                                                                        (index) =>
-                                                                            Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 8,
-                                                                              vertical: 6),
-                                                                          child:
-                                                                              Container(
-                                                                            padding:
-                                                                                const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                            child:
-                                                                                Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              mainAxisSize: MainAxisSize.max,
-                                                                              children: <Widget>[
-                                                                                Text(
-                                                                                  state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                  softWrap: true,
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                        fontSize: 15,
-                                                                                      ),
-                                                                                ),
-                                                                                selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                    ? InkWell(
-                                                                                        onTap: () {
-                                                                                          setState(() {
-                                                                                            selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                            selectedCategoryFilters = "";
-                                                                                            // selectedFilters[]
-                                                                                          });
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          height: 20,
-                                                                                          width: 20,
-                                                                                          decoration: const BoxDecoration(
-                                                                                            shape: BoxShape.rectangle,
-                                                                                            image: DecorationImage(
-                                                                                              image: AssetImage(Assets.DISABLED_TICK),
-                                                                                              fit: BoxFit.contain,
-                                                                                              scale: 6,
-                                                                                            ),
-                                                                                            color: AppColors.secondaryColor,
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      )
-                                                                                    : InkWell(
-                                                                                        onTap: () {
-                                                                                          setState(() {
-                                                                                            selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                            if (selectedCategoryVariants.length > 1) {
-                                                                                              selectedCategoryVariants.removeAt(0);
-                                                                                            }
-                                                                                            selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                          });
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          height: 20,
-                                                                                          width: 20,
-                                                                                          decoration: const BoxDecoration(
-                                                                                            shape: BoxShape.rectangle,
-                                                                                            color: AppColors.primaryWhiteColor,
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              : const SizedBox(),
-                                                          const SizedBox(
-                                                              height: 80),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  Positioned(
-                                                    bottom: 0,
-                                                    right: 0,
-                                                    left: 0,
-                                                    child: SafeArea(
-                                                      child: Container(
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          color: AppColors
-                                                              .primaryWhiteColor,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: AppColors
-                                                                  .boxShadow,
-                                                              blurRadius: 4,
-                                                              offset:
-                                                                  Offset(4, 2),
-                                                              spreadRadius: 0,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  height: 80),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
+                                                bottom: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    clearFilter();
+                                                    context.pop();
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort: "",
+                                                          eligible:
+                                                          "",
+                                                          categoryId:
+                                                          "",
+                                                          brandId: "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    AppLocalizations.of(context)!.clearall,
+                                                    // "Clear All",
+                                                    style: GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w400,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  style:
+                                                  ElevatedButton
+                                                      .styleFrom(
+                                                    fixedSize:
+                                                    const Size(
+                                                        100, 40),
+                                                    shape:
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          8),
+                                                    ),
+                                                    backgroundColor:
+                                                    AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                  onPressed:
+                                                      () async {
+                                                    print(
+                                                        selectedSortFilter);
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort:
+                                                          sortQuery,
+                                                          eligible:
+                                                          "",
+                                                          categoryId:
+                                                          "",
+                                                          brandId: "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                    context.pop();
+                                                  },
+                                                  child: Text(
+                                                    AppLocalizations.of(context)!.apply,
+                                                    // "Apply",
+                                                    style: GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryWhiteColor,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w400,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        // bottom: 20,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding: const EdgeInsets
+                                                .symmetric(
+                                                horizontal: 15),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Text(
+                                                      AppLocalizations.of(context)!.sortby,
+                                                      // "Sort by",
+                                                      style:
+                                                      GoogleFonts
+                                                          .roboto(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed:
+                                                          () {
+                                                        context.pop();
+                                                        clearFilter();
+                                                      },
+                                                      icon:
+                                                      const Icon(
+                                                        Icons.close,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                    color: AppColors
+                                                        .primaryGrayColor),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding:
+                        const EdgeInsets.only(left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.sort,
+                              // "Sort",
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              Assets.SORT_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor:
+                            AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder:
+                                    (BuildContext context, setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedBrandVariants =
+                                      <String>[];
+                                      selectedBrandFilters = "";
+                                      selectedCategoryVariants =
+                                      <String>[];
+                                      selectedCategoryFilters = "";
+                                    });
+                                  }
+
+                                  // filterWidgets.clear();
+
+                                  return BlocBuilder<FilterBloc,
+                                      FilterState>(
+                                    builder: (context, state) {
+                                      if (state is BrandLoading) {
+                                        return Center(
+                                          child: Lottie.asset(
+                                              Assets.JUMBINGDOT,
+                                              height: 100,
+                                              width: 100),
+                                        );
+                                      }
+                                      if (state is BrandLoaded) {
+                                        return Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: MediaQuery.of(
+                                                  context)
+                                                  .size
+                                                  .height /
+                                                  1.6,
+                                              child:
+                                              SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                        height: 60),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          8,
+                                                          vertical:
+                                                          6),
+                                                      child:
+                                                      Container(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            10,
+                                                            vertical:
+                                                            6),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          mainAxisSize:
+                                                          MainAxisSize
+                                                              .max,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              AppLocalizations.of(context)!.eligible,
+                                                              // "Eligible",
+                                                              softWrap:
+                                                              true,
+                                                              overflow:
+                                                              TextOverflow.ellipsis,
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyLarge!
+                                                                  .copyWith(
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            eligibleFilter ==
+                                                                "Eligible"
+                                                                ? InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  eligibleFilter = "";
+                                                                  // selectedFilters[]
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 20,
+                                                                width: 20,
+                                                                decoration: const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  image: DecorationImage(
+                                                                    image: AssetImage(Assets.DISABLED_TICK),
+                                                                    fit: BoxFit.contain,
+                                                                    scale: 6,
+                                                                  ),
+                                                                  color: AppColors.secondaryColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                                : InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  eligibleFilter = "Eligible";
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 20,
+                                                                width: 20,
+                                                                decoration: const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  color: AppColors.primaryWhiteColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
                                                           ],
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  clearFilter();
-                                                                },
-                                                                child: Text(
-                                                                  "Clear All",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .underlineColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  fixedSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      AppColors
-                                                                          .secondaryColor,
-                                                                ),
-                                                                onPressed: () {
-                                                                  print(
-                                                                      "Selected Category: $selectedCategoryFilters");
-                                                                  print(
-                                                                      "Selected Brand: $selectedBrandFilters");
-
-                                                                  BlocProvider.of<
-                                                                              RewardTierBloc>(
-                                                                          context)
-                                                                      .add(
-                                                                    RewardTierRequestEvent(
-                                                                      rewardTierRequest:
-                                                                          RewardTierRequest(
-                                                                        sort:
-                                                                            "",
-                                                                        eligible: eligibleFilter ==
-                                                                                "Eligible"
-                                                                            ? "1"
-                                                                            : "",
-                                                                        categoryId: selectedCategoryFilters.isEmpty
-                                                                            ? ""
-                                                                            : selectedCategoryFilters,
-                                                                        brandId: selectedBrandFilters.isEmpty
-                                                                            ? ""
-                                                                            : selectedBrandFilters,
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                  context.pop();
-                                                                  _scrollToBottom();
-                                                                },
-                                                                child: Text(
-                                                                  "Apply",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .primaryWhiteColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned(
-                                                    top: 0,
-                                                    left: 0,
-                                                    right: 0,
-                                                    child: Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: AppColors
-                                                            .primaryWhiteColor,
-                                                        borderRadius:
-                                                            BorderRadius.only(
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  20.0),
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  20.0),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 15),
-                                                        child: Container(
-                                                          // height: 40,
-                                                          color: Colors.white,
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    "Filter by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .pop();
-                                                                    },
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isBrandFilterTileSelected =
+                                                          !isBrandFilterTileSelected;
+                                                        });
+                                                      },
+                                                      child: ListTile(
+                                                          trailing: !isBrandFilterTileSelected ==
+                                                              true
+                                                              ? const ImageIcon(
+                                                            color:
+                                                            AppColors.secondaryColor,
+                                                            AssetImage(
+                                                                Assets.SIDE_ARROW),
+                                                          )
+                                                              : const ImageIcon(
+                                                            color:
+                                                            AppColors.secondaryColor,
+                                                            AssetImage(
+                                                                Assets.DOWN_ARROW),
                                                           ),
-                                                        ),
+                                                          title: Text(AppLocalizations.of(context)!.brand)
+                                                        // Text("Brand"),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              );
-                                            }
-                                            return const SizedBox();
-                                          },
-                                        );
-                                      },
-                                    );
-                                  });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              height: 20,
-                              width: 68,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryWhiteColor,
-                                borderRadius: BorderRadius.circular(5),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x0F000000),
-                                    blurRadius: 4,
-                                    offset: Offset(4, 2),
-                                    spreadRadius: 0,
-                                  ),
-                                  BoxShadow(
-                                    color: Color(0x0F000000),
-                                    blurRadius: 4,
-                                    offset: Offset(-4, -2),
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Filter",
-                                    style: TextStyle(
-                                      color: AppColors.iconGreyColor,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    Assets.FILTER_SVG,
-                                    height: 10,
-                                    width: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Spacer(flex: 1),
-                        Flexible(
-                          flex: 1,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "LetsCollect",
-                                overflow: TextOverflow.fade,
-                                softWrap: true,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              Text(letsCollectTotalPoints.toString()),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  : _isShrink && isBrandSelected == true
-                      ? Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20.0),
-                                          topRight: Radius.circular(20.0),
-                                        ),
-                                      ),
-                                      backgroundColor:
-                                          AppColors.primaryWhiteColor,
-                                      barrierColor: Colors.black38,
-                                      elevation: 2,
-                                      isScrollControlled: true,
-                                      isDismissible: true,
-                                      builder: (BuildContext bc) {
-                                        return StatefulBuilder(
-                                          builder:
-                                              (BuildContext context, setState) {
-                                            void clearFilter() {
-                                              setState(() {
-                                                selectedSortVariants =
-                                                    <String>[];
-                                              });
-                                            }
-
-                                            // filterWidgets.clear();
-                                            return Stack(
-                                              children: [
-                                                SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      2,
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      children: [
-                                                        const SizedBox(
-                                                            height: 60),
+                                                    isBrandFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .only(
+                                                            right:
+                                                            15,
+                                                            left:
+                                                            15,
+                                                            bottom:
+                                                            5,
+                                                            top:
+                                                            5),
+                                                        child:
                                                         Column(
                                                           children:
-                                                              List.generate(
-                                                            sort.length,
-                                                            (index) => Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8,
-                                                                      vertical:
-                                                                          6),
-                                                              child: Container(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        6),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .max,
-                                                                  children: <Widget>[
-                                                                    Text(
-                                                                      sort[
-                                                                          index],
-                                                                      softWrap:
-                                                                          true,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodyLarge!
-                                                                          .copyWith(
-                                                                            fontSize:
-                                                                                15,
+                                                          List.generate(
+                                                            state.brandAndCategoryFilterResponse.data.brands.length,
+                                                                (index) =>
+                                                                Padding(
+                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                  child: Container(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      mainAxisSize: MainAxisSize.max,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ? state.brandAndCategoryFilterResponse.data.brands[index].brandName
+                                                                              : state.brandAndCategoryFilterResponse.data.brands[index].brandNameArabic,
+                                                                          softWrap: true,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                            fontSize: 15,
                                                                           ),
-                                                                    ),
-                                                                    selectedSortVariants
-                                                                            .contains(sort[index])
-                                                                        ? InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              setState(() {
-                                                                                selectedSortVariants.remove(sort[index]);
-                                                                              });
-                                                                            },
-                                                                            child:
-                                                                                const CustomRoundedButton(enabled: true),
-                                                                          )
-                                                                        : InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              setState(() {
-                                                                                selectedSortVariants.add(sort[index]);
-                                                                                if (selectedSortVariants.length > 1) {
-                                                                                  selectedSortVariants.removeAt(0);
-                                                                                }
-                                                                                selectedSortFilter = selectedSortVariants[0];
-                                                                                if (selectedSortFilter == "Recent") {
-                                                                                  sortQuery = "recent";
-                                                                                }
-                                                                                if (selectedSortFilter == "Expiry First") {
-                                                                                  sortQuery = "expire_first";
-                                                                                }
-                                                                                if (selectedSortFilter == "Points Low") {
-                                                                                  sortQuery = "points_low";
-                                                                                }
-                                                                                if (selectedSortFilter == "Points High") {
-                                                                                  sortQuery = "points_high";
-                                                                                }
-                                                                              });
-                                                                            },
-                                                                            child:
-                                                                                const CustomRoundedButton(
-                                                                              enabled: false,
+                                                                        ),
+                                                                        selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                            ? InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                              selectedBrandFilters = "";
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              image: DecorationImage(
+                                                                                image: AssetImage(Assets.DISABLED_TICK),
+                                                                                fit: BoxFit.contain,
+                                                                                scale: 6,
+                                                                              ),
+                                                                              color: AppColors.secondaryColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
                                                                             ),
                                                                           ),
+                                                                        )
+                                                                            : InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                              if (selectedBrandVariants.length > 1) {
+                                                                                selectedBrandVariants.removeAt(0);
+                                                                              }
+                                                                              selectedBrandFilters = selectedBrandVariants[0].toString();
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              color: AppColors.primaryWhiteColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          isCategoryFilterTileSelected =
+                                                          !isCategoryFilterTileSelected;
+                                                        });
+                                                      },
+                                                      child: ListTile(
+                                                        trailing: !isCategoryFilterTileSelected ==
+                                                            true
+                                                            ? const ImageIcon(
+                                                          color:
+                                                          AppColors.secondaryColor,
+                                                          AssetImage(
+                                                              Assets.SIDE_ARROW),
+                                                        )
+                                                            : const ImageIcon(
+                                                          color:
+                                                          AppColors.secondaryColor,
+                                                          AssetImage(
+                                                              Assets.DOWN_ARROW),
+                                                        ),
+                                                        title: Text(AppLocalizations.of(context)!.category),
+                                                        // Text("Category"),
+                                                      ),
+                                                    ),
+                                                    isCategoryFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .only(
+                                                            right:
+                                                            15,
+                                                            left:
+                                                            15,
+                                                            bottom:
+                                                            5,
+                                                            top:
+                                                            5),
+                                                        child:
+                                                        Column(
+                                                          children:
+                                                          List.generate(
+                                                            state.brandAndCategoryFilterResponse.data.category.length,
+                                                                (index) =>
+                                                                Padding(
+                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                  child: Container(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      mainAxisSize: MainAxisSize.max,
+                                                                      children: <Widget>[
+                                                                        Text(
+                                                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                              ? state.brandAndCategoryFilterResponse.data.category[index].category
+                                                                              :  state.brandAndCategoryFilterResponse.data.category[index].categoryNameArabic,
+                                                                          softWrap: true,
+                                                                          overflow: TextOverflow.ellipsis,
+                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                            fontSize: 15,
+                                                                          ),
+                                                                        ),
+                                                                        selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                            ? InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                              selectedCategoryFilters = "";
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              image: DecorationImage(
+                                                                                image: AssetImage(Assets.DISABLED_TICK),
+                                                                                fit: BoxFit.contain,
+                                                                                scale: 6,
+                                                                              ),
+                                                                              color: AppColors.secondaryColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                            : InkWell(
+                                                                          onTap: () {
+                                                                            setState(() {
+                                                                              selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                              if (selectedCategoryVariants.length > 1) {
+                                                                                selectedCategoryVariants.removeAt(0);
+                                                                              }
+                                                                              selectedCategoryFilters = selectedCategoryVariants[0].toString();
+                                                                            });
+                                                                          },
+                                                                          child: Container(
+                                                                            height: 20,
+                                                                            width: 20,
+                                                                            decoration: const BoxDecoration(
+                                                                              shape: BoxShape.rectangle,
+                                                                              color: AppColors.primaryWhiteColor,
+                                                                              boxShadow: [
+                                                                                BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    const SizedBox(
+                                                        height: 80),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              left: 0,
+                                              child: SafeArea(
+                                                child: Container(
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    color: AppColors
+                                                        .primaryWhiteColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppColors
+                                                            .boxShadow,
+                                                        blurRadius: 4,
+                                                        offset:
+                                                        Offset(
+                                                            4, 2),
+                                                        spreadRadius:
+                                                        0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .only(
+                                                        left: 20,
+                                                        right: 20,
+                                                        bottom:
+                                                        10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed:
+                                                              () {
+                                                            clearFilter();
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.clearall,
+                                                            // "Clear All",
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .underlineColor,
+                                                              fontWeight:
+                                                              FontWeight.w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            fixedSize:
+                                                            const Size(
+                                                                100,
+                                                                40),
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius.circular(8),
+                                                            ),
+                                                            backgroundColor:
+                                                            AppColors
+                                                                .secondaryColor,
+                                                          ),
+                                                          onPressed:
+                                                              () {
+                                                            print(
+                                                                "Selected Category: $selectedCategoryFilters");
+                                                            print(
+                                                                "Selected Brand: $selectedBrandFilters");
+
+                                                            BlocProvider.of<RewardTierBloc>(
+                                                                context)
+                                                                .add(
+                                                              RewardTierRequestEvent(
+                                                                rewardTierRequest:
+                                                                RewardTierRequest(
+                                                                  sort:
+                                                                  "",
+                                                                  eligible: eligibleFilter == "Eligible"
+                                                                      ? "1"
+                                                                      : "",
+                                                                  categoryId: selectedCategoryFilters.isEmpty
+                                                                      ? ""
+                                                                      : selectedCategoryFilters,
+                                                                  brandId: selectedBrandFilters.isEmpty
+                                                                      ? ""
+                                                                      : selectedBrandFilters,
+                                                                ),
+                                                              ),
+                                                            );
+                                                            context
+                                                                .pop();
+                                                            _scrollToBottom();
+
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.apply,
+                                                            // "Apply",
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .primaryWhiteColor,
+                                                              fontWeight:
+                                                              FontWeight.w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              child: Container(
+                                                decoration:
+                                                const BoxDecoration(
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .only(
+                                                    topLeft: Radius
+                                                        .circular(
+                                                        20.0),
+                                                    topRight: Radius
+                                                        .circular(
+                                                        20.0),
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal:
+                                                      15),
+                                                  child: Container(
+                                                    // height: 40,
+                                                    color:
+                                                    Colors.white,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                              AppLocalizations.of(context)!.filterby,
+                                                              // "Filter by",
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                fontSize:
+                                                                16,
+                                                                fontWeight:
+                                                                FontWeight.w400,
+                                                                color:
+                                                                AppColors.primaryGrayColor,
+                                                              ),
+                                                            ),
+                                                            IconButton(
+                                                              onPressed:
+                                                                  () {
+                                                                context
+                                                                    .pop();
+                                                              },
+                                                              icon:
+                                                              const Icon(
+                                                                Icons
+                                                                    .close,
+                                                                color:
+                                                                AppColors.primaryGrayColor,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const Divider(
+                                                            color: AppColors
+                                                                .primaryGrayColor),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      return const SizedBox();
+                                    },
+                                  );
+                                },
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding:
+                        const EdgeInsets.only(left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.filter,
+                              // "Filter",
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              Assets.FILTER_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+                  : _isShrink && isPartnerSelected == true
+                  ? Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor:
+                            AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder: (BuildContext context,
+                                    setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedSortVariants =
+                                      <String>[];
+                                    });
+                                  }
+
+                                  // filterWidgets.clear();
+                                  return Stack(
+                                    children: [
+
+                                      SizedBox(
+                                        height:
+                                        MediaQuery.of(context)
+                                            .size
+                                            .height /
+                                            2,
+                                        child:
+                                        SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                  height: 60),
+                                              Column(
+                                                children:
+                                                List.generate(
+                                                  sort.length,
+                                                      (index) =>
+                                                      Padding(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            8,
+                                                            vertical:
+                                                            6),
+                                                        child:
+                                                        Container(
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              10,
+                                                              vertical:
+                                                              6),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                            mainAxisSize:
+                                                            MainAxisSize
+                                                                .max,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                    ? sort[index]
+                                                                    : sort_ar[index],
+                                                                softWrap:
+                                                                true,
+                                                                overflow:
+                                                                TextOverflow.ellipsis,
+                                                                style: Theme.of(context)
+                                                                    .textTheme
+                                                                    .bodyLarge!
+                                                                    .copyWith(
+                                                                  fontSize: 15,
+                                                                ),
+                                                              ),
+                                                              selectedSortVariants.contains(
+                                                                  sort[index]
+
+                                                              )
+                                                                  ? InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    selectedSortVariants.remove(
+                                                                        sort[index]
+
+                                                                    );
+                                                                  });
+                                                                },
+                                                                child: const CustomRoundedButton(enabled: true),
+                                                              )
+                                                                  : InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    selectedSortVariants.add(
+                                                                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                          ? sort[index]
+                                                                          : sort_ar[index],
+                                                                    );
+                                                                    if (selectedSortVariants.length > 1) {
+                                                                      selectedSortVariants.removeAt(0);
+                                                                    }
+                                                                    selectedSortFilter = selectedSortVariants[0];
+                                                                    if (selectedSortFilter == "Recent") {
+                                                                      sortQuery = "recent";
+                                                                    }
+                                                                    if (selectedSortFilter == "Expiry First") {
+                                                                      sortQuery = "expire_first";
+                                                                    }
+                                                                    if (selectedSortFilter == "Points Low") {
+                                                                      sortQuery = "points_low";
+                                                                    }
+                                                                    if (selectedSortFilter == "Points High") {
+                                                                      sortQuery = "points_high";
+                                                                    }
+                                                                  });
+                                                                },
+                                                                child: const CustomRoundedButton(
+                                                                  enabled: false,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                  height: 80),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                left: 20,
+                                                right: 20,
+                                                bottom: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    clearFilter();
+                                                    // context.pop();
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort:
+                                                          "",
+                                                          eligible:
+                                                          "",
+                                                          categoryId:
+                                                          "",
+                                                          brandId:
+                                                          "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    // "Clear All",
+                                                    AppLocalizations.of(context)!.clearall,
+                                                    style:
+                                                    GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w400,
+                                                      fontSize:
+                                                      14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  style: ElevatedButton
+                                                      .styleFrom(
+                                                    fixedSize:
+                                                    const Size(
+                                                        100,
+                                                        40),
+                                                    shape:
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(8),
+                                                    ),
+                                                    backgroundColor:
+                                                    AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                  onPressed:
+                                                      () async {
+                                                    print(
+                                                        selectedSortFilter);
+                                                    BlocProvider.of<
+                                                        RewardTierBloc>(
+                                                        context)
+                                                        .add(
+                                                      RewardTierRequestEvent(
+                                                        rewardTierRequest:
+                                                        RewardTierRequest(
+                                                          sort:
+                                                          sortQuery,
+                                                          eligible:
+                                                          "",
+                                                          categoryId:
+                                                          "",
+                                                          brandId:
+                                                          "",
+                                                        ),
+                                                      ),
+                                                    );
+                                                    context.pop();
+                                                  },
+                                                  child: Text(
+                                                    // "Apply",
+                                                    AppLocalizations.of(context)!.apply,
+                                                    style:
+                                                    GoogleFonts
+                                                        .roboto(
+                                                      color: AppColors
+                                                          .primaryWhiteColor,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w400,
+                                                      fontSize:
+                                                      14,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        // bottom: 20,
+                                        child: SafeArea(
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                horizontal:
+                                                15),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Text(
+                                                      AppLocalizations.of(context)!.sortby,
+                                                      // "Sort by",
+                                                      style: GoogleFonts
+                                                          .roboto(
+                                                        fontSize:
+                                                        16,
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w400,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    ),
+                                                    IconButton(
+                                                      onPressed:
+                                                          () {
+                                                        context.pop();
+                                                        clearFilter();
+
+                                                      },
+                                                      icon:
+                                                      const Icon(
+                                                        Icons
+                                                            .close,
+                                                        color: AppColors
+                                                            .primaryGrayColor,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                    color: AppColors
+                                                        .primaryGrayColor),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.sort,
+                              // "Sort",
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SvgPicture.asset(
+                              Assets.SORT_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.0),
+                                topRight: Radius.circular(20.0),
+                              ),
+                            ),
+                            backgroundColor:
+                            AppColors.primaryWhiteColor,
+                            barrierColor: Colors.black38,
+                            elevation: 2,
+                            isScrollControlled: true,
+                            isDismissible: true,
+                            builder: (BuildContext bc) {
+                              return StatefulBuilder(
+                                builder: (BuildContext context,
+                                    setState) {
+                                  void clearFilter() {
+                                    setState(() {
+                                      selectedBrandVariants =
+                                      <String>[];
+                                      selectedBrandFilters = "";
+                                      selectedCategoryVariants =
+                                      <String>[];
+                                      selectedCategoryFilters =
+                                      "";
+                                    });
+                                  }
+
+                                  return BlocBuilder<FilterBloc,
+                                      FilterState>(
+                                    builder: (context, state) {
+                                      if (state is BrandLoading) {
+                                        return Center(
+                                          child: Lottie.asset(
+                                              Assets.JUMBINGDOT,
+                                              height: 100,
+                                              width: 100),
+                                        );
+                                      }
+                                      if (state is BrandLoaded) {
+                                        return Stack(
+                                          children: [
+                                            SizedBox(
+                                              height: MediaQuery.of(
+                                                  context)
+                                                  .size
+                                                  .height /
+                                                  1.6,
+                                              child:
+                                              SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                        height:
+                                                        60),
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal:
+                                                          8,
+                                                          vertical:
+                                                          6),
+                                                      child:
+                                                      Container(
+                                                        padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal:
+                                                            10,
+                                                            vertical:
+                                                            6),
+                                                        child:
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment.spaceBetween,
+                                                          mainAxisSize:
+                                                          MainAxisSize.max,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              AppLocalizations.of(context)!.eligible,
+                                                              // "Eligible",
+                                                              softWrap:
+                                                              true,
+                                                              overflow:
+                                                              TextOverflow.ellipsis,
+                                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                            eligibleFilter == "Eligible"
+                                                                ? InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  eligibleFilter = "";
+                                                                  // selectedFilters[]
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 20,
+                                                                width: 20,
+                                                                decoration: const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  image: DecorationImage(
+                                                                    image: AssetImage(Assets.DISABLED_TICK),
+                                                                    fit: BoxFit.contain,
+                                                                    scale: 6,
+                                                                  ),
+                                                                  color: AppColors.secondaryColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                                : InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  eligibleFilter = "Eligible";
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                height: 20,
+                                                                width: 20,
+                                                                decoration: const BoxDecoration(
+                                                                  shape: BoxShape.rectangle,
+                                                                  color: AppColors.primaryWhiteColor,
+                                                                  boxShadow: [
+                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(
+                                                                () {
+                                                              isBrandFilterTileSelected =
+                                                              !isBrandFilterTileSelected;
+                                                            });
+                                                      },
+                                                      child:
+                                                      ListTile(
+                                                        trailing: !isBrandFilterTileSelected ==
+                                                            true
+                                                            ? const ImageIcon(
+                                                          color: AppColors.secondaryColor,
+                                                          AssetImage(Assets.SIDE_ARROW),
+                                                        )
+                                                            : const ImageIcon(
+                                                          color: AppColors.secondaryColor,
+                                                          AssetImage(Assets.DOWN_ARROW),
+                                                        ),
+                                                        title: Text(AppLocalizations.of(context)!.brand),
+                                                        // Text("Brand"),
+                                                      ),
+                                                    ),
+                                                    isBrandFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            right: 15,
+                                                            left: 15,
+                                                            bottom: 5,
+                                                            top: 5),
+                                                        child:
+                                                        Column(
+                                                          children: List.generate(
+                                                            state.brandAndCategoryFilterResponse.data.brands.length,
+                                                                (index) => Padding(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                              child: Container(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  mainAxisSize: MainAxisSize.max,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                          ? state.brandAndCategoryFilterResponse.data.brands[index].brandName
+                                                                          : state.brandAndCategoryFilterResponse.data.brands[index].brandNameArabic,
+                                                                      softWrap: true,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                        fontSize: 15,
+                                                                      ),
+                                                                    ),
+                                                                    selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                        ? InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                          selectedBrandFilters = "";
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          image: DecorationImage(
+                                                                            image: AssetImage(Assets.DISABLED_TICK),
+                                                                            fit: BoxFit.contain,
+                                                                            scale: 6,
+                                                                          ),
+                                                                          color: AppColors.secondaryColor,
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                        : InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                          if (selectedBrandVariants.length > 1) {
+                                                                            selectedBrandVariants.removeAt(0);
+                                                                          }
+                                                                          selectedBrandFilters = selectedBrandVariants[0].toString();
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          color: AppColors.primaryWhiteColor,
+
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(
-                                                            height: 80),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(
+                                                                () {
+                                                              isCategoryFilterTileSelected =
+                                                              !isCategoryFilterTileSelected;
+                                                            });
+                                                      },
+                                                      child:
+                                                      ListTile(
+                                                        trailing: !isCategoryFilterTileSelected ==
+                                                            true
+                                                            ? const ImageIcon(
+                                                          color: AppColors.secondaryColor,
+                                                          AssetImage(Assets.SIDE_ARROW),
+                                                        )
+                                                            : const ImageIcon(
+                                                          color: AppColors.secondaryColor,
+                                                          AssetImage(Assets.DOWN_ARROW),
+                                                        ),
+                                                        title: Text(AppLocalizations.of(context)!.category),
+                                                        // Text("Category"),
+                                                      ),
+                                                    ),
+                                                    isCategoryFilterTileSelected ==
+                                                        true
+                                                        ? SingleChildScrollView(
+                                                      child:
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(
+                                                            right: 15,
+                                                            left: 15,
+                                                            bottom: 5,
+                                                            top: 5),
+                                                        child:
+                                                        Column(
+                                                          children: List.generate(
+                                                            state.brandAndCategoryFilterResponse.data.category.length,
+                                                                (index) => Padding(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                              child: Container(
+                                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                child: Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                  mainAxisSize: MainAxisSize.max,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                          ? state.brandAndCategoryFilterResponse.data.category[index].category
+                                                                          : state.brandAndCategoryFilterResponse.data.category[index].categoryNameArabic,
+                                                                      softWrap: true,
+                                                                      overflow: TextOverflow.ellipsis,
+                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                        fontSize: 15,
+                                                                      ),
+                                                                    ),
+                                                                    selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                        ? InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                          selectedCategoryFilters = "";
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          image: DecorationImage(
+                                                                            image: AssetImage(Assets.DISABLED_TICK),
+                                                                            fit: BoxFit.contain,
+                                                                            scale: 6,
+                                                                          ),
+                                                                          color: AppColors.secondaryColor,
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                        : InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                          if (selectedCategoryVariants.length > 1) {
+                                                                            selectedCategoryVariants.removeAt(0);
+                                                                          }
+                                                                          selectedCategoryFilters = selectedCategoryVariants[0].toString();
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          color: AppColors.primaryWhiteColor,
+
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                        : const SizedBox(),
+                                                    const SizedBox(
+                                                        height:
+                                                        80),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              bottom: 0,
+                                              right: 0,
+                                              left: 0,
+                                              child: SafeArea(
+                                                child: Container(
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    color: AppColors
+                                                        .primaryWhiteColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: AppColors
+                                                            .boxShadow,
+                                                        blurRadius:
+                                                        4,
+                                                        offset:
+                                                        Offset(
+                                                            4,
+                                                            2),
+                                                        spreadRadius:
+                                                        0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .only(
+                                                        left: 20,
+                                                        right: 20,
+                                                        bottom:
+                                                        10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed:
+                                                              () {
+                                                            clearFilter();
+                                                          },
+                                                          child:
+                                                          Text(
+                                                            AppLocalizations.of(context)!.clearall,
+                                                            // "Clear All",
+                                                            style:
+                                                            GoogleFonts.roboto(
+                                                              color:
+                                                              AppColors.underlineColor,
+                                                              fontWeight:
+                                                              FontWeight.w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            fixedSize: const Size(
+                                                                100,
+                                                                40),
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius.circular(8),
+                                                            ),
+                                                            backgroundColor:
+                                                            AppColors.secondaryColor,
+                                                          ),
+                                                          onPressed:
+                                                              () {
+                                                            print(
+                                                                "Selected Category: $selectedCategoryFilters");
+                                                            print(
+                                                                "Selected Brand: $selectedBrandFilters");
+
+                                                            BlocProvider.of<RewardTierBloc>(context)
+                                                                .add(
+                                                              RewardTierRequestEvent(
+                                                                rewardTierRequest: RewardTierRequest(
+                                                                  sort: "",
+                                                                  eligible: eligibleFilter == "Eligible" ? "1" : "",
+                                                                  categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
+                                                                  brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
+                                                                ),
+                                                              ),
+                                                            );
+                                                            context
+                                                                .pop();
+                                                            _scrollToBottom();
+
+                                                          },
+                                                          child:
+                                                          Text(
+                                                            AppLocalizations.of(context)!.apply,
+                                                            // "Apply",
+                                                            style:
+                                                            GoogleFonts.roboto(
+                                                              color:
+                                                              AppColors.primaryWhiteColor,
+                                                              fontWeight:
+                                                              FontWeight.w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
                                                 ),
-                                                Positioned(
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  left: 0,
-                                                  child: SafeArea(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20,
-                                                              right: 20,
-                                                              bottom: 10),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          TextButton(
-                                                            onPressed: () {
-                                                              clearFilter();
-                                                              context.pop();
-                                                              BlocProvider.of<
-                                                                          RewardTierBloc>(
-                                                                      context)
-                                                                  .add(
-                                                                RewardTierRequestEvent(
-                                                                  rewardTierRequest:
-                                                                      RewardTierRequest(
-                                                                    sort: "",
-                                                                    eligible:
-                                                                        "",
-                                                                    categoryId:
-                                                                        "",
-                                                                    brandId: "",
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
-                                                            child: Text(
-                                                              "Clear All",
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                color: AppColors
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              child: Container(
+                                                decoration:
+                                                const BoxDecoration(
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .only(
+                                                    topLeft: Radius
+                                                        .circular(
+                                                        20.0),
+                                                    topRight: Radius
+                                                        .circular(
+                                                        20.0),
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal:
+                                                      15),
+                                                  child:
+                                                  Container(
+                                                    // height: 40,
+                                                    color: Colors
+                                                        .white,
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment.center,
+                                                          children: [
+                                                            Text(
+                                                              AppLocalizations.of(context)!.filterby,
+                                                              // "Filter by",
+                                                              style:
+                                                              GoogleFonts.roboto(
+                                                                fontSize: 16,
+                                                                fontWeight: FontWeight.w400,
+                                                                color: AppColors.primaryGrayColor,
                                                               ),
                                                             ),
-                                                          ),
-                                                          ElevatedButton(
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              fixedSize:
-                                                                  const Size(
-                                                                      100, 40),
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
+                                                            IconButton(
+                                                              onPressed:
+                                                                  () {
+                                                                context.pop();
+                                                                clearFilter();
+
+                                                              },
+                                                              icon:
+                                                              const Icon(
+                                                                Icons.close,
+                                                                color: AppColors.primaryGrayColor,
                                                               ),
-                                                              backgroundColor:
-                                                                  AppColors
-                                                                      .secondaryColor,
-                                                            ),
-                                                            onPressed:
-                                                                () async {
-                                                              print(
-                                                                  selectedSortFilter);
-                                                              BlocProvider.of<
-                                                                          RewardTierBloc>(
-                                                                      context)
-                                                                  .add(
-                                                                RewardTierRequestEvent(
-                                                                  rewardTierRequest:
-                                                                      RewardTierRequest(
-                                                                    sort:
-                                                                        sortQuery,
-                                                                    eligible:
-                                                                        "",
-                                                                    categoryId:
-                                                                        "",
-                                                                    brandId: "",
-                                                                  ),
-                                                                ),
-                                                              );
-                                                              context.pop();
-                                                            },
-                                                            child: Text(
-                                                              "Apply",
-                                                              style: GoogleFonts
-                                                                  .roboto(
-                                                                color: AppColors
-                                                                    .primaryWhiteColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 14,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const Divider(color: AppColors.primaryGrayColor),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
-                                                Positioned(
-                                                  top: 0,
-                                                  left: 0,
-                                                  right: 0,
-                                                  // bottom: 20,
-                                                  child: SafeArea(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 15),
-                                                      child: Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                "Sort by",
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .roboto(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: AppColors
-                                                                      .primaryGrayColor,
-                                                                ),
-                                                              ),
-                                                              IconButton(
-                                                                onPressed: () {
-                                                                  context.pop();
-                                                                  clearFilter();
-                                                                },
-                                                                icon:
-                                                                    const Icon(
-                                                                  Icons.close,
-                                                                  color: AppColors
-                                                                      .primaryGrayColor,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          const Divider(
-                                                              color: AppColors
-                                                                  .primaryGrayColor),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                              ),
+                                            ),
+                                          ],
                                         );
-                                      });
+                                      }
+                                      return const SizedBox();
+                                    },
+                                  );
                                 },
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, right: 8),
-                                  height: 20,
-                                  width: 68,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryWhiteColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
-                                      ),
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(-4, -2),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Sort",
-                                        style: TextStyle(
-                                          color: AppColors.iconGreyColor,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      SvgPicture.asset(
-                                        Assets.SORT_SVG,
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 8, right: 8),
+                        height: 20,
+                        width: 68,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryWhiteColor,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(4, 2),
+                              spreadRadius: 0,
+                            ),
+                            BoxShadow(
+                              color: AppColors.boxShadow,
+                              blurRadius: 4,
+                              offset: Offset(-4, -2),
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.filter,
+                              // "Filter",
+                              style: const TextStyle(
+                                color: AppColors.iconGreyColor,
+                                fontSize: 13,
                               ),
                             ),
-                            const SizedBox(width: 15),
-                            Flexible(
-                              flex: 1,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20.0),
-                                          topRight: Radius.circular(20.0),
-                                        ),
+                            SvgPicture.asset(
+                              Assets.FILTER_SVG,
+                              height: 10,
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+                  : null,
+              floating: false,
+              backgroundColor: AppColors.primaryColor,
+              expandedHeight: 300,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: false,
+                background: SafeArea(
+                  child: Column(
+                    children: [
+                      SliverBackgroundWidget(
+                        isLetsCollectRewardSelected: isLetsCollectSelected,
+                        isPartnerSelected: isPartnerSelected,
+                        isBrandSelected: isBrandSelected,
+                        letsCollectTotalPoints: letsCollectTotalPoints,
+                      ),
+                      isRewardTierSelected && !_isShrink
+                          ? Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 25),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
                                       ),
-                                      backgroundColor:
-                                          AppColors.primaryWhiteColor,
-                                      barrierColor: Colors.black38,
-                                      elevation: 2,
-                                      isScrollControlled: true,
-                                      isDismissible: true,
-                                      builder: (BuildContext bc) {
-                                        return StatefulBuilder(
-                                          builder:
-                                              (BuildContext context, setState) {
-                                            void clearFilter() {
-                                              setState(() {
-                                                selectedBrandVariants =
-                                                    <String>[];
-                                                selectedBrandFilters = "";
-                                                selectedCategoryVariants =
-                                                    <String>[];
-                                                selectedCategoryFilters = "";
-                                              });
-                                            }
+                                    ),
+                                    backgroundColor:
+                                    AppColors.primaryWhiteColor,
+                                    barrierColor: Colors.black38,
+                                    elevation: 2,
+                                    isScrollControlled: true,
+                                    isDismissible: true,
+                                    builder: (BuildContext bc) {
+                                      return StatefulBuilder(
+                                        builder: (BuildContext context,
+                                            setState) {
+                                          void clearFilter() {
+                                            setState(() {
+                                              selectedSortVariants =
+                                              <String>[];
+                                            });
+                                          }
 
-                                            // filterWidgets.clear();
+                                          // filterWidgets.clear();
+                                          return Stack(
+                                            children: [
 
-                                            return BlocBuilder<FilterBloc,
-                                                FilterState>(
-                                              builder: (context, state) {
-                                                if (state is BrandLoading) {
-                                                  return Center(
-                                                    child: Lottie.asset(
-                                                        Assets.JUMBINGDOT,
-                                                        height: 100,
-                                                        width: 100),
-                                                  );
-                                                }
-                                                if (state is BrandLoaded) {
-                                                  return Stack(
+                                              SizedBox(
+                                                height:
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                    2,
+                                                child:
+                                                SingleChildScrollView(
+                                                  child: Column(
                                                     children: [
-                                                      SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height /
-                                                            1.6,
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              const SizedBox(
-                                                                  height: 60),
+                                                      const SizedBox(
+                                                          height: 60),
+                                                      Column(
+                                                        children:
+                                                        List.generate(
+                                                          sort.length,
+                                                              (index) =>
                                                               Padding(
                                                                 padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
-                                                                        8,
+                                                                    8,
                                                                     vertical:
-                                                                        6),
+                                                                    6),
                                                                 child:
-                                                                    Container(
+                                                                Container(
                                                                   padding: const EdgeInsets
                                                                       .symmetric(
                                                                       horizontal:
-                                                                          10,
+                                                                      10,
                                                                       vertical:
-                                                                          6),
+                                                                      6),
                                                                   child: Row(
                                                                     mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                     mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .max,
+                                                                    MainAxisSize
+                                                                        .max,
                                                                     children: <Widget>[
                                                                       Text(
-                                                                        "Eligible",
+                                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                            ? sort[index]
+                                                                            : sort_ar[index],
                                                                         softWrap:
-                                                                            true,
+                                                                        true,
                                                                         overflow:
-                                                                            TextOverflow.ellipsis,
+                                                                        TextOverflow.ellipsis,
                                                                         style: Theme.of(context)
                                                                             .textTheme
                                                                             .bodyLarge!
                                                                             .copyWith(
-                                                                              fontSize: 15,
-                                                                            ),
+                                                                          fontSize: 15,
+                                                                        ),
                                                                       ),
-                                                                      eligibleFilter ==
-                                                                              "Eligible"
+                                                                      selectedSortVariants.contains(
+                                                                          sort[index]
+
+                                                                      )
                                                                           ? InkWell(
+                                                                        onTap: () {
+                                                                          setState(() {
+                                                                            selectedSortVariants.remove(
+                                                                                sort[index]
+
+                                                                            );
+                                                                          });
+                                                                        },
+                                                                        child: const CustomRoundedButton(enabled: true),
+                                                                      )
+                                                                          : InkWell(
+                                                                        onTap: () {
+                                                                          setState(() {
+                                                                            selectedSortVariants.add(
+                                                                                sort[index]
+                                                                            );
+                                                                            if (selectedSortVariants.length > 1) {
+                                                                              selectedSortVariants.removeAt(0);
+                                                                            }
+                                                                            selectedSortFilter = selectedSortVariants[0];
+                                                                            if (selectedSortFilter == "Recent") {
+                                                                              sortQuery = "recent";
+                                                                            }
+                                                                            if (selectedSortFilter == "Expiry First") {
+                                                                              sortQuery = "expire_first";
+                                                                            }
+                                                                            if (selectedSortFilter == "Points Low") {
+                                                                              sortQuery = "points_low";
+                                                                            }
+                                                                            if (selectedSortFilter == "Points High") {
+                                                                              sortQuery = "points_high";
+                                                                            }
+                                                                          });
+                                                                        },
+                                                                        child: const CustomRoundedButton(
+                                                                          enabled: false,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 80),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 0,
+                                                left: 0,
+                                                child: SafeArea(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .only(
+                                                        left: 20,
+                                                        right: 20,
+                                                        bottom: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            clearFilter();
+                                                            context.pop();
+                                                            BlocProvider.of<
+                                                                RewardTierBloc>(
+                                                                context)
+                                                                .add(
+                                                              RewardTierRequestEvent(
+                                                                rewardTierRequest:
+                                                                RewardTierRequest(
+                                                                  sort:
+                                                                  "",
+                                                                  eligible:
+                                                                  "",
+                                                                  categoryId:
+                                                                  "",
+                                                                  brandId:
+                                                                  "",
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.clearall,
+                                                            // "Clear All",
+                                                            style:
+                                                            GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .primaryColor,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            fixedSize:
+                                                            const Size(
+                                                                100,
+                                                                40),
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                            ),
+                                                            backgroundColor:
+                                                            AppColors
+                                                                .secondaryColor,
+                                                          ),
+                                                          onPressed:
+                                                              () async {
+                                                            print(
+                                                                selectedSortFilter);
+                                                            BlocProvider.of<
+                                                                RewardTierBloc>(
+                                                                context)
+                                                                .add(
+                                                              RewardTierRequestEvent(
+                                                                rewardTierRequest:
+                                                                RewardTierRequest(
+                                                                  sort:
+                                                                  sortQuery,
+                                                                  eligible:
+                                                                  "",
+                                                                  categoryId:
+                                                                  "",
+                                                                  brandId:
+                                                                  "",
+                                                                ),
+                                                              ),
+                                                            );
+                                                            context.pop();
+                                                          },
+                                                          child: Text(
+                                                            AppLocalizations.of(context)!.apply,
+                                                            // "Apply",
+                                                            style:
+                                                            GoogleFonts
+                                                                .roboto(
+                                                              color: AppColors
+                                                                  .primaryWhiteColor,
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w400,
+                                                              fontSize:
+                                                              14,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 0,
+                                                left: 0,
+                                                right: 0,
+                                                // bottom: 20,
+                                                child: SafeArea(
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal:
+                                                        15),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                              AppLocalizations.of(context)!.sortby,
+                                                              // "Sort by",
+                                                              style: GoogleFonts
+                                                                  .roboto(
+                                                                fontSize:
+                                                                16,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w400,
+                                                                color: AppColors
+                                                                    .primaryGrayColor,
+                                                              ),
+                                                            ),
+                                                            IconButton(
+                                                              onPressed:
+                                                                  () {
+                                                                context.pop();
+                                                                clearFilter();
+                                                              },
+                                                              icon:
+                                                              const Icon(
+                                                                Icons
+                                                                    .close,
+                                                                color: AppColors
+                                                                    .primaryGrayColor,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        const Divider(
+                                                            color: AppColors
+                                                                .primaryGrayColor),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8),
+                                height: 20,
+                                width: 68,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryWhiteColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(4, 2),
+                                      spreadRadius: 0,
+                                    ),
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(-4, -2),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.sort,
+                                      // "Sort",
+                                      style: const TextStyle(
+                                        color: AppColors.iconGreyColor,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      Assets.SORT_SVG,
+                                      height: 10,
+                                      width: 10,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.0),
+                                        topRight: Radius.circular(20.0),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                    AppColors.primaryWhiteColor,
+                                    barrierColor: Colors.black38,
+                                    elevation: 2,
+                                    isScrollControlled: true,
+                                    isDismissible: true,
+                                    builder: (BuildContext bc) {
+                                      return StatefulBuilder(
+                                        builder: (BuildContext context,
+                                            setState) {
+                                          void clearFilter() {
+                                            setState(() {
+                                              selectedBrandVariants =
+                                              <String>[];
+                                              selectedBrandFilters = "";
+                                              selectedCategoryVariants =
+                                              <String>[];
+                                              selectedCategoryFilters =
+                                              "";
+                                            });
+                                          }
+
+                                          // filterWidgets.clear();
+
+                                          return BlocBuilder<FilterBloc,
+                                              FilterState>(
+                                            builder: (context, state) {
+                                              if (state is BrandLoading) {
+                                                return Center(
+                                                  child: Lottie.asset(
+                                                      Assets.JUMBINGDOT,
+                                                      height: 100,
+                                                      width: 100),
+                                                );
+                                              }
+                                              if (state is BrandLoaded) {
+                                                return Stack(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: MediaQuery.of(
+                                                          context)
+                                                          .size
+                                                          .height /
+                                                          1.6,
+                                                      child:
+                                                      SingleChildScrollView(
+                                                        child: Column(
+                                                          children: [
+                                                            const SizedBox(
+                                                                height:
+                                                                60),
+                                                            Padding(
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                  8,
+                                                                  vertical:
+                                                                  6),
+                                                              child:
+                                                              Container(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                    10,
+                                                                    vertical:
+                                                                    6),
+                                                                child:
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                  MainAxisAlignment.spaceBetween,
+                                                                  mainAxisSize:
+                                                                  MainAxisSize.max,
+                                                                  children: <Widget>[
+                                                                    Text(
+                                                                      AppLocalizations.of(context)!.eligible,
+                                                                      // "Eligible",
+                                                                      softWrap:
+                                                                      true,
+                                                                      overflow:
+                                                                      TextOverflow.ellipsis,
+                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                        fontSize: 15,
+                                                                      ),
+                                                                    ),
+                                                                    eligibleFilter == "Eligible"
+                                                                        ? InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          eligibleFilter = "";
+                                                                          // selectedFilters[]
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          image: DecorationImage(
+                                                                            image: AssetImage(Assets.DISABLED_TICK),
+                                                                            fit: BoxFit.contain,
+                                                                            scale: 6,
+                                                                          ),
+                                                                          color: AppColors.secondaryColor,
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                        : InkWell(
+                                                                      onTap: () {
+                                                                        setState(() {
+                                                                          eligibleFilter = "Eligible";
+                                                                        });
+                                                                      },
+                                                                      child: Container(
+                                                                        height: 20,
+                                                                        width: 20,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape: BoxShape.rectangle,
+                                                                          color: AppColors.primaryWhiteColor,
+                                                                          boxShadow: [
+                                                                            BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                setState(
+                                                                        () {
+                                                                      isBrandFilterTileSelected =
+                                                                      !isBrandFilterTileSelected;
+                                                                    });
+                                                              },
+                                                              child:
+                                                              ListTile(
+                                                                  trailing: !isBrandFilterTileSelected ==
+                                                                      true
+                                                                      ? const ImageIcon(
+                                                                    color: AppColors.secondaryColor,
+                                                                    AssetImage(Assets.SIDE_ARROW),
+                                                                  )
+                                                                      : const ImageIcon(
+                                                                    color: AppColors.secondaryColor,
+                                                                    AssetImage(Assets.DOWN_ARROW),
+                                                                  ),
+                                                                  title: Text(AppLocalizations.of(context)!.brand)
+                                                                // Text("Brand"),
+                                                              ),
+                                                            ),
+                                                            isBrandFilterTileSelected ==
+                                                                true
+                                                                ? SingleChildScrollView(
+                                                              child:
+                                                              Padding(
+                                                                padding: const EdgeInsets.only(
+                                                                    right: 15,
+                                                                    left: 15,
+                                                                    bottom: 5,
+                                                                    top: 5),
+                                                                child:
+                                                                Column(
+                                                                  children: List.generate(
+                                                                    state.brandAndCategoryFilterResponse.data.brands.length,
+                                                                        (index) => Padding(
+                                                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                      child: Container(
+                                                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                        child: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          mainAxisSize: MainAxisSize.max,
+                                                                          children: <Widget>[
+                                                                            Text(
+                                                                              context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                                  ? state.brandAndCategoryFilterResponse.data.brands[index].brandName
+                                                                                  : state.brandAndCategoryFilterResponse.data.brands[index].brandNameArabic,
+                                                                              softWrap: true,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                                fontSize: 15,
+                                                                              ),
+                                                                            ),
+                                                                            selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                                ? InkWell(
                                                                               onTap: () {
                                                                                 setState(() {
-                                                                                  eligibleFilter = "";
-                                                                                  // selectedFilters[]
+                                                                                  selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                  selectedBrandFilters = "";
                                                                                 });
                                                                               },
                                                                               child: Container(
@@ -1642,10 +3826,127 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 ),
                                                                               ),
                                                                             )
-                                                                          : InkWell(
+                                                                                : InkWell(
                                                                               onTap: () {
                                                                                 setState(() {
-                                                                                  eligibleFilter = "Eligible";
+                                                                                  selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                  if (selectedBrandVariants.length > 1) {
+                                                                                    selectedBrandVariants.removeAt(0);
+                                                                                  }
+                                                                                  selectedBrandFilters = selectedBrandVariants[0].toString();
+                                                                                });
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 20,
+                                                                                width: 20,
+                                                                                decoration: const BoxDecoration(
+                                                                                  shape: BoxShape.rectangle,
+                                                                                  color: AppColors.primaryWhiteColor,
+
+                                                                                  boxShadow: [
+                                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                                : const SizedBox(),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                setState(
+                                                                        () {
+                                                                      isCategoryFilterTileSelected =
+                                                                      !isCategoryFilterTileSelected;
+                                                                    });
+                                                              },
+                                                              child:
+                                                              ListTile(
+                                                                  trailing: !isCategoryFilterTileSelected ==
+                                                                      true
+                                                                      ? const ImageIcon(
+                                                                    color: AppColors.secondaryColor,
+                                                                    AssetImage(Assets.SIDE_ARROW),
+                                                                  )
+                                                                      : const ImageIcon(
+                                                                    color: AppColors.secondaryColor,
+                                                                    AssetImage(Assets.DOWN_ARROW),
+                                                                  ),
+                                                                  title: Text(AppLocalizations.of(context)!.category)
+                                                                // Text("Category"),
+                                                              ),
+                                                            ),
+                                                            isCategoryFilterTileSelected ==
+                                                                true
+                                                                ? SingleChildScrollView(
+                                                              child:
+                                                              Padding(
+                                                                padding: const EdgeInsets.only(
+                                                                    right: 15,
+                                                                    left: 15,
+                                                                    bottom: 5,
+                                                                    top: 5),
+                                                                child:
+                                                                Column(
+                                                                  children: List.generate(
+                                                                    state.brandAndCategoryFilterResponse.data.category.length,
+                                                                        (index) => Padding(
+                                                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                                                      child: Container(
+                                                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                                        child: Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                          mainAxisSize: MainAxisSize.max,
+                                                                          children: <Widget>[
+                                                                            Text(
+                                                                              context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                                                  ? state.brandAndCategoryFilterResponse.data.category[index].category
+                                                                                  : state.brandAndCategoryFilterResponse.data.category[index].categoryNameArabic,
+                                                                              softWrap: true,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                                                fontSize: 15,
+                                                                              ),
+                                                                            ),
+                                                                            selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                                ? InkWell(
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                  selectedCategoryFilters = "";
+                                                                                });
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 20,
+                                                                                width: 20,
+                                                                                decoration: const BoxDecoration(
+                                                                                  shape: BoxShape.rectangle,
+                                                                                  image: DecorationImage(
+                                                                                    image: AssetImage(Assets.DISABLED_TICK),
+                                                                                    fit: BoxFit.contain,
+                                                                                    scale: 6,
+                                                                                  ),
+                                                                                  color: AppColors.secondaryColor,
+                                                                                  boxShadow: [
+                                                                                    BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            )
+                                                                                : InkWell(
+                                                                              onTap: () {
+                                                                                setState(() {
+                                                                                  selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                  if (selectedCategoryVariants.length > 1) {
+                                                                                    selectedCategoryVariants.removeAt(0);
+                                                                                  }
+                                                                                  selectedCategoryFilters = selectedCategoryVariants[0].toString();
                                                                                 });
                                                                               },
                                                                               child: Container(
@@ -1660,2481 +3961,263 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                    ],
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    isBrandFilterTileSelected =
-                                                                        !isBrandFilterTileSelected;
-                                                                  });
-                                                                },
-                                                                child: ListTile(
-                                                                  trailing: !isBrandFilterTileSelected ==
-                                                                          true
-                                                                      ? const ImageIcon(
-                                                                          color:
-                                                                              AppColors.secondaryColor,
-                                                                          AssetImage(
-                                                                              Assets.SIDE_ARROW),
-                                                                        )
-                                                                      : const ImageIcon(
-                                                                          color:
-                                                                              AppColors.secondaryColor,
-                                                                          AssetImage(
-                                                                              Assets.DOWN_ARROW),
-                                                                        ),
-                                                                  title: const Text(
-                                                                      "Brand"),
-                                                                ),
-                                                              ),
-                                                              isBrandFilterTileSelected ==
-                                                                      true
-                                                                  ? SingleChildScrollView(
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            right:
-                                                                                15,
-                                                                            left:
-                                                                                15,
-                                                                            bottom:
-                                                                                5,
-                                                                            top:
-                                                                                5),
-                                                                        child:
-                                                                            Column(
-                                                                          children:
-                                                                              List.generate(
-                                                                            state.brandAndCategoryFilterResponse.data.brands.length,
-                                                                            (index) =>
-                                                                                Padding(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                              child: Container(
-                                                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  mainAxisSize: MainAxisSize.max,
-                                                                                  children: <Widget>[
-                                                                                    Text(
-                                                                                      state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                      softWrap: true,
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                    ),
-                                                                                    selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                        ? InkWell(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                selectedBrandFilters = "";
-                                                                                              });
-                                                                                            },
-                                                                                            child: Container(
-                                                                                              height: 20,
-                                                                                              width: 20,
-                                                                                              decoration: const BoxDecoration(
-                                                                                                shape: BoxShape.rectangle,
-                                                                                                image: DecorationImage(
-                                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                  fit: BoxFit.contain,
-                                                                                                  scale: 6,
-                                                                                                ),
-                                                                                                color: AppColors.secondaryColor,
-                                                                                                boxShadow: [
-                                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                ],
-                                                                                              ),
-                                                                                            ),
-                                                                                          )
-                                                                                        : InkWell(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                if (selectedBrandVariants.length > 1) {
-                                                                                                  selectedBrandVariants.removeAt(0);
-                                                                                                }
-                                                                                                selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                              });
-                                                                                            },
-                                                                                            child: Container(
-                                                                                              height: 20,
-                                                                                              width: 20,
-                                                                                              decoration: const BoxDecoration(
-                                                                                                shape: BoxShape.rectangle,
-                                                                                                color: AppColors.primaryWhiteColor,
-                                                                                                boxShadow: [
-                                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                ],
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                  : const SizedBox(),
-                                                              GestureDetector(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    isCategoryFilterTileSelected =
-                                                                        !isCategoryFilterTileSelected;
-                                                                  });
-                                                                },
-                                                                child: ListTile(
-                                                                  trailing: !isCategoryFilterTileSelected ==
-                                                                          true
-                                                                      ? const ImageIcon(
-                                                                          color:
-                                                                              AppColors.secondaryColor,
-                                                                          AssetImage(
-                                                                              Assets.SIDE_ARROW),
-                                                                        )
-                                                                      : const ImageIcon(
-                                                                          color:
-                                                                              AppColors.secondaryColor,
-                                                                          AssetImage(
-                                                                              Assets.DOWN_ARROW),
-                                                                        ),
-                                                                  title: const Text(
-                                                                      "Category"),
-                                                                ),
-                                                              ),
-                                                              isCategoryFilterTileSelected ==
-                                                                      true
-                                                                  ? SingleChildScrollView(
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: const EdgeInsets
-                                                                            .only(
-                                                                            right:
-                                                                                15,
-                                                                            left:
-                                                                                15,
-                                                                            bottom:
-                                                                                5,
-                                                                            top:
-                                                                                5),
-                                                                        child:
-                                                                            Column(
-                                                                          children:
-                                                                              List.generate(
-                                                                            state.brandAndCategoryFilterResponse.data.category.length,
-                                                                            (index) =>
-                                                                                Padding(
-                                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                              child: Container(
-                                                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                child: Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  mainAxisSize: MainAxisSize.max,
-                                                                                  children: <Widget>[
-                                                                                    Text(
-                                                                                      state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                      softWrap: true,
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                    ),
-                                                                                    selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                        ? InkWell(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                selectedCategoryFilters = "";
-                                                                                              });
-                                                                                            },
-                                                                                            child: Container(
-                                                                                              height: 20,
-                                                                                              width: 20,
-                                                                                              decoration: const BoxDecoration(
-                                                                                                shape: BoxShape.rectangle,
-                                                                                                image: DecorationImage(
-                                                                                                  image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                  fit: BoxFit.contain,
-                                                                                                  scale: 6,
-                                                                                                ),
-                                                                                                color: AppColors.secondaryColor,
-                                                                                                boxShadow: [
-                                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                ],
-                                                                                              ),
-                                                                                            ),
-                                                                                          )
-                                                                                        : InkWell(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                if (selectedCategoryVariants.length > 1) {
-                                                                                                  selectedCategoryVariants.removeAt(0);
-                                                                                                }
-                                                                                                selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                              });
-                                                                                            },
-                                                                                            child: Container(
-                                                                                              height: 20,
-                                                                                              width: 20,
-                                                                                              decoration: const BoxDecoration(
-                                                                                                shape: BoxShape.rectangle,
-                                                                                                color: AppColors.primaryWhiteColor,
-                                                                                                boxShadow: [
-                                                                                                  BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                ],
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                                  : const SizedBox(),
-                                                              const SizedBox(
-                                                                  height: 80),
-                                                            ],
-                                                          ),
+                                                            )
+                                                                : const SizedBox(),
+                                                            const SizedBox(
+                                                                height:
+                                                                80),
+                                                          ],
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        bottom: 0,
-                                                        right: 0,
-                                                        left: 0,
-                                                        child: SafeArea(
-                                                          child: Container(
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              color: AppColors
-                                                                  .primaryWhiteColor,
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: AppColors
-                                                                      .boxShadow,
-                                                                  blurRadius: 4,
-                                                                  offset:
-                                                                      Offset(
-                                                                          4, 2),
-                                                                  spreadRadius:
-                                                                      0,
+                                                    ),
+                                                    Positioned(
+                                                      bottom: 0,
+                                                      right: 0,
+                                                      left: 0,
+                                                      child: SafeArea(
+                                                        child: Container(
+                                                          decoration:
+                                                          const BoxDecoration(
+                                                            color: AppColors
+                                                                .primaryWhiteColor,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: AppColors
+                                                                    .boxShadow,
+                                                                blurRadius:
+                                                                4,
+                                                                offset:
+                                                                Offset(
+                                                                    4,
+                                                                    2),
+                                                                spreadRadius:
+                                                                0,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets
+                                                                .only(
+                                                                left: 20,
+                                                                right: 20,
+                                                                bottom:
+                                                                10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    clearFilter();
+                                                                  },
+                                                                  child:
+                                                                  Text(
+                                                                    // "Clear All",
+                                                                    AppLocalizations.of(context)!.clearall,
+                                                                    style:
+                                                                    GoogleFonts.roboto(
+                                                                      color:
+                                                                      AppColors.underlineColor,
+                                                                      fontWeight:
+                                                                      FontWeight.w400,
+                                                                      fontSize:
+                                                                      14,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                ElevatedButton(
+                                                                  style: ElevatedButton
+                                                                      .styleFrom(
+                                                                    fixedSize: const Size(
+                                                                        100,
+                                                                        40),
+                                                                    shape:
+                                                                    RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(8),
+                                                                    ),
+                                                                    backgroundColor:
+                                                                    AppColors.secondaryColor,
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    print(
+                                                                        "Selected Category: $selectedCategoryFilters");
+                                                                    print(
+                                                                        "Selected Brand: $selectedBrandFilters");
+
+                                                                    BlocProvider.of<RewardTierBloc>(context)
+                                                                        .add(
+                                                                      RewardTierRequestEvent(
+                                                                        rewardTierRequest: RewardTierRequest(
+                                                                          sort: "",
+                                                                          eligible: "",
+                                                                          categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
+                                                                          brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                    context
+                                                                        .pop();
+                                                                    _scrollToBottom();
+                                                                  },
+                                                                  child:
+                                                                  Text(
+                                                                    AppLocalizations.of(context)!.apply,
+                                                                    // "Apply",
+                                                                    style:
+                                                                    GoogleFonts.roboto(
+                                                                      color:
+                                                                      AppColors.primaryWhiteColor,
+                                                                      fontWeight:
+                                                                      FontWeight.w400,
+                                                                      fontSize:
+                                                                      14,
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 20,
-                                                                      right: 20,
-                                                                      bottom:
-                                                                          10),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  TextButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      clearFilter();
-                                                                    },
-                                                                    child: Text(
-                                                                      "Clear All",
-                                                                      style: GoogleFonts
-                                                                          .roboto(
-                                                                        color: AppColors
-                                                                            .underlineColor,
-                                                                        fontWeight:
-                                                                            FontWeight.w400,
-                                                                        fontSize:
-                                                                            14,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      top: 0,
+                                                      left: 0,
+                                                      right: 0,
+                                                      child: Container(
+                                                        decoration:
+                                                        const BoxDecoration(
+                                                          color: AppColors
+                                                              .primaryWhiteColor,
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .only(
+                                                            topLeft: Radius
+                                                                .circular(
+                                                                20.0),
+                                                            topRight: Radius
+                                                                .circular(
+                                                                20.0),
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15),
+                                                          child:
+                                                          Container(
+                                                            // height: 40,
+                                                            color: Colors
+                                                                .white,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                  MainAxisAlignment.spaceBetween,
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment.center,
+                                                                  children: [
+                                                                    Text(
+                                                                      AppLocalizations.of(context)!.filterby,
+                                                                      // "Filter by",
+                                                                      style:
+                                                                      GoogleFonts.roboto(
+                                                                        fontSize: 16,
+                                                                        fontWeight: FontWeight.w400,
+                                                                        color: AppColors.primaryGrayColor,
                                                                       ),
                                                                     ),
-                                                                  ),
-                                                                  ElevatedButton(
-                                                                    style: ElevatedButton
-                                                                        .styleFrom(
-                                                                      fixedSize:
-                                                                          const Size(
-                                                                              100,
-                                                                              40),
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(8),
+                                                                    IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        context.pop();
+                                                                      },
+                                                                      icon:
+                                                                      const Icon(
+                                                                        Icons.close,
+                                                                        color: AppColors.primaryGrayColor,
                                                                       ),
-                                                                      backgroundColor:
-                                                                          AppColors
-                                                                              .secondaryColor,
-                                                                    ),
-                                                                    onPressed:
-                                                                        () {
-                                                                      print(
-                                                                          "Selected Category: $selectedCategoryFilters");
-                                                                      print(
-                                                                          "Selected Brand: $selectedBrandFilters");
-
-                                                                      BlocProvider.of<RewardTierBloc>(
-                                                                              context)
-                                                                          .add(
-                                                                        RewardTierRequestEvent(
-                                                                          rewardTierRequest:
-                                                                              RewardTierRequest(
-                                                                            sort:
-                                                                                "",
-                                                                            eligible: eligibleFilter == "Eligible"
-                                                                                ? "1"
-                                                                                : "",
-                                                                            categoryId: selectedCategoryFilters.isEmpty
-                                                                                ? ""
-                                                                                : selectedCategoryFilters,
-                                                                            brandId: selectedBrandFilters.isEmpty
-                                                                                ? ""
-                                                                                : selectedBrandFilters,
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                      context
-                                                                          .pop();
-                                                                      _scrollToBottom();
-                                                                    },
-                                                                    child: Text(
-                                                                      "Apply",
-                                                                      style: GoogleFonts
-                                                                          .roboto(
-                                                                        color: AppColors
-                                                                            .primaryWhiteColor,
-                                                                        fontWeight:
-                                                                            FontWeight.w400,
-                                                                        fontSize:
-                                                                            14,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                const Divider(
+                                                                    color:
+                                                                    AppColors.primaryGrayColor),
+                                                              ],
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                      Positioned(
-                                                        top: 0,
-                                                        left: 0,
-                                                        right: 0,
-                                                        child: Container(
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            color: AppColors
-                                                                .primaryWhiteColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                              topLeft: Radius
-                                                                  .circular(
-                                                                      20.0),
-                                                              topRight: Radius
-                                                                  .circular(
-                                                                      20.0),
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        15),
-                                                            child: Container(
-                                                              // height: 40,
-                                                              color:
-                                                                  Colors.white,
-                                                              child: Column(
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Text(
-                                                                        "Filter by",
-                                                                        style: GoogleFonts
-                                                                            .roboto(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w400,
-                                                                          color:
-                                                                              AppColors.primaryGrayColor,
-                                                                        ),
-                                                                      ),
-                                                                      IconButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          context
-                                                                              .pop();
-                                                                        },
-                                                                        icon:
-                                                                            const Icon(
-                                                                          Icons
-                                                                              .close,
-                                                                          color:
-                                                                              AppColors.primaryGrayColor,
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  const Divider(
-                                                                      color: AppColors
-                                                                          .primaryGrayColor),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                                return const SizedBox();
-                                              },
-                                            );
-                                          },
-                                        );
-                                      });
-                                },
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, right: 8),
-                                  height: 20,
-                                  width: 68,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryWhiteColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
+                                                    ),
+                                                  ],
+                                                );
+                                              }
+                                              return const SizedBox();
+                                            },
+                                          );
+                                        },
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 8, right: 8),
+                                height: 20,
+                                width: 68,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryWhiteColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(4, 2),
+                                      spreadRadius: 0,
+                                    ),
+                                    BoxShadow(
+                                      color: AppColors.boxShadow,
+                                      blurRadius: 4,
+                                      offset: Offset(-4, -2),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      // "Filter",
+                                      AppLocalizations.of(context)!.filter,
+                                      style: const TextStyle(
+                                        color: AppColors.iconGreyColor,
+                                        fontSize: 13,
                                       ),
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(-4, -2),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        "Filter",
-                                        style: TextStyle(
-                                          color: AppColors.iconGreyColor,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                      SvgPicture.asset(
-                                        Assets.FILTER_SVG,
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    SvgPicture.asset(
+                                      Assets.FILTER_SVG,
+                                      height: 10,
+                                      width: 10,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ],
-                        )
-                      : _isShrink && isPartnerSelected == true
-                          ? Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20.0),
-                                              topRight: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          backgroundColor:
-                                              AppColors.primaryWhiteColor,
-                                          barrierColor: Colors.black38,
-                                          elevation: 2,
-                                          isScrollControlled: true,
-                                          isDismissible: true,
-                                          builder: (BuildContext bc) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  setState) {
-                                                void clearFilter() {
-                                                  setState(() {
-                                                    selectedSortVariants =
-                                                        <String>[];
-                                                  });
-                                                }
-
-                                                // filterWidgets.clear();
-                                                return Stack(
-                                                  children: [
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              2,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            const SizedBox(
-                                                                height: 60),
-                                                            Column(
-                                                              children:
-                                                                  List.generate(
-                                                                sort.length,
-                                                                (index) =>
-                                                                    Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8,
-                                                                      vertical:
-                                                                          6),
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            6),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          sort[
-                                                                              index],
-                                                                          softWrap:
-                                                                              true,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyLarge!
-                                                                              .copyWith(
-                                                                                fontSize: 15,
-                                                                              ),
-                                                                        ),
-                                                                        selectedSortVariants.contains(sort[index])
-                                                                            ? InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.remove(sort[index]);
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(enabled: true),
-                                                                              )
-                                                                            : InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.add(sort[index]);
-                                                                                    if (selectedSortVariants.length > 1) {
-                                                                                      selectedSortVariants.removeAt(0);
-                                                                                    }
-                                                                                    selectedSortFilter = selectedSortVariants[0];
-                                                                                    if (selectedSortFilter == "Recent") {
-                                                                                      sortQuery = "recent";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Expiry First") {
-                                                                                      sortQuery = "expire_first";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Points Low") {
-                                                                                      sortQuery = "points_low";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Points High") {
-                                                                                      sortQuery = "points_high";
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(
-                                                                                  enabled: false,
-                                                                                ),
-                                                                              ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 80),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 0,
-                                                      right: 0,
-                                                      left: 0,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  clearFilter();
-                                                                  // context.pop();
-                                                                  BlocProvider.of<
-                                                                              RewardTierBloc>(
-                                                                          context)
-                                                                      .add(
-                                                                    RewardTierRequestEvent(
-                                                                      rewardTierRequest:
-                                                                          RewardTierRequest(
-                                                                        sort:
-                                                                            "",
-                                                                        eligible:
-                                                                            "",
-                                                                        categoryId:
-                                                                            "",
-                                                                        brandId:
-                                                                            "",
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                  "Clear All",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .primaryColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  fixedSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      AppColors
-                                                                          .secondaryColor,
-                                                                ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  print(
-                                                                      selectedSortFilter);
-                                                                  BlocProvider.of<
-                                                                              RewardTierBloc>(
-                                                                          context)
-                                                                      .add(
-                                                                    RewardTierRequestEvent(
-                                                                      rewardTierRequest:
-                                                                          RewardTierRequest(
-                                                                        sort:
-                                                                            sortQuery,
-                                                                        eligible:
-                                                                            "",
-                                                                        categoryId:
-                                                                            "",
-                                                                        brandId:
-                                                                            "",
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                  context.pop();
-                                                                },
-                                                                child: Text(
-                                                                  "Apply",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .primaryWhiteColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      // bottom: 20,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    "Sort by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .pop();
-                                                                      clearFilter();
-                                                                    },
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      height: 20,
-                                      width: 68,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryWhiteColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(4, 2),
-                                            spreadRadius: 0,
-                                          ),
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(-4, -2),
-                                            spreadRadius: 0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            "Sort",
-                                            style: TextStyle(
-                                              color: AppColors.iconGreyColor,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          SvgPicture.asset(
-                                            Assets.SORT_SVG,
-                                            height: 10,
-                                            width: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 15),
-                                Flexible(
-                                  flex: 1,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20.0),
-                                              topRight: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          backgroundColor:
-                                              AppColors.primaryWhiteColor,
-                                          barrierColor: Colors.black38,
-                                          elevation: 2,
-                                          isScrollControlled: true,
-                                          isDismissible: true,
-                                          builder: (BuildContext bc) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  setState) {
-                                                void clearFilter() {
-                                                  setState(() {
-                                                    selectedBrandVariants =
-                                                        <String>[];
-                                                    selectedBrandFilters = "";
-                                                    selectedCategoryVariants =
-                                                        <String>[];
-                                                    selectedCategoryFilters =
-                                                        "";
-                                                  });
-                                                }
-
-                                                return BlocBuilder<FilterBloc,
-                                                    FilterState>(
-                                                  builder: (context, state) {
-                                                    if (state is BrandLoading) {
-                                                      return Center(
-                                                        child: Lottie.asset(
-                                                            Assets.JUMBINGDOT,
-                                                            height: 100,
-                                                            width: 100),
-                                                      );
-                                                    }
-                                                    if (state is BrandLoaded) {
-                                                      return Stack(
-                                                        children: [
-                                                          SizedBox(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                1.6,
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                children: [
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          60),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            8,
-                                                                        vertical:
-                                                                            6),
-                                                                    child:
-                                                                        Container(
-                                                                      padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                          horizontal:
-                                                                              10,
-                                                                          vertical:
-                                                                              6),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            "Eligible",
-                                                                            softWrap:
-                                                                                true,
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                  fontSize: 15,
-                                                                                ),
-                                                                          ),
-                                                                          eligibleFilter == "Eligible"
-                                                                              ? InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      eligibleFilter = "";
-                                                                                      // selectedFilters[]
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                        scale: 6,
-                                                                                      ),
-                                                                                      color: AppColors.secondaryColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                )
-                                                                              : InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      eligibleFilter = "Eligible";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      color: AppColors.primaryWhiteColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        isBrandFilterTileSelected =
-                                                                            !isBrandFilterTileSelected;
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                        ListTile(
-                                                                      trailing: !isBrandFilterTileSelected ==
-                                                                              true
-                                                                          ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
-                                                                          : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title: const Text(
-                                                                          "Brand"),
-                                                                    ),
-                                                                  ),
-                                                                  isBrandFilterTileSelected ==
-                                                                          true
-                                                                      ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Column(
-                                                                              children: List.generate(
-                                                                                state.brandAndCategoryFilterResponse.data.brands.length,
-                                                                                (index) => Padding(
-                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                                  child: Container(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                          softWrap: true,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                                fontSize: 15,
-                                                                                              ),
-                                                                                        ),
-                                                                                        selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                            ? InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                    selectedBrandFilters = "";
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                      scale: 6,
-                                                                                                    ),
-                                                                                                    color: AppColors.secondaryColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            : InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                    if (selectedBrandVariants.length > 1) {
-                                                                                                      selectedBrandVariants.removeAt(0);
-                                                                                                    }
-                                                                                                    selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    color: AppColors.primaryWhiteColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : const SizedBox(),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        isCategoryFilterTileSelected =
-                                                                            !isCategoryFilterTileSelected;
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                        ListTile(
-                                                                      trailing: !isCategoryFilterTileSelected ==
-                                                                              true
-                                                                          ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
-                                                                          : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title: const Text(
-                                                                          "Category"),
-                                                                    ),
-                                                                  ),
-                                                                  isCategoryFilterTileSelected ==
-                                                                          true
-                                                                      ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Column(
-                                                                              children: List.generate(
-                                                                                state.brandAndCategoryFilterResponse.data.category.length,
-                                                                                (index) => Padding(
-                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                                  child: Container(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                          softWrap: true,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                                fontSize: 15,
-                                                                                              ),
-                                                                                        ),
-                                                                                        selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                            ? InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                    selectedCategoryFilters = "";
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                      scale: 6,
-                                                                                                    ),
-                                                                                                    color: AppColors.secondaryColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            : InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                    if (selectedCategoryVariants.length > 1) {
-                                                                                                      selectedCategoryVariants.removeAt(0);
-                                                                                                    }
-                                                                                                    selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    color: AppColors.primaryWhiteColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : const SizedBox(),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          80),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Positioned(
-                                                            bottom: 0,
-                                                            right: 0,
-                                                            left: 0,
-                                                            child: SafeArea(
-                                                              child: Container(
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color: AppColors
-                                                                      .primaryWhiteColor,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: AppColors
-                                                                          .boxShadow,
-                                                                      blurRadius:
-                                                                          4,
-                                                                      offset:
-                                                                          Offset(
-                                                                              4,
-                                                                              2),
-                                                                      spreadRadius:
-                                                                          0,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .only(
-                                                                      left: 20,
-                                                                      right: 20,
-                                                                      bottom:
-                                                                          10),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          clearFilter();
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          "Clear All",
-                                                                          style:
-                                                                              GoogleFonts.roboto(
-                                                                            color:
-                                                                                AppColors.underlineColor,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize:
-                                                                                14,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      ElevatedButton(
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          fixedSize: const Size(
-                                                                              100,
-                                                                              40),
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8),
-                                                                          ),
-                                                                          backgroundColor:
-                                                                              AppColors.secondaryColor,
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          print(
-                                                                              "Selected Category: $selectedCategoryFilters");
-                                                                          print(
-                                                                              "Selected Brand: $selectedBrandFilters");
-
-                                                                          BlocProvider.of<RewardTierBloc>(context)
-                                                                              .add(
-                                                                            RewardTierRequestEvent(
-                                                                              rewardTierRequest: RewardTierRequest(
-                                                                                sort: "",
-                                                                                eligible: eligibleFilter == "Eligible" ? "1" : "",
-                                                                                categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
-                                                                                brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                          context
-                                                                              .pop();
-                                                                          _scrollToBottom();
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          "Apply",
-                                                                          style:
-                                                                              GoogleFonts.roboto(
-                                                                            color:
-                                                                                AppColors.primaryWhiteColor,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize:
-                                                                                14,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Positioned(
-                                                            top: 0,
-                                                            left: 0,
-                                                            right: 0,
-                                                            child: Container(
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                color: AppColors
-                                                                    .primaryWhiteColor,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          20.0),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          20.0),
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        15),
-                                                                child:
-                                                                    Container(
-                                                                  // height: 40,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Text(
-                                                                            "Filter by",
-                                                                            style:
-                                                                                GoogleFonts.roboto(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.w400,
-                                                                              color: AppColors.primaryGrayColor,
-                                                                            ),
-                                                                          ),
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              context.pop();
-                                                                              clearFilter();
-                                                                            },
-                                                                            icon:
-                                                                                const Icon(
-                                                                              Icons.close,
-                                                                              color: AppColors.primaryGrayColor,
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                      const Divider(
-                                                                          color:
-                                                                              AppColors.primaryGrayColor),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }
-                                                    return const SizedBox();
-                                                  },
-                                                );
-                                              },
-                                            );
-                                          });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      height: 20,
-                                      width: 68,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryWhiteColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(4, 2),
-                                            spreadRadius: 0,
-                                          ),
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(-4, -2),
-                                            spreadRadius: 0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            "Filter",
-                                            style: TextStyle(
-                                              color: AppColors.iconGreyColor,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          SvgPicture.asset(
-                                            Assets.FILTER_SVG,
-                                            height: 10,
-                                            width: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : null,
-              floating: false,
-              backgroundColor: AppColors.primaryColor,
-              expandedHeight: 300,
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: false,
-                background: SafeArea(
-                  child: Column(
-                    children: [
-                      SliverBackgroundWidget(
-                        isLetsCollectRewardSelected: isLetsCollectSelected,
-                        isPartnerSelected: isPartnerSelected,
-                        isBrandSelected: isBrandSelected,
-                        letsCollectTotalPoints: letsCollectTotalPoints,
-                      ),
-                      isRewardTierSelected && !_isShrink
-                          ? Padding(
-                              padding: const EdgeInsets.only(left: 20, top: 25),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20.0),
-                                              topRight: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          backgroundColor:
-                                              AppColors.primaryWhiteColor,
-                                          barrierColor: Colors.black38,
-                                          elevation: 2,
-                                          isScrollControlled: true,
-                                          isDismissible: true,
-                                          builder: (BuildContext bc) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  setState) {
-                                                void clearFilter() {
-                                                  setState(() {
-                                                    selectedSortVariants =
-                                                        <String>[];
-                                                  });
-                                                }
-
-                                                // filterWidgets.clear();
-                                                return Stack(
-                                                  children: [
-                                                    SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .height /
-                                                              2,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            const SizedBox(
-                                                                height: 60),
-                                                            Column(
-                                                              children:
-                                                                  List.generate(
-                                                                sort.length,
-                                                                (index) =>
-                                                                    Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8,
-                                                                      vertical:
-                                                                          6),
-                                                                  child:
-                                                                      Container(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            10,
-                                                                        vertical:
-                                                                            6),
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .max,
-                                                                      children: <Widget>[
-                                                                        Text(
-                                                                          sort[
-                                                                              index],
-                                                                          softWrap:
-                                                                              true,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style: Theme.of(context)
-                                                                              .textTheme
-                                                                              .bodyLarge!
-                                                                              .copyWith(
-                                                                                fontSize: 15,
-                                                                              ),
-                                                                        ),
-                                                                        selectedSortVariants.contains(sort[index])
-                                                                            ? InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.remove(sort[index]);
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(enabled: true),
-                                                                              )
-                                                                            : InkWell(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    selectedSortVariants.add(sort[index]);
-                                                                                    if (selectedSortVariants.length > 1) {
-                                                                                      selectedSortVariants.removeAt(0);
-                                                                                    }
-                                                                                    selectedSortFilter = selectedSortVariants[0];
-                                                                                    if (selectedSortFilter == "Recent") {
-                                                                                      sortQuery = "recent";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Expiry First") {
-                                                                                      sortQuery = "expire_first";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Points Low") {
-                                                                                      sortQuery = "points_low";
-                                                                                    }
-                                                                                    if (selectedSortFilter == "Points High") {
-                                                                                      sortQuery = "points_high";
-                                                                                    }
-                                                                                  });
-                                                                                },
-                                                                                child: const CustomRoundedButton(
-                                                                                  enabled: false,
-                                                                                ),
-                                                                              ),
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 80),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      bottom: 0,
-                                                      right: 0,
-                                                      left: 0,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  left: 20,
-                                                                  right: 20,
-                                                                  bottom: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  clearFilter();
-                                                                  context.pop();
-                                                                  BlocProvider.of<
-                                                                              RewardTierBloc>(
-                                                                          context)
-                                                                      .add(
-                                                                    RewardTierRequestEvent(
-                                                                      rewardTierRequest:
-                                                                          RewardTierRequest(
-                                                                        sort:
-                                                                            "",
-                                                                        eligible:
-                                                                            "",
-                                                                        categoryId:
-                                                                            "",
-                                                                        brandId:
-                                                                            "",
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                child: Text(
-                                                                  // AppLocalizations.of(context)!.clearall,
-                                                                  "Clear All",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .primaryColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                  fixedSize:
-                                                                      const Size(
-                                                                          100,
-                                                                          40),
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(8),
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      AppColors
-                                                                          .secondaryColor,
-                                                                ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  print(
-                                                                      selectedSortFilter);
-                                                                  BlocProvider.of<
-                                                                              RewardTierBloc>(
-                                                                          context)
-                                                                      .add(
-                                                                    RewardTierRequestEvent(
-                                                                      rewardTierRequest:
-                                                                          RewardTierRequest(
-                                                                        sort:
-                                                                            sortQuery,
-                                                                        eligible:
-                                                                            "",
-                                                                        categoryId:
-                                                                            "",
-                                                                        brandId:
-                                                                            "",
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                  context.pop();
-                                                                },
-                                                                child: Text(
-                                                                  AppLocalizations.of(
-                                                                          context)!
-                                                                      .apply,
-                                                                  // "Apply",
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .roboto(
-                                                                    color: AppColors
-                                                                        .primaryWhiteColor,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    fontSize:
-                                                                        14,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 0,
-                                                      right: 0,
-                                                      // bottom: 20,
-                                                      child: SafeArea(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15),
-                                                          child: Column(
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    AppLocalizations.of(
-                                                                            context)!
-                                                                        .sortby,
-                                                                    // "Sort by",
-                                                                    style: GoogleFonts
-                                                                        .roboto(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  ),
-                                                                  IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      context
-                                                                          .pop();
-                                                                      clearFilter();
-                                                                    },
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .close,
-                                                                      color: AppColors
-                                                                          .primaryGrayColor,
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              const Divider(
-                                                                  color: AppColors
-                                                                      .primaryGrayColor),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      height: 20,
-                                      width: 68,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryWhiteColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(4, 2),
-                                            spreadRadius: 0,
-                                          ),
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(-4, -2),
-                                            spreadRadius: 0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!.sort,
-                                            // "Sort",
-                                            style: const TextStyle(
-                                              color: AppColors.iconGreyColor,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          SvgPicture.asset(
-                                            Assets.SORT_SVG,
-                                            height: 10,
-                                            width: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  GestureDetector(
-                                    onTap: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20.0),
-                                              topRight: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          backgroundColor:
-                                              AppColors.primaryWhiteColor,
-                                          barrierColor: Colors.black38,
-                                          elevation: 2,
-                                          isScrollControlled: true,
-                                          isDismissible: true,
-                                          builder: (BuildContext bc) {
-                                            return StatefulBuilder(
-                                              builder: (BuildContext context,
-                                                  setState) {
-                                                void clearFilter() {
-                                                  setState(() {
-                                                    selectedBrandVariants =
-                                                        <String>[];
-                                                    selectedBrandFilters = "";
-                                                    selectedCategoryVariants =
-                                                        <String>[];
-                                                    selectedCategoryFilters =
-                                                        "";
-                                                  });
-                                                }
-
-                                                // filterWidgets.clear();
-
-                                                return BlocBuilder<FilterBloc,
-                                                    FilterState>(
-                                                  builder: (context, state) {
-                                                    if (state is BrandLoading) {
-                                                      return Center(
-                                                        child: Lottie.asset(
-                                                            Assets.JUMBINGDOT,
-                                                            height: 100,
-                                                            width: 100),
-                                                      );
-                                                    }
-                                                    if (state is BrandLoaded) {
-                                                      return Stack(
-                                                        children: [
-                                                          SizedBox(
-                                                            height: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .height /
-                                                                1.6,
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              child: Column(
-                                                                children: [
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          60),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                        horizontal:
-                                                                            8,
-                                                                        vertical:
-                                                                            6),
-                                                                    child:
-                                                                        Container(
-                                                                      padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                          horizontal:
-                                                                              10,
-                                                                          vertical:
-                                                                              6),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.max,
-                                                                        children: <Widget>[
-                                                                          Text(
-                                                                            AppLocalizations.of(context)!.eligible,
-                                                                            // "Eligible",
-                                                                            softWrap:
-                                                                                true,
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                  fontSize: 15,
-                                                                                ),
-                                                                          ),
-                                                                          eligibleFilter == "Eligible"
-                                                                              ? InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      eligibleFilter = "";
-                                                                                      // selectedFilters[]
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      image: DecorationImage(
-                                                                                        image: AssetImage(Assets.DISABLED_TICK),
-                                                                                        fit: BoxFit.contain,
-                                                                                        scale: 6,
-                                                                                      ),
-                                                                                      color: AppColors.secondaryColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                )
-                                                                              : InkWell(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      eligibleFilter = "Eligible";
-                                                                                    });
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 20,
-                                                                                    width: 20,
-                                                                                    decoration: const BoxDecoration(
-                                                                                      shape: BoxShape.rectangle,
-                                                                                      color: AppColors.primaryWhiteColor,
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        isBrandFilterTileSelected =
-                                                                            !isBrandFilterTileSelected;
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                        ListTile(
-                                                                      trailing: !isBrandFilterTileSelected ==
-                                                                              true
-                                                                          ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
-                                                                          : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title:
-                                                                          Text(
-                                                                        AppLocalizations.of(context)!
-                                                                            .brand,
-                                                                        // "Brand"
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  isBrandFilterTileSelected ==
-                                                                          true
-                                                                      ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Column(
-                                                                              children: List.generate(
-                                                                                state.brandAndCategoryFilterResponse.data.brands.length,
-                                                                                (index) => Padding(
-                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                                  child: Container(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          state.brandAndCategoryFilterResponse.data.brands[index].brandName,
-                                                                                          softWrap: true,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                                fontSize: 15,
-                                                                                              ),
-                                                                                        ),
-                                                                                        selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
-                                                                                            ? InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                    selectedBrandFilters = "";
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                      scale: 6,
-                                                                                                    ),
-                                                                                                    color: AppColors.secondaryColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            : InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
-                                                                                                    if (selectedBrandVariants.length > 1) {
-                                                                                                      selectedBrandVariants.removeAt(0);
-                                                                                                    }
-                                                                                                    selectedBrandFilters = selectedBrandVariants[0].toString();
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    color: AppColors.primaryWhiteColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : const SizedBox(),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        isCategoryFilterTileSelected =
-                                                                            !isCategoryFilterTileSelected;
-                                                                      });
-                                                                    },
-                                                                    child:
-                                                                        ListTile(
-                                                                      trailing: !isCategoryFilterTileSelected ==
-                                                                              true
-                                                                          ? const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.SIDE_ARROW),
-                                                                            )
-                                                                          : const ImageIcon(
-                                                                              color: AppColors.secondaryColor,
-                                                                              AssetImage(Assets.DOWN_ARROW),
-                                                                            ),
-                                                                      title:
-                                                                          Text(
-                                                                        // "Category"
-                                                                        AppLocalizations.of(context)!
-                                                                            .category,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  isCategoryFilterTileSelected ==
-                                                                          true
-                                                                      ? SingleChildScrollView(
-                                                                          child:
-                                                                              Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 15,
-                                                                                left: 15,
-                                                                                bottom: 5,
-                                                                                top: 5),
-                                                                            child:
-                                                                                Column(
-                                                                              children: List.generate(
-                                                                                state.brandAndCategoryFilterResponse.data.category.length,
-                                                                                (index) => Padding(
-                                                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                                                                                  child: Container(
-                                                                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                      mainAxisSize: MainAxisSize.max,
-                                                                                      children: <Widget>[
-                                                                                        Text(
-                                                                                          state.brandAndCategoryFilterResponse.data.category[index].category,
-                                                                                          softWrap: true,
-                                                                                          overflow: TextOverflow.ellipsis,
-                                                                                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                                                                fontSize: 15,
-                                                                                              ),
-                                                                                        ),
-                                                                                        selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
-                                                                                            ? InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                    selectedCategoryFilters = "";
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    image: DecorationImage(
-                                                                                                      image: AssetImage(Assets.DISABLED_TICK),
-                                                                                                      fit: BoxFit.contain,
-                                                                                                      scale: 6,
-                                                                                                    ),
-                                                                                                    color: AppColors.secondaryColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            : InkWell(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
-                                                                                                    if (selectedCategoryVariants.length > 1) {
-                                                                                                      selectedCategoryVariants.removeAt(0);
-                                                                                                    }
-                                                                                                    selectedCategoryFilters = selectedCategoryVariants[0].toString();
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 20,
-                                                                                                  width: 20,
-                                                                                                  decoration: const BoxDecoration(
-                                                                                                    shape: BoxShape.rectangle,
-                                                                                                    color: AppColors.primaryWhiteColor,
-                                                                                                    boxShadow: [
-                                                                                                      BoxShadow(blurRadius: 1.5, color: Colors.black38, offset: Offset(0, 1))
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      : const SizedBox(),
-                                                                  const SizedBox(
-                                                                      height:
-                                                                          80),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Positioned(
-                                                            bottom: 0,
-                                                            right: 0,
-                                                            left: 0,
-                                                            child: SafeArea(
-                                                              child: Container(
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  color: AppColors
-                                                                      .primaryWhiteColor,
-                                                                  boxShadow: [
-                                                                    BoxShadow(
-                                                                      color: AppColors
-                                                                          .boxShadow,
-                                                                      blurRadius:
-                                                                          4,
-                                                                      offset:
-                                                                          Offset(
-                                                                              4,
-                                                                              2),
-                                                                      spreadRadius:
-                                                                          0,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .only(
-                                                                      left: 20,
-                                                                      right: 20,
-                                                                      bottom:
-                                                                          10),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          clearFilter();
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          AppLocalizations.of(context)!
-                                                                              .clear,
-                                                                          // "Clear All",
-                                                                          style:
-                                                                              GoogleFonts.roboto(
-                                                                            color:
-                                                                                AppColors.underlineColor,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize:
-                                                                                14,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      ElevatedButton(
-                                                                        style: ElevatedButton
-                                                                            .styleFrom(
-                                                                          fixedSize: const Size(
-                                                                              100,
-                                                                              40),
-                                                                          shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8),
-                                                                          ),
-                                                                          backgroundColor:
-                                                                              AppColors.secondaryColor,
-                                                                        ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          print(
-                                                                              "Selected Category: $selectedCategoryFilters");
-                                                                          print(
-                                                                              "Selected Brand: $selectedBrandFilters");
-
-                                                                          BlocProvider.of<RewardTierBloc>(context)
-                                                                              .add(
-                                                                            RewardTierRequestEvent(
-                                                                              rewardTierRequest: RewardTierRequest(
-                                                                                sort: "",
-                                                                                eligible: "",
-                                                                                categoryId: selectedCategoryFilters.isEmpty ? "" : selectedCategoryFilters,
-                                                                                brandId: selectedBrandFilters.isEmpty ? "" : selectedBrandFilters,
-                                                                              ),
-                                                                            ),
-                                                                          );
-                                                                          context
-                                                                              .pop();
-                                                                          _scrollToBottom();
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          AppLocalizations.of(context)!
-                                                                              .apply,
-                                                                          // "Apply",
-                                                                          style:
-                                                                              GoogleFonts.roboto(
-                                                                            color:
-                                                                                AppColors.primaryWhiteColor,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            fontSize:
-                                                                                14,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Positioned(
-                                                            top: 0,
-                                                            left: 0,
-                                                            right: 0,
-                                                            child: Container(
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                color: AppColors
-                                                                    .primaryWhiteColor,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .only(
-                                                                  topLeft: Radius
-                                                                      .circular(
-                                                                          20.0),
-                                                                  topRight: Radius
-                                                                      .circular(
-                                                                          20.0),
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        15),
-                                                                child:
-                                                                    Container(
-                                                                  // height: 40,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Text(
-                                                                            AppLocalizations.of(context)!.filterby,
-                                                                            // "Filter by",
-                                                                            style:
-                                                                                GoogleFonts.roboto(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.w400,
-                                                                              color: AppColors.primaryGrayColor,
-                                                                            ),
-                                                                          ),
-                                                                          IconButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              context.pop();
-                                                                            },
-                                                                            icon:
-                                                                                const Icon(
-                                                                              Icons.close,
-                                                                              color: AppColors.primaryGrayColor,
-                                                                            ),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                      const Divider(
-                                                                          color:
-                                                                              AppColors.primaryGrayColor),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    }
-                                                    return const SizedBox();
-                                                  },
-                                                );
-                                              },
-                                            );
-                                          });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.only(
-                                          left: 8, right: 8),
-                                      height: 20,
-                                      width: 68,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryWhiteColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(4, 2),
-                                            spreadRadius: 0,
-                                          ),
-                                          BoxShadow(
-                                            color: AppColors.boxShadow,
-                                            blurRadius: 4,
-                                            offset: Offset(-4, -2),
-                                            spreadRadius: 0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .filter,
-                                            // "Filter",
-                                            style: const TextStyle(
-                                              color: AppColors.iconGreyColor,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                          SvgPicture.asset(
-                                            Assets.FILTER_SVG,
-                                            height: 10,
-                                            width: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
+                        ),
+                      )
                           : const SizedBox(),
                     ],
                   ),
@@ -4147,8 +4230,8 @@ class _RewardScreenState extends State<RewardScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(
-                          top: 10, bottom: 1, left: 15, right: 15),
+                      padding:
+                      const EdgeInsets.only(top: 10, bottom: 1, left: 15,right: 15),
                       color: AppColors.primaryWhiteColor,
                       width: MediaQuery.of(context).size.width,
                       height: 30,
@@ -4219,13 +4302,12 @@ class _RewardScreenState extends State<RewardScreen> {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .letscollectrewards,
+                                AppLocalizations.of(context)!.letscollectrewards,
                                 // "Lets Collect Reward",
                                 style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w400,
                                   fontSize:
-                                      isLetsCollectSelected == true ? 15 : 12,
+                                  isLetsCollectSelected == true ? 15 : 12,
                                   color: isLetsCollectSelected == true
                                       ? AppColors.primaryWhiteColor
                                       : AppColors.primaryBlackColor,
@@ -4239,7 +4321,6 @@ class _RewardScreenState extends State<RewardScreen> {
                               setState(() {
                                 isLetsCollectSelected = false;
                                 isBrandSelected = true;
-                                isRewardTierSelected = true;
                                 isPartnerSelected = false;
                               });
                             },
@@ -4299,7 +4380,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                 isLetsCollectSelected = false;
                                 isBrandSelected = false;
                                 isPartnerSelected = true;
-                                isRewardTierSelected = true;
                               });
                             },
                             child: Container(
@@ -4364,14 +4444,14 @@ class _RewardScreenState extends State<RewardScreen> {
                     isLetsCollectSelected == true
                         ? buildLetsCollectRewardTierMethod()
                         : isBrandSelected == true
-                            ? buildBrandRewardTierMethod()
-                            : isPartnerSelected == true
-                                ? buildPartnerRewardTierMethod()
-                                : SizedBox(
-                                    child: Center(
-                                      child: Lottie.asset(Assets.CHOOSE),
-                                    ),
-                                  ),
+                        ? buildBrandRewardTierMethod()
+                        : isPartnerSelected == true
+                        ? buildPartnerRewardTierMethod()
+                        : SizedBox(
+                      child: Center(
+                        child: Lottie.asset(Assets.CHOOSE),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -4396,17 +4476,54 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.errorMsg
+                        : AppLocalizations.of(context)!.oopslookslikewearefacing,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child:  Text(
+                      AppLocalizations.of(context)!.tryagain,
+                      // "Try again",
+                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
@@ -4416,7 +4533,7 @@ class _RewardScreenState extends State<RewardScreen> {
             return GridView.builder(
                 shrinkWrap: true,
                 itemCount:
-                    state.rewardTierRequestResponse.data!.letsCollect!.length,
+                state.rewardTierRequestResponse.data!.letsCollect!.length,
                 padding: const EdgeInsets.only(bottom: 150, top: 20),
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -4431,9 +4548,7 @@ class _RewardScreenState extends State<RewardScreen> {
                       context.push(
                         '/lets_collect_redeem',
                         extra: LetCollectRedeemScreenArguments(
-                          totalPoint: state
-                              .rewardTierRequestResponse.totalPoints
-                              .toString(),
+                          totalPoint: state.rewardTierRequestResponse.totalPoints.toString(),
                           rewardId: state.rewardTierRequestResponse.data!
                               .letsCollect![index].rewardId,
                           requiredPoint: state.rewardTierRequestResponse.data!
@@ -4443,8 +4558,8 @@ class _RewardScreenState extends State<RewardScreen> {
                               .letsCollect![index].rewardImage!,
                           wereToRedeem: state.rewardTierRequestResponse.data!
                               .letsCollect![index].reedemStores!,
-                          brandName: state.rewardTierRequestResponse.data!
-                              .brand![index].brandName!,
+                          wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                              .letsCollect![index].reedemStores!,
                         ),
                       );
                     },
@@ -4474,7 +4589,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                   alignment: Alignment.center,
                                   fadeInCurve: Curves.easeIn,
                                   fadeInDuration:
-                                      const Duration(milliseconds: 200),
+                                  const Duration(milliseconds: 200),
                                   fit: BoxFit.contain,
                                   imageUrl: state.rewardTierRequestResponse
                                       .data!.letsCollect![index].rewardImage!,
@@ -4491,7 +4606,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                     ),
                                   ),
                                   errorWidget: (context, url, error) =>
-                                      const ImageIcon(
+                                  const ImageIcon(
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),
@@ -4503,7 +4618,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             flex: 1,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(top: 8.0, left: 20),
+                              const EdgeInsets.only(top: 8.0, left: 20),
                               child: Text(
                                 state.rewardTierRequestResponse.data!
                                     .letsCollect![index].requiredPoints
@@ -4546,17 +4661,54 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.errorMsg
+                        : AppLocalizations.of(context)!.oopslookslikewearefacing,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child:  Text(
+                      // "Try again",
+                      AppLocalizations.of(context)!.tryagain,
+                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
@@ -4593,8 +4745,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         iD: state.rewardTierRequestResponse.data!.brand![index]
                             .brandId
                             .toString(),
-                        brandName: state.rewardTierRequestResponse.data!
-                            .brand![index].brandName!,
+                        wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                            .brand![index].reedemStores!,
                       ),
                     );
                   },
@@ -4618,7 +4770,7 @@ class _RewardScreenState extends State<RewardScreen> {
                       ],
                       borderRadius: BorderRadius.circular(5),
                       border:
-                          Border.all(color: AppColors.borderColor, width: 1),
+                      Border.all(color: AppColors.borderColor, width: 1),
                     ),
                     child: Center(
                       child: SizedBox(
@@ -4676,17 +4828,54 @@ class _RewardScreenState extends State<RewardScreen> {
           );
         }
         if (state is RewardTierError) {
-          return Center(
-            heightFactor: 3,
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Lottie.asset(Assets.TRY_AGAIN, width: 230, height: 100),
-                Text(
-                  state.errorMsg,
-                  style: GoogleFonts.roboto(
-                      color: AppColors.secondaryColor, fontSize: 16),
-                )
+                Flexible(
+                  flex: 4,
+                  child: Lottie.asset(Assets.TRY_AGAIN),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.errorMsg
+                        : AppLocalizations.of(context)!.oopslookslikewearefacing,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primaryColor),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        fixedSize: const Size(100, 50),
+                        backgroundColor: AppColors.primaryColor),
+                    onPressed: () {
+                      BlocProvider.of<RewardTierBloc>(context).add(
+                        RewardTierRequestEvent(
+                          rewardTierRequest: RewardTierRequest(
+                              sort: "", eligible: "", categoryId: "", brandId: ""),
+                        ),
+                      );
+                    },
+                    child:  Text(
+                      // "Try again",
+                      AppLocalizations.of(context)!.tryagain,
+                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                ),
+                // const Text("state"),
               ],
             ),
           );
@@ -4723,8 +4912,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         iD: state.rewardTierRequestResponse.data!
                             .partner![index].brandId
                             .toString(),
-                        brandName: state.rewardTierRequestResponse.data!
-                            .brand![index].brandName!,
+                        wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                            .brand![index].reedemStores!,
                       ),
                     );
                   },
@@ -4748,7 +4937,8 @@ class _RewardScreenState extends State<RewardScreen> {
                         ],
                         borderRadius: BorderRadius.circular(5),
                         border:
-                            Border.all(color: AppColors.borderColor, width: 1)),
+                        Border.all(color: AppColors.borderColor, width: 1)
+                    ),
                     child: Center(
                       child: SizedBox(
                         width: 120,

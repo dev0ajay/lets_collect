@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:lets_collect/src/model/auth/facebook_sign_in_request.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_email_model.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_otp_request.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
@@ -16,6 +17,7 @@ import 'package:lets_collect/src/model/reward_tier/brand_and_partner_product_req
 import 'package:lets_collect/src/model/reward_tier/reward_tier_request.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import '../../model/auth/apple_signin_request.dart';
+import '../../model/change_password/change_password_request.dart';
 import '../../model/contact_us/contact_us_request.dart';
 import '../../model/edit_profile/edit_profile_request.dart';
 import '../../model/point_tracker/point_tracker_details_request.dart';
@@ -436,14 +438,11 @@ class ApiClient {
     return dioLetsCollect.post(
       UrlsLetsCollect.CONTACT_US,
       data: contactUsRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
-
 
   /// How to Redeem My Points
   Future<Response> getHowToRedeemMyPoints() {
@@ -452,79 +451,63 @@ class ApiClient {
     );
   }
 
-
   /// Point Calculations
   Future<Response> getPointCalculations() {
-    return dioLetsCollect.get(
-        UrlsLetsCollect.POINT_CALCULATIONS
-    );
+    return dioLetsCollect.get(UrlsLetsCollect.POINT_CALCULATIONS);
   }
-
 
   /// Delete Account
   Future<Response> deleteAccount() {
     return dioLetsCollect.post(
       UrlsLetsCollect.DELETE_ACCOUNT,
       // data: contactUsRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
-
 
   ///Redemption History
   Future<Response> getRedemptionHistoryResponse() {
     return dioLetsCollect.post(
       UrlsLetsCollect.REDEMPTION_HISTORY,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
-
 
   ///Referral List
   Future<Response> getReferralListResponse() {
     return dioLetsCollect.post(
       UrlsLetsCollect.REFERRAL_LIST,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
   ///Referral Friend
-  Future<Response> getReferralFriendRequestResponse(ReferralFriendRequest referralFriendRequest) {
+  Future<Response> getReferralFriendRequestResponse(
+      ReferralFriendRequest referralFriendRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.REFERRAL_FRIEND,
-      data:referralFriendRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      data: referralFriendRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
-
-
   ///Referral Code Update
-  Future<Response> getReferralCodeUpdateClient(ReferralCodeUpdateRequest referralCodeUpdateRequest) {
+  Future<Response> getReferralCodeUpdateClient(
+      ReferralCodeUpdateRequest referralCodeUpdateRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.REFERRAL_CODE_UPDATE,
-      data:referralCodeUpdateRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      data: referralCodeUpdateRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 
@@ -536,6 +519,25 @@ class ApiClient {
     );
   }
 
+  ///Facebook SignIn
+  Future<Response> signInWithFacebook(
+      FacebookSignInRequest facebookSignInRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.FACEBOOK_SIGNIN,
+      data: facebookSignInRequest,
+    );
+  }
 
-
+  ///Change Password
+  Future<Response> getChangePasswordClient(ChangePasswordRequest changePasswordRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.CHANGE_PASSWORD,
+      data:changePasswordRequest,
+      options: Options(
+          headers: {
+            "Authorization": ObjectFactory().prefs.getAuthToken(),
+          }
+      ),
+    );
+  }
 }

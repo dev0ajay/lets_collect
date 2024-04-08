@@ -16,6 +16,8 @@ class UrlsLetsCollect {
   static const String  FORGOT_PASSWORD_RESET= "/api/recover_password";
   static const String  GOOGLE_LOGIN= "/api/google_login";
   static const String  APPLE_SIGNIN= "/api/apple_login";
+  static const String  FACEBOOK_SIGNIN= "/api/facebook_login";
+
 
 
   ///Search Category
@@ -48,6 +50,7 @@ class UrlsLetsCollect {
   static const String REFERRAL_LIST = "/api/lcuser/referral_list";
   static const String REFERRAL_FRIEND = "/api/lcuser/refer_friend";
   static const String REFERRAL_CODE_UPDATE = "/api/lcuser/referral_code_update";
+  static const String CHANGE_PASSWORD = "/api/lcadmin/change_password";
 
 
 

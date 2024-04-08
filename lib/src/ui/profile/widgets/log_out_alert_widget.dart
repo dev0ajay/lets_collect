@@ -39,7 +39,7 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
   }
 
   Future<void> _signOut() async {
-   await GoogleSignIn().signOut();
+    await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
   }
 
@@ -89,7 +89,7 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                 fixedSize: const Size(100, 40),
                                 backgroundColor: AppColors.secondaryColor,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                               onPressed: () {
@@ -98,13 +98,14 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                     .signOut();
                                 ObjectFactory().prefs.setIsLoggedIn(false);
                                 ObjectFactory().prefs.setUserName(userName: "");
+                                ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
                                 // ObjectFactory().prefs.clearPrefs();
                                 // ignore: use_build_context_synchronously
                                 context.go('/login');
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.yes,
                                 // "Yes",
+                                AppLocalizations.of(context)!.yes,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   color: AppColors.primaryWhiteColor,
@@ -123,8 +124,8 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                 context.pop();
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.no,
                                 // "No",
+                                AppLocalizations.of(context)!.no,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
                                   color: AppColors.primaryWhiteColor,

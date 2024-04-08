@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -16,6 +17,8 @@ import 'package:lets_collect/src/ui/profile/widgets/log_out_alert_widget.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
+import '../../bloc/country_bloc/country_bloc.dart';
+import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import 'components/my_profile_screen_arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,6 +33,81 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserver{
   bool networkSuccess = false;
+
+  void showLanguageBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.changelanguage,
+                style: GoogleFonts.openSans(
+                  color: AppColors.secondaryColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              BlocBuilder<LanguageBloc, LanguageState>(
+                builder: (context, state) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: Language.values.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          print('Selected Language: ${Language.values[index].text}');
+                          context.read<LanguageBloc>().add(ChangeLanguage(
+                              selectedLanguage: Language.values[index]));
+                          Future.delayed(const Duration(milliseconds: 300))
+                              .then((value) => Navigator.of(context).pop());
+                        },
+                        leading: ClipOval(
+                          child: Language.values[index].image.image(
+                            height: 32.0,
+                            width: 32.0,
+                          ),
+                        ),
+                        title: Text(Language.values[index].text,style: TextStyle(color: Language.values[index] == state.selectedLanguage ? AppColors.primaryWhiteColor : AppColors.primaryBlackColor),),
+                        trailing:
+                        Language.values[index] == state.selectedLanguage
+                            ? const Icon(Icons.check_circle_rounded,
+                            color: AppColors.secondaryColor)
+                            : null,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: Language.values[index] == state.selectedLanguage
+                              ? const BorderSide(color: AppColors.borderColor, width: 1.5)
+                              : BorderSide(color:AppColors.boxShadow),
+                        ),
+                        tileColor:
+                        Language.values[index] == state.selectedLanguage
+                            ? AppColors.primaryColor
+                            : null,
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 16.0);
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
 
 
@@ -75,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                         child: Text(
                           state.errorMsg,
                           style: const TextStyle(
-                              color: AppColors.primaryWhiteColor),
+                              color: AppColors.primaryColor),
                         ),
                       ),
                       const Spacer(),
@@ -92,10 +170,10 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                             BlocProvider.of<MyProfileBloc>(context)
                                 .add(GetProfileDataEvent());
                           },
-                          child: const Text(
-                            "Try again",
-                            style:
-                                TextStyle(color: AppColors.primaryWhiteColor),
+                          child:  Text(
+                            AppLocalizations.of(context)!.tryagain,
+                            // "Try again",
+                            style: const TextStyle(color: AppColors.primaryWhiteColor),
                           ),
                         ),
                       ),
@@ -106,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
               }
               if (state is MyProfileLoaded) {
                 String b64 =
-                    state.myProfileScreenResponse.data!.photo.toString();
+                state.myProfileScreenResponse.data!.photo.toString();
                 final UriData? data = Uri.parse(b64).data;
                 Uint8List bytesImage = data!.contentAsBytes();
                 print("PHOTO CODE : $bytesImage");
@@ -141,46 +219,47 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     flex: 3,
                                     child: bytesImage != null
                                         ? Container(
-                                            width: 150.0,
-                                            height: 150.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              // border: Border.all(
-                                              //   color: AppColors.secondaryColor,
-                                              //   width: 2.0,
-                                              // ),
-                                              image: DecorationImage(
-                                                alignment: Alignment.center,
-                                                fit: BoxFit.cover,
-                                                image: MemoryImage(bytesImage),
-                                              ),
-                                            ),
-                                          )
+                                      width: 150.0,
+                                      height: 150.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        // border: Border.all(
+                                        //   color: AppColors.secondaryColor,
+                                        //   width: 2.0,
+                                        // ),
+                                        image: DecorationImage(
+                                          alignment: Alignment.center,
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(bytesImage),
+                                        ),
+                                      ),
+                                    )
                                         : Container(
+                                        alignment: Alignment.center,
+                                        width: 130,
+                                        height: 130,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.shadow,
+                                          // borderRadius: BorderRadius.circular(100),
+                                        ),
+                                        child: const Stack(children: [
+                                          Align(
                                             alignment: Alignment.center,
-                                            width: 130,
-                                            height: 130,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.shadow,
-                                              // borderRadius: BorderRadius.circular(100),
-                                            ),
-                                            child: const Stack(children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text("Add"),
-                                              ),
-                                              Positioned(
-                                                  bottom: 8,
-                                                  right: 8,
-                                                  child: Icon(
-                                                    Icons.add_a_photo_outlined,
-                                                    color: AppColors
-                                                        .secondaryColor,
-                                                  )
-                                                  // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                                  ),
-                                            ]))),
+                                            // child: Text(AppLocalizations.of(context)!.add)
+                                            child : Text("Add"),
+                                          ),
+                                          Positioned(
+                                              bottom: 8,
+                                              right: 8,
+                                              child: Icon(
+                                                Icons.add_a_photo_outlined,
+                                                color: AppColors
+                                                    .secondaryColor,
+                                              )
+                                            // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                          ),
+                                        ]))),
                                 const SizedBox(height: 10),
                                 Flexible(
                                   flex: 1,
@@ -224,7 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                   height: 40,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    color: AppColors.primaryWhiteColor,
+                                    color: Colors.white,
                                     boxShadow: const [
                                       BoxShadow(
                                         color: AppColors.boxShadow,
@@ -283,9 +362,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
-
                               const SizedBox(
-                                height: 18,
+                                height: 20,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 0),
@@ -345,6 +423,15 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                         city: state
                                             .myProfileScreenResponse.data!.city
                                             .toString(),
+                                        nationality_name_ar: state
+                                            .myProfileScreenResponse.data!.nationalityNameAr
+                                            .toString(),
+                                        country_name_ar: state
+                                            .myProfileScreenResponse.data!.countryNameAr
+                                            .toString(),
+                                        city_name_ar: state
+                                            .myProfileScreenResponse.data!.cityNameAr
+                                            .toString(),
                                       ),
                                     );
                                     print("MyProfile tapped!");
@@ -356,7 +443,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -374,7 +461,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -409,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -427,7 +514,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     fontWeight: FontWeight.w500,
                                     fontStyle: FontStyle.normal,
                                     letterSpacing:
-                                        0, // This is the default value for normal line height
+                                    0, // This is the default value for normal line height
                                   ),
                                 ),
                               ).animate().then(delay: 200.ms).slideY(),
@@ -445,7 +532,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -464,7 +551,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -483,7 +570,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -495,7 +582,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) =>
-                                          const DeleteAccountAlertOverlay(),
+                                      const DeleteAccountAlertOverlay(),
                                     );
                                   },
                                   child: ProfileDetailsListTileWidget(
@@ -506,7 +593,7 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
                                       letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -525,11 +612,11 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            const LogOutAlertOverlay());
+                                        const LogOutAlertOverlay());
                                   },
                                   child:  Text(
-                                    AppLocalizations.of(context)!.logout,
                                     // "Log out",
+                                    AppLocalizations.of(context)!.logout,
                                     style: const TextStyle(
                                       color: AppColors.secondaryColor,
                                     ),
@@ -540,8 +627,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
                           ),
                         ]),
                       ),
-                      padding:  EdgeInsets.only(
-                          top: 0, left: 15, right: 15, bottom: getProportionateScreenHeight(120)),
+                      padding: const EdgeInsets.only(
+                          top: 0, left: 15, right: 15, bottom: 110),
                     ),
                   ],
                 );
@@ -557,8 +644,8 @@ class _ProfileScreenState extends State<ProfileScreen> with WidgetsBindingObserv
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                   // "You are not connected to the internet",
+                  AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,
@@ -634,79 +721,97 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
       ),
     );
   }
-
 }
 
-void showLanguageBottomSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.0),
-        topRight: Radius.circular(20.0),
-      ),
-    ),
-    builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.changelanguage,
-              style: GoogleFonts.openSans(
-                color: AppColors.secondaryColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            BlocBuilder<LanguageBloc, LanguageState>(
-              builder: (context, state) {
-                return ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: Language.values.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        context.read<LanguageBloc>().add(ChangeLanguage(
-                            selectedLanguage: Language.values[index]));
-                        Future.delayed(const Duration(milliseconds: 300))
-                            .then((value) => Navigator.of(context).pop());
-                      },
-                      leading: ClipOval(
-                        child: Language.values[index].image.image(
-                          height: 32.0,
-                          width: 32.0,
-                        ),
-                      ),
-                      title: Text(Language.values[index].text,style:  TextStyle(color:  Language.values[index] == state.selectedLanguage ? AppColors.primaryWhiteColor : AppColors.primaryBlackColor)),
-                      trailing:
-                      Language.values[index] == state.selectedLanguage
-                          ? const Icon(Icons.check_circle_rounded,
-                          color: AppColors.secondaryColor)
-                          : null,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        side: Language.values[index] == state.selectedLanguage
-                            ?  const BorderSide(color: AppColors.borderColor, width: 1.5)
-                            : const BorderSide(color: AppColors.boxShadow),
-                      ),
-                      tileColor:
-                      Language.values[index] == state.selectedLanguage
-                          ? AppColors.primaryColor
-                          : null,
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 16.0);
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
+// void _showDialogBox({
+//   required BuildContext context,
+// }) {
+//   showDialog(
+//     context: context,
+//     builder: (ctx) => SizedBox(
+//       width: 700,
+//       child: AlertDialog(
+//         backgroundColor: AppColors.primaryWhiteColor,
+//         // elevation: 5,
+//         alignment: Alignment.center,
+//         content: SizedBox(
+//           height: getProportionateScreenHeight(170),
+//           width: getProportionateScreenWidth(500),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.stretch,
+//             children: [
+//               Align(
+//                 alignment: Alignment.topLeft,
+//                 child: IconButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   icon: const Icon(Icons.close),
+//                 ),
+//               ),
+//               const SizedBox(height: 10),
+//               Text(
+//                 AppLocalizations.of(context)!.areyousureyouwanttologout,
+//                 textAlign: TextAlign.center,
+//                 style: GoogleFonts.openSans(
+//                   fontSize: 18,
+//                   fontWeight: FontWeight.w400,
+//                 ),
+//               ),
+//               const SizedBox(height: 40),
+//               Padding(
+//                 padding: const EdgeInsets.only(left: 10, right: 10),
+//                 child: Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Expanded(
+//                       child: MyButton(
+//                         Textfontsize: 16,
+//                         TextColors: Colors.white,
+//                         text: AppLocalizations.of(context)!.yes,
+//                         color: AppColors.secondaryColor,
+//                         height: 5,
+//                         onTap: () {
+//                           ObjectFactory().prefs.setIsLoggedIn(false);
+//                           ObjectFactory().prefs.clearPrefs();
+//                           context.go('/login');
+//                         },
+//                         showImage: false,
+//                         imagePath: '',
+//                         imagewidth: 0,
+//                         imageheight: 0,
+//                         width: 120,
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       width: 20,
+//                     ),
+//                     Expanded(
+//                       child: MyButton(
+//                         Textfontsize: 16,
+//                         TextColors: Colors.white,
+//                         text: ""
+//                         // AppLocalizations.of(context)!.no,
+//                         color: AppColors.secondaryColor,
+//                         height: 5,
+//                         onTap: () {
+//                           Navigator.of(context).pop();
+//                         },
+//                         showImage: false,
+//                         imagePath: '',
+//                         imagewidth: 0,
+//                         imageheight: 0,
+//                         width: 120,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     ),
+//   );
+// }

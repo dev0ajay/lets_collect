@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/routes/router.dart';
 import 'package:lets_collect/src/bloc/apple_sign_in_cubit/apple_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
+import 'package:lets_collect/src/bloc/change_password_bloc/change_password_bloc.dart';
 import 'package:lets_collect/src/bloc/city_bloc/city_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/how_to_redeem_my_points/how_to_redeem_my_points_bloc.dart';
 import 'package:lets_collect/src/bloc/cms_bloc/point_calculations/point_calculations_bloc.dart';
@@ -229,6 +230,10 @@ class _AppState extends State<App> {
             ),
             BlocProvider<FacebookSignInCubit>(
               create: (BuildContext context) => FacebookSignInCubit(),
+            ),
+            BlocProvider<ChangePasswordBloc>(
+              create: (BuildContext context) => ChangePasswordBloc(
+                  myProfileDataProvider: RepositoryProvider.of(context)),
             ),
           ],
           child: BlocBuilder<NetworkBloc, NetworkState>(

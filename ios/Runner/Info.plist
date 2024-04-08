@@ -51,6 +51,11 @@
 	<string>113086635979-83usej8u9bl97a44ouj7t7ehlc69nf0e.apps.googleusercontent.com</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+    <string>fbapi</string>
+    <string>fb-messenger-share-api</string>
+    </array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -58,6 +63,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+    <string>This permission is not needed by the app, but it is required by an underlying API</string>
 	<key>NSCameraUsageDescription</key>
 	<string>To capture photos Lets Collect needs access to your device camera</string>
 	<key>NSDocumentsFolderUsageDescription</key>

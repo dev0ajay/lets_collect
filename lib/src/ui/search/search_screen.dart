@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchController = TextEditingController();
-  final bool _isError = false;
 
   @override
   void initState() {
@@ -47,8 +47,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Scaffold(
         backgroundColor: AppColors.primaryWhiteColor,
         body: NestedScrollView(
-          // floatHeaderSlivers: true,
-          physics: const ClampingScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               // SliverAppBar is the header that remains visible while scrolling
@@ -251,7 +250,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 );
               } else if (state is SearchLoaded) {
                 return GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 20, bottom: 140),
                   itemCount: state.searchCategoryRequestResponse.data?.length,
@@ -300,12 +299,40 @@ class _SearchScreenState extends State<SearchScreen> {
                               flex: 7,
                               child: Align(
                                 alignment: Alignment.center,
-                                child: CircleAvatar(
-                                  radius: 60,
-                                  backgroundColor: AppColors.secondaryColor,
-                                  backgroundImage: NetworkImage(
-                                      state.searchCategoryRequestResponse.data![index].departmentImage!),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    height: 90,
+                                    width: 90,
+                                    // height: MediaQuery.of(context).size.height / 8,
+                                    // width: MediaQuery.of(context).size.width / 8,
+                                    alignment: Alignment.center,
+                                    fadeInCurve: Curves.easeIn,
+                                    fadeInDuration: const Duration(milliseconds: 200),
+                                    fit: BoxFit.contain,
+                                    imageUrl:  state.searchCategoryRequestResponse.data![index].departmentImage!,
+                                    placeholder: (context, url) => SizedBox(
+                                      // height: getProportionateScreenHeight(170),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Center(
+                                        child: Lottie.asset(
+                                          Assets.JUMBINGDOT,
+                                          height: 35,
+                                          width: 35,
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) => const ImageIcon(
+                                      color: AppColors.hintColor,
+                                      AssetImage(Assets.NO_IMG),
+                                    ),
+                                  ),
                                 ),
+                                // CircleAvatar(
+                                //   radius: 60,
+                                //   backgroundColor: AppColors.secondaryColor,
+                                //   backgroundImage: NetworkImage(
+                                //       state.searchCategoryRequestResponse.data![index].departmentImage!),
+                                // ),
                               ),
                             ),
                             // const Spacer(flex: 1),

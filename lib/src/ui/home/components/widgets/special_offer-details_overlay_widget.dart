@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
-
 import '../../../../constants/colors.dart';
 import '../../../scan/components/widgets/scan_screen_collect_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SpecialOfferDetailsOverlayWidget extends StatefulWidget {
   const SpecialOfferDetailsOverlayWidget({super.key});
@@ -80,7 +80,8 @@ class SpecialOfferDetailsOverlayWidgetState extends State<SpecialOfferDetailsOve
                 ),
                 // const SizedBox(height: 20),
                 Text(
-                  "Points Redeemed: 60 points",
+                  "${AppLocalizations.of(context)!.pointsgetredeemed} : 60 ${AppLocalizations.of(context)!.points}",
+                  // "Points Redeemed: 60 points",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.openSans(
                     fontSize: 16,
@@ -89,7 +90,8 @@ class SpecialOfferDetailsOverlayWidgetState extends State<SpecialOfferDetailsOve
                 ),
                 // const SizedBox(height: 10),
                 Text(
-                  "Remaining time",
+                  AppLocalizations.of(context)!.remainingtime,
+                  // "Remaining time",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     fontSize: 12,
@@ -98,7 +100,8 @@ class SpecialOfferDetailsOverlayWidgetState extends State<SpecialOfferDetailsOve
                 ),
 
                 Text(
-                  "Minutes",
+                  AppLocalizations.of(context)!.minutes,
+                  // "Minutes",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     fontSize: 12,
@@ -106,9 +109,12 @@ class SpecialOfferDetailsOverlayWidgetState extends State<SpecialOfferDetailsOve
                   ),
                 ),
                 // SizedBox(height:30),
-                const Align(
+                Align(
                   alignment: Alignment.bottomCenter,
-                  child: ScanScreenCollectButton(text: "Redeem"),
+                  child: ScanScreenCollectButton(
+                    text:AppLocalizations.of(context)!.redeem,
+                    // "Redeem"
+                  ),
                 ),
               ],
             ),

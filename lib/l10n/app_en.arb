@@ -71,6 +71,7 @@
     "aonetimepasswordhasbeensendto" : "A One-Time password has been send to ",
     "otpnumber" : "OTP Number",
     "verifyotp" : "Verify OTP",
+    "donotworrywewillhelpyou": "Do not worry! We will help you recover your password.",
 
     "passwordreset" : "Password Reset",
     "newpassword" : "New Password",
@@ -145,12 +146,15 @@
     "month" : "Month",
     "year" : "Year",
     "apply" : "Apply",
+    "updatesuccessfully" : "Updated Successfully",
 
     "aboutyou" : "About You",
     "contactinfo" : "Contact Info",
     "save" : "Save",
 
+    "youraccountwillbepermanentlydeleted" : "Your account will be permanently deleted",
     "areyousureyouwanttologout" : "Are you sure you want to log out ?",
+    "areyousure" : "Are you sure ?",
     "yes" : "Yes",
     "no" : "No",
 
@@ -244,6 +248,7 @@
     "referralsendseuccessfully" : "Referral send Successfully",
     "pleaselogoutandreopentheapplication" : "Please Logout and re-open the Application !",
     "pleaseentercorrectreferralcode" : "Please Enter Correct Referral Code !",
+    "useralreadyreferred" : "User already referred",
 
     "couldnotcompletetherequest" : "Couldn't complete the request, Please try again!.",
     "pointsgetredeemed" : "Points get Redeemed",
@@ -267,6 +272,19 @@
     "camera" : "Camera",
     "nothingisselected" : "Nothing is selected",
     "or" : "or",
-    "partner" : "Partner"
+    "partner" : "Partner",
+
+    "theserverisnotresponding" : "The server isn't responding! Please try again later.",
+    "hellothereitseemslike" : "Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!",
+    "connectionrefusedthisindicates" : "Connection refused This indicates an error which most likely cannot be solved by the library.Please try again later or reach out to our support team for assistance. Thank you for your patience!",
+    "oopsitlooksliketheserverisnot" : "Oops! It looks like the server isn't responding! Please try again later",
+
+    "donotworrywewillhelpyouchangepassword" : "Do not Worry! We will help you change password.",
+    "currentpassword" : "Current Password",
+    "entercurrentpassword" : "Enter Current Password",
+    "enternewpassword" : "Enter New Password",
+    "reenternewpassword" : "Re-enter New Password",
+    "passwordchangedsuccessfull" : "Password Changed Successfully!",
+    "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match"
 
 }

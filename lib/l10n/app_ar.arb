@@ -71,6 +71,8 @@
     "aonetimepasswordhasbeensendto" : "تم إرسال رمز التحقق لـ",
     "otpnumber" : "رقم رمز التحقق",
     "verifyotp" : "تأكيد رمز التحقق",
+    "donotworrywewillhelpyou": ".لا داعي للقلق! سنساعدك على استعادة كلمة المرور الخاصة بك",
+
 
     "passwordreset" : "إعادة تعيين كلمة المرور",
     "newpassword" : "كلمة المرور الجديدة",
@@ -145,12 +147,15 @@
     "month" : "الشهر",
     "year" : "السنة",
     "apply" : "تطبيق",
+    "updatesuccessfully" : "تم التحديث بنجاح",
 
     "aboutyou" : "نبذة عنك",
     "contactinfo" : "معلومات الاتصال",
     "save" : "حفظ",
 
+    "youraccountwillbepermanentlydeleted" : "سيتم حذف حسابك نهائيًا",
     "areyousureyouwanttologout" : "هل أنت متأكد أنك ترغب في تسجيل الخروج؟",
+    "areyousure" : "هل أنت متأكد؟",
     "yes" : "نعم",
     "no" : "لا",
 
@@ -243,6 +248,7 @@
     "referralsendseuccessfully" : ".تم إرسال رمز الإحالة بنجاح",
     "pleaselogoutandreopentheapplication" : "!يرجى تسجيل الخروج وإعادة فتح التطبيق",
     "pleaseentercorrectreferralcode" : "الرجاء إدخال رمز الإحالة الصحيح!",
+    "useralreadyreferred" : "لقد تم إحالة المستخدم بالفعل",
 
     "couldnotcompletetherequest" : ".لم نستطع من إكمال الطلب، يرجى المحاولة مرة أخرى",
     "pointsgetredeemed" : "يتم استبدال النقاط",
@@ -266,8 +272,20 @@
     "camera" : "الكاميرا",
     "nothingisselected" : "لم يتم اختيار أي شيء",
     "or" : "أو",
-    "partner" : "شريك"
+    "partner" : "شريك",
 
+    "theserverisnotresponding" : ".الخادم لا يستجيب! الرجاء معاودة المحاولة في وقت لاحق",
+    "hellothereitseemslike" : "!مرحبًا! يبدو أن معالجة طلبك استغرقت وقتًا أطول من المتوقع. نعتذر عن الإزعاج. يرجى المحاولة مرة أخرى لاحقًا أو التواصل مع فريق الدعم للحصول على المساعدة. شكرا لك على صبرك",
+    "connectionrefusedthisindicates" : ".تم رفض الاتصال يشير هذا إلى وجود خطأ لا يمكن للمكتبة حله على الأرجح. يرجى المحاولة مرة أخرى لاحقًا أو التواصل مع فريق الدعم لدينا للحصول على المساعدة. شكرا لك على صبرك",
+    "oopsitlooksliketheserverisnot" : "عفوا! يبدو أن الخادم لا يستجيب! الرجاء معاودة المحاولة في وقت لاحق",
+
+    "donotworrywewillhelpyouchangepassword" : "Do not Worry! We will help you change password.",
+    "currentpassword" : "Current Password",
+    "entercurrentpassword" : "Enter Current Password",
+    "enternewpassword" : "Enter New Password",
+    "reenternewpassword" : "Re-enter New Password",
+    "passwordchangedsuccessfull" : "Password Changed Successfully!",
+    "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match"
 
 
 }

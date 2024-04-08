@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/brand_and_partner_product_bloc/brand_and_partner_product_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
@@ -13,6 +15,7 @@ import '../../../../constants/colors.dart';
 import '../../../../model/reward_tier/brand_and_partner_product_request.dart';
 import '../brand_and_partner_redeem_arguments.dart';
 import '../widgets/custome_rounded_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PartnerProductListingScreen extends StatefulWidget {
   final LetCollectRedeemScreenArguments redeemScreenArguments;
@@ -35,6 +38,13 @@ class _PartnerProductListingScreenState
     "Expiry First",
     "Points Low",
     "Points High",
+  ];
+
+  List<String> sort_ar = <String>[
+    "الأحدث",
+    "الانتهاء أولا",
+    "النقاط المنخفضة",
+    "النقاط العالية",
   ];
   String? sortOption;
   String sortQuery = "";
@@ -62,9 +72,9 @@ class _PartnerProductListingScreenState
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(5),
-          bottomRight: Radius.circular(5),
-        )),
+              bottomLeft: Radius.circular(5),
+              bottomRight: Radius.circular(5),
+            )),
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           onPressed: () {
@@ -118,17 +128,18 @@ class _PartnerProductListingScreenState
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "Sort by",
+                                              AppLocalizations.of(context)!.sortby,
+                                              // "Sort by",
                                               style: GoogleFonts.roboto(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400,
                                                 color:
-                                                    AppColors.primaryGrayColor,
+                                                AppColors.primaryGrayColor,
                                               ),
                                             ),
                                             IconButton(
@@ -136,7 +147,7 @@ class _PartnerProductListingScreenState
                                               icon: const Icon(
                                                 Icons.close,
                                                 color:
-                                                    AppColors.primaryGrayColor,
+                                                AppColors.primaryGrayColor,
                                               ),
                                             )
                                           ],
@@ -157,90 +168,92 @@ class _PartnerProductListingScreenState
                                       Column(
                                         children: List.generate(
                                           sort.length,
-                                          (index) => Padding(
+                                              (index) => Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 6),
                                             child: Container(
                                               padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 6),
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                  vertical: 6),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                MainAxisAlignment
+                                                    .spaceBetween,
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: <Widget>[
                                                   Text(
-                                                    sort[index],
+                                                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                        ? sort[index]
+                                                        : sort_ar[index],
                                                     softWrap: true,
                                                     overflow:
-                                                        TextOverflow.ellipsis,
+                                                    TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyLarge!
                                                         .copyWith(
-                                                          fontSize: 15,
-                                                        ),
+                                                      fontSize: 15,
+                                                    ),
                                                   ),
                                                   selectedSortVariants
-                                                          .contains(sort[index])
+                                                      .contains(sort[index])
                                                       ? InkWell(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              selectedSortVariants
-                                                                  .remove(sort[
-                                                                      index]);
-                                                            });
-                                                          },
-                                                          child:
-                                                              const CustomRoundedButton(
-                                                                  enabled:
-                                                                      true),
-                                                        )
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedSortVariants
+                                                            .remove(sort[
+                                                        index]);
+                                                      });
+                                                    },
+                                                    child:
+                                                    const CustomRoundedButton(
+                                                        enabled:
+                                                        true),
+                                                  )
                                                       : InkWell(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              selectedSortVariants
-                                                                  .add(sort[
-                                                                      index]);
-                                                              if (selectedSortVariants
-                                                                      .length >
-                                                                  1) {
-                                                                selectedSortVariants
-                                                                    .removeAt(
-                                                                        0);
-                                                              }
-                                                              selectedSortFilter =
-                                                                  selectedSortVariants[
-                                                                      0];
-                                                              if (selectedSortFilter ==
-                                                                  "Recent") {
-                                                                sortQuery =
-                                                                    "recent";
-                                                              }
-                                                              if (selectedSortFilter ==
-                                                                  "Expiry First") {
-                                                                sortQuery =
-                                                                    "expire_first";
-                                                              }
-                                                              if (selectedSortFilter ==
-                                                                  "Points Low") {
-                                                                sortQuery =
-                                                                    "points_low";
-                                                              }
-                                                              if (selectedSortFilter ==
-                                                                  "Points High") {
-                                                                sortQuery =
-                                                                    "points_high";
-                                                              }
-                                                            });
-                                                          },
-                                                          child:
-                                                              const CustomRoundedButton(
-                                                            enabled: false,
-                                                          ),
-                                                        ),
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedSortVariants
+                                                            .add(sort[
+                                                        index]);
+                                                        if (selectedSortVariants
+                                                            .length >
+                                                            1) {
+                                                          selectedSortVariants
+                                                              .removeAt(
+                                                              0);
+                                                        }
+                                                        selectedSortFilter =
+                                                        selectedSortVariants[
+                                                        0];
+                                                        if (selectedSortFilter ==
+                                                            "Recent") {
+                                                          sortQuery =
+                                                          "recent";
+                                                        }
+                                                        if (selectedSortFilter ==
+                                                            "Expiry First") {
+                                                          sortQuery =
+                                                          "expire_first";
+                                                        }
+                                                        if (selectedSortFilter ==
+                                                            "Points Low") {
+                                                          sortQuery =
+                                                          "points_low";
+                                                        }
+                                                        if (selectedSortFilter ==
+                                                            "Points High") {
+                                                          sortQuery =
+                                                          "points_high";
+                                                        }
+                                                      });
+                                                    },
+                                                    child:
+                                                    const CustomRoundedButton(
+                                                      enabled: false,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -262,29 +275,30 @@ class _PartnerProductListingScreenState
                                         left: 20, right: 20, bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextButton(
                                           onPressed: () {
                                             clearFilter();
                                             context.pop();
                                             BlocProvider.of<
-                                                        BrandAndPartnerProductBloc>(
-                                                    context)
+                                                BrandAndPartnerProductBloc>(
+                                                context)
                                                 .add(
                                               GetBrandAndPartnerProductRequest(
                                                   brandAndPartnerProductRequest:
-                                                      BrandAndPartnerProductRequest(
-                                                sort: "",
-                                                eligible: "",
-                                                brandId: widget
-                                                    .redeemScreenArguments.iD!,
-                                                redemptionTier: "3",
-                                              )),
+                                                  BrandAndPartnerProductRequest(
+                                                    sort: "",
+                                                    eligible: "",
+                                                    brandId: widget
+                                                        .redeemScreenArguments.iD!,
+                                                    redemptionTier: "3",
+                                                  )),
                                             );
                                           },
                                           child: Text(
-                                            "Clear All",
+                                            AppLocalizations.of(context)!.clearall,
+                                            // "Clear All",
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontWeight: FontWeight.w400,
@@ -297,35 +311,36 @@ class _PartnerProductListingScreenState
                                             fixedSize: const Size(100, 40),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(8),
+                                              BorderRadius.circular(8),
                                             ),
                                             backgroundColor:
-                                                AppColors.secondaryColor,
+                                            AppColors.secondaryColor,
                                           ),
                                           onPressed: () async {
                                             print(selectedSortFilter);
                                             print("Sort Selected: $sortQuery");
                                             BlocProvider.of<
-                                                        BrandAndPartnerProductBloc>(
-                                                    context)
+                                                BrandAndPartnerProductBloc>(
+                                                context)
                                                 .add(
                                               GetBrandAndPartnerProductRequest(
                                                   brandAndPartnerProductRequest:
-                                                      BrandAndPartnerProductRequest(
-                                                sort: sortQuery,
-                                                eligible: "",
-                                                brandId: widget
-                                                    .redeemScreenArguments.iD!,
-                                                redemptionTier: "3",
-                                              )),
+                                                  BrandAndPartnerProductRequest(
+                                                    sort: sortQuery,
+                                                    eligible: "",
+                                                    brandId: widget
+                                                        .redeemScreenArguments.iD!,
+                                                    redemptionTier: "3",
+                                                  )),
                                             );
                                             context.pop();
                                           },
                                           child: Text(
-                                            "Apply",
+                                            AppLocalizations.of(context)!.apply,
+                                            // "Apply",
                                             style: GoogleFonts.roboto(
                                               color:
-                                                  AppColors.primaryWhiteColor,
+                                              AppColors.primaryWhiteColor,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14,
                                             ),
@@ -361,9 +376,10 @@ class _PartnerProductListingScreenState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Sort",
-                      style: TextStyle(
+                    Text(
+                      // "Sort",
+                      AppLocalizations.of(context)!.sort,
+                      style: const TextStyle(
                         color: AppColors.iconGreyColor,
                         fontSize: 13,
                       ),
@@ -402,7 +418,7 @@ class _PartnerProductListingScreenState
                             children: [
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height / 1.6,
+                                MediaQuery.of(context).size.height / 1.6,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -415,88 +431,89 @@ class _PartnerProductListingScreenState
                                               horizontal: 10, vertical: 6),
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             mainAxisSize: MainAxisSize.max,
                                             children: <Widget>[
                                               Text(
-                                                "Eligible",
+                                                AppLocalizations.of(context)!.eligible,
+                                                // "Eligible",
                                                 softWrap: true,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge!
                                                     .copyWith(
-                                                      fontSize: 15,
-                                                    ),
+                                                  fontSize: 15,
+                                                ),
                                               ),
                                               eligibleFilter == "Eligible"
                                                   ? InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          eligibleFilter = "";
-                                                          // selectedFilters[]
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 20,
-                                                        width: 20,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(Assets
-                                                                .DISABLED_TICK),
-                                                            fit: BoxFit.contain,
-                                                            scale: 6,
-                                                          ),
-                                                          color: AppColors
-                                                              .secondaryColor,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                blurRadius: 1.5,
-                                                                color: Colors
-                                                                    .black38,
-                                                                offset: Offset(
-                                                                    0, 1))
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : InkWell(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          eligibleFilter =
-                                                              "Eligible";
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        height: 20,
-                                                        width: 20,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          color:
-                                                              Color(0xFFD9D9D9),
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(Assets
-                                                                .DISABLED_TICK),
-                                                            fit: BoxFit.contain,
-                                                          ),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                                blurRadius: 1.5,
-                                                                color: Colors
-                                                                    .black38,
-                                                                offset: Offset(
-                                                                    0, 1))
-                                                          ],
-                                                        ),
-                                                      ),
+                                                onTap: () {
+                                                  setState(() {
+                                                    eligibleFilter = "";
+                                                    // selectedFilters[]
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    shape: BoxShape
+                                                        .rectangle,
+                                                    image:
+                                                    DecorationImage(
+                                                      image: AssetImage(Assets
+                                                          .DISABLED_TICK),
+                                                      fit: BoxFit.contain,
+                                                      scale: 6,
                                                     ),
+                                                    color: AppColors
+                                                        .secondaryColor,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          blurRadius: 1.5,
+                                                          color: Colors
+                                                              .black38,
+                                                          offset: Offset(
+                                                              0, 1))
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                                  : InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    eligibleFilter =
+                                                    "Eligible";
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    shape: BoxShape
+                                                        .rectangle,
+                                                    color:
+                                                    Color(0xFFD9D9D9),
+                                                    image:
+                                                    DecorationImage(
+                                                      image: AssetImage(Assets
+                                                          .DISABLED_TICK),
+                                                      fit: BoxFit.contain,
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          blurRadius: 1.5,
+                                                          color: Colors
+                                                              .black38,
+                                                          offset: Offset(
+                                                              0, 1))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -528,14 +545,15 @@ class _PartnerProductListingScreenState
                                           left: 20, right: 20, bottom: 10),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           TextButton(
                                             onPressed: () {
                                               clearFilter();
                                             },
                                             child: Text(
-                                              "Clear All",
+                                              AppLocalizations.of(context)!.clearall,
+                                              // "Clear All",
                                               style: GoogleFonts.roboto(
                                                 color: AppColors.underlineColor,
                                                 fontWeight: FontWeight.w400,
@@ -548,37 +566,38 @@ class _PartnerProductListingScreenState
                                               fixedSize: const Size(100, 40),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(8),
+                                                BorderRadius.circular(8),
                                               ),
                                               backgroundColor:
-                                                  AppColors.secondaryColor,
+                                              AppColors.secondaryColor,
                                             ),
                                             onPressed: () {
                                               BlocProvider.of<
-                                                          BrandAndPartnerProductBloc>(
-                                                      context)
+                                                  BrandAndPartnerProductBloc>(
+                                                  context)
                                                   .add(
                                                 GetBrandAndPartnerProductRequest(
                                                     brandAndPartnerProductRequest:
-                                                        BrandAndPartnerProductRequest(
-                                                  sort: "",
-                                                  eligible: eligibleFilter ==
+                                                    BrandAndPartnerProductRequest(
+                                                      sort: "",
+                                                      eligible: eligibleFilter ==
                                                           "Eligible"
-                                                      ? "1"
-                                                      : "",
-                                                  brandId: widget
-                                                      .redeemScreenArguments
-                                                      .iD!,
-                                                  redemptionTier: "3",
-                                                )),
+                                                          ? "1"
+                                                          : "",
+                                                      brandId: widget
+                                                          .redeemScreenArguments
+                                                          .iD!,
+                                                      redemptionTier: "3",
+                                                    )),
                                               );
                                               context.pop();
                                             },
                                             child: Text(
-                                              "Apply",
+                                              AppLocalizations.of(context)!.apply,
+                                              // "Apply",
                                               style: GoogleFonts.roboto(
                                                 color:
-                                                    AppColors.primaryWhiteColor,
+                                                AppColors.primaryWhiteColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14,
                                               ),
@@ -612,12 +631,13 @@ class _PartnerProductListingScreenState
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "Filter by",
+                                                AppLocalizations.of(context)!.filterby,
+                                                // "Filter by",
                                                 style: GoogleFonts.roboto(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w400,
@@ -639,7 +659,7 @@ class _PartnerProductListingScreenState
                                           ),
                                           const Divider(
                                               color:
-                                                  AppColors.primaryGrayColor),
+                                              AppColors.primaryGrayColor),
                                         ],
                                       ),
                                     ),
@@ -671,9 +691,10 @@ class _PartnerProductListingScreenState
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Filter",
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.filter,
+                      // "Filter",
+                      style: const TextStyle(
                         color: AppColors.iconGreyColor,
                         fontSize: 13,
                       ),
@@ -695,7 +716,8 @@ class _PartnerProductListingScreenState
             child: Column(
               children: [
                 Text(
-                  "Partner",
+                  AppLocalizations.of(context)!.partner,
+                  // "Partner",
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -715,7 +737,8 @@ class _PartnerProductListingScreenState
                         ),
                       ),
                       TextSpan(
-                        text: 'pts',
+                        text: AppLocalizations.of(context)!.pts,
+                        // 'pts',
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                           fontSize: 12,
@@ -741,7 +764,7 @@ class _PartnerProductListingScreenState
   }
 
   BlocBuilder<BrandAndPartnerProductBloc, BrandAndPartnerProductState>
-      buildPartnerProductGridMethod() {
+  buildPartnerProductGridMethod() {
     return BlocBuilder<BrandAndPartnerProductBloc, BrandAndPartnerProductState>(
       builder: (context, state) {
         SizeConfig().init(context);
@@ -765,10 +788,12 @@ class _PartnerProductListingScreenState
                   flex: 4,
                   child: Lottie.asset(Assets.TRY_AGAIN),
                 ),
-                 Expanded(
+                Expanded(
                   flex: 2,
                   child: Text(
-                    state.errorMsg,
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.errorMsg
+                        : AppLocalizations.of(context)!.oopslookslikewearefacing,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -797,10 +822,10 @@ class _PartnerProductListingScreenState
                         ),
                       );
                     },
-                    child: const Text(
-                      "Try again",
-                      style:
-                      TextStyle(color: AppColors.primaryWhiteColor),
+                    child:  Text(
+                      // "Try again",
+                      AppLocalizations.of(context)!.tryagain,
+                      style:  const TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 ),
@@ -880,7 +905,7 @@ class _PartnerProductListingScreenState
                                 alignment: Alignment.center,
                                 fadeInCurve: Curves.easeIn,
                                 fadeInDuration:
-                                    const Duration(milliseconds: 200),
+                                const Duration(milliseconds: 200),
                                 fit: BoxFit.fill,
                                 imageUrl: state
                                     .brandAndPartnerProductRequestResponse
@@ -900,7 +925,7 @@ class _PartnerProductListingScreenState
                                   ),
                                 ),
                                 errorWidget: (context, url, error) =>
-                                    const ImageIcon(
+                                const ImageIcon(
                                   color: AppColors.hintColor,
                                   AssetImage(Assets.NO_IMG),
                                 ),

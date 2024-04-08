@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
-
 import '../../../bloc/delete_account/delete_account_bloc.dart';
 import '../../../constants/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeleteAccountAlertOverlay extends StatefulWidget {
   const DeleteAccountAlertOverlay({super.key});
@@ -84,7 +84,8 @@ class DeleteAccountAlertOverlayState extends State<DeleteAccountAlertOverlay>
                           padding: const EdgeInsets.only(
                               top: 40.0, left: 20.0, right: 20.0),
                           child: Text(
-                            "Are you sure ?",
+                            AppLocalizations.of(context)!.areyousure,
+                            // "Are you sure ?",
                             style: GoogleFonts.openSans(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -99,7 +100,8 @@ class DeleteAccountAlertOverlayState extends State<DeleteAccountAlertOverlay>
                           padding: const EdgeInsets.only(
                               top: 40.0, left: 20.0, right: 20.0),
                           child: Text(
-                            "Your account will be permanently deleted",
+                            AppLocalizations.of(context)!.youraccountwillbepermanentlydeleted,
+                            // "Your account will be permanently deleted",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.openSans(
                               fontSize: 20,
@@ -122,28 +124,28 @@ class DeleteAccountAlertOverlayState extends State<DeleteAccountAlertOverlay>
                                     child: RefreshProgressIndicator(
                                       color: AppColors.secondaryColor,
                                       backgroundColor:
-                                          AppColors.primaryWhiteColor,
+                                      AppColors.primaryWhiteColor,
                                     ),
                                   );
                                 } else {
                                   return Row(
                                     // mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                     children: [
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           fixedSize: const Size(100, 40),
                                           backgroundColor:
-                                              AppColors.secondaryColor,
+                                          AppColors.secondaryColor,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(10),
+                                            BorderRadius.circular(10),
                                           ),
                                         ),
                                         onPressed: () {
                                           BlocProvider.of<DeleteAccountBloc>(
-                                                  context)
+                                              context)
                                               .add(
                                             DeleteAccountEventTrigger(),
                                           );
@@ -154,7 +156,8 @@ class DeleteAccountAlertOverlayState extends State<DeleteAccountAlertOverlay>
                                           _signOut();
                                         },
                                         child: Text(
-                                          "Yes",
+                                          AppLocalizations.of(context)!.yes,
+                                          // "Yes",
                                           style: GoogleFonts.openSans(
                                             fontSize: 16,
                                             color: AppColors.primaryWhiteColor,
@@ -165,17 +168,18 @@ class DeleteAccountAlertOverlayState extends State<DeleteAccountAlertOverlay>
                                         style: ElevatedButton.styleFrom(
                                           fixedSize: const Size(100, 40),
                                           backgroundColor:
-                                              AppColors.secondaryColor,
+                                          AppColors.secondaryColor,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(10),
+                                            BorderRadius.circular(10),
                                           ),
                                         ),
                                         onPressed: () {
                                           context.pop();
                                         },
                                         child: Text(
-                                          "No",
+                                          AppLocalizations.of(context)!.no,
+                                          // "No",
                                           style: GoogleFonts.openSans(
                                             fontSize: 16,
                                             color: AppColors.primaryWhiteColor,

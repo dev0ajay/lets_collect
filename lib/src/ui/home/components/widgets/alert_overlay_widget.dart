@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../constants/colors.dart';
 
 class EmailNotVerifiedAlertOverlay extends StatefulWidget {
@@ -72,7 +71,7 @@ class EmailNotVerifiedAlertOverlayState extends State<EmailNotVerifiedAlertOverl
                     padding:
                         const EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
                     child: Text(
-                      "Please verify the mail we have send to you and earn points.",
+                      AppLocalizations.of(context)!.pleaseverifythemailwehavesendtoyouandearnpoints,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
                         fontSize: 15,
@@ -107,11 +106,6 @@ class EmailNotVerifiedAlertOverlayState extends State<EmailNotVerifiedAlertOverl
                                 ),
                               ),
                               onPressed: () {
-                                setState(() {
-
-                                  // ObjectFactory().prefs.setIsEmailNotVerifiedStatus(false);
-                                  ObjectFactory().prefs.setIsEmailNotVerifiedCalled(true);
-                                });
                                 context.pop();
                               },
                             ),

@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -12,8 +14,8 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/constants/strings.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../../utils/data/object_factory.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgetPasswordConfirmScreen extends StatefulWidget {
   const ForgetPasswordConfirmScreen({super.key});
@@ -37,13 +39,16 @@ class _ForgetPasswordConfirmScreenState
         r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
     RegExp regex = RegExp(pattern);
     if (value == null || value.isEmpty) {
-      return 'Please enter password';
+      return AppLocalizations.of(context)!.pleaseenterpassword;
+      // return 'Please enter password';
     }
     if (value.length < 8) {
-      return "Length should be 8 or more";
+      return AppLocalizations.of(context)!.lengthshouldbe;
+      // return "Length should be 8 or more";
     }
     if (!regex.hasMatch(value)) {
-      return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
+      return AppLocalizations.of(context)!.mustcontainatleast;
+      // return "Must contain at least 1 uppercase, 1 lowercase, 1 special character";
     }
     return null;
   }
@@ -59,7 +64,11 @@ class _ForgetPasswordConfirmScreenState
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content:
-                      Text(state.forgotPasswordResetRequestResponse.message),
+                  Text(
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.forgotPasswordResetRequestResponse.message
+                        : state.forgotPasswordResetRequestResponse.messageArabic,
+                  ),
                 ),
               );
             } else if (state.forgotPasswordResetRequestResponse.success ==
@@ -67,7 +76,11 @@ class _ForgetPasswordConfirmScreenState
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content:
-                      Text(state.forgotPasswordResetRequestResponse.message),
+                  Text(
+                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                        ? state.forgotPasswordResetRequestResponse.message
+                        : state.forgotPasswordResetRequestResponse.messageArabic,
+                  ),
                 ),
               );
             }
@@ -97,11 +110,12 @@ class _ForgetPasswordConfirmScreenState
                             // the method which is called
                             // when button is pressed
                             onPressed: () {
-                             context.pop();
+                              context.pop();
                             },
                           ),
                           Text(
-                            Strings.FORGET_REST_PASSWORTD,
+                            AppLocalizations.of(context)!.resetpassword,
+                            // Strings.FORGET_REST_PASSWORTD,
                             style: GoogleFonts.openSans(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -124,27 +138,30 @@ class _ForgetPasswordConfirmScreenState
                       const SizedBox(
                         height: 20,
                       ),
-                      const Center(
+                      Center(
                           child: Text(
-                        Strings.FORGET_PASSWORD_RESET,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      )).animate().then(delay: 200.ms).slideX(),
+                            AppLocalizations.of(context)!.passwordreset,
+                            // Strings.FORGET_PASSWORD_RESET,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          )).animate().then(delay: 200.ms).slideX(),
                       const SizedBox(
                         height: 70,
                       ),
-                      const Padding(
-                          padding: EdgeInsets.only(left: 5, bottom: 5),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 5, bottom: 5),
                           child: Text(
-                            Strings.FORGET_NEW_PASSWORD,
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            AppLocalizations.of(context)!.newpassword,
+                            // Strings.FORGET_NEW_PASSWORD,
+                            style: const TextStyle(color: Colors.white, fontSize: 15),
                           )).animate().then(delay: 200.ms).slideX(),
                       MyTextField(
                         // horizontal: 20,
                         focusNode: _passFocus,
-                        hintText: Strings.FORGET_NEW_PASSWORD_HINT,
+                        hintText: AppLocalizations.of(context)!.pleaseenterpassword,
+                        // hintText: Strings.FORGET_NEW_PASSWORD_HINT,
                         obscureText: true,
                         maxLines: 1,
                         controller: newPasswordController,
@@ -160,17 +177,19 @@ class _ForgetPasswordConfirmScreenState
                       const SizedBox(
                         height: 30,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5, bottom: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, bottom: 5),
                         child: Text(
-                          Strings.FORGET_CONFIRM_PASSWORD,
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                          AppLocalizations.of(context)!.confirmpassword,
+                          // Strings.FORGET_CONFIRM_PASSWORD,
+                          style: const TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ).animate().then(delay: 200.ms).slideX(),
                       MyTextField(
                         // horizontal: 20,
                         focusNode: _repassFocus,
-                        hintText: Strings.FORGET_CONFIRM_PASSWORD_HINT,
+                        hintText: AppLocalizations.of(context)!.reentepassword,
+                        // hintText: Strings.FORGET_CONFIRM_PASSWORD_HINT,
                         obscureText: true,
                         maxLines: 1,
                         controller: confirmPasswordController,
@@ -199,7 +218,8 @@ class _ForgetPasswordConfirmScreenState
                             return MyButton(
                               Textfontsize: 16,
                               TextColors: Colors.white,
-                              text: Strings.BUTTON_VERIFICATION,
+                              // text: Strings.BUTTON_VERIFICATION,
+                              text: AppLocalizations.of(context)!.verify,
                               color: Colors.pink.shade400,
                               width: 340,
                               height: 40,
@@ -210,15 +230,16 @@ class _ForgetPasswordConfirmScreenState
                                       .add(
                                     ForgotPasswordResetRequestEvent(
                                         forgotPasswordResetRequest:
-                                            ForgotPasswordResetRequest(
-                                      password: newPasswordController.text,
-                                      passwordConfirmation:
+                                        ForgotPasswordResetRequest(
+                                          password: newPasswordController.text,
+                                          passwordConfirmation:
                                           confirmPasswordController.text,
-                                    )),
+                                        )),
                                   );
                                 } else {
                                   Fluttertoast.showToast(
-                                    msg: "All fields are important",
+                                    msg : AppLocalizations.of(context)!.allfieldsareimportant,
+                                    // msg: "All fields are important",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     backgroundColor: Colors.black87,

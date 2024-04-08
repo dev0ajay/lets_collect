@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/redeem_alert_overlay_widget.dart';
@@ -12,6 +14,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 import '../lets_collect_redeem_screen_arguments.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LetsCollectRedeemScreen extends StatefulWidget {
   final LetCollectRedeemScreenArguments redeemScreenArguments;
@@ -29,7 +32,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
   void initState() {
     super.initState();
     print(widget.redeemScreenArguments.totalPoint);
-   print( widget.redeemScreenArguments.requiredPoint);
+    print( widget.redeemScreenArguments.requiredPoint);
     // ObjectFactory().prefs.getLetsCollectTierData()!.data.letsCollect.forEach((element) { });
   }
 
@@ -40,9 +43,9 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(5),
-          bottomRight: Radius.circular(5),
-        )),
+              bottomLeft: Radius.circular(5),
+              bottomRight: Radius.circular(5),
+            )),
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           onPressed: () {
@@ -61,7 +64,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
           softWrap: true,
           maxLines: 1,
           text: TextSpan(
-            text: 'Lets Collect Points  ',
+            text: AppLocalizations.of(context)!.letscollectpoints,
+            // text: 'Lets Collect Points  ',
             style: GoogleFonts.roboto(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -116,7 +120,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                       ),
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(top: 20, left: 10, right: 10),
+                        const EdgeInsets.only(top: 20, left: 10, right: 10),
                         child: Column(
                           // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -126,7 +130,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                 borderRadius: BorderRadius.circular(5),
                                 child: CachedNetworkImage(
                                   imageUrl:
-                                      widget.redeemScreenArguments.imageUrl,
+                                  widget.redeemScreenArguments.imageUrl,
                                   fit: BoxFit.fill,
                                   placeholder: (context, url) => SizedBox(
                                     // height: getProportionateScreenHeight(170),
@@ -140,8 +144,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                     ),
                                   ),
                                   errorWidget: (context, url, error) =>
-                                      const ImageIcon(
-                                        size: 200,
+                                  const ImageIcon(
+                                    size: 200,
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),
@@ -162,7 +166,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                             Flexible(
                               flex: 1,
                               child: Text(
-                                "Points",
+                                // "Points",
+                                AppLocalizations.of(context)!.points,
                                 style: GoogleFonts.roboto(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -183,11 +188,15 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                   child: GestureDetector(
                     onTap: () {
                       _showDialogBox(
-                          context: context,
-                          storeList: widget.redeemScreenArguments.wereToRedeem);
+                        context: context,
+                        storeList: context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                            ? widget.redeemScreenArguments.wereToRedeem
+                            : widget.redeemScreenArguments.wereToRedeem,
+                      );
                     },
                     child: Text(
-                      " Where can i redeem this reward?",
+                      // " Where can i redeem this reward?",
+                      AppLocalizations.of(context)!.wherecaniredeemthisreward,
                       style: GoogleFonts.roboto(
                         color: AppColors.underlineColor,
                         fontSize: 15,
@@ -224,25 +233,30 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                               ),
                         );
                       }
-                     else {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         const SnackBar(
-                           backgroundColor: AppColors.secondaryColor,
-                             content: Text("You don't have enough points to redeem this item.",
-                               style: TextStyle(
-                                 color: AppColors.primaryWhiteColor,
-                               ),
-                             ),
-                         )
-                       );
-                     }
+                      else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppColors.secondaryColor,
+                              content: Text(
+                                AppLocalizations.of(context)!.youdonthaveenoughpointstoreddemthisitem,
+                                // "You don't have enough points to redeem this item.",
+                                style: const TextStyle(
+                                  color: AppColors.primaryWhiteColor,
+                                ),
+                              ),
+                            )
+                        );
+                      }
 
 
                     },
-                    child: const SizedBox(
+                    child:  SizedBox(
                       child: Padding(
-                        padding: EdgeInsets.all(3.0),
-                        child: ScanScreenCollectButton(text: 'Redeem'),
+                        padding: const EdgeInsets.all(3.0),
+                        child: ScanScreenCollectButton(
+                          text: AppLocalizations.of(context)!.redeem,
+                          // 'Redeem'
+                        ),
                       ),
                     ),
                   ),
@@ -253,7 +267,8 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    "Terms and Conditions applied",
+                    AppLocalizations.of(context)!.termsandconditionsapplied,
+                    // "Terms and Conditions applied",
                     style: GoogleFonts.openSans(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -298,26 +313,27 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
               const SizedBox(height: 10),
               Center(
                   child: Text(
-                "In Following Physical Store",
-                style: GoogleFonts.roboto(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
+                    AppLocalizations.of(context)!.infollowingphysicalstore,
+                    // "In Following Physical Store",
+                    style: GoogleFonts.roboto(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )),
               const SizedBox(height: 20),
               Expanded(
                 flex: 2,
                 child: Column(
                     children: List.generate(
-                  storeList.length,
-                  (index) => Text(
-                    "\u2022 ${storeList[index]}",
-                    style: GoogleFonts.openSans(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )),
+                      storeList.length,
+                          (index) => Text(
+                        "\u2022 ${storeList[index]}",
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )),
               ),
             ],
           ),

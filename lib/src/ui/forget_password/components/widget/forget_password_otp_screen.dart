@@ -3,7 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/forgot_password/forgot_password_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
@@ -12,16 +14,16 @@ import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
-
 import '../../../../constants/colors.dart';
 import '../forgot_password arguments.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class ForgetPasswordOtpScreen extends StatefulWidget {
- final ForgotPasswordArguments? forgotPasswordArguments;
+  final ForgotPasswordArguments? forgotPasswordArguments;
 
 
-   const ForgetPasswordOtpScreen({
+  const ForgetPasswordOtpScreen({
     super.key,required this.forgotPasswordArguments
 
   });
@@ -79,7 +81,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
             },
           ),
           title:   Text(
-            Strings.FORGET_REST_PASSWORTD,
+            AppLocalizations.of(context)!.resetpassword,
+            // Strings.FORGET_REST_PASSWORTD,
             style: GoogleFonts.openSans(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -100,14 +103,16 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
             listener: (context, state) {
               if (state is ForgotPasswordOtpLoaded) {
                 if (state.forgotPasswordOtpRequestResponse.success == true) {
-                 if(state.forgotPasswordOtpRequestResponse.token.isNotEmpty) {
-                   ObjectFactory().prefs.setAuthToken(token: state.forgotPasswordOtpRequestResponse.token);
-                 }
+                  if(state.forgotPasswordOtpRequestResponse.token.isNotEmpty) {
+                    ObjectFactory().prefs.setAuthToken(token: state.forgotPasswordOtpRequestResponse.token);
+                  }
                   context.go('/forgot_password_reset');
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          state.forgotPasswordOtpRequestResponse.message,
+                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                            ? state.forgotPasswordOtpRequestResponse.message
+                            : state.forgotPasswordOtpRequestResponse.messageArabic,
                         style: const TextStyle(
                           color: AppColors.secondaryColor,
                         ),
@@ -126,7 +131,9 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          state.forgotPasswordOtpRequestResponse.message,
+                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                            ? state.forgotPasswordOtpRequestResponse.message
+                            : state.forgotPasswordOtpRequestResponse.messageArabic,
                         style: const TextStyle(
                           color: AppColors.secondaryColor,
                         ),
@@ -151,29 +158,31 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                     SizedBox(
                       height: getProportionateScreenHeight(30),
                     ),
-                     Center(
+                    Center(
                       child: Lottie.asset(Assets.OTP,height: 150,width: 150,fit: BoxFit.cover),
                     ).animate().then(delay: 200.ms).slideX(),
                     const SizedBox(
-                      height: 20
+                        height: 20
                     ),
-                     Center(
+                    Center(
                       child: Text(
-                        Strings.ALMOST_DONE,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.openSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryWhiteColor,
-                        )
+                          AppLocalizations.of(context)!.almostdone,
+                          // Strings.ALMOST_DONE,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.openSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryWhiteColor,
+                          )
                       ),
                     ).animate().then(delay: 200.ms).slideX(),
                     SizedBox(
                       height: getProportionateScreenHeight(20),
                     ),
-                     Center(
+                    Center(
                       child: Text(
-                       "A One-Time password has been send to ${widget.forgotPasswordArguments!.email}. ",
+                        "${AppLocalizations.of(context)!.aonetimepasswordhasbeensendto} ${widget.forgotPasswordArguments!.email}.",
+                        // "A One-Time password has been send to ${widget.forgotPasswordArguments!.email}. ",
                         style: const TextStyle(color: Colors.white, fontSize: 14),
                         textAlign: TextAlign.center,
                       ),
@@ -195,12 +204,13 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Column(
                             children: [
-                              const Flexible(
+                              Flexible(
                                 flex: 1,
                                 child: Center(
                                   child: Text(
-                                    "OTP Number",
-                                    style: TextStyle(
+                                    AppLocalizations.of(context)!.otpnumber,
+                                    // "OTP Number",
+                                    style: const TextStyle(
                                         fontSize: 20, color: Colors.white),
                                   ),
                                 ),
@@ -216,12 +226,12 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                     controller: pinController,
                                     focusNode: focusNode,
                                     androidSmsAutofillMethod:
-                                        AndroidSmsAutofillMethod
-                                            .smsUserConsentApi,
+                                    AndroidSmsAutofillMethod
+                                        .smsUserConsentApi,
                                     listenForMultipleSmsOnAndroid: true,
                                     defaultPinTheme: defaultPinTheme,
                                     separatorBuilder: (index) =>
-                                        const SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     // validator: (value) {
                                     // return value!.isEmpty ?
                                     //     "The fields are empty" : "";
@@ -231,7 +241,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                     //   pinController.setText(value);
                                     // },
                                     hapticFeedbackType:
-                                        HapticFeedbackType.lightImpact,
+                                    HapticFeedbackType.lightImpact,
                                     onCompleted: (pin) {
                                       debugPrint('onCompleted: $pin');
                                     },
@@ -240,7 +250,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                     },
                                     cursor: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.end,
+                                      MainAxisAlignment.end,
                                       children: [
                                         Container(
                                           margin: const EdgeInsets.only(
@@ -257,26 +267,26 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                           .copyWith(
                                         color: fillColor,
                                         borderRadius:
-                                            BorderRadius.circular(6),
+                                        BorderRadius.circular(6),
                                         border: Border.all(
                                             color: focusedBorderColor),
                                       ),
                                     ),
                                     submittedPinTheme:
-                                        defaultPinTheme.copyWith(
+                                    defaultPinTheme.copyWith(
                                       decoration: defaultPinTheme.decoration!
                                           .copyWith(
                                         color: fillColor,
                                         borderRadius:
-                                            BorderRadius.circular(5),
+                                        BorderRadius.circular(5),
                                         border: Border.all(
                                             color: focusedBorderColor),
                                       ),
                                     ),
                                     errorPinTheme:
-                                        defaultPinTheme.copyBorderWith(
+                                    defaultPinTheme.copyBorderWith(
                                       border:
-                                          Border.all(color: Colors.redAccent),
+                                      Border.all(color: Colors.redAccent),
                                     ),
                                   ),
                                 ),
@@ -291,7 +301,7 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                         child: RefreshProgressIndicator(
                                           color: AppColors.primaryWhiteColor,
                                           backgroundColor:
-                                              AppColors.secondaryButtonColor,
+                                          AppColors.secondaryButtonColor,
                                         ),
                                       );
                                     }
@@ -299,7 +309,8 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                       child: MyButton(
                                         Textfontsize: 16,
                                         TextColors: Colors.white,
-                                        text: Strings.OTP_BUTTON_VERIFY,
+                                        text: AppLocalizations.of(context)!.verifyotp,
+                                        // text: Strings.OTP_BUTTON_VERIFY,
                                         color: AppColors.secondaryColor,
                                         width: 340,
                                         height: 40,
@@ -307,15 +318,15 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                           if (formKey.currentState!
                                               .validate()) {
                                             BlocProvider.of<
-                                                        ForgotPasswordBloc>(
-                                                    context)
+                                                ForgotPasswordBloc>(
+                                                context)
                                                 .add(
-                                                    ForgotPasswordOtpRequestEvent(
-                                                        forgotPasswordOtpRequest:
-                                                            ForgotPasswordOtpRequest(
-                                              email: widget.forgotPasswordArguments!.email,
-                                              otp: pinController.text,
-                                            )));
+                                                ForgotPasswordOtpRequestEvent(
+                                                    forgotPasswordOtpRequest:
+                                                    ForgotPasswordOtpRequest(
+                                                      email: widget.forgotPasswordArguments!.email,
+                                                      otp: pinController.text,
+                                                    )));
                                           }
                                         },
                                         showImage: false,

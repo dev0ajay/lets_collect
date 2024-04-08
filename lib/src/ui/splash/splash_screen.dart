@@ -60,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
     });
     BlocProvider.of<NationalityBloc>(context).add(GetNationality());
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());
-
   }
 
   @override

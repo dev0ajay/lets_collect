@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -26,10 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedNavIndex = 0;
   List<Widget> children = [];
   List iconList = [
-    Assets.HOME,
-    Assets.REWARD,
-    Assets.SEARCH,
-    Assets.PROFILE,
+    Assets.HOME_SVG,
+    Assets.REWARD_SVG,
+    Assets.SEARCH_SVG,
+    Assets.PROFILE_SVG,
   ];
   DateTime? currentBackPressTime;
   LetCollectRedeemScreenArguments? letCollectRedeemScreenArguments;
@@ -94,9 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                   // context.go('/scan');
                 },
-                child: ImageIcon(
-                  const AssetImage(Assets.SCAN_ICON),
-                  size: selectedNavIndex == 4 ? 29 : 25,
+                child: SvgPicture.asset(
+                  Assets.SCAN_SVG,
+                  height: selectedNavIndex == 4 ? 30 : 28,
+                  width: selectedNavIndex == 4 ? 30 : 28,
                   color: selectedNavIndex == 4
                       ? AppColors.secondaryColor
                       : AppColors.primaryWhiteColor,
@@ -107,11 +109,14 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBar: AnimatedBottomNavigationBar.builder(
             itemCount: iconList.length,
             tabBuilder: (int index, bool isActive) {
-              return ImageIcon(
-                  // size: isActive ? 30 : 18,
-                  color:
-                      isActive ? AppColors.secondaryButtonColor : Colors.black,
-                  AssetImage(iconList[index]));
+              return SvgPicture.asset(
+                iconList[index],
+
+                fit: BoxFit.scaleDown,
+                color: isActive
+                    ? AppColors.secondaryButtonColor
+                    : AppColors.primaryColor,
+              );
             },
             activeIndex: selectedNavIndex,
             gapLocation: GapLocation.center,

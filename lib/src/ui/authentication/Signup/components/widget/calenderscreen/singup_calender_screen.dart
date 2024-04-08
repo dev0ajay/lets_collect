@@ -62,11 +62,11 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
     }
   }
 
-///Method for calculating Age above 12
+  ///Method for calculating Age above 12
   bool isAbove12YearsOld(DateTime selectedDate) {
     final DateTime now = DateTime.now();
     final DateTime twelveYearsAgo =
-        now.subtract(const Duration(days: 12 * 365));
+    now.subtract(const Duration(days: 12 * 365));
     return selectedDate.isBefore(twelveYearsAgo);
   }
 
@@ -146,20 +146,23 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                 height: 20,
               ),
               Center(
-                child: Text(
-                  AppLocalizations.of(context)!.youarealmosttherewejustneedabitofinfotomakesurewecansendyoutheabsolutebestoffers,
-                  // Strings.DISCRIPTION,
-                  style: GoogleFonts.roboto(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primaryWhiteColor,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Text(
+                    AppLocalizations.of(context)!.youarealmosttherewejustneedabitofinfotomakesurewecansendyoutheabsolutebestoffers,
+                    // Strings.DISCRIPTION,
+                    style: GoogleFonts.roboto(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primaryWhiteColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ).animate().then(delay: 200.ms).slideX(),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 28),
+                const EdgeInsets.symmetric(vertical: 15, horizontal: 28),
                 child: GestureDetector(
                   onTap: () {
                     _showDatePicker(context);
@@ -182,7 +185,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
                           borderSide:
-                              const BorderSide(color: AppColors.borderColor),
+                          const BorderSide(color: AppColors.borderColor),
                         ),
                         fillColor: AppColors.primaryWhiteColor,
                         filled: true,
@@ -205,7 +208,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
               ),
               const SizedBox(height: 5),
               Padding(
-                padding: const EdgeInsets.only(left: 27),
+                padding: const EdgeInsets.only(left: 27,right: 27),
                 child:  Text(
                   AppLocalizations.of(context)!.gender,
                   // Strings.GENDER,
@@ -226,12 +229,12 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                     },
                     activeColor: AppColors.secondaryColor,
                     fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return AppColors.secondaryColor;
-                      }
-                      return Colors.white;
-                    }),
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return AppColors.secondaryColor;
+                          }
+                          return Colors.white;
+                        }),
                   ),
                   Text(
                     AppLocalizations.of(context)!.female,
@@ -254,15 +257,15 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                     },
                     activeColor: AppColors.secondaryColor,
                     fillColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return AppColors.secondaryColor;
-                      }
-                      return Colors.white;
-                    }),
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.selected)) {
+                            return AppColors.secondaryColor;
+                          }
+                          return Colors.white;
+                        }),
                   ),
                   Text(
-                    AppLocalizations.of(context)!.female,
+                    AppLocalizations.of(context)!.male,
                     // "Male",
                     style: GoogleFonts.roboto(
                       fontSize: 16,
@@ -350,19 +353,19 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                           ),
                           items: state.nationalityResponse.data
                               .map((item) => DropdownMenuItem<String>(
-                                    value: item.id.toString(),
-                                    child: Text(
-                                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                      ?item.nationality
-                                      :item.nationalityArabic,
-                                      style: GoogleFonts.roboto(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.primaryBlackColor,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ))
+                            value: item.id.toString(),
+                            child: Text(
+                              context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                  ?item.nationality
+                                  :item.nationalityArabic,
+                              style: GoogleFonts.roboto(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.primaryBlackColor,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ))
                               .toList(),
                           value: selectedValue,
                           onChanged: (String? value) {
@@ -426,7 +429,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                               radius: const Radius.circular(40),
                               thickness: MaterialStateProperty.all<double>(6),
                               thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                              MaterialStateProperty.all<bool>(true),
                             ),
                           ),
                           menuItemStyleData: const MenuItemStyleData(
@@ -484,7 +487,7 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                 child: MyButton(
                   Textfontsize: 16,
                   TextColors: Colors.white,
-                  text: AppLocalizations.of(context)!.signup,
+                  text: AppLocalizations.of(context)!.next,
                   // text: Strings.SINGUP_BUTTON_TEXT,
                   color: AppColors.secondaryColor,
                   width: 340,
@@ -496,13 +499,13 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                         selectedNationality.isNotEmpty &&
                         selectedDate!.isBefore(DateTime.now())
                         && isAbove12YearsOld(selectedDate!)
-                        ) {
+                    ) {
                       context.push('/signUpCountryScreen',
                           extra: SignUpArgumentClass(
                             firsname: widget.signUpArgumentClass.firsname,
                             lastName: widget.signUpArgumentClass.lastName,
                             confirmPassword:
-                                widget.signUpArgumentClass.confirmPassword,
+                            widget.signUpArgumentClass.confirmPassword,
                             email: widget.signUpArgumentClass.email,
                             password: widget.signUpArgumentClass.password,
                             dob: dateInputController.text,
@@ -513,8 +516,8 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                       //     .add(GetCountryEvent());
                     } else {
                       Fluttertoast.showToast(
-                        msg: AppLocalizations.of(context)!.pleaseprovideyourcorrectdetails,
                         // msg: "Please provide your correct details!",
+                        msg: AppLocalizations.of(context)!.pleaseprovideyourcorrectdetails,
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         backgroundColor: Colors.black87,
