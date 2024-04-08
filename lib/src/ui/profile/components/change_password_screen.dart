@@ -349,7 +349,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       return; // Exit early if any field is empty or validation fails
                                     }
 
-                                    // If all validations pass, submit the change password event
                                     if (_formKey.currentState!.validate()) {
                                       BlocProvider.of<ChangePasswordBloc>(context)
                                           .add(
@@ -409,7 +408,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
                     AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
-                    // "You are not connected to the internet",
                     style: GoogleFonts.openSans(
                       color: AppColors.primaryGrayColor,
                       fontSize: 20,
@@ -558,7 +556,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                // AppLocalizations.of(context)!.thereferralcodefieldisrequired,
                                 context
                                     .read<LanguageBloc>()
                                     .state

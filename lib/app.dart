@@ -236,62 +236,33 @@ class _AppState extends State<App> {
                   myProfileDataProvider: RepositoryProvider.of(context)),
             ),
           ],
-          child: BlocBuilder<NetworkBloc, NetworkState>(
+          child: BlocBuilder<LanguageBloc, LanguageState>(
             builder: (context, state) {
-              if (state is NetworkFailure) {
-                Center(
-                  child: Column(
-                    children: [
-                      Lottie.asset(Assets.NO_INTERNET),
-                      Text(
-                        "You are not connected to the internet",
-                        style: GoogleFonts.openSans(
-                          color: AppColors.primaryWhiteColor,
-                          fontSize: 20,
-                        ),
-                      ).animate().scale(delay: 200.ms, duration: 300.ms),
-                    ],
-                  ),
-                );
-              }
-              return BlocBuilder<LanguageBloc, LanguageState>(
-                builder: (context, state) {
-                  return MaterialApp.router(
-                    locale: state.selectedLanguage.value,
-                    supportedLocales: AppLocalizations.supportedLocales,
-                    localizationsDelegates:
-                        AppLocalizations.localizationsDelegates,
-                    themeAnimationCurve: Curves.easeIn,
-                    themeAnimationDuration: const Duration(milliseconds: 750),
-                    // routerConfig: AppRouter.router,
-                    routerDelegate: AppRouter.router.routerDelegate,
-                    routeInformationProvider:
-                        AppRouter.router.routeInformationProvider,
-                    routeInformationParser:
-                        AppRouter.router.routeInformationParser,
-                    debugShowCheckedModeBanner: false,
-                    title: 'Lets Collect',
-                    theme: AppTheme.lightTheme,
-                    themeMode: ThemeMode.light,
-                    builder: (context, child) {
-                      // Obtain the current media query information.
-                      final mediaQueryData = MediaQuery.of(context);
+              return MaterialApp.router(
+                locale: state.selectedLanguage.value,
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                themeAnimationCurve: Curves.easeIn,
+                themeAnimationDuration: const Duration(milliseconds: 750),
+                // routerConfig: AppRouter.router,
+                routerDelegate: AppRouter.router.routerDelegate,
+                routeInformationProvider:
+                    AppRouter.router.routeInformationProvider,
+                routeInformationParser: AppRouter.router.routeInformationParser,
+                debugShowCheckedModeBanner: false,
+                title: 'Lets Collect',
+                theme: AppTheme.lightTheme,
+                themeMode: ThemeMode.light,
+                builder: (context, child) {
+                  // Obtain the current media query information.
+                  final mediaQueryData = MediaQuery.of(context);
 
-                      return MediaQuery(
-                        // Set the default textScaleFactor to 1.0 for
-                        // the whole subtree.
-                        data: mediaQueryData.copyWith(
-                            textScaler: const TextScaler.linear(0.85)),
-                        child: child!,
-                      );
-                    },
-                    // themeMode: appState.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
-                    // home: const HomeScreen(),/
-                    // SplashScreen(isOffline: isOffline),
-                    // home: OrderSuccessScreen(),
-                    // home: LoadUrl(urlPath: "https://www.google.com",),
-                    // home: PushNotify(),
-                    // home:Registration(),
+                  return MediaQuery(
+                    // Set the default textScaleFactor to 0.85 for
+                    // the whole subtree.
+                    data: mediaQueryData.copyWith(
+                        textScaler: const TextScaler.linear(0.85)),
+                    child: child!,
                   );
                 },
               );

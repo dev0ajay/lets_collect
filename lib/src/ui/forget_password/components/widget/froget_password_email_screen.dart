@@ -17,6 +17,8 @@ import 'package:lets_collect/src/ui/forget_password/components/forgot_password%2
 import '../../../../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../utils/network_connectivity/bloc/network_bloc.dart';
+
 class ForgetPasswordEmailWidget extends StatefulWidget {
   const ForgetPasswordEmailWidget({super.key});
 
@@ -124,7 +126,15 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
         }
       },
       builder: (context, state) {
-        return Padding(
+        return BlocConsumer<NetworkBloc, NetworkState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    if(state is NetworkInitial) {
+
+    }
+    return Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Form(
             key: _formKey,
@@ -233,6 +243,8 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
             ),
           ),
         );
+  },
+);
       },
     );
   }

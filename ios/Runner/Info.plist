@@ -31,8 +31,6 @@
 			</array>
 		</dict>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb344439704762577</string>
@@ -51,15 +49,12 @@
 	<string>113086635979-83usej8u9bl97a44ouj7t7ehlc69nf0e.apps.googleusercontent.com</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-    <string>fbapi</string>
-    <string>fb-messenger-share-api</string>
-    </array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>sms</string>
-		<string>tel</string>
+  <string>fbapi</string>
+  <string>fb-messenger-share-api</string>
+  <string>fbauth2</string>
+  <string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

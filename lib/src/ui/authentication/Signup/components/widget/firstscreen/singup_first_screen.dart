@@ -156,7 +156,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                         child: Text(
                           Strings.LOGIN_LETS_COLLECT,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primaryWhiteColor,
                             fontSize: 40,
                           ),
                         )),
@@ -314,7 +314,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                     Center(
                       child: MyButton(
                         Textfontsize: 16,
-                        TextColors: Colors.white,
+                        TextColors: AppColors.primaryWhiteColor,
                         // text: Strings.SINGUP_BUTTON_TEXT,
                         text: AppLocalizations.of(context)!.next,
                         color: isChecked
@@ -340,12 +340,11 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                               );
                             } else {
                               Fluttertoast.showToast(
-                                // msg: "All fields are important",
                                 msg: AppLocalizations.of(context)!.allfieldsareimportant,
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.black87,
-                                textColor: Colors.white,
+                                backgroundColor: AppColors.secondaryColor,
+                                textColor: AppColors.primaryWhiteColor,
                               );
                             }
                           } else {
@@ -354,8 +353,8 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                               msg: AppLocalizations.of(context)!.entercorrectpassword,
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black87,
-                              textColor: Colors.white,
+                              backgroundColor: AppColors.secondaryColor,
+                              textColor: AppColors.primaryWhiteColor,
                             );
                           }
                         }

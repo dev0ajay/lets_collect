@@ -43,6 +43,7 @@ import '../src/ui/forget_password/components/forget_password_screen.dart';
 import '../src/ui/forget_password/components/widget/forget_password_confirm_screen.dart';
 import '../src/ui/forget_password/components/widget/forget_password_otp_screen.dart';
 import '../src/ui/home/home_screen.dart';
+import '../src/ui/profile/components/change_password_screen.dart';
 import '../src/ui/profile/components/my_profile_screen_arguments.dart';
 import '../src/ui/profile/profile_screen.dart';
 import '../src/ui/scan/components/scan_detail_screen_argument.dart';
@@ -865,6 +866,27 @@ class AppRouter {
                     return FadeTransition(
                       opacity:
                       CurveTween(curve: Curves.easeIn).animate(animation),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          GoRoute(
+              path: 'changePassword',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child: const ChangePasswordScreen(),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (context, animation,
+                      secondaryAnimation, child) {
+                    const begin = Offset(0.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.decelerate;
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+                    return SlideTransition(
+                      position: animation.drive(tween),
                       child: child,
                     );
                   },

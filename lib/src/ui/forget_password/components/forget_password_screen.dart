@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../../constants/strings.dart';
+import '../../../utils/network_connectivity/bloc/network_bloc.dart';
 import 'widget/froget_password_email_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -41,7 +44,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             color: AppColors.primaryWhiteColor,
           ),
         ).animate().then(delay: 200.ms).slideX(),
-        actions:  [
+        actions: [
           const Image(
             image: AssetImage(Assets.APP_LOGO),
             width: 40,
@@ -51,7 +54,53 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         ],
       ),
       backgroundColor: AppColors.primaryColor,
-      body: const ForgetPasswordEmailWidget(),
+      body: BlocConsumer<NetworkBloc, NetworkState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          if (state is NetworkInitial) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(Assets.NO_INTERNET),
+                  Text(
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!
+                        .youarenotconnectedtotheinternet,
+                    style: GoogleFonts.openSans(
+                      color: AppColors.primaryGrayColor,
+                      fontSize: 20,
+                    ),
+                  ).animate().scale(delay: 200.ms, duration: 300.ms),
+                ],
+              ),
+            );
+          } else if (state is NetworkFailure) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(Assets.NO_INTERNET),
+                  Text(
+                    // "You are not connected to the internet",
+                    AppLocalizations.of(context)!
+                        .youarenotconnectedtotheinternet,
+                    style: GoogleFonts.openSans(
+                      color: AppColors.primaryGrayColor,
+                      fontSize: 20,
+                    ),
+                  ).animate().scale(delay: 200.ms, duration: 300.ms),
+                ],
+              ),
+            );
+          } else if (state is NetworkSuccess) {
+            return const ForgetPasswordEmailWidget();
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }
