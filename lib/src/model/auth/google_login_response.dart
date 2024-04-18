@@ -12,6 +12,7 @@ class GoogleLoginResponse {
   bool? success;
   int? statusCode;
   String? message;
+  String? messageArabic;
   Data? data;
   String? token;
 
@@ -19,6 +20,7 @@ class GoogleLoginResponse {
     this.success,
     this.statusCode,
     this.message,
+    this.messageArabic,
     this.data,
     this.token,
   });
@@ -27,6 +29,7 @@ class GoogleLoginResponse {
     success: json["success"],
     statusCode: json["status_code"],
     message: json["message"],
+    messageArabic: json["message_arabic"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
     token: json["token"],
   );
@@ -35,6 +38,8 @@ class GoogleLoginResponse {
     "success": success,
     "status_code": statusCode,
     "message": message,
+    "message_arabic": messageArabic,
+
     "data": data?.toJson(),
     "token": token,
   };

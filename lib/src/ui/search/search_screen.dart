@@ -64,7 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         bottomRight: Radius.circular(5),
                       ),
                     ),
-                    expandedHeight: 170,
+                    expandedHeight: getProportionateScreenHeight(140),
                     floating: false,
                     backgroundColor: AppColors.primaryColor,
                     pinned: true,
@@ -83,107 +83,110 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     flexibleSpace: const FlexibleSpaceBar(
-                      // expandedTitleScale: 1,
                       titlePadding: EdgeInsets.zero,
                       background: NestedScrollBackgroundWidget1(),
                     ),
+
                     bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(60),
+                      preferredSize: const Size.fromHeight(70),
                       child: Container(
                         height: 50,
                         width: MediaQuery.of(context).size.width,
                         color: AppColors.primaryWhiteColor,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 6,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 9,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 20, right: 20),
+                                  child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 2),
+                                          spreadRadius: 0,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.borderColor,
                                       ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: AppColors.borderColor,
                                     ),
-                                  ),
-                                  child: CupertinoTextField(
-                                    onSubmitted: (text) {
-                                      BlocProvider.of<SearchBloc>(context).add(
-                                        GetSearchEvent(
-                                          searchCategoryRequest:
-                                              SearchCategoryRequest(
-                                            searchText: text.length != null
-                                                ? searchController.text
-                                                : "",
+                                    child: CupertinoTextField(
+                                      onSubmitted: (text) {
+                                        BlocProvider.of<SearchBloc>(context).add(
+                                          GetSearchEvent(
+                                            searchCategoryRequest:
+                                                SearchCategoryRequest(
+                                              searchText: text.length != null
+                                                  ? searchController.text
+                                                  : "",
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    onEditingComplete: () {
-                                      BlocProvider.of<SearchBloc>(context).add(
-                                        GetSearchEvent(
-                                          searchCategoryRequest:
-                                              SearchCategoryRequest(
-                                            searchText: searchController.text,
+                                        );
+                                      },
+                                      onEditingComplete: () {
+                                        BlocProvider.of<SearchBloc>(context).add(
+                                          GetSearchEvent(
+                                            searchCategoryRequest:
+                                                SearchCategoryRequest(
+                                              searchText: searchController.text,
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    controller: searchController,
-                                    placeholder: AppLocalizations.of(context)!
-                                        .searchcategory,
-                                    // placeholder: Strings.SEARCH_SCREEN_HINT,
-                                    placeholderStyle: const TextStyle(
-                                      color: AppColors.primaryGrayColor,
+                                        );
+                                      },
+                                      controller: searchController,
+                                      placeholder: AppLocalizations.of(context)!
+                                          .searchcategory,
+                                      // placeholder: Strings.SEARCH_SCREEN_HINT,
+                                      placeholderStyle: const TextStyle(
+                                        color: AppColors.primaryGrayColor,
+                                      ),
+                                      onChanged: (text) {
+                                        BlocProvider.of<SearchBloc>(context).add(
+                                          GetSearchEvent(
+                                            searchCategoryRequest:
+                                                SearchCategoryRequest(
+                                              searchText: text.length != null
+                                                  ? searchController.text
+                                                  : "",
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    onChanged: (text) {
-                                      BlocProvider.of<SearchBloc>(context).add(
-                                        GetSearchEvent(
-                                          searchCategoryRequest:
-                                              SearchCategoryRequest(
-                                            searchText: text.length != null
-                                                ? searchController.text
-                                                : "",
-                                          ),
-                                        ),
-                                      );
-                                    },
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (searchController.text.isNotEmpty) {
-                                    BlocProvider.of<SearchBloc>(context).add(
-                                      GetSearchEvent(
-                                        searchCategoryRequest:
-                                            SearchCategoryRequest(
-                                                searchText:
-                                                    searchController.text),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: const ImageIcon(
-                                  AssetImage(Assets.SEARCH),
+                              Expanded(
+                                flex: 2,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (searchController.text.isNotEmpty) {
+                                      BlocProvider.of<SearchBloc>(context).add(
+                                        GetSearchEvent(
+                                          searchCategoryRequest:
+                                              SearchCategoryRequest(
+                                                  searchText:
+                                                      searchController.text),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const ImageIcon(
+                                    AssetImage(Assets.SEARCH),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -197,7 +200,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
                             flex: 4,
@@ -322,8 +324,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       child: CachedNetworkImage(
                                         height: 90,
                                         width: 90,
-                                        // height: MediaQuery.of(context).size.height / 8,
-                                        // width: MediaQuery.of(context).size.width / 8,
+
                                         alignment: Alignment.center,
                                         fadeInCurve: Curves.easeIn,
                                         fadeInDuration:
@@ -378,6 +379,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                       fontSize: 15,
                                       color: AppColors.cardTextColor,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ],

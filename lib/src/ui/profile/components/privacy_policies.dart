@@ -4,8 +4,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/cms_bloc/privacy_policies/privacy_policies_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
+import '../../../bloc/privacy_policies/privacy_policies_bloc.dart';
 import '../../../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,8 +21,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<PrivacyPoliciesBloc>(context).add(GetPrivacyPolicies());
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,8 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
           icon: const Icon(
             Icons.arrow_back_ios_outlined,
             color: AppColors.primaryWhiteColor,
-          ),),
+          ),
+        ),
         title: Text(
           AppLocalizations.of(context)!.privacypolicy,
           // "Privacy policies",
@@ -48,24 +49,25 @@ class _PrivacyPoliciesScreenState extends State<PrivacyPoliciesScreen> {
       ),
       body: BlocBuilder<PrivacyPoliciesBloc, PrivacyPoliciesState>(
         builder: (context, state) {
-          if(state is PrivacyPoliciesLaoding) {
+          if (state is PrivacyPoliciesLaoding) {
             return const Center(
               child: RefreshProgressIndicator(
-                backgroundColor: AppColors.secondaryColor,
-                color: AppColors.primaryWhiteColor,
+                backgroundColor: AppColors.primaryWhiteColor,
+                color: AppColors.secondaryColor,
               ),
             );
           }
-          if(state is PrivacyPoliciesLoaded) {
+          if (state is PrivacyPoliciesLoaded) {
             return SingleChildScrollView(
               child: Html(
-                // data: state.privacyPoliciesResponse.data.pageContent
+                  // data: state.privacyPoliciesResponse.data.pageContent
                   data: state.privacyPoliciesResponse != null
-                      ? (context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                      ? state.privacyPoliciesResponse.data.pageContent
-                      : state.privacyPoliciesResponse.data.pageContentArabic )
-                      : ""
-              ),
+                      ? (context.read<LanguageBloc>().state.selectedLanguage ==
+                              Language.english
+                          ? state.privacyPoliciesResponse.data.pageContent
+                          : state
+                              .privacyPoliciesResponse.data.pageContentArabic)
+                      : ""),
             );
           }
           return const Center(

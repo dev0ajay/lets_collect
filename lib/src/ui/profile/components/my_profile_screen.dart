@@ -149,18 +149,71 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   String? selectedCountry;
   String? selectedCityID;
 
+  // Future<void> _pickImage() async {
+  //   final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  //
+  //   if (pickedFile == null) {
+  //     // No image selected
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Nothing is selected'))
+  //     );
+  //     return;
+  //   }
+  //
+  //   final File pickedImage = File(pickedFile.path);
+  //   final bytes = await pickedImage.readAsBytes();
+  //   final decodedImage = await decodeImageFromList(bytes);
+  //
+  //   // Check if image dimensions exceed 2MP
+  //   if (decodedImage.width! * decodedImage.height! > 2 * 1024 * 1024) {
+  //     // Image exceeds 2MP limit
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Selected image exceeds 2MP limit'))
+  //     );
+  //     return;
+  //   }
+  //
+  //   setState(() {
+  //     _pickedFile = pickedFile;
+  //     _image = pickedImage;
+  //     imageBase64 = base64Encode(bytes);
+  //     extension = p.extension(pickedFile.path).trim().replaceAll('.', '');
+  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //   });
+  // }
+
   Future<void> _pickImage() async {
-    _pickedFile = (await _picker.pickImage(
-        source: ImageSource.gallery, imageQuality: 5))!;
+    final _picker = ImagePicker();
+    final XFile? _pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 5,
+    );
+
+    if (_pickedFile == null) {
+      // User canceled picking image
+      return;
+    }
+
     final bytes = await _pickedFile.readAsBytes();
+
     // Calculate the size of the image in KB
     double imageSizeKB = bytes.lengthInBytes / 1024; // convert bytes to KB
+
     print('SELECTED IMAGE SIZE: $imageSizeKB KB');
+    Fluttertoast.showToast(
+      // msg: "Please Save the profile Photo",
+      msg: AppLocalizations.of(context)!.pleasesavetheprofilephoto,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: AppColors.secondaryColor,
+      // Example color
+      textColor: AppColors.primaryWhiteColor,
+    );
+
     if (imageSizeKB > 5120) {
       // If image size is greater than 5MB
       Fluttertoast.showToast(
         msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
-        // msg: 'Selected image is greater than 5MB. Please choose an image size less than 5MB.',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: AppColors.secondaryColor,
@@ -168,16 +221,80 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       );
       return;
     }
+
     setState(() {
       _image = File(_pickedFile.path);
       galleryFile = File(_pickedFile.path);
       String img64 = base64Encode(bytes);
       imageBase64 = img64;
-      extension =
-          p.extension(galleryFile!.path).trim().toString().replaceAll('.', '');
+      extension = p.extension(galleryFile!.path).trim().replaceAll('.', '');
       imageUploadFormated = "data:image/$extension;base64,$imageBase64";
     });
   }
+
+  // Future<void> _pickImage() async {
+  //   _pickedFile = (await _picker.pickImage(
+  //       source: ImageSource.gallery, imageQuality: 5))!;
+  //   final bytes = await _pickedFile.readAsBytes();
+  //   final image = await decodeImageFromList(bytes);
+  //
+  //   // Calculate the dimensions of the image
+  //   int imageWidth = image.width;
+  //   int imageHeight = image.height;
+  //   // Calculate the total number of megapixels
+  //   double megapixels = (imageWidth * imageHeight) / 1000000;
+  //
+  //   print('SELECTED IMAGE HAS $megapixels MP.');
+  //
+  //   if (megapixels > 5) {
+  //     Fluttertoast.showToast(
+  //       msg:AppLocalizations.of(context)!.selectedimageisgreaterthan,
+  //           // "Selected image is greater than 5MP, Please Choose an image size less than 5MP",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       backgroundColor: AppColors.secondaryColor,
+  //       textColor: AppColors.primaryWhiteColor,
+  //     );
+  //     return;
+  //   }
+  //
+  //   setState(() {
+  //     _image = File(_pickedFile.path);
+  //     galleryFile = File(_pickedFile.path);
+  //     String img64 = base64Encode(bytes);
+  //     imageBase64 = img64;
+  //     extension = p
+  //         .extension(galleryFile!.path)
+  //         .trim()
+  //         .toString()
+  //         .replaceAll('.', '');
+  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //   });
+  //   }
+
+  // Future<void> _pickImage() async {
+  //   _pickedFile = (await _picker.pickImage(source: ImageSource.gallery))!;
+  //   setState(() {
+  //     _image = File(_pickedFile.path);
+  //     if (XFile != null) {
+  //       galleryFile = File(_pickedFile.path);
+  //       final bytes = galleryFile!.readAsBytesSync();
+  //       String img64 = base64Encode(bytes);
+  //       setState(() {
+  //         imageBase64 = img64;
+  //         extension = p
+  //             .extension(galleryFile!.path)
+  //             .trim()
+  //             .toString()
+  //             .replaceAll('.', '');
+  //         imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //       });
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+  //           const SnackBar(content: Text('Nothing is selected')));
+  //     }
+  //   });
+  // }
 
   myProfileArgumentData() {
     firstnameController.text = widget.myProfileArguments.first_name;
@@ -224,6 +341,58 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     openAppSettings();
   }
 
+  void _showPermissionDialog(BuildContext permissionDialogContext) {
+    final currentContext = _scaffoldKey.currentContext;
+    if (currentContext != null) {
+      showDialog(
+        context: currentContext,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              AppLocalizations.of(context)!.permissiondenied,
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            content: Text(
+              AppLocalizations.of(context)!
+                  .tocontinuefileuploadallowaccesstofilesandstorage,
+              style: GoogleFonts.openSans(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: openSettings,
+                child: Text(
+                  AppLocalizations.of(context)!.settings,
+                  style: GoogleFonts.roboto(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   Future<void> checkPermissionForGallery(BuildContext context) async {
     final status = await Permission.photos.request();
     if (status.isGranted) {
@@ -231,7 +400,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       _pickImage();
     } else if (status.isDenied) {
       print("Permission Denied");
-      // _showPermissionDialog(context);
+      _showPermissionDialog(context);
       openSettings();
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
@@ -267,6 +436,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                     state.editProfileRequestResponse.message ==
                         "Updated Successfully") {
                   Fluttertoast.showToast(
+                    // msg: "All fields are important",
                     msg: AppLocalizations.of(context)!.updatesuccessfully,
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
@@ -515,6 +685,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                         ),
                                       ),
                                     ).animate().then(delay: 200.ms).slideY(),
+
+                                    // SizedBox(height: getProportionateScreenHeight(5)),
 
                                     /// Gender
                                     Center(
@@ -1321,9 +1493,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.BOTTOM,
                                                   backgroundColor:
-                                                      AppColors.secondaryColor,
-                                                  textColor: AppColors
-                                                      .primaryWhiteColor,
+                                                      Colors.black87,
+                                                  textColor: Colors.white,
                                                 );
                                               }
                                             },
@@ -1460,6 +1631,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     final appBarSize = expandedHeight - shrinkOffset;
+    // final cardTopPosition = expandedHeight / 7 - shrinkOffset;
     final proportion = 2 - (expandedHeight / appBarSize);
     final percent = proportion < 0 || proportion > 1 ? 0.0 : proportion;
     return Stack(
@@ -1479,8 +1651,8 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
             leading: IconButton(
               icon: GestureDetector(
                   onTap: () {
-                    // BlocProvider.of<MyProfileBloc>(context)
-                    //     .add(GetProfileDataEvent());
+                    BlocProvider.of<MyProfileBloc>(context)
+                        .add(GetProfileDataEvent());
                     context.pop();
                     print("Profile tapped!");
                   },
@@ -1500,6 +1672,9 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                     flex: 5,
                     child: Text(
                       AppLocalizations.of(context)!.myprofile,
+                      // "My Profile",
+                      // myProfileArguments.user_name,
+                      // ObjectFactory().prefs.getUserName() ?? "",
                       style: GoogleFonts.openSans(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -1507,6 +1682,62 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
+                  // SizedBox(width: 8), // Adjust the spacing as needed
+                  //  Expanded(
+                  //   flex: 1,
+                  //   child: Flexible(
+                  //     flex: 3,
+                  //     child: _pickedFile != null
+                  //         ? Container(
+                  //       alignment: Alignment.center,
+                  //       width: 50,
+                  //       height: 50,
+                  //       // color: Colors.grey[300],
+                  //       decoration: const BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         // borderRadius: BorderRadius.circular(100),
+                  //       ),
+                  //       child: ClipRRect(
+                  //         borderRadius:
+                  //         BorderRadius.circular(100),
+                  //         child: Image.file(
+                  //           File(_pickedFile!.path),
+                  //           width: 50,
+                  //           height: 50,
+                  //           fit: BoxFit.cover,
+                  //         ),
+                  //       ),
+                  //     )
+                  //         : Container(
+                  //       alignment: Alignment.center,
+                  //       width: 50,
+                  //       height: 50,
+                  //       decoration: const BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         color: AppColors.shadow,
+                  //         // borderRadius: BorderRadius.circular(100),
+                  //       ),
+                  //       child: const Stack(
+                  //         children: [
+                  //           // Align(
+                  //           //   alignment: Alignment.center,
+                  //           //   child: Text("Add"),
+                  //           // ),
+                  //           Positioned(
+                  //               bottom: 8,
+                  //               right: 8,
+                  //               child: Icon(
+                  //                 Icons.add_a_photo_outlined,
+                  //                 color:
+                  //                 AppColors.secondaryColor,
+                  //               )
+                  //             // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  //  )
                 ],
               ),
             ),
@@ -1537,6 +1768,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                               children: [
                                 Text(
                                   myProfileArguments.first_name,
+                                  // ObjectFactory().prefs.getUserName() ?? "",
                                   style: GoogleFonts.openSans(
                                     fontSize: 21,
                                     fontWeight: FontWeight.w700,
@@ -1551,6 +1783,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                                   child: Text(
                                     AppLocalizations.of(context)!
                                         .changepassword,
+                                    // "Change Password",
                                     style: GoogleFonts.openSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
@@ -1566,41 +1799,70 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                             child: GestureDetector(
                               onTap: () async {
                                 checkPermission(context);
+                                // pickImage();
+
+                                // if (selectedImages.isEmpty) {
+                                //   if (Platform.isAndroid) {
+                                //     final androidInfo =
+                                //         await DeviceInfoPlugin().androidInfo;
+                                //     if (androidInfo.version.sdkInt <= 32) {
+                                //       checkPermission(Permission.storage,
+                                //           _scaffoldKey.currentContext!);
+                                //     } else {
+                                //       checkPermission(Permission.photos,
+                                //           _scaffoldKey.currentContext!);
+                                //     }
+                                //   } else if (Platform.isIOS) {
+                                //     checkPermission(Permission.storage,
+                                //         _scaffoldKey.currentContext!);
+                                //   }
+                                // } else {
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     SnackBar(
+                                //       backgroundColor: AppColors.secondaryButtonColor,
+                                //       content:
+                                //       Text(
+                                //         AppLocalizations.of(context)!.pleasechooseeitheroneoption,
+                                //         // "Please choose either one option"
+                                //       ),
+                                //     ),
+                                //   );
+                                // }
                               },
                               child: filePath.path.isNotEmpty
-                                  ? Container(
-                                      alignment: Alignment.center,
-                                      width: 130,
-                                      height: 130,
-                                      // color: Colors.grey[300],
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        // borderRadius: BorderRadius.circular(100),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: Image.file(
-                                          File(filePath.path),
-                                          width: 130,
-                                          height: 130,
-                                          fit: BoxFit.cover,
+                                  ? AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: 130,
+                                        height: 130,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Image.file(
+                                            File(filePath.path),
+                                            width: 130,
+                                            height: 130,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     )
-                                  : Container(
-                                      width: 130.0,
-                                      height: 130.0,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        // border: Border.all(
-                                        //   color: AppColors.secondaryColor,
-                                        //   width: 2.0,
-                                        // ),
-                                        image: DecorationImage(
-                                          alignment: Alignment.center,
-                                          fit: BoxFit.cover,
-                                          image: MemoryImage(bytesImage),
+                                  : AspectRatio(
+                                      aspectRatio: 1,
+                                      child: Container(
+                                        width: 130.0,
+                                        height: 130.0,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                            alignment: Alignment.center,
+                                            fit: BoxFit.cover,
+                                            image: MemoryImage(bytesImage),
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -13,7 +13,6 @@ import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/referral/referral_friend_request.dart';
-import 'package:lets_collect/src/model/referral/referral_list_response.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
@@ -57,7 +56,6 @@ class _ReferralScreenState extends State<ReferralScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
-    // BlocProvider.of<ReferralBloc>(context).add(GetReferralFriendEvent(referralFriendRequest: ReferralFriendRequest(referralId: '', name: '', email: '')));
   }
 
   @override
@@ -98,28 +96,34 @@ class _ReferralScreenState extends State<ReferralScreen> {
             if (state is NetworkSuccess) {
               return BlocConsumer<ReferralBloc, ReferralState>(
                 listener: (context, state) {
-                  if(state is ReferralListLoading){
-                    Center(
-                      child: Lottie.asset(Assets.JUMBINGDOT,
-                          height: 200, width: 200),
+                  if (state is ReferralListLoading) {
+                    const Center(
+                      child: RefreshProgressIndicator(
+                        color: AppColors.secondaryColor,
+                      ),
                     );
                   }
                   if (state is ReferralListLoaded) {
                     if (state.referralListResponse.success == true) {
-                      // for(var i = 0; i < state.referralListResponse.data.length; i++ ){
-                      //   referralID = state.referralListResponse.data[i].referralId.toString();
-                      // }
-                      referralID = state.referralListResponse.data[index].referralId.toString();
-                      print("referralId == ${referralID}");
+                      referralID = state
+                          .referralListResponse.data[index].referralId
+                          .toString();
+                      print("referralId == $referralID");
 
-                      pageTitle = context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                      pageTitle = context
+                                  .read<LanguageBloc>()
+                                  .state
+                                  .selectedLanguage ==
+                              Language.english
                           ? state.referralListResponse.cmsData.pageTitle
                           : state.referralListResponse.cmsData.pageTitleArabic;
 
                       pageContent =
-                      context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                          ? state.referralListResponse.cmsData.pageContent
-                          : state.referralListResponse.cmsData.pageContentArabic;
+                          context.read<LanguageBloc>().state.selectedLanguage ==
+                                  Language.english
+                              ? state.referralListResponse.cmsData.pageContent
+                              : state.referralListResponse.cmsData
+                                  .pageContentArabic;
                     }
                   }
                   if (state is ReferralListLoaded) {
@@ -183,7 +187,6 @@ class _ReferralScreenState extends State<ReferralScreen> {
                   }
                 },
                 builder: (context, state) {
-
                   return Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
                     child: Form(
@@ -199,229 +202,258 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               ),
                               state is ReferralListLoaded
                                   ? Expanded(
-                                flex: 0,
-                                child: Center(
-                                  child: Lottie.asset(Assets.CHOOSE,
-                                      height: 200, width: 200),
-                                ),
-                              )
-                                  : SizedBox(),
+                                      flex: 0,
+                                      child: Center(
+                                        child: Lottie.asset(Assets.CHOOSE,
+                                            height: 200, width: 200),
+                                      ),
+                                    )
+                                  : const SizedBox(),
                               state is ReferralListLoaded
-                                  ?Expanded(
-                                flex: 0,
-                                child: Center(
-                                  child: ClipOval(
-                                    child: SvgPicture.asset(
-                                      Assets.SHADE_SVG,
-                                      fit: BoxFit.cover,
-                                      height: 12,
-                                    ),
-                                  ),
-                                ),
-                              )
-                                  : SizedBox(),
+                                  ? Expanded(
+                                      flex: 0,
+                                      child: Center(
+                                        child: ClipOval(
+                                          child: SvgPicture.asset(
+                                            Assets.SHADE_SVG,
+                                            fit: BoxFit.cover,
+                                            height: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(height: 35),
                               state is ReferralListLoaded
-                                  ?Expanded(
-                                flex: 0,
-                                child: Text(AppLocalizations.of(context)!.termsandconditions,
-                                    style: GoogleFonts.roboto(
-                                        color: AppColors.secondaryColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16)),
-                              )
-                                  : SizedBox(),
+                                  ? Expanded(
+                                      flex: 0,
+                                      child: Text(
+                                          AppLocalizations.of(context)!
+                                              .termsandconditions,
+                                          style: GoogleFonts.roboto(
+                                              color: AppColors.secondaryColor,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16)),
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(height: 20),
                               state is ReferralListLoaded
                                   ? Expanded(
-                                flex: 0,
-                                child: Text(pageContent),
-                              )
-                                  : Center(
-                                child: Lottie.asset(Assets.JUMBINGDOT,
-                                    height: 500, width: 100),
-                              ),
+                                      flex: 0,
+                                      child: Text(pageContent),
+                                    )
+                                  : const Align(
+                                alignment: Alignment.center,
+                                heightFactor: 7,
+                                    child:  RefreshProgressIndicator(
+                                      color: AppColors
+                                          .secondaryColor,
+                                      backgroundColor: AppColors
+                                          .primaryWhiteColor,
+                                    ),
+                                  ),
                               const SizedBox(
                                 height: 35,
                               ),
                               state is ReferralListLoaded
                                   ? Expanded(
-                                flex: 0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 1,
-                                        blurRadius: 1,
-                                        offset: const Offset(3, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: MyTextField(
-                                    // hintText: "Subject",
-                                    hintText: AppLocalizations.of(context)!.friendname,
-                                    obscureText: false,
-                                    maxLines: 1,
-                                    controller: nameController,
-                                    keyboardType: TextInputType.text,
-                                    focusNode: _nameFocus,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return '';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                )
-                                    .animate()
-                                    .scale(delay: 200.ms, duration: 300.ms),
-                              )
-                                  : SizedBox(),
+                                      flex: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryWhiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color:
+                                                  AppColors.boxShadow,
+                                              spreadRadius: 1,
+                                              blurRadius: 1,
+                                              offset: Offset(3, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: MyTextField(
+                                          // hintText: "Subject",
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .friendname,
+                                          obscureText: false,
+                                          maxLines: 1,
+                                          controller: nameController,
+                                          keyboardType: TextInputType.text,
+                                          focusNode: _nameFocus,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return '';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ).animate().scale(
+                                          delay: 200.ms, duration: 300.ms),
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(height: 35),
                               state is ReferralListLoaded
                                   ? Expanded(
-                                flex: 0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 1,
-                                        blurRadius: 1,
-                                        offset: const Offset(3, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: MyTextField(
-                                    hintText:
-                                    AppLocalizations.of(context)!.email,
-                                    obscureText: false,
-                                    maxLines: 1,
-                                    controller: emailController,
-                                    keyboardType: TextInputType.text,
-                                    focusNode: _emailFocus,
-                                  ),
-                                )
-                                    .animate()
-                                    .scale(delay: 200.ms, duration: 300.ms),
-                              )
-                                  :  SizedBox(),
+                                      flex: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primaryWhiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color:
+                                                  AppColors.boxShadow,
+                                              spreadRadius: 1,
+                                              blurRadius: 1,
+                                              offset: Offset(3, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: MyTextField(
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .email,
+                                          obscureText: false,
+                                          maxLines: 1,
+                                          controller: emailController,
+                                          keyboardType: TextInputType.text,
+                                          focusNode: _emailFocus,
+                                        ),
+                                      ).animate().scale(
+                                          delay: 200.ms, duration: 300.ms),
+                                    )
+                                  : const SizedBox(),
                               const SizedBox(
                                 height: 20,
                               ),
                               state is ReferralListLoaded
                                   ? Expanded(
-                                flex: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 15,bottom: 20),
-                                  child: Center(
-                                    child: BlocBuilder<ReferralBloc,
-                                        ReferralState>(
-                                      builder: (context, state) {
-                                        if (state is ReferralFriendLoading) {
-                                          return const Center(
-                                            child: RefreshProgressIndicator(
-                                              color:
-                                              AppColors.primaryWhiteColor,
-                                              backgroundColor:
-                                              AppColors.secondaryColor,
-                                            ),
-                                          );
-                                        }
-                                        return MyButton(
-                                          Textfontsize: 16,
-                                          TextColors: Colors.white,
-                                          // text: "Submit",
-                                          text: AppLocalizations.of(context)!
-                                              .submit,
-                                          color: AppColors.secondaryColor,
-                                          width: 340,
-                                          height: 40,
+                                      flex: 0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 15, bottom: 20),
+                                        child: Center(
+                                          child: BlocBuilder<ReferralBloc,
+                                              ReferralState>(
+                                            builder: (context, state) {
+                                              if (state
+                                                  is ReferralFriendLoading) {
+                                                return const Center(
+                                                  child:
+                                                      RefreshProgressIndicator(
+                                                    color: AppColors
+                                                        .primaryWhiteColor,
+                                                    backgroundColor: AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                );
+                                              }
+                                              return MyButton(
+                                                Textfontsize: 16,
+                                                TextColors: AppColors.primaryWhiteColor,
+                                                // text: "Submit",
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .submit,
+                                                color: AppColors.secondaryColor,
+                                                width: getProportionateScreenWidth(340),
+                                                height: getProportionateScreenHeight(40),
 
-                                          onTap: () {
-                                            if (nameController.text.isEmpty ||
-                                                emailController.text.isEmpty) {
-                                              Fluttertoast.showToast(
-                                                msg: AppLocalizations.of(
-                                                    context)!
-                                                    .allfieldsareimportant,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.BOTTOM,
-                                                backgroundColor:
-                                                AppColors.secondaryColor,
-                                                textColor:
-                                                AppColors.primaryWhiteColor,
-                                              );
-                                              return;
-                                            }
+                                                onTap: () {
+                                                  if (nameController
+                                                          .text.isEmpty ||
+                                                      emailController
+                                                          .text.isEmpty) {
+                                                    Fluttertoast.showToast(
+                                                      msg: AppLocalizations.of(
+                                                              context)!
+                                                          .allfieldsareimportant,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      backgroundColor: AppColors
+                                                          .secondaryColor,
+                                                      textColor: AppColors
+                                                          .primaryWhiteColor,
+                                                    );
+                                                    return;
+                                                  }
 
-                                            String? emailValidation =
-                                            validateEmail(
-                                                emailController.text);
-                                            if (emailValidation != null) {
-                                              Fluttertoast.showToast(
-                                                msg: emailValidation,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.BOTTOM,
-                                                backgroundColor:
-                                                AppColors.secondaryColor,
-                                                textColor:
-                                                AppColors.primaryWhiteColor,
-                                              );
-                                              return; // Stop further execution
-                                            }
+                                                  String? emailValidation =
+                                                      validateEmail(
+                                                          emailController.text);
+                                                  if (emailValidation != null) {
+                                                    Fluttertoast.showToast(
+                                                      msg: emailValidation,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      backgroundColor: AppColors
+                                                          .secondaryColor,
+                                                      textColor: AppColors
+                                                          .primaryWhiteColor,
+                                                    );
+                                                    return; // Stop further execution
+                                                  }
 
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              BlocProvider.of<ReferralBloc>(
-                                                  context)
-                                                  .add(GetReferralFriendEvent(
-                                                referralFriendRequest:
-                                                ReferralFriendRequest(
-                                                  referralId:
-                                                  referralID.toString(),
-                                                  name: nameController.text,
-                                                  email: emailController.text,
-                                                ),
-                                              ));
-                                              print(
-                                                  "referralId = ${referralID.toString()}");
-                                              print(
-                                                  "Subject = $nameController");
-                                              print(
-                                                  "Message = $emailController");
-                                            } else {
-                                              Fluttertoast.showToast(
-                                                msg: AppLocalizations.of(
-                                                    context)!
-                                                    .allfieldsareimportant,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.BOTTOM,
-                                                backgroundColor:
-                                                AppColors.secondaryColor,
-                                                textColor:
-                                                AppColors.primaryWhiteColor,
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
+                                                    BlocProvider.of<
+                                                                ReferralBloc>(
+                                                            context)
+                                                        .add(
+                                                            GetReferralFriendEvent(
+                                                      referralFriendRequest:
+                                                          ReferralFriendRequest(
+                                                        referralId: referralID
+                                                            .toString(),
+                                                        name:
+                                                            nameController.text,
+                                                        email: emailController
+                                                            .text,
+                                                      ),
+                                                    ));
+                                                    print(
+                                                        "referralId = ${referralID.toString()}");
+                                                    print(
+                                                        "Subject = $nameController");
+                                                    print(
+                                                        "Message = $emailController");
+                                                  } else {
+                                                    Fluttertoast.showToast(
+                                                      msg: AppLocalizations.of(
+                                                              context)!
+                                                          .allfieldsareimportant,
+                                                      toastLength:
+                                                          Toast.LENGTH_LONG,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      backgroundColor: AppColors
+                                                          .secondaryColor,
+                                                      textColor: AppColors
+                                                          .primaryWhiteColor,
+                                                    );
+                                                  }
+                                                },
+                                                showImage: false,
+                                                imagePath: '',
+                                                imagewidth: 0,
+                                                imageheight: 0,
                                               );
-                                            }
-                                          },
-                                          showImage: false,
-                                          imagePath: '',
-                                          imagewidth: 0,
-                                          imageheight: 0,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                )
-                                    .animate()
-                                    .scale(delay: 200.ms, duration: 300.ms),
-                              )
-                                  : SizedBox(),
+                                            },
+                                          ),
+                                        ),
+                                      ).animate().scale(
+                                          delay: 200.ms, duration: 300.ms),
+                                    )
+                                  : const SizedBox(),
                             ],
                           ),
                         ),
@@ -467,7 +499,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
           return false;
         },
         child:
-        BlocBuilder<ReferralBloc, ReferralState>(builder: (context, state) {
+            BlocBuilder<ReferralBloc, ReferralState>(builder: (context, state) {
           if (state is ReferralFriendLoaded) {
             if (state.referralFriendRequestResponse.success == true) {
               return AlertDialog(
@@ -489,7 +521,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             nameController.clear();
                             emailController.clear();
                             context.pop();
-                            BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                            BlocProvider.of<ReferralBloc>(context)
+                                .add(GetReferralListEvent());
                           },
                           icon: const Icon(Icons.close),
                         ),
@@ -510,10 +543,10 @@ class _ReferralScreenState extends State<ReferralScreen> {
                         flex: 2,
                         child: Text(
                           context.read<LanguageBloc>().state.selectedLanguage ==
-                              Language.english
+                                  Language.english
                               ? state.referralFriendRequestResponse.message
                               : state
-                              .referralFriendRequestResponse.messageArabic,
+                                  .referralFriendRequestResponse.messageArabic,
                           // AppLocalizations.of(context)!.referralsendseuccessfully,
                           // "Referral send Successfully",
                           textAlign: TextAlign.center,
@@ -546,7 +579,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                             nameController.clear();
                             emailController.clear();
                             context.pop();
-                            BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                            BlocProvider.of<ReferralBloc>(context)
+                                .add(GetReferralListEvent());
                           },
                           TextColors: AppColors.primaryWhiteColor,
                           Textfontsize: 16,
@@ -585,7 +619,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               nameController.clear();
                               emailController.clear();
                               context.pop();
-                              BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                              BlocProvider.of<ReferralBloc>(context)
+                                  .add(GetReferralListEvent());
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -605,9 +640,14 @@ class _ReferralScreenState extends State<ReferralScreen> {
                         Flexible(
                           flex: 2,
                           child: Text(
-                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                            context
+                                        .read<LanguageBloc>()
+                                        .state
+                                        .selectedLanguage ==
+                                    Language.english
                                 ? state.referralFriendRequestResponse.message
-                                : state.referralFriendRequestResponse.messageArabic,
+                                : state.referralFriendRequestResponse
+                                    .messageArabic,
                             // AppLocalizations.of(context)!.useralreadyregistered,
                             // "User already registered.!",
                             textAlign: TextAlign.center,
@@ -640,7 +680,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               nameController.clear();
                               emailController.clear();
                               context.pop();
-                              BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                              BlocProvider.of<ReferralBloc>(context)
+                                  .add(GetReferralListEvent());
                             },
                             TextColors: AppColors.primaryWhiteColor,
                             Textfontsize: 16,
@@ -679,7 +720,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               nameController.clear();
                               emailController.clear();
                               context.pop();
-                              BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                              BlocProvider.of<ReferralBloc>(context)
+                                  .add(GetReferralListEvent());
                             },
                             icon: const Icon(Icons.close),
                           ),
@@ -700,13 +742,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                           flex: 2,
                           child: Text(
                             context
-                                .read<LanguageBloc>()
-                                .state
-                                .selectedLanguage ==
-                                Language.english
+                                        .read<LanguageBloc>()
+                                        .state
+                                        .selectedLanguage ==
+                                    Language.english
                                 ? state.referralFriendRequestResponse.message
                                 : state.referralFriendRequestResponse
-                                .messageArabic,
+                                    .messageArabic,
                             // AppLocalizations.of(context)!.invalidreferral,
                             // "Invalid Referral",
                             textAlign: TextAlign.center,
@@ -740,7 +782,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               nameController.clear();
                               emailController.clear();
                               context.pop();
-                              BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                              BlocProvider.of<ReferralBloc>(context)
+                                  .add(GetReferralListEvent());
                             },
                             TextColors: AppColors.primaryWhiteColor,
                             Textfontsize: 16,
@@ -799,13 +842,13 @@ class _ReferralScreenState extends State<ReferralScreen> {
                           flex: 2,
                           child: Text(
                             context
-                                .read<LanguageBloc>()
-                                .state
-                                .selectedLanguage ==
-                                Language.english
+                                        .read<LanguageBloc>()
+                                        .state
+                                        .selectedLanguage ==
+                                    Language.english
                                 ? state.referralFriendRequestResponse.message
                                 : state.referralFriendRequestResponse
-                                .messageArabic,
+                                    .messageArabic,
                             // AppLocalizations.of(context)!.invalidreferral,
                             // "Invalid Referral",
                             textAlign: TextAlign.center,
@@ -838,7 +881,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               nameController.clear();
                               emailController.clear();
                               context.pop();
-                              BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                              BlocProvider.of<ReferralBloc>(context)
+                                  .add(GetReferralListEvent());
                             },
                             TextColors: AppColors.primaryWhiteColor,
                             Textfontsize: 16,
@@ -877,7 +921,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                           nameController.clear();
                           emailController.clear();
                           context.pop();
-                          BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                          BlocProvider.of<ReferralBloc>(context)
+                              .add(GetReferralListEvent());
                         },
                         icon: const Icon(Icons.close),
                       ),
@@ -928,7 +973,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                           nameController.clear();
                           emailController.clear();
                           context.pop();
-                          BlocProvider.of<ReferralBloc>(context).add(GetReferralListEvent());
+                          BlocProvider.of<ReferralBloc>(context)
+                              .add(GetReferralListEvent());
                         },
                         TextColors: AppColors.primaryWhiteColor,
                         Textfontsize: 16,

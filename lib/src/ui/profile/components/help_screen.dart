@@ -46,7 +46,10 @@ class _HelpScreenState extends State<HelpScreen> {
           ),
         ),
         actions: const [
-          Text("v1.1.2+3",style: TextStyle(fontSize: 9),)
+          Text(
+            "v1.2.16+12",
+            style: TextStyle(fontSize: 9),
+          )
         ],
       ),
       body: BlocConsumer<NetworkBloc, NetworkState>(
@@ -64,10 +67,10 @@ class _HelpScreenState extends State<HelpScreen> {
                   children: [
                     Center(
                         child: SvgPicture.asset(
-                          Assets.HELP_SVG,
-                          fit: BoxFit.cover,
-                          height: 200,
-                        )),
+                      Assets.HELP_SVG,
+                      fit: BoxFit.cover,
+                      height: 200,
+                    )),
                     const SizedBox(height: 35),
                     // InkWell(
                     //   onTap: () {
@@ -94,9 +97,10 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/how_to_redeem');
                       },
-                      child:  ProfileDetailsListTileWidget(
-                          // labelText: "How to redeem my points ?"
-                          labelText: AppLocalizations.of(context)!.howtoredeemmypoints,
+                      child: ProfileDetailsListTileWidget(
+                        // labelText: "How to redeem my points ?"
+                        labelText:
+                            AppLocalizations.of(context)!.howtoredeemmypoints,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -105,9 +109,10 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/point_calculation');
                       },
-                      child:  ProfileDetailsListTileWidget(
-                          // labelText: "Point Calculations"
-                        labelText: AppLocalizations.of(context)!.pointcalculations,
+                      child: ProfileDetailsListTileWidget(
+                        // labelText: "Point Calculations"
+                        labelText:
+                            AppLocalizations.of(context)!.pointcalculations,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -115,9 +120,10 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/terms_and_condition');
                       },
-                      child:  ProfileDetailsListTileWidget(
-                          // labelText: "Terms and Conditions"
-                        labelText: AppLocalizations.of(context)!.termsandconditions,
+                      child: ProfileDetailsListTileWidget(
+                        // labelText: "Terms and Conditions"
+                        labelText:
+                            AppLocalizations.of(context)!.termsandconditions,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -125,8 +131,8 @@ class _HelpScreenState extends State<HelpScreen> {
                       onTap: () {
                         context.push('/privacy_policies');
                       },
-                      child:  ProfileDetailsListTileWidget(
-                          // labelText: "Privacy policies"
+                      child: ProfileDetailsListTileWidget(
+                        // labelText: "Privacy policies"
                         labelText: AppLocalizations.of(context)!.privacypolicy,
                       ),
                     ),
@@ -136,12 +142,11 @@ class _HelpScreenState extends State<HelpScreen> {
                         context.push('/contact_us');
                         print("contact_us tapped");
                       },
-                      child:  ProfileDetailsListTileWidget(
+                      child: ProfileDetailsListTileWidget(
                         // labelText: "Need more help"
-                        labelText : AppLocalizations.of(context)!.needmorehelp,
+                        labelText: AppLocalizations.of(context)!.needmorehelp,
                       ),
                     ),
-
                   ],
                 ),
               ),

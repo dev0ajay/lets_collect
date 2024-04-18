@@ -204,8 +204,9 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                       return Center(
                         child: MyButton(
                           Textfontsize: 16,
-                          TextColors: Colors.white,
-                          text: Strings.OTP_BUTTON_SEND,
+                          TextColors: AppColors.primaryWhiteColor,
+                          text: AppLocalizations.of(context)!.reset,
+                          // Strings.OTP_BUTTON_SEND,
                           color: AppColors.secondaryColor,
                           width: 340,
                           height: 40,
@@ -222,7 +223,6 @@ class _ForgetPasswordEmailWidgetState extends State<ForgetPasswordEmailWidget> {
                             } else {
                               Fluttertoast.showToast(
                                 msg: AppLocalizations.of(context)!.pleaseenteravalidmail,
-                                // msg: "Please enter a valid mail.",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 backgroundColor: AppColors.primaryWhiteColor,

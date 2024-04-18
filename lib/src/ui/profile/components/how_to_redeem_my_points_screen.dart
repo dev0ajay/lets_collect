@@ -68,8 +68,8 @@ class _HowToRedeemMyPointsScreenState extends State<HowToRedeemMyPointsScreen> {
                 if (state is HowToRedeemMyPointsLoading) {
                   return const Center(
                     child: RefreshProgressIndicator(
-                      backgroundColor: AppColors.secondaryColor,
-                      color: AppColors.primaryWhiteColor,
+                      backgroundColor: AppColors.primaryWhiteColor,
+                      color: AppColors.secondaryColor,
                     ),
                   );
                 }

@@ -250,7 +250,10 @@ class NotificationServices {
     if (ObjectFactory().prefs.isLoggedIn()!) {
     context.go('/home');
     context.push('/notification');
-  }
+  }else {
+      context.go('/login');
+
+    }
   }
 
   Future forgroundMessage() async {

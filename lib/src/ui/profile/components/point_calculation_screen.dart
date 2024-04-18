@@ -68,8 +68,8 @@ class _PointCalculationsScreenState extends State<PointCalculationsScreen> {
                 if (state is PointCalculationsLoading) {
                   return const Center(
                     child: RefreshProgressIndicator(
-                      backgroundColor: AppColors.secondaryColor,
-                      color: AppColors.primaryWhiteColor,
+                      backgroundColor: AppColors.primaryWhiteColor,
+                      color: AppColors.secondaryColor,
                     ),
                   );
                 }

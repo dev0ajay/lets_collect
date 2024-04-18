@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lets_collect/src/bloc/facebook_cubit/facebook_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -21,7 +19,9 @@ import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../../../../../language.dart';
 import '../../../../../bloc/apple_sign_in_cubit/apple_signin_cubit.dart';
+import '../../../../../bloc/language/language_bloc.dart';
 import '../../../../../components/Custome_Textfiled.dart';
 import '../../../../../components/my_button.dart';
 import '../../../../../constants/colors.dart';
@@ -149,7 +149,12 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
               SnackBar(
                 backgroundColor: AppColors.secondaryColor,
                 content: Text(
-                  state.loginRequestResponse.message,
+                  context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                      ? state.loginRequestResponse.message
+                      : state.loginRequestResponse.messageArabic,
+
+                  /// arabic add akita
                   style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
@@ -161,7 +166,11 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.errorMsg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.errorMsg
+                    : AppLocalizations.of(context)!
+                        .connectionrefusedthisindicates,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -172,7 +181,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.errorMsg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.errorMsg
+                    : AppLocalizations.of(context)!.oopslookslikewearefacing,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -183,7 +195,11 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.errorMsg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.errorMsg
+                    : AppLocalizations.of(context)!
+                        .oopsitlooksliketheserverisnot,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -206,7 +222,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
               SnackBar(
                 backgroundColor: AppColors.secondaryColor,
                 content: Text(
-                  state.googleLoginResponse.message!,
+                  context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                      ? state.googleLoginResponse.message!
+                      : state.googleLoginResponse.messageArabic!, // arabic
                   style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
@@ -231,7 +250,11 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
               SnackBar(
                 backgroundColor: AppColors.secondaryColor,
                 content: Text(
-                  state.appleSignInRequestResponse.message!,
+                  context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                      ? state.appleSignInRequestResponse.message!
+                      : state.appleSignInRequestResponse.messageArabic!,
+                  // arabic
                   style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
@@ -255,7 +278,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
               SnackBar(
                 backgroundColor: AppColors.secondaryColor,
                 content: Text(
-                  state.facebookSignInResponse.message!,
+                  context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                      ? state.facebookSignInResponse.message!
+                      : state.facebookSignInResponse.messageArabic!, // arabic
                   style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
@@ -267,7 +293,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.msg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.msg
+                    : AppLocalizations.of(context)!.oopslookslikewearefacing,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -278,7 +307,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.errorMsg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.errorMsg
+                    : AppLocalizations.of(context)!.oopslookslikewearefacing,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -289,7 +321,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
             SnackBar(
               backgroundColor: AppColors.secondaryColor,
               content: Text(
-                state.errorMsg,
+                context.read<LanguageBloc>().state.selectedLanguage ==
+                        Language.english
+                    ? state.errorMsg
+                    : AppLocalizations.of(context)!.oopslookslikewearefacing,
                 style: const TextStyle(color: AppColors.primaryWhiteColor),
               ),
             ),
@@ -913,7 +948,22 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       ),
                       const SizedBox(height: 15),
                       Padding(
-                        padding: const EdgeInsets.only(left: 13, right: 13),
+                        padding: EdgeInsets.only(
+                          left: context
+                                      .read<LanguageBloc>()
+                                      .state
+                                      .selectedLanguage ==
+                                  Language.english
+                              ? 13
+                              : 0,
+                          right: context
+                                      .read<LanguageBloc>()
+                                      .state
+                                      .selectedLanguage ==
+                                  Language.arabic
+                              ? 13
+                              : 0,
+                        ),
                         child: Column(
                           children: [
                             Row(
@@ -921,6 +971,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 Text(
                                   AppLocalizations.of(context)!
                                       .bysigningupyouagreetothe,
+                                  overflow: TextOverflow.fade,
+
                                   // Strings.LOGIN_NOTES1,
                                   style: GoogleFonts.openSans(
                                     color: AppColors.primaryWhiteColor,

@@ -64,7 +64,7 @@
     "pleaseenteravalidmail" : "Please enter a valid mail",
     "donotworry" : "Do not worry! We will help you recover your password.",
     "sentotp" : "Sent OTP",
-    "rest" : "Rest",
+    "reset" : "Rest",
 
     "resetpassword" : "Reset Password",
     "pleaseentertheonetimepassword" : "Please enter the One-Time password to verify your account.",
@@ -147,6 +147,7 @@
     "year" : "Year",
     "apply" : "Apply",
     "updatesuccessfully" : "Updated Successfully",
+    "pleasesavetheprofilephoto" : "Please Save the profile Photo",
 
     "aboutyou" : "About You",
     "contactinfo" : "Contact Info",
@@ -231,6 +232,7 @@
     "specialoffers" : "Special Offers",
     "specialofferdetails" : "Special Offer Details",
     "startdate" : "Start Date",
+    "date" : "Date",
     "enddate" : "End Date",
     "findthisexclusiveofferat" : "Find this exclusive offer at",
 
@@ -285,6 +287,8 @@
     "enternewpassword" : "Enter New Password",
     "reenternewpassword" : "Re-enter New Password",
     "passwordchangedsuccessfull" : "Password Changed Successfully!",
-    "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match"
+    "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match",
+    "notificationdetails" : "Notification Details"
+
 
 }

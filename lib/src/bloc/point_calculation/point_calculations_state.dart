@@ -18,5 +18,5 @@ class PointCalculationsLoaded extends PointCalculationsState {
   final PointCalculationsResponse pointCalculationsResponse;
   const PointCalculationsLoaded({required this.pointCalculationsResponse});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [pointCalculationsResponse];
 }

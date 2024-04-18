@@ -1,39 +1,42 @@
 /// Password View/Hide
 library;
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
+import '../../language.dart';
+import '../bloc/language/language_bloc.dart';
+
 class MyTextField extends StatefulWidget {
-   String? hintText;
+  String? hintText;
   final FocusNode? focusNode;
   final keyboardType;
   final bool obscureText;
-   bool? enable;
+  bool? enable;
   final int maxLines;
-   TextEditingController? controller;
+  TextEditingController? controller;
   final String? Function(String?)? validator;
   final String? prefixText;
   final IconData? prefixIcon;
   final List<TextInputFormatter>? inputFormatter;
 
-   MyTextField({
+  MyTextField({
     super.key,
-     this.hintText,
+    this.hintText,
     required this.obscureText,
     required this.maxLines,
-     this.controller,
+    this.controller,
     this.validator,
     required this.keyboardType,
-     this.focusNode,
+    this.focusNode,
     this.prefixText,
     this.prefixIcon,
     this.inputFormatter,
-     this.enable,
+    this.enable,
   });
 
   @override
@@ -41,7 +44,7 @@ class MyTextField extends StatefulWidget {
 }
 
 class _MyTextFieldState extends State<MyTextField> {
-   bool _passwordVisible = false;
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,7 @@ class _MyTextFieldState extends State<MyTextField> {
       // height: 55,
       child: TextFormField(
         style: GoogleFonts.openSans(
-            color: AppColors.primaryGrayColor,
+          color: AppColors.primaryGrayColor,
         ),
         enabled: widget.enable,
         inputFormatters: widget.inputFormatter,
@@ -72,47 +75,60 @@ class _MyTextFieldState extends State<MyTextField> {
           ),
           hintText: widget.hintText,
           labelStyle: GoogleFonts.roboto(
-              color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
+              color: AppColors.hintColor,
+              fontWeight: FontWeight.w400,
+              fontSize: 16),
           hintStyle: GoogleFonts.roboto(
-              color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
-          contentPadding: const EdgeInsets.only(left: 15),
+              color: AppColors.hintColor,
+              fontWeight: FontWeight.w400,
+              fontSize: 16),
+          contentPadding: EdgeInsets.only(
+            left: context.read<LanguageBloc>().state.selectedLanguage ==
+                    Language.english
+                ? 15
+                : 0,
+            right: context.read<LanguageBloc>().state.selectedLanguage ==
+                    Language.arabic
+                ? 15
+                : 0,
+          ),
           fillColor: AppColors.primaryWhiteColor,
           filled: true,
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon)
               : widget.prefixText != null
-              ? Container(
-            padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(
-              color: AppColors.primaryWhiteColor,
-              border: Border(
-                right: BorderSide(
-                  color: AppColors.borderColor,
-                  width: 1.0,
-                ),
-              ),
-            ),
-            child: Text(
-              widget.prefixText!,
-              style: GoogleFonts.roboto(
-                  color: AppColors.hintColor, fontWeight: FontWeight.w400,fontSize: 16),
-            ),
-          )
-              : null,
+                  ? Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryWhiteColor,
+                        border: Border(
+                          right: BorderSide(
+                            color: AppColors.borderColor,
+                            width: 1.0,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        widget.prefixText!,
+                        style: GoogleFonts.roboto(
+                            color: AppColors.hintColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16),
+                      ),
+                    )
+                  : null,
           suffixIcon: widget.obscureText
               ? IconButton(
-            icon: Icon(
-              _passwordVisible
-                  ? Icons.visibility
-                  : Icons.visibility_off,
-              color: AppColors.primaryGrayColor,
-            ),
-            onPressed: () {
-              setState(() {
-                _passwordVisible = !_passwordVisible;
-              });
-            },
-          )
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: AppColors.primaryGrayColor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                )
               : null,
         ),
       ),

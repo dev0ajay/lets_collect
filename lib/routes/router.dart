@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/countryscreen/signup_country_screen.dart';
 import 'package:lets_collect/src/ui/authentication/Signup/components/widget/firstscreen/sign_up_argument_class.dart';
 import 'package:lets_collect/src/ui/forget_password/components/forgot_password%20arguments.dart';
+import 'package:lets_collect/src/ui/notification/components/notification_details_argument.dart';
+import 'package:lets_collect/src/ui/notification/notification_details_screen.dart';
 import 'package:lets_collect/src/ui/notification/notification_screen.dart';
 import 'package:lets_collect/src/ui/profile/components/contact_us.dart';
 import 'package:lets_collect/src/ui/profile/components/how_to_redeem_my_points_screen.dart';
@@ -892,6 +894,28 @@ class AppRouter {
                   },
                 );
               }),
+          GoRoute(
+              path: 'notification_details',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return CustomTransitionPage<void>(
+                  key: state.pageKey,
+                  child:  NotificationDetailsScreen(notificationDetailsArgument: state.extra as NotificationDetailsArgument),
+                  transitionDuration: const Duration(milliseconds: 450),
+                  transitionsBuilder: (context, animation,
+                      secondaryAnimation, child) {
+                    const begin = Offset(0.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.decelerate;
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+                    return SlideTransition(
+                      position: animation.drive(tween),
+                      child: child,
+                    );
+                  },
+                );
+              }),
+          
         ],
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>

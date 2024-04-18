@@ -750,32 +750,38 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Flexible(
-                              flex: 1,
-                              child: TextButton(
-                                onPressed: () {
-                                  _removeFile();
-                                  context.push(
-                                    '/scan_history',
-                                    extra: ScanDetailsScreenArgument(
-                                      totalPoint: state
-                                          .scanReceiptRequestResponse
-                                          .data!
-                                          .totalPoints!,
-                                      pointId: state.scanReceiptRequestResponse
-                                          .data!.pointId!,
+                            Visibility(
+                              visible: state.scanReceiptRequestResponse.data!
+                                      .totalPoints != 0,
+                              child: Flexible(
+                                flex: 1,
+                                child: TextButton(
+                                  onPressed: () {
+                                    _removeFile();
+                                    context.push(
+                                      '/scan_history',
+                                      extra: ScanDetailsScreenArgument(
+                                        totalPoint: state
+                                            .scanReceiptRequestResponse
+                                            .data!
+                                            .totalPoints!,
+                                        pointId: state
+                                            .scanReceiptRequestResponse
+                                            .data!
+                                            .pointId!,
+                                      ),
+                                    );
+                                    context.pop();
+                                  },
+                                  child: Text(
+                                    // "View Details",
+                                    AppLocalizations.of(context)!.viewdetails,
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.underlineColor,
+                                      decoration: TextDecoration.underline,
                                     ),
-                                  );
-                                  context.pop();
-                                },
-                                child: Text(
-                                  // "View Details",
-                                  AppLocalizations.of(context)!.viewdetails,
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.underlineColor,
-                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ),

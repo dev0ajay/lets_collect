@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -135,55 +134,56 @@ class _ProfileScreenState extends State<ProfileScreen>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Flexible(
-                                    flex: 3,
-                                    child: bytesImage != null
-                                        ? Container(
+                                  flex: 3,
+                                  child: bytesImage != null
+                                      ? AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Container(
                                             width: 150.0,
                                             height: 150.0,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
-                                              // border: Border.all(
-                                              //   color: AppColors.secondaryColor,
-                                              //   width: 2.0,
-                                              // ),
                                               image: DecorationImage(
                                                 alignment: Alignment.center,
                                                 fit: BoxFit.cover,
                                                 image: MemoryImage(bytesImage),
                                               ),
                                             ),
-                                          )
-                                        : Container(
-                                            alignment: Alignment.center,
-                                            width: 130,
-                                            height: 130,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: AppColors.shadow,
-                                              // borderRadius: BorderRadius.circular(100),
-                                            ),
-                                            child: const Stack(children: [
+                                          ),
+                                        )
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          width: 130,
+                                          height: 130,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.shadow,
+                                            // borderRadius: BorderRadius.circular(100),
+                                          ),
+                                          child: const Stack(
+                                            children: [
                                               Align(
                                                 alignment: Alignment.center,
                                                 // child: Text(AppLocalizations.of(context)!.add)
                                                 child: Text("Add"),
                                               ),
                                               Positioned(
-                                                  bottom: 8,
-                                                  right: 8,
-                                                  child: Icon(
-                                                    Icons.add_a_photo_outlined,
-                                                    color: AppColors
-                                                        .secondaryColor,
-                                                  )
-                                                  // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                                  ),
-                                            ]))),
+                                                bottom: 8,
+                                                right: 8,
+                                                child: Icon(
+                                                  Icons.add_a_photo_outlined,
+                                                  color:
+                                                      AppColors.secondaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                ),
                                 const SizedBox(height: 10),
                                 Flexible(
                                   flex: 1,
                                   child: Text(
-                                    // ObjectFactory().prefs.getUserName() ??
                                     state
                                         .myProfileScreenResponse.data!.firstName
                                         .toString(),
@@ -223,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   height: 40,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    color: Colors.white,
+                                    color: AppColors.primaryWhiteColor,
                                     boxShadow: const [
                                       BoxShadow(
                                         color: AppColors.boxShadow,
@@ -562,8 +562,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                         ]),
                       ),
-                      padding: const EdgeInsets.only(
-                          top: 0, left: 15, right: 15, bottom: 110),
+                      padding: EdgeInsets.only(
+                        top: 0,
+                        left: 15,
+                        right: 15,
+                        bottom: getProportionateScreenHeight(130),
+                      ),
                     ),
                   ],
                 );
@@ -756,96 +760,3 @@ class ProfileDetailsListTileWidget extends StatelessWidget {
     );
   }
 }
-
-// void _showDialogBox({
-//   required BuildContext context,
-// }) {
-//   showDialog(
-//     context: context,
-//     builder: (ctx) => SizedBox(
-//       width: 700,
-//       child: AlertDialog(
-//         backgroundColor: AppColors.primaryWhiteColor,
-//         // elevation: 5,
-//         alignment: Alignment.center,
-//         content: SizedBox(
-//           height: getProportionateScreenHeight(170),
-//           width: getProportionateScreenWidth(500),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: [
-//               Align(
-//                 alignment: Alignment.topLeft,
-//                 child: IconButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   icon: const Icon(Icons.close),
-//                 ),
-//               ),
-//               const SizedBox(height: 10),
-//               Text(
-//                 AppLocalizations.of(context)!.areyousureyouwanttologout,
-//                 textAlign: TextAlign.center,
-//                 style: GoogleFonts.openSans(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.w400,
-//                 ),
-//               ),
-//               const SizedBox(height: 40),
-//               Padding(
-//                 padding: const EdgeInsets.only(left: 10, right: 10),
-//                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Expanded(
-//                       child: MyButton(
-//                         Textfontsize: 16,
-//                         TextColors: Colors.white,
-//                         text: AppLocalizations.of(context)!.yes,
-//                         color: AppColors.secondaryColor,
-//                         height: 5,
-//                         onTap: () {
-//                           ObjectFactory().prefs.setIsLoggedIn(false);
-//                           ObjectFactory().prefs.clearPrefs();
-//                           context.go('/login');
-//                         },
-//                         showImage: false,
-//                         imagePath: '',
-//                         imagewidth: 0,
-//                         imageheight: 0,
-//                         width: 120,
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       width: 20,
-//                     ),
-//                     Expanded(
-//                       child: MyButton(
-//                         Textfontsize: 16,
-//                         TextColors: Colors.white,
-//                         text: ""
-//                         // AppLocalizations.of(context)!.no,
-//                         color: AppColors.secondaryColor,
-//                         height: 5,
-//                         onTap: () {
-//                           Navigator.of(context).pop();
-//                         },
-//                         showImage: false,
-//                         imagePath: '',
-//                         imagewidth: 0,
-//                         imageheight: 0,
-//                         width: 120,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   );
-// }

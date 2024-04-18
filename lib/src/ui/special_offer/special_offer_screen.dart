@@ -35,6 +35,12 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
     "Points Low",
     "Points High",
   ];
+  List<String> sort_ar = <String>[
+    "الأحدث",
+    "الانتهاء أولا",
+    "النقاط المنخفضة",
+    "النقاط العالية",
+  ];
   String? sortOption;
   bool isBrandFilterTileSelected = false;
   bool isCategoryFilterTileSelected = false;
@@ -205,7 +211,14 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                       .max,
                                                               children: <Widget>[
                                                                 Text(
-                                                                  sort[index],
+                                                                  context.read<LanguageBloc>().state.selectedLanguage ==
+                                                                          Language
+                                                                              .english
+                                                                      ? sort[
+                                                                          index]
+                                                                      : sort_ar[
+                                                                          index],
+                                                                  // sort[index],
                                                                   softWrap:
                                                                       true,
                                                                   overflow:

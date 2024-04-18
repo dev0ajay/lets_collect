@@ -16,6 +16,10 @@ import '../../model/state_model.dart';
 import '../../utils/data/object_factory.dart';
 
 class ProfileDataProvider {
+
+
+
+
   ///Terms and conditions
   Future<StateModel?> getTermsAndConditions() async {
     final response = await ObjectFactory().apiClient.getTermsAndConditions();

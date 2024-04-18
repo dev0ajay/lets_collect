@@ -9,6 +9,7 @@ class LoginRequestResponse {
   final bool success;
   final int statusCode;
   final String message;
+  final String messageArabic;
   final Data data;
   final String token;
 
@@ -16,6 +17,7 @@ class LoginRequestResponse {
     required this.success,
     required this.statusCode,
     required this.message,
+    required this.messageArabic,
     required this.data,
     required this.token,
   });
@@ -24,6 +26,7 @@ class LoginRequestResponse {
     success: json["success"],
     statusCode: json["status_code"],
     message: json["message"],
+    messageArabic: json["message_arabic"],
     data: Data.fromJson(json["data"]),
     token: json["token"],
   );
@@ -32,6 +35,7 @@ class LoginRequestResponse {
     "success": success,
     "status_code": statusCode,
     "message": message,
+    "message_arabic": messageArabic,
     "data": data.toJson(),
     "token": token,
   };

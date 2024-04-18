@@ -746,46 +746,52 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                                           top: 5),
                                                                       child:
                                                                       Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                         children: [
-                                                                          Text(AppLocalizations.of(context)!.month),
+                                                                          Flexible(child: Text(AppLocalizations.of(context)!.month)),
                                                                           // Text('Month: '),
-                                                                          SizedBox(
-                                                                            width: 50,
-                                                                            child: TextField(
-                                                                              readOnly: true,
-                                                                              controller: _purchaseMonthController,
-                                                                              keyboardType: TextInputType.number,
-                                                                              textAlign: TextAlign.center,
-                                                                              onChanged: (value) {
-                                                                                // Add any validation or formatting if needed
-                                                                              },
+                                                                          Flexible(
+                                                                            child: SizedBox(
+                                                                              width: 50,
+                                                                              child: TextField(
+                                                                                readOnly: true,
+                                                                                controller: _purchaseMonthController,
+                                                                                keyboardType: TextInputType.number,
+                                                                                textAlign: TextAlign.center,
+                                                                                onChanged: (value) {
+                                                                                  // Add any validation or formatting if needed
+                                                                                },
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                          const SizedBox(width: 20),
-                                                                          Text(AppLocalizations.of(context)!.monthandyear),
+                                                                          // const SizedBox(width: 20),
+                                                                          Flexible(child: Text(AppLocalizations.of(context)!.monthandyear)),
                                                                           // const Text('Year: '),
-                                                                          SizedBox(
-                                                                            width: 70,
-                                                                            child: TextField(
-                                                                              readOnly: true,
-                                                                              controller: _purchaseYearController,
-                                                                              keyboardType: TextInputType.number,
-                                                                              textAlign: TextAlign.center,
-                                                                              onChanged: (value) {
-                                                                                // Add any validation or formatting if needed
-                                                                              },
+                                                                          Flexible(
+                                                                            child: SizedBox(
+                                                                              width: 70,
+                                                                              child: TextField(
+                                                                                readOnly: true,
+                                                                                controller: _purchaseYearController,
+                                                                                keyboardType: TextInputType.number,
+                                                                                textAlign: TextAlign.center,
+                                                                                onChanged: (value) {
+                                                                                  // Add any validation or formatting if needed
+                                                                                },
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                          const SizedBox(width: 100),
-                                                                          GestureDetector(
-                                                                              onTap: () {
-                                                                                showMonthPickerDialog(context, _purchaseMonthController, _purchaseYearController);
-                                                                              },
-                                                                              child: const ImageIcon(
-                                                                                AssetImage(Assets.CALENDER),
-                                                                                color: AppColors.secondaryColor,
-                                                                              )),
+                                                                          // const SizedBox(width: 100),
+                                                                          Flexible(
+                                                                            child: GestureDetector(
+                                                                                onTap: () {
+                                                                                  showMonthPickerDialog(context, _purchaseMonthController, _purchaseYearController);
+                                                                                },
+                                                                                child: const ImageIcon(
+                                                                                  AssetImage(Assets.CALENDER),
+                                                                                  color: AppColors.secondaryColor,
+                                                                                )),
+                                                                          ),
                                                                         ],
                                                                       ),
                                                                     ),

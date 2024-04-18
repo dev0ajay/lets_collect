@@ -64,7 +64,7 @@
     "pleaseenteravalidmail" : "يرجى إدخال بريد صحيح",
     "donotworry" : "لا تقلق! سنساعدك في استعادة كلمة المرور الخاصة بك",
     "sentotp" : "تم إرسال رمز التحقق",
-    "rest" : "استعادة",
+    "reset" : "إعادة ضبط",
 
     "resetpassword" : "إعادة تعيين كلمة المرور",
     "pleaseentertheonetimepassword" : "الرجاء إدخال رمز التحقق للتحقق من حسابك",
@@ -148,6 +148,7 @@
     "year" : "السنة",
     "apply" : "تطبيق",
     "updatesuccessfully" : "تم التحديث بنجاح",
+    "pleasesavetheprofilephoto" : "الرجاء حفظ صورة الملف الشخصي",
 
     "aboutyou" : "نبذة عنك",
     "contactinfo" : "معلومات الاتصال",
@@ -232,6 +233,7 @@
     "specialoffers" : "عروض خاصة",
     "specialofferdetails" : "تفاصيل العرض الخاص",
     "startdate" : "تاريخ البدء",
+    "date" : "Date",
     "enddate" : "تاريخ الانتهاء",
     "findthisexclusiveofferat" : "ابحث عن هذا العرض الحصري على",
 
@@ -285,7 +287,9 @@
     "enternewpassword" : "أدخل كلمة المرور الجديدة",
     "reenternewpassword" : "أعد إدخال كلمة المرور الجديدة",
     "passwordchangedsuccessfull" : "!تم تغيير كلمة المرور بنجاح",
-    "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين"
+    "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين",
+    "notificationdetails" : "Notification Details"
+
 
 
 }

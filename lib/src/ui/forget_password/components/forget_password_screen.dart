@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
-import '../../../constants/strings.dart';
 import '../../../utils/network_connectivity/bloc/network_bloc.dart';
 import 'widget/froget_password_email_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

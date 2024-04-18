@@ -2034,8 +2034,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   child:
                                                                       Container(
                                                                     // height: 40,
-                                                                    color: Colors
-                                                                        .white,
+                                                                    color:
+                                                                        AppColors.primaryWhiteColor,
                                                                     child:
                                                                         Column(
                                                                       children: [
@@ -2521,6 +2521,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                             setState) {
                                                       void clearFilter() {
                                                         setState(() {
+                                                          eligibleFilter = "";
                                                           selectedBrandVariants =
                                                               <String>[];
                                                           selectedBrandFilters =
@@ -2593,7 +2594,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                         onTap: () {
                                                                                           setState(() {
                                                                                             eligibleFilter = "";
-                                                                                            // selectedFilters[]
                                                                                           });
                                                                                         },
                                                                                         child: Container(
@@ -4788,7 +4788,7 @@ class _RewardScreenState extends State<RewardScreen> {
                             .partner![index].brandId
                             .toString(),
                         wereToRedeem_ar: state.rewardTierRequestResponse.data!
-                            .brand![index].reedemStores!,
+                            .partner![index].reedemStores!,
                       ),
                     );
                   },
