@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/ui/notification/components/notification_details_argument.dart';
 import 'package:lottie/lottie.dart';
-
 import '../../../language.dart';
 import '../../bloc/language/language_bloc.dart';
 import '../../constants/assets.dart';

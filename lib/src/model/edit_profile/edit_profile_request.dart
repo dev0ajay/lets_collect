@@ -14,12 +14,12 @@ class EditProfileRequest {
   String? gender;
   String? firstName;
   String? lastName;
-  int? mobileNo;
+  String? mobileNo;
   String? userName;
-  int? nationalityId;
+  String? nationalityId;
   String? city;
   int? status;
-  int? countryId;
+  String? countryId;
 
   EditProfileRequest({
     this.photo,
