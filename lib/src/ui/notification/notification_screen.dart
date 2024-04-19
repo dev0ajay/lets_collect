@@ -129,9 +129,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         context.push(
                                           '/notification_details',
                                           extra: NotificationDetailsArgument(
-                                              title: state.notificationGetResponse.data![index].notificationTitle!,
-                                              message: state.notificationGetResponse.data![index].notificationMessage!,
-                                              date: state.notificationGetResponse.data![index].addedDate!,
+                                            title: state
+                                                .notificationGetResponse
+                                                .data![index]
+                                                .notificationTitle!,
+                                            message: state
+                                                .notificationGetResponse
+                                                .data![index]
+                                                .notificationMessage!,
+                                            date: state.notificationGetResponse
+                                                .data![index].addedDate!,
                                           ),
                                         );
                                       },
@@ -143,7 +150,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               right: 10,
                                               top: 8,
                                               bottom: 0),
-                                          // height: 90,
                                           width:
                                               MediaQuery.of(context).size.width,
                                           decoration: BoxDecoration(
@@ -168,13 +174,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
-                                            // crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Expanded(
                                                 flex: 5,
                                                 child: Column(
-                                                  // mainAxisAlignment:
-                                                  //     MainAxisAlignment.center,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
@@ -244,20 +247,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              Expanded(
+                                              const Expanded(
                                                 flex: 1,
                                                 child: Center(
                                                   child: Padding(
                                                     padding: EdgeInsets.zero,
-                                                    child: IconButton(
-                                                      onPressed: () {},
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_rounded,
-                                                        size: 18,
-                                                        color: AppColors
-                                                            .secondaryColor,
-                                                      ),
+                                                    child: Icon(
+                                                      Icons
+                                                          .arrow_forward_ios_rounded,
+                                                      size: 18,
+                                                      color: AppColors
+                                                          .secondaryColor,
                                                     ),
                                                   ),
                                                 ),

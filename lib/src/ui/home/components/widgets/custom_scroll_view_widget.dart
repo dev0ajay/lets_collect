@@ -708,29 +708,34 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              AppLocalizations.of(context)!.specialoffersforyou,
-                              // "Special Offers for you",
-                              style: GoogleFonts.roboto(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                            Visibility(
+                              visible: state.homeResponse.data!.offers!.isNotEmpty,
+                              child: Text(
+                                AppLocalizations.of(context)!.specialoffersforyou,
+                                style: GoogleFonts.roboto(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                context.go('/special_offer');
-                              },
-                              child: SizedBox(
-                                height: 25,
-                                width: 50,
-                                child: Center(
-                                  child: Text(
-                                    AppLocalizations.of(context)!.viewall,
-                                    // "View all",
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                            Visibility(
+                              visible: state.homeResponse.data!.offers!.isNotEmpty,
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.go('/special_offer');
+                                },
+                                child: SizedBox(
+                                  height: 25,
+                                  width: 50,
+                                  child: Center(
+                                    child: Text(
+                                      AppLocalizations.of(context)!.viewall,
+                                      // "View all",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ),

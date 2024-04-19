@@ -8,6 +8,7 @@ import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import '../../../model/point_tracker/point_tracker_details_request.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -91,7 +92,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                     supermarkerName = element.supermarketName!;
                   }
                   return CustomScrollView(
-                    physics: const ClampingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     slivers: [
                       SliverPadding(
                         padding: const EdgeInsets.only(top: 90),
@@ -106,8 +107,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                             background: Center(
                               child: Container(
                                 // margin: const EdgeInsets.only(top: 70),
-                                width: 350,
-                                height: 220,
+                                width: getProportionateScreenWidth(350),
+                                height: getProportionateScreenHeight(220),
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8.0),
@@ -289,7 +290,6 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                         Expanded(
                                           flex: 2,
                                           child: Text(
-                                            // state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!,
                                             context.read<LanguageBloc>().state.selectedLanguage == Language.english
                                                 ? state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!
                                                 : state.pointTrackerDetailsRequestResponse.brandPoints![index].brandNameArabic!,

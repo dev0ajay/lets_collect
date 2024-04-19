@@ -62,12 +62,9 @@ class UrlsLetsCollect {
   static const String QR_CODE = "/api/lcuser/getRewardData";
 
 
-
-
   ///Scan Receipt
   static const String SCAN_RECEIPT = "/api/lcuser/scanReceipt";
   static const String SCAN_HISTORY = "/api/lcuser/brandWisePoints";
-
 
   ///Offer list
   static const String OFFER_LIST = "/api/lcuser/offer_list";
