@@ -393,7 +393,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
+    // BlocProvider.of<MyProfileBloc>(context).add(GetProfileDataEvent());
     myProfileArgumentData();
   }
 
