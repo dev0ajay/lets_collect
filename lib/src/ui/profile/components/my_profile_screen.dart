@@ -47,110 +47,17 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class MyProfileScreenState extends State<MyProfileScreen> {
+  bool isEnabled=false;
   bool networkSuccess = false;
   DateTime? selectedDate;
-  TextEditingController firstnameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
-  TextEditingController dateInputController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController nationalityController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  final FocusNode _firstname = FocusNode();
-  final FocusNode _secondname = FocusNode();
-  final FocusNode _email = FocusNode();
-  final FocusNode _phone = FocusNode();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? selectedGender;
-  final List<String> Gender = ["M", "F"];
-  final List<String> Gender_ar = ["م", "F"];
-  List<File> selectedImages = [];
-  File? galleryFile;
-  String imageBase64 = "";
-  String extension = "";
-  String imageUploadFormated = "";
-  File? _image = File("");
-  final _picker = ImagePicker();
-  late XFile _pickedFile;
-  int? selectedCountryID;
-  int? selectedNationalityID;
-  String? selectedNationality;
-  String? selectedNationalityValue;
-  String? selectedCountryValue;
-  String? selectedCountry;
-  String? selectedCityID;
 
-///Function for choosing profile image
-  Future<void> _pickImage() async {
-    final _picker = ImagePicker();
-    final XFile? pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 5,
-    );
-
-    if (_pickedFile == null) {
-      // User canceled picking image
-      return;
-    }
-
-    final bytes = await _pickedFile.readAsBytes();
-
-    final kb = bytes.lengthInBytes / 1024;
-    double imageSizeMB = kb / 1024;
-
-    print('SELECTED IMAGE SIZE: $imageSizeMB MB');
-    Fluttertoast.showToast(
-      msg: AppLocalizations.of(context)!.pleasesavetheprofilephoto,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: AppColors.secondaryColor, // Example color
-      textColor: AppColors.primaryWhiteColor, // Example color
-    );
-
-    if (imageSizeMB > 30720) {
-      // If image size is greater than 5MB
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor:  AppColors.secondaryColor, // Example color
-        textColor: AppColors.primaryWhiteColor, // Example color
-      );
-      return;
-    }
-
-    setState(() {
-      _image = File(_pickedFile.path);
-      galleryFile = File(_pickedFile.path);
-      String img64 = base64Encode(bytes);
-      imageBase64 = img64;
-      extension = p.extension(galleryFile!.path).trim().replaceAll('.', '');
-      imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-    });
-  }
-
-
-  ///Validation function for First name
-  String? validateFirstname(String? value) {
-    String pattern = "[a-zA-Z]";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      // return 'Enter first name';
-      return AppLocalizations.of(context)!.enterfirstname;
-    } else {
-      return null;
-    }
-  }
-///Function for checking Age
   bool isAbove12YearsOld(DateTime selectedDate) {
     final DateTime now = DateTime.now();
     final DateTime twelveYearsAgo =
     now.subtract(const Duration(days: 12 * 365));
     return selectedDate.isBefore(twelveYearsAgo);
   }
-///Date picker
+
   void _showDatePicker(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -175,7 +82,204 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       }
     }
   }
-///Initializing argument variables
+
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController dateInputController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController nationalityController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+
+  final FocusNode _firstname = FocusNode();
+  final FocusNode _secondname = FocusNode();
+  final FocusNode _email = FocusNode();
+  final FocusNode _phone = FocusNode();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? validateFirstname(String? value) {
+    String pattern = "[a-zA-Z]";
+    RegExp regex = RegExp(pattern);
+    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
+      // return 'Enter first name';
+      return AppLocalizations.of(context)!.enterfirstname;
+    } else {
+      return null;
+    }
+  }
+
+  String? validateLastname(String? value) {
+    String pattern = "["
+        "a-zA-Z]";
+    RegExp regex = RegExp(pattern);
+    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
+      // return 'Enter last name';
+      return AppLocalizations.of(context)!.enterlastname;
+    } else {
+      return null;
+    }
+  }
+
+  String? validatePhoneNumber(String? value) {
+    if (value!.length < 10 || value.isEmpty) {
+      // return 'Enter a valid phone number';
+      return AppLocalizations.of(context)!.enteravalidphonenumber;
+    } else {
+      return null;
+    }
+  }
+
+  String? selectedGender;
+
+  final List<String> Gender = ["M", "F"];
+  // final List<String> Gender_ar = ["م", "F"];
+  List<File> selectedImages = [];
+  File? galleryFile;
+  String imageBase64 = "";
+  String extension = "";
+  String imageUploadFormated = "";
+  File? _image = File("");
+  final _picker = ImagePicker();
+  late XFile _pickedFile;
+  int? selectedCountryID;
+  int? selectedNationalityID;
+  String? selectedNationality;
+  String? selectedNationalityValue;
+  String? selectedCountryValue;
+  String? selectedCountry;
+  String? selectedCityID;
+
+
+  Future<void> _pickImage() async {
+    final _picker = ImagePicker();
+    final XFile? _pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
+    );
+
+    if (_pickedFile == null) {
+      // User canceled picking image
+      return;
+    }
+
+    final bytes = await _pickedFile.readAsBytes();
+
+    final kb = bytes.lengthInBytes / 1024;
+    double imageSizeMB = kb / 1024;
+
+    print('SELECTED IMAGE SIZE: $imageSizeMB MB');
+    Fluttertoast.showToast(
+      msg: AppLocalizations.of(context)!.pleasesavetheprofilephoto,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: AppColors.primaryBlackColor,
+      textColor: AppColors.primaryWhiteColor,
+    );
+
+    if (imageSizeMB > 30720) {
+      // If image size is greater than 5MB
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: AppColors.primaryBlackColor,
+        textColor: AppColors.primaryWhiteColor,
+      );
+      return;
+    }
+
+    setState(() {
+      _image = File(_pickedFile.path);
+      galleryFile = File(_pickedFile.path);
+      String img64 = base64Encode(bytes);
+      imageBase64 = img64;
+      extension = p.extension(galleryFile!.path).trim().replaceAll('.', '');
+      imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+    });
+  }
+
+  // Future<void> _pickImage() async {
+  //   _pickedFile = (await _picker.pickImage(
+  //     source: ImageSource.gallery,
+  //     imageQuality: 5,
+  //   ))!;
+  //   final bytes = await _pickedFile.readAsBytes();
+  //
+  //   double imageSizeMB = bytes.lengthInBytes / (1024 * 1024); // convert bytes to MB
+  //
+  //   print('SELECTED IMAGE SIZE $imageSizeMB MB.');
+  //
+  //   if (imageSizeMB > 30) {
+  //     Fluttertoast.showToast(
+  //       msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       backgroundColor: AppColors.secondaryColor,
+  //       textColor: AppColors.primaryWhiteColor,
+  //     );
+  //     return; // Stop further processing if image exceeds size limit
+  //   }
+  //
+  //   // Proceed with further processing if image size is within the limit
+  //   Fluttertoast.showToast(
+  //     msg: AppLocalizations.of(context)!.pleasesavetheprofilephoto,
+  //     toastLength: Toast.LENGTH_SHORT,
+  //     gravity: ToastGravity.BOTTOM,
+  //     backgroundColor: AppColors.secondaryColor,
+  //     textColor: AppColors.primaryWhiteColor,
+  //   );
+
+  //   setState(() {
+  //     _image = File(_pickedFile.path);
+  //     galleryFile = File(_pickedFile.path);
+  //     String img64 = base64Encode(bytes);
+  //     imageBase64 = img64;
+  //     extension = p.extension(galleryFile!.path).trim().toString().replaceAll('.', '');
+  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //   });
+  // }
+
+  // Future<void> _pickImage() async {
+  //   _pickedFile = (await _picker.pickImage(
+  //       source: ImageSource.gallery, imageQuality: 5))!;
+  //   final bytes = await _pickedFile.readAsBytes();
+  //   final image = await decodeImageFromList(bytes);
+  //
+  //   // Calculate the dimensions of the image
+  //   int imageWidth = image.width;
+  //   int imageHeight = image.height;
+  //   // Calculate the total number of megapixels
+  //   double megapixels = (imageWidth * imageHeight) / 1000000;
+  //
+  //   print('SELECTED IMAGE HAS $megapixels MP.');
+  //
+  //   if (megapixels > 5) {
+  //     Fluttertoast.showToast(
+  //       msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
+  //       // "Selected image is greater than 5MP, Please Choose an image size less than 5MP",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       backgroundColor: AppColors.secondaryColor,
+  //       textColor: AppColors.primaryWhiteColor,
+  //     );
+  //     return;
+  //   }
+  //
+  //   setState(() {
+  //     _image = File(_pickedFile.path);
+  //     galleryFile = File(_pickedFile.path);
+  //     String img64 = base64Encode(bytes);
+  //     imageBase64 = img64;
+  //     extension =
+  //         p.extension(galleryFile!.path).trim().toString().replaceAll('.', '');
+  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
+  //   });
+  // }
+
+
   myProfileArgumentData() {
     firstnameController.text = widget.myProfileArguments.first_name;
     print("FIRST NAME : ${firstnameController.text}");
@@ -214,11 +318,13 @@ class MyProfileScreenState extends State<MyProfileScreen> {
         : widget.myProfileArguments.mobile_no;
     print("MOBILE NUMBER : ${mobileController.text}");
   }
+
   ///Runtime User Access and Permission handling
+
   void openSettings() {
     openAppSettings();
   }
-  ///Runtime User Access and Permission handling
+
   void _showPermissionDialog(BuildContext permissionDialogContext) {
     showDialog(
         context: _scaffoldKey.currentContext!,
@@ -273,7 +379,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
         });
   }
 
-  ///Runtime User Access and Permission handling
+
+
   Future<void> checkPermissionForGallery(
       Permission permission, BuildContext context) async {
     final status = await permission.request();
@@ -318,7 +425,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                       msg: AppLocalizations.of(context)!.updatesuccessfully,
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
-                      backgroundColor: AppColors.secondaryColor,
+                      backgroundColor: AppColors.primaryBlackColor,
                       textColor: AppColors.primaryWhiteColor,
                     );
                   }
@@ -410,7 +517,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                           color: AppColors.primaryWhiteColor,
                         ),
                         onPressed: () {
+                          BlocProvider.of<MyProfileBloc>(context)
+                              .add(GetProfileDataEvent());
                           context.pop();
+                          print("Profile tapped!");
                         },
                       ),
                       pinned: true,
@@ -488,6 +598,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                     child: Stack(children: [
                                       GestureDetector(
                                         onTap: () async {
+                                          // checkPermissionForGallery(context);
+                                          // pickImage();
 
                                           if (selectedImages.isEmpty) {
                                             if (Platform.isAndroid) {
@@ -518,68 +630,78 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           }
                                         },
                                         child: _image!.path.isNotEmpty
-                                            ? Container(
-                                          alignment: Alignment.center,
-                                          width: 130,
-                                          height: 130,
-                                          // color: Colors.grey[300],
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            // borderRadius: BorderRadius.circular(100),
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Align(
-                                                alignment:
-                                                Alignment.center,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(100),
-                                                  child: Image.file(
-                                                    File(_image!.path),
-                                                    width: 130,
-                                                    height: 130,
-                                                    fit: BoxFit.cover,
+                                            ? AspectRatio(
+                                          aspectRatio: 1.0,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: 130,
+                                            height: 130,
+                                            // color: Colors.grey[300],
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              // borderRadius: BorderRadius.circular(100),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                  alignment:
+                                                  Alignment.center,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(100),
+                                                    child: Image.file(
+                                                      File(_image!.path),
+                                                      width: 130,
+                                                      height: 130,
+                                                      fit: BoxFit.cover,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                  ? const Positioned(
-                                                bottom: 8,
-                                                right: 1,
-                                                child: Icon(
-                                                  Icons
-                                                      .add_a_photo_outlined,
-                                                  color: AppColors
-                                                      .secondaryColor,
-                                                ),
-                                              )
-                                                  : const Positioned(
-                                                bottom: 8,
-                                                left: 1,
-                                                child: Icon(
-                                                  Icons
-                                                      .add_a_photo_outlined,
-                                                  color: AppColors
-                                                      .secondaryColor,
-                                                ),
-                                              )
-                                            ],
+                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                    ? const Positioned(
+                                                  bottom: 8,
+                                                  right: 1,
+                                                  child: Icon(
+                                                    Icons
+                                                        .add_a_photo_outlined,
+                                                    color: AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                )
+                                                    : const Positioned(
+                                                  bottom: 8,
+                                                  left: 1,
+                                                  child: Icon(
+                                                    Icons
+                                                        .add_a_photo_outlined,
+                                                    color: AppColors
+                                                        .secondaryColor,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         )
                                             : Stack(children: [
-                                          Container(
-                                            width: 130.0,
-                                            height: 130.0,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                alignment:
-                                                Alignment.center,
-                                                fit: BoxFit.cover,
-                                                image: MemoryImage(
-                                                    bytesImage),
+                                          AspectRatio(
+                                            aspectRatio: 1.0,
+                                            child: Container(
+                                              width: 130.0,
+                                              height: 130.0,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                // border: Border.all(
+                                                //   color: AppColors.secondaryColor,
+                                                //   width: 2.0,
+                                                // ),
+                                                image: DecorationImage(
+                                                  alignment:
+                                                  Alignment.center,
+                                                  fit: BoxFit.cover,
+                                                  image: MemoryImage(
+                                                      bytesImage),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -605,15 +727,51 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                             ),
                                           )
                                         ]),
-
+                                        // Container(
+                                        //         alignment: Alignment.center,
+                                        //         width: 130,
+                                        //         height: 130,
+                                        //         decoration: const BoxDecoration(
+                                        //           shape: BoxShape.circle,
+                                        //           color: AppColors.shadow,
+                                        //           // borderRadius: BorderRadius.circular(100),
+                                        //         ),
+                                        //         child: const Stack(
+                                        //           children: [
+                                        //             Align(
+                                        //               alignment:
+                                        //                   Alignment.center,
+                                        //               child: Text("Add"),
+                                        //             ),
+                                        //             Positioned(
+                                        //                 bottom: 8,
+                                        //                 right: 8,
+                                        //                 child: Icon(
+                                        //                   Icons
+                                        //                       .add_a_photo_outlined,
+                                        //                   color: AppColors
+                                        //                       .secondaryColor,
+                                        //                 )
+                                        //                 // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
+                                        //                 ),
+                                        //           ],
+                                        //         ),
+                                        //       )
                                       )
                                     ]),
+
+                                    // CircleAvatar(
+                                    //   backgroundColor: Colors.transparent,
+                                    //   radius: 50,
+                                    //   backgroundImage: NetworkImage(
+                                    //       "https://s3-alpha-sig.figma.com/img/d067/c913/ad868d019f92ce267e6de23af3413e5b?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=BTjjS~v0e0x44jHIWuKYMNaWYXlHG7EN3Yjq111uXWjvGWD0oPTpDDuaPCAtTv9cdqXNKlztZmY35PSEAiUohNuYoaQDt-ZI5pG5QleefSvEir~3854~O8EEXI1aGpmu5ciF9KdwvmZwK3WYpf8S150xkDq7v94NndSusDG2VpkUYejPJUr4C~qM2vO0g7lNJ33W5-bMNoCyWpW128kmLdDk36~oAJxjrLK0Vhg88eJ1ORr-A5yVpKrJaIHxw2DXQrlWbtpZvmfc4HWh09tN7Lz70hYnd8Fk4NN6UpXLiHv0DNeRp6-W3NNaRRJTpJx70RUXbcI38u4jGr9Ahd69ew__"),
+                                    // ),
                                   ),
                                   // SizedBox(height: 120),
                                 ],
                               );
                             }
-                            return const SizedBox();
+                            return SizedBox();
                           },
                         ),
                       ),
@@ -674,10 +832,12 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     return MyTextField(
                                                       enable: true,
                                                       focusNode: _firstname,
+                                                      // horizontal: 10,
                                                       hintText:
                                                       AppLocalizations.of(
                                                           context)!
                                                           .firstname,
+                                                      // hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
                                                       obscureText: false,
                                                       maxLines: 1,
                                                       controller:
@@ -795,30 +955,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   fontSize: 14,
                                                 ),
                                               ),
-                                              items: context
-                                                  .read<LanguageBloc>()
-                                                  .state
-                                                  .selectedLanguage ==
-                                                  Language.english
-                                                  ? Gender.map(
-                                                    (item) =>
-                                                    DropdownMenuItem<
-                                                        String>(
-                                                      value: item,
-                                                      child: Text(
-                                                        item,
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          color: AppColors
-                                                              .primaryBlackColor,
-                                                          fontSize: 14,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                    ),
-                                              ).toList()
-                                                  : Gender_ar.map(
+                                              items:  Gender.map(
                                                     (item) =>
                                                     DropdownMenuItem<
                                                         String>(
@@ -1329,7 +1466,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                             .circular(5),
                                                         border: Border.all(
                                                           width: 1,
-                                                          color: AppColors.borderColor,
+                                                          color: const Color(
+                                                              0xFFE6ECFF),
                                                         ),
                                                         color: AppColors
                                                             .primaryWhiteColor,
@@ -1410,7 +1548,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 11),
                                         child: MyTextField(
-                                          enable: false,
+                                          enable: isEnabled,
                                           focusNode: _email,
                                           // horizontal: 10,
                                           // hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
@@ -1451,7 +1589,15 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
                                                 keyboardType:
                                                 TextInputType.number,
-
+                                                // validator: (value) {
+                                                //   String? err =
+                                                //       validatePhoneNumber(
+                                                //           value);
+                                                //   if (err != null) {
+                                                //     _phone.requestFocus();
+                                                //   }
+                                                //   return err;
+                                                // },
                                               );
                                             } else {
                                               return const SizedBox();
@@ -1489,11 +1635,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 //     .add(GetProfileDataEvent());
                                                 if (firstnameController.text.isEmpty) {
                                                   Fluttertoast.showToast(
-                                                    msg: "please enter firstname",
+                                                    msg: AppLocalizations.of(context)!.enterfirstname,
                                                     // msg: AppLocalizations.of(context)!.allfieldsareimportant,
                                                     toastLength: Toast.LENGTH_LONG,
                                                     gravity: ToastGravity.BOTTOM,
-                                                    backgroundColor: AppColors.secondaryColor,
+                                                    backgroundColor: AppColors.primaryBlackColor,
                                                     textColor: AppColors.primaryWhiteColor,
                                                   );
                                                   return;
@@ -1535,11 +1681,20 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                             : genderController
                                                             .text,
                                                         mobileNo: mobileController.text,
+                                                        // mobileNo: int.parse(mobileController.text),
+                                                        //     nationalityId: widget.myProfileArguments.nationality_id.toString() == "0"
+                                                        //         ? int.tryParse("")
+                                                        //         : selectedNationalityID ?? int.parse(widget.myProfileArguments.nationality_id.toString()),
+
                                                         nationalityId: (selectedNationalityID != null)
                                                             ? selectedNationalityID!.toString()
                                                             : ((widget.myProfileArguments.nationality_id.toString() == "0")
                                                             ? ""
                                                             : widget.myProfileArguments.nationality_id.toString()),
+
+                                                        // nationalityId: selectedNationalityID != null
+                                                        //     ? selectedNationalityID!
+                                                        //     : int.parse(widget.myProfileArguments.nationality_id.toString()),
 
                                                         city: selectedCityID != null &&
                                                             selectedCityID
@@ -1556,6 +1711,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                             : ((widget.myProfileArguments.country_id.toString() == "0")
                                                             ? ""
                                                             : widget.myProfileArguments.country_id.toString()),
+
+
+                                                        // countryId: selectedCountryID != null                                                             ? selectedCountryID!
+                                                        //     : int.parse(widget.myProfileArguments.country_id.toString()),
                                                         userName: widget
                                                             .myProfileArguments
                                                             .user_name,
@@ -1594,7 +1753,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     gravity:
                                                     ToastGravity.BOTTOM,
                                                     backgroundColor:
-                                                    AppColors.secondaryColor,
+                                                    AppColors.primaryBlackColor,
                                                     textColor: AppColors.primaryWhiteColor,
                                                   );
                                                 }

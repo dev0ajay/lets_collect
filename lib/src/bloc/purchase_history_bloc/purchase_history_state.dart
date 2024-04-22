@@ -38,6 +38,6 @@ class PurchaseHistoryDetailsLoaded extends PurchaseHistoryState{
   final PurchaseHistoryDetailsResponse purchaseHistoryDetailsResponse;
   const PurchaseHistoryDetailsLoaded({required this.purchaseHistoryDetailsResponse});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [purchaseHistoryDetailsResponse];
 }
 

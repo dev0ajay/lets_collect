@@ -151,34 +151,36 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             ),
                                           ),
                                         )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          width: 130,
-                                          height: 130,
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: AppColors.shadow,
-                                            // borderRadius: BorderRadius.circular(100),
-                                          ),
-                                          child: const Stack(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                // child: Text(AppLocalizations.of(context)!.add)
-                                                child: Text("Add"),
-                                              ),
-                                              Positioned(
-                                                bottom: 8,
-                                                right: 8,
-                                                child: Icon(
-                                                  Icons.add_a_photo_outlined,
-                                                  color:
-                                                      AppColors.secondaryColor,
+                                      : AspectRatio(
+                                    aspectRatio: 1,
+                                        child: Container(
+                                            width: 130,
+                                            height: 130,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: AppColors.shadow,
+                                              // borderRadius: BorderRadius.circular(100),
+                                            ),
+                                            child: const Stack(
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  // child: Text(AppLocalizations.of(context)!.add)
+                                                  child: Text("Add"),
                                                 ),
-                                              ),
-                                            ],
+                                                Positioned(
+                                                  bottom: 8,
+                                                  right: 8,
+                                                  child: Icon(
+                                                    Icons.add_a_photo_outlined,
+                                                    color:
+                                                        AppColors.secondaryColor,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
+                                      ),
                                 ),
                                 const SizedBox(height: 10),
                                 Flexible(

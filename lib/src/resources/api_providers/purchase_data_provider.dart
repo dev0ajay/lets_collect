@@ -56,6 +56,7 @@ class PurchaseDataProvider {
     print(response.toString());
 
     if (response.statusCode == 200) {
+
       return StateModel<PurchaseHistoryDetailsResponse>.success(
           PurchaseHistoryDetailsResponse.fromJson(response.data));
     } else {

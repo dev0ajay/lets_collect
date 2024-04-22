@@ -361,6 +361,7 @@ class ApiClient {
   Future<Response> purchaseHistoryDetailsRequest(
       PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
     return dioLetsCollect.post(
+      data: purchaseHistoryDetailsRequest,
       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
       options: Options(headers: {
         "Authorization": ObjectFactory().prefs.getAuthToken(),

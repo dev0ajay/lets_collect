@@ -94,13 +94,13 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                                 ),
                               ),
                               onPressed: () {
-                                context
-                                    .read<GoogleSignInCubit>()
+                                context.read<GoogleSignInCubit>()
                                     .signOut();
                                 context
                                     .read<FacebookSignInCubit>()
                                     .logOutFromFacebook();
                                 ObjectFactory().prefs.setIsLoggedIn(false);
+                                ObjectFactory().prefs.setAuthToken(token: "");
                                 ObjectFactory().prefs.setUserName(userName: "");
                                 ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
                                 // ObjectFactory().prefs.clearPrefs();

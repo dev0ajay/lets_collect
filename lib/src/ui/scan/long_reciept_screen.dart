@@ -639,8 +639,9 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             Flexible(
                               flex: 2,
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .oopslookslikeyouhavealready,
+                                state.scanReceiptRequestResponse.message!,
+                                // AppLocalizations.of(context)!
+                                //     .oopslookslikeyouhavealready,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -689,8 +690,9 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             Flexible(
                               flex: 2,
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .oopslookslikewearefacing,
+                                state.scanReceiptRequestResponse.message!,
+                                // AppLocalizations.of(context)!
+                                //     .oopslookslikewearefacing,
                                 // "Oops! Looks like we’re facing some issue scanning this receipt",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
@@ -752,25 +754,18 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             const SizedBox(height: 10),
                             Visibility(
                               visible: state.scanReceiptRequestResponse.data!
-                                      .totalPoints != 0,
+                                      .totalPoints !=
+                                  0,
                               child: Flexible(
                                 flex: 1,
                                 child: TextButton(
                                   onPressed: () {
                                     _removeFile();
-                                    context.push(
-                                      '/scan_history',
-                                      extra: ScanDetailsScreenArgument(
-                                        totalPoint: state
+                                    context.push("/point_tracker_details",
+                                        extra: state
                                             .scanReceiptRequestResponse
                                             .data!
-                                            .totalPoints!,
-                                        pointId: state
-                                            .scanReceiptRequestResponse
-                                            .data!
-                                            .pointId!,
-                                      ),
-                                    );
+                                            .pointId);
                                     context.pop();
                                   },
                                   child: Text(

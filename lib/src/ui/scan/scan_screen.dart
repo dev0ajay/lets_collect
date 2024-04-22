@@ -183,8 +183,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                     ),
                                     child: GestureDetector(
                                       onTap: () {
-                                        // checkPermission(Permission.camera,context);
-                                        // cameraPermissionStatus(context);
                                         _showPicker(
                                             context:
                                                 _scaffoldKey.currentContext!);
@@ -214,7 +212,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                     ),
                                     child: GestureDetector(
                                       onTap: () {
-                                        // checkPermission(Permission.camera,context);
                                         _showPicker(
                                             context:
                                                 _scaffoldKey.currentContext!);
@@ -232,7 +229,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                           GestureDetector(
                             onTap: () {
                               context.push('/long_receipt');
-                              // print(galleryFile!.path.split("/").last);
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(top: 20),
@@ -442,8 +438,9 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .oopslookslikeyouhavealready,
+                                state.scanReceiptRequestResponse.message!,
+                                // AppLocalizations.of(context)!
+                                //     .oopslookslikeyouhavealready,
                                 // "Oops! Looks like you’ve already scanned this one.",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
@@ -494,9 +491,9 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                AppLocalizations.of(context)!
-                                    .oopslookslikewearefacing,
-                                // "Oops! Looks like we’re facing some issue scanning this receipt",
+                                state.scanReceiptRequestResponse.message!,
+                                // AppLocalizations.of(context)!
+                                //     .oopslookslikewearefacing,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -563,17 +560,11 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                 child: TextButton(
                                   onPressed: () {
                                     _clearImage();
-                                    context.push(
-                                      '/scan_history',
-                                      extra: ScanDetailsScreenArgument(
-                                        totalPoint: state
+                                    context.push("/point_tracker_details",
+                                        extra: state
                                             .scanReceiptRequestResponse
                                             .data!
-                                            .totalPoints!,
-                                        pointId: state.scanReceiptRequestResponse
-                                            .data!.pointId!,
-                                      ),
-                                    );
+                                            .pointId);
                                     context.pop();
                                   },
                                   child: Text(
@@ -589,28 +580,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                 ),
                               ),
                             ),
-                            // Flexible(
-                            //   flex: 1,
-                            //   child: Text(
-                            //     "Brand points: ${state.scanReceiptRequestResponse.data!.brandPoint.toString()}",
-                            //     textAlign: TextAlign.center,
-                            //     style: GoogleFonts.roboto(
-                            //       fontSize: 12,
-                            //       fontWeight: FontWeight.w700,
-                            //     ),
-                            //   ),
-                            // ),
-                            // Flexible(
-                            //   flex: 1,
-                            //   child: Text(
-                            //     "Partner points: ${state.scanReceiptRequestResponse.data!.letsCollectPoints.toString()}",
-                            //     textAlign: TextAlign.center,
-                            //     style: GoogleFonts.roboto(
-                            //       fontSize: 12,
-                            //       fontWeight: FontWeight.w700,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         )),
                   );
