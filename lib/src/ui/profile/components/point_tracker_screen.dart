@@ -14,6 +14,7 @@ import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart';
 import 'package:lets_collect/src/ui/profile/widgets/point_tracker_chart.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/custome_rounded_button.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -105,12 +106,18 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 190.0,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+              ),
+            ),
+            expandedHeight: getProportionateScreenHeight(200.0),
             floating: false,
             pinned: true,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                context.pop();
               },
               child: const Icon(
                 Icons.arrow_back_ios_rounded,
@@ -122,21 +129,20 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
             backgroundColor: AppColors.primaryColor,
             title: Text(
               AppLocalizations.of(context)!.pointtracker,
-              // "Point Tracker",
               style: GoogleFonts.openSans(
                 color: AppColors.primaryWhiteColor,
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            flexibleSpace: const FlexibleSpaceBar(
+            flexibleSpace:  FlexibleSpaceBar(
               background: Padding(
-                padding: EdgeInsets.only(top: 35.0),
-                child: Image(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Image(fit: BoxFit.scaleDown,
                   // fit: BoxFit.contain,
-                  image: AssetImage("assets/png_icons/point.png"),
-                  width: 80,
-                  height: 80,
+                  image: const AssetImage("assets/png_icons/point.png"),
+                  width: getProportionateScreenWidth(80),
+                  height: getProportionateScreenHeight(80),
                 ),
               ),
             ),
@@ -156,6 +162,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                         ),
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
                           itemCount: state
                               .pointTrackerRequestResponse.brandPoints.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -1174,12 +1181,13 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                         child: Container(
                                           width: double.infinity,
                                           margin: const EdgeInsets.only(
-                                              left: 5,
-                                              right: 5,
-                                              bottom: 10,
-                                              top: 10),
+                                            left: 5,
+                                            right: 5,
+                                            bottom: 10,
+                                            top: 10,
+                                          ),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: AppColors.primaryWhiteColor,
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             boxShadow: const [

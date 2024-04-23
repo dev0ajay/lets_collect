@@ -88,8 +88,9 @@ class Assets {
 
 ///Profile Screen
   static const String HELP = 'assets/png_icons/help.png';
+  static const String CANCEL = 'assets/png_icons/cancel.png';
 
-  // Referral window screen
+// Referral window screen
 
   //bottom navigation
 

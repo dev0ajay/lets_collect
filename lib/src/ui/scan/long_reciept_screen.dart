@@ -17,7 +17,6 @@ import '../../bloc/scan_bloc/scan_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import '../../utils/network_connectivity/bloc/network_bloc.dart';
-import 'components/scan_detail_screen_argument.dart';
 import 'components/widgets/scan_screen_collect_button.dart';
 import 'package:path/path.dart' as p;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -336,7 +335,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                     ),
                   ),
 
-                  ///Widget Tree for Multiple image selection
+                  ///Multiple image selection
                   // Flexible(
                   //   flex: 3,
                   //   child: Padding(
@@ -600,8 +599,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
               }
               if (state is ScanLoaded) {
                 if (state.scanReceiptRequestResponse.success == false &&
-                    state.scanReceiptRequestResponse.message ==
-                        "This receipt number already exists") {
+                    state.scanReceiptRequestResponse.statusCode == 400) {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -610,49 +608,50 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                     elevation: 5,
                     alignment: Alignment.center,
                     content: SizedBox(
-                        height: getProportionateScreenHeight(260),
-                        width: getProportionateScreenWidth(320),
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                onPressed: () {
-                                  context.pop();
-                                  _removeFile();
-                                },
-                                icon: const Icon(Icons.close),
+                      height: getProportionateScreenHeight(260),
+                      width: getProportionateScreenWidth(320),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              onPressed: () {
+                                context.pop();
+                                _clearImage();
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Flexible(
+                            flex: 3,
+                            child: Center(
+                              child: Image.asset(
+                                Assets.APP_LOGO,
+                                height: 95,
+                                width: 150,
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Flexible(
-                              flex: 3,
-                              child: Center(
-                                child: Image.asset(
-                                  Assets.APP_LOGO,
-                                  height: 95,
-                                  width: 150,
-                                ),
+                          ),
+                          const SizedBox(height: 20),
+                          Flexible(
+                            flex: 2,
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .oopslookslikewearefacing,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            Flexible(
-                              flex: 2,
-                              child: Text(
-                                state.scanReceiptRequestResponse.message!,
-                                // AppLocalizations.of(context)!
-                                //     .oopslookslikeyouhavealready,
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.openSans(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
-                } else if (state.scanReceiptRequestResponse.success == false) {
+                }
+                if (state.scanReceiptRequestResponse.success == false) {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -890,6 +889,19 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
             .replaceAll('.', '');
         imageUploadFormated = "data:image/$extension;base64,$imageBase64";
       });
+    } else {
+     if(context.mounted) {
+       ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+           SnackBar(
+               backgroundColor: AppColors.secondaryColor,
+               content: Text(
+                 AppLocalizations.of(context)!.nothingisselected,
+                 style: GoogleFonts.openSans(
+                   color: AppColors.primaryWhiteColor,
+                 ),
+                 // 'Nothing is selected'
+               )));
+     }
     }
   }
 

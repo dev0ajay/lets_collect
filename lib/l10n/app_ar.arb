@@ -288,7 +288,9 @@
     "reenternewpassword" : "أعد إدخال كلمة المرور الجديدة",
     "passwordchangedsuccessfull" : "!تم تغيير كلمة المرور بنجاح",
     "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين",
-    "notificationdetails" : "Notification Details"
+    "notificationdetails" : "تفاصيل الإشعار",
+    "pointdetails" : "تفاصيل النقاط"
+
 
 
 

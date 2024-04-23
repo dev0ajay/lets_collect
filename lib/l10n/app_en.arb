@@ -288,7 +288,6 @@
     "reenternewpassword" : "Re-enter New Password",
     "passwordchangedsuccessfull" : "Password Changed Successfully!",
     "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match",
-    "notificationdetails" : "Notification Details"
-
-
+    "notificationdetails" : "Notification Details",
+    "pointdetails" : "Point Details"
 }

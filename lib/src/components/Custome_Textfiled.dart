@@ -16,6 +16,7 @@ class MyTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final keyboardType;
   final bool obscureText;
+  bool? isEnabled;
   bool? enable;
   final int maxLines;
   TextEditingController? controller;
@@ -37,6 +38,7 @@ class MyTextField extends StatefulWidget {
     this.prefixIcon,
     this.inputFormatter,
     this.enable,
+    this.isEnabled,
   });
 
   @override
@@ -64,12 +66,24 @@ class _MyTextFieldState extends State<MyTextField> {
         obscureText: widget.obscureText && !_passwordVisible,
         validator: widget.validator,
         decoration: InputDecoration(
-          border: InputBorder.none,
+          border: widget.isEnabled ?? true
+              ? OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(color: AppColors.borderColor),
+          )
+              : OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            borderSide: const BorderSide(color: AppColors.borderColor),
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),
           ),
-          focusedBorder: OutlineInputBorder(
+          // focusedBorder: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(5.0),
+          //   borderSide: const BorderSide(color: AppColors.borderColor),
+          // ),
+          disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(color: AppColors.borderColor),
           ),
@@ -84,11 +98,11 @@ class _MyTextFieldState extends State<MyTextField> {
               fontSize: 16),
           contentPadding: EdgeInsets.only(
             left: context.read<LanguageBloc>().state.selectedLanguage ==
-                    Language.english
+                Language.english
                 ? 15
                 : 0,
             right: context.read<LanguageBloc>().state.selectedLanguage ==
-                    Language.arabic
+                Language.arabic
                 ? 15
                 : 0,
           ),
@@ -97,38 +111,38 @@ class _MyTextFieldState extends State<MyTextField> {
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon)
               : widget.prefixText != null
-                  ? Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primaryWhiteColor,
-                        border: Border(
-                          right: BorderSide(
-                            color: AppColors.borderColor,
-                            width: 1.0,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        widget.prefixText!,
-                        style: GoogleFonts.roboto(
-                            color: AppColors.hintColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16),
-                      ),
-                    )
-                  : null,
+              ? Container(
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+              color: AppColors.primaryWhiteColor,
+              border: Border(
+                right: BorderSide(
+                  color: AppColors.borderColor,
+                  width: 1.0,
+                ),
+              ),
+            ),
+            child: Text(
+              widget.prefixText!,
+              style: GoogleFonts.roboto(
+                  color: AppColors.hintColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16),
+            ),
+          )
+              : null,
           suffixIcon: widget.obscureText
               ? IconButton(
-                  icon: Icon(
-                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: AppColors.primaryGrayColor,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                )
+            icon: Icon(
+              _passwordVisible ? Icons.visibility : Icons.visibility_off,
+              color: AppColors.primaryGrayColor,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            },
+          )
               : null,
         ),
       ),

@@ -540,7 +540,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               flex: 1,
                               child: Text(
                                 "${AppLocalizations.of(context)!.totalpoints} : ${state.scanReceiptRequestResponse.data!.totalPoints.toString()} ",
-                                // "Total Points: ${state.scanReceiptRequestResponse.data!.totalPoints.toString()}",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -564,7 +563,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                     context.pop();
                                   },
                                   child: Text(
-                                    // "View Details",
                                     AppLocalizations.of(context)!.viewdetails,
                                     style: GoogleFonts.roboto(
                                       fontSize: 14,
@@ -774,10 +772,14 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
           } else {
             ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
                 SnackBar(
+                    backgroundColor: AppColors.secondaryColor,
                     content: Text(
-              AppLocalizations.of(context)!.nothingisselected,
-              // 'Nothing is selected'
-            )));
+                      AppLocalizations.of(context)!.nothingisselected,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                      ),
+                      // 'Nothing is selected'
+                    )));
           }
         },
       );

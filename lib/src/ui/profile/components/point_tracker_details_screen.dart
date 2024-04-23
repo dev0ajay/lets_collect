@@ -35,7 +35,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
     BlocProvider.of<PointTrackerBloc>(context).add(
       GetPointTrackerDetailEvent(
         pointTrackerDetailsRequest:
-        PointTrackerDetailsRequest(pointId: widget.pointId),
+            PointTrackerDetailsRequest(pointId: widget.pointId),
       ),
     );
   }
@@ -86,7 +86,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                     );
                   }
                   print("PointTrackerDetailsLoaded state detected");
-                  for (var element in state.pointTrackerDetailsRequestResponse.data!) {
+                  for (var element
+                      in state.pointTrackerDetailsRequestResponse.data!) {
                     totalPoints = element.totalPoints.toString();
                     expiryDate = element.expiryDate.toString();
                     supermarkerName = element.supermarketName!;
@@ -97,6 +98,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                       SliverPadding(
                         padding: const EdgeInsets.only(top: 90),
                         sliver: SliverAppBar(
+                          elevation: 0,
                           backgroundColor: AppColors.primaryWhiteColor,
                           // backgroundColor: AppColors.primaryColor,
                           automaticallyImplyLeading: false,
@@ -106,9 +108,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                           flexibleSpace: FlexibleSpaceBar(
                             background: Center(
                               child: Container(
-                                // margin: const EdgeInsets.only(top: 70),
-                                width: getProportionateScreenWidth(350),
-                                height: getProportionateScreenHeight(220),
+                                width: 350,
+                                height: 220,
                                 decoration: BoxDecoration(
                                   color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8.0),
@@ -155,7 +156,8 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       flex: 1,
                                       child: Text(
                                         // "Total points earned!",
-                                        AppLocalizations.of(context)!.totalpointearned,
+                                        AppLocalizations.of(context)!
+                                            .totalpointearned,
                                         style: GoogleFonts.roboto(
                                           color: AppColors.primaryColor,
                                           fontSize: 18,
@@ -168,7 +170,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       flex: 1,
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             // "Date ",
@@ -195,11 +197,12 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       flex: 1,
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             // "Supermarket ",
-                                            AppLocalizations.of(context)!.supermarket,
+                                            AppLocalizations.of(context)!
+                                                .supermarket,
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -224,124 +227,143 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                           ),
                         ),
                       ),
-                      SliverToBoxAdapter(
-                        child: Container(
-                            padding:
-                            const EdgeInsets.only(top: 5, bottom: 5),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryWhiteColor,
-                              border: Border.all(
-                                  color: AppColors.primaryWhiteColor,
-                                  width: 0),
-                            ),
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(left: 10,right: 10),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: state
-                                  .pointTrackerDetailsRequestResponse
-                                  .brandPoints!
-                                  .length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 15, right: 15),
-                                  height: MediaQuery.of(context).size.height,
-                                  padding: const EdgeInsets.only(
-                                      top: 2, bottom: 2, left: 25, right: 25),
-                                  decoration: BoxDecoration(
-                                    border: const Border(
-                                      bottom: BorderSide(
-                                          width: 1,
-                                          color: AppColors.borderColor),
-                                      top: BorderSide(
-                                          width: 1,
-                                          color: AppColors.borderColor),
-                                      left: BorderSide(
-                                          width: 1,
-                                          color: AppColors.borderColor),
-                                      right: BorderSide(
-                                          width: 1,
-                                          color: AppColors.borderColor),
-                                    ),
-                                    color: AppColors.primaryWhiteColor,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(4, 2),
-                                        spreadRadius: 0,
+                      SliverPadding(
+                        padding: const EdgeInsets.only(bottom: 0),
+                        sliver: SliverToBoxAdapter(
+                          child: Container(
+                              padding: const EdgeInsets.only(top: 5, bottom: 5),
+                              height: 50,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryWhiteColor,
+                                border: Border.all(
+                                    color: AppColors.primaryWhiteColor, width: 0),
+                              ),
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state
+                                    .pointTrackerDetailsRequestResponse
+                                    .brandPoints!
+                                    .length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 15, right: 15),
+                                    height: MediaQuery.of(context).size.height,
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2, left: 25, right: 25),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                        bottom: BorderSide(
+                                            width: 1,
+                                            color: AppColors.borderColor),
+                                        top: BorderSide(
+                                            width: 1,
+                                            color: AppColors.borderColor),
+                                        left: BorderSide(
+                                            width: 1,
+                                            color: AppColors.borderColor),
+                                        right: BorderSide(
+                                            width: 1,
+                                            color: AppColors.borderColor),
                                       ),
-                                      BoxShadow(
-                                        color: AppColors.boxShadow,
-                                        blurRadius: 4,
-                                        offset: Offset(-4, -2),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  // alignment: Alignment.center,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                            context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                ? state.pointTrackerDetailsRequestResponse.brandPoints![index].brandName!
-                                                : state.pointTrackerDetailsRequestResponse.brandPoints![index].brandNameArabic!,
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                              color:
-                                              AppColors.primaryBlackColor,
-                                            ),
-                                          ),
+                                      color: AppColors.primaryWhiteColor,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(4, 2),
+                                          spreadRadius: 0,
                                         ),
-                                        Flexible(
-                                          flex: 2,
-                                          child: Text(
-                                            state.pointTrackerDetailsRequestResponse.brandPoints![index].points.toString(),
-                                            style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 12,
-                                              color: AppColors
-                                                  .secondaryButtonColor,
-                                            ),
-                                          ),
+                                        BoxShadow(
+                                          color: AppColors.boxShadow,
+                                          blurRadius: 4,
+                                          offset: Offset(-4, -2),
+                                          spreadRadius: 0,
                                         ),
                                       ],
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                  ),
-                                );
-                              },
-                            )),
+                                    // alignment: Alignment.center,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              context
+                                                          .read<LanguageBloc>()
+                                                          .state
+                                                          .selectedLanguage ==
+                                                      Language.english
+                                                  ? state
+                                                      .pointTrackerDetailsRequestResponse
+                                                      .brandPoints![index]
+                                                      .brandName!
+                                                  : state
+                                                      .pointTrackerDetailsRequestResponse
+                                                      .brandPoints![index]
+                                                      .brandNameArabic!,
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12,
+                                                color:
+                                                    AppColors.primaryBlackColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Text(
+                                              state
+                                                  .pointTrackerDetailsRequestResponse
+                                                  .brandPoints![index]
+                                                  .points
+                                                  .toString(),
+                                              style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12,
+                                                color: AppColors
+                                                    .secondaryButtonColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                          ),
+                        ),
                       ),
-                      SliverToBoxAdapter(
-                        child: BlocBuilder<PointTrackerBloc, PointTrackerState>(
-                          builder: (context, state) {
-                            if (state is PointTrackerDetailsLoaded) {
-                              return Padding(
-                                padding: const EdgeInsets.only(left: 25,right: 25),
-                                child: Column(
+                      SliverPadding(
+                        padding: const EdgeInsets.only(bottom: 30,left: 5,right: 5),
+                        sliver: SliverToBoxAdapter(
+                          child: BlocBuilder<PointTrackerBloc, PointTrackerState>(
+                            builder: (context, state) {
+                              if (state is PointTrackerDetailsLoaded) {
+                                return Column(
                                   children: [
                                     ListView.builder(
                                       padding: const EdgeInsets.only(top: 20),
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: state.pointTrackerDetailsRequestResponse.pointDetails!.length,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: state
+                                          .pointTrackerDetailsRequestResponse
+                                          .pointDetails!
+                                          .length,
                                       itemBuilder: (context, index) {
                                         return Container(
-                                          margin: const EdgeInsets.all(
-                                              10
-                                          ),
+                                          margin: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             color: AppColors.primaryWhiteColor,
                                             borderRadius:
-                                            BorderRadius.circular(8.0),
+                                                BorderRadius.circular(8.0),
                                             boxShadow: const [
                                               BoxShadow(
                                                 color: AppColors.boxShadow,
@@ -362,57 +384,109 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                 vertical: 10, horizontal: 16),
                                             child: Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Flexible(
                                                   child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Text(
-                                                        overflow: TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         // state.pointTrackerDetailsRequestResponse.pointDetails![index].productName!,
-                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].productName!
-                                                            :  state.pointTrackerDetailsRequestResponse.pointDetails![index].productNameAr!,
-                                                        style: GoogleFonts.roboto(
+                                                        context
+                                                                    .read<
+                                                                        LanguageBloc>()
+                                                                    .state
+                                                                    .selectedLanguage ==
+                                                                Language.english
+                                                            ? state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .productName!
+                                                            : state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .productNameAr!,
+                                                        style:
+                                                            GoogleFonts.roboto(
                                                           color: AppColors
                                                               .primaryBlackColor,
                                                           fontSize: 16,
                                                           fontWeight:
-                                                          FontWeight.w500,
+                                                              FontWeight.w500,
                                                         ),
                                                       ),
                                                       const Divider(
                                                         height: 7,
-                                                        color: Colors.transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                       ),
                                                       Text(
-                                                        overflow: TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         // state.pointTrackerDetailsRequestResponse.pointDetails![index].brandName!,
-                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].brandName!
-                                                            : state.pointTrackerDetailsRequestResponse.pointDetails![index].brandNameAr!,
-                                                        style: GoogleFonts.roboto(
+                                                        context
+                                                                    .read<
+                                                                        LanguageBloc>()
+                                                                    .state
+                                                                    .selectedLanguage ==
+                                                                Language.english
+                                                            ? state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .brandName!
+                                                            : state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .brandNameAr!,
+                                                        style:
+                                                            GoogleFonts.roboto(
                                                           fontSize: 13,
                                                           fontWeight:
-                                                          FontWeight.w400,
+                                                              FontWeight.w400,
                                                         ),
                                                       ),
                                                       const Divider(
                                                         height: 5,
-                                                        color: Colors.transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                       ),
                                                       Text(
                                                         // state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                            ? state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!
-                                                            : state.pointTrackerDetailsRequestResponse.pointDetails![index].pointTierName!,
-                                                        style: GoogleFonts.roboto(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        context
+                                                                    .read<
+                                                                        LanguageBloc>()
+                                                                    .state
+                                                                    .selectedLanguage ==
+                                                                Language.english
+                                                            ? state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .pointTierName!
+                                                            : state
+                                                                .pointTrackerDetailsRequestResponse
+                                                                .pointDetails![
+                                                                    index]
+                                                                .pointTierName!,
+                                                        style:
+                                                            GoogleFonts.roboto(
                                                           fontSize: 12,
                                                           fontWeight:
-                                                          FontWeight.w400,
+                                                              FontWeight.w400,
                                                         ),
                                                       ),
                                                     ],
@@ -420,13 +494,19 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                                 ),
                                                 Flexible(
                                                   child: Text(
-                                                    state.pointTrackerDetailsRequestResponse.pointDetails![index].points.toString(),
-                                                    overflow: TextOverflow.ellipsis,
+                                                    state
+                                                        .pointTrackerDetailsRequestResponse
+                                                        .pointDetails![index]
+                                                        .points
+                                                        .toString(),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     style: GoogleFonts.openSans(
                                                       color: AppColors
                                                           .secondaryButtonColor,
                                                       fontSize: 19,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
                                                 ),
@@ -437,12 +517,12 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                       },
                                     ),
                                   ],
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -469,8 +549,14 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                         BlocProvider.of<PointTrackerBloc>(context).add(
                           GetPointTrackerEvent(
                             pointTrackerRequest: PointTrackerRequest(
-                              sort: '', superMarketId: '', month: '', year: '',),),);
-                        Navigator.pop(context);
+                              sort: '',
+                              superMarketId: '',
+                              month: '',
+                              year: '',
+                            ),
+                          ),
+                        );
+                        context.pop();
                       },
                       icon: const Icon(Icons.arrow_back_ios_rounded,
                           size: 18, color: AppColors.primaryWhiteColor),

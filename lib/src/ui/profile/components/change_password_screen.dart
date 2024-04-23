@@ -70,8 +70,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
+        centerTitle: true,
         leading: IconButton(
-          color: Colors.white,
+          color: AppColors.primaryWhiteColor,
           iconSize: 20,
           icon: const Icon(
             Icons.arrow_back_ios_new,
@@ -146,7 +147,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           )
                               .animate()
                               .then(delay: 200.ms)
-                          // .slideX()
                               .scale(
                             duration: const Duration(milliseconds: 300),
                           )
@@ -165,7 +165,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       color: AppColors.primaryWhiteColor,
                                     )).animate()
                                     .then(delay: 200.ms)
-                                // .slideX()
                                     .scale(
                                   duration: const Duration(milliseconds: 300),
                                 )
@@ -187,7 +186,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       color: AppColors.primaryWhiteColor,
                                     ))).animate()
                                 .then(delay: 200.ms)
-                            // .slideX()
                                 .scale(
                               duration: const Duration(milliseconds: 300),
                             )
@@ -207,7 +205,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               keyboardType: TextInputType.text,
                             ).animate()
                                 .then(delay: 200.ms)
-                            // .slideX()
                                 .scale(
                               duration: const Duration(milliseconds: 300),
                             )
@@ -237,10 +234,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           Expanded(
                             flex: 0,
                             child: MyTextField(
-                              // horizontal: 20,
                               focusNode: _newPassFocus,
                               hintText: AppLocalizations.of(context)!.enternewpassword,
-                              // hintText: "Enter New Password",
                               obscureText: false,
                               maxLines: 1,
                               controller: newPassController,
@@ -267,7 +262,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       color: AppColors.primaryWhiteColor,
                                     ))).animate()
                                 .then(delay: 200.ms)
-                            // .slideX()
                                 .scale(
                               duration: const Duration(milliseconds: 300),
                             )
@@ -280,7 +274,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               // horizontal: 20,
                               focusNode: _confirmNewPassFocus,
                               hintText: AppLocalizations.of(context)!.enternewpassword,
-                              // hintText: "Enter New Password",
                               obscureText: false,
                               maxLines: 1,
                               controller: confirmNewPassController,
@@ -309,7 +302,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                               return Center(
                                 child: MyButton(
                                   Textfontsize: 16,
-                                  TextColors: Colors.white,
+                                  TextColors: AppColors.primaryWhiteColor,
                                   text: AppLocalizations.of(context)!.submit,
                                   // text: "Submit",
                                   color: AppColors.secondaryColor,

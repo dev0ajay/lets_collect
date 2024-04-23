@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -47,17 +46,67 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class MyProfileScreenState extends State<MyProfileScreen> {
-  bool isEnabled=false;
+  bool isEnabled = false;
   bool networkSuccess = false;
   DateTime? selectedDate;
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController dateInputController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController nationalityController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
 
+  final FocusNode _firstname = FocusNode();
+  final FocusNode _secondname = FocusNode();
+  final FocusNode _email = FocusNode();
+  final FocusNode _phone = FocusNode();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? selectedGender;
+  final List<String> Gender = ["M", "F"];
+
+  // final List<String> Gender_ar = ["م", "F"];
+  List<File> selectedImages = [];
+  File? galleryFile;
+  String imageBase64 = "";
+  String extension = "";
+  String imageUploadFormated = "";
+  File? _image = File("");
+  final _picker = ImagePicker();
+  late XFile _pickedFile;
+  int? selectedCountryID;
+  int? selectedNationalityID;
+  String? selectedNationality;
+  String? selectedNationalityValue;
+  String? selectedCountryValue;
+  String? selectedCountry;
+  String? selectedCityID;
+
+  ///Validation
+  String? validateFirstname(String? value) {
+    String pattern = "[a-zA-Z]";
+    RegExp regex = RegExp(pattern);
+    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
+      // return 'Enter first name';
+      return AppLocalizations.of(context)!.enterfirstname;
+    } else {
+      return null;
+    }
+  }
+
+  ///Checking age limit
   bool isAbove12YearsOld(DateTime selectedDate) {
     final DateTime now = DateTime.now();
     final DateTime twelveYearsAgo =
-    now.subtract(const Duration(days: 12 * 365));
+        now.subtract(const Duration(days: 12 * 365));
     return selectedDate.isBefore(twelveYearsAgo);
   }
 
+  ///DatePicker Function
   void _showDatePicker(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -83,76 +132,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     }
   }
 
-  TextEditingController firstnameController = TextEditingController();
-  TextEditingController lastnameController = TextEditingController();
-  TextEditingController dateInputController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
-  TextEditingController nationalityController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-
-  final FocusNode _firstname = FocusNode();
-  final FocusNode _secondname = FocusNode();
-  final FocusNode _email = FocusNode();
-  final FocusNode _phone = FocusNode();
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  String? validateFirstname(String? value) {
-    String pattern = "[a-zA-Z]";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      // return 'Enter first name';
-      return AppLocalizations.of(context)!.enterfirstname;
-    } else {
-      return null;
-    }
-  }
-
-  String? validateLastname(String? value) {
-    String pattern = "["
-        "a-zA-Z]";
-    RegExp regex = RegExp(pattern);
-    if (value == null || value.isEmpty || !regex.hasMatch(value)) {
-      // return 'Enter last name';
-      return AppLocalizations.of(context)!.enterlastname;
-    } else {
-      return null;
-    }
-  }
-
-  String? validatePhoneNumber(String? value) {
-    if (value!.length < 10 || value.isEmpty) {
-      // return 'Enter a valid phone number';
-      return AppLocalizations.of(context)!.enteravalidphonenumber;
-    } else {
-      return null;
-    }
-  }
-
-  String? selectedGender;
-
-  final List<String> Gender = ["M", "F"];
-  // final List<String> Gender_ar = ["م", "F"];
-  List<File> selectedImages = [];
-  File? galleryFile;
-  String imageBase64 = "";
-  String extension = "";
-  String imageUploadFormated = "";
-  File? _image = File("");
-  final _picker = ImagePicker();
-  late XFile _pickedFile;
-  int? selectedCountryID;
-  int? selectedNationalityID;
-  String? selectedNationality;
-  String? selectedNationalityValue;
-  String? selectedCountryValue;
-  String? selectedCountry;
-  String? selectedCityID;
-
-
+  ///Image picker for profile picture
   Future<void> _pickImage() async {
     final _picker = ImagePicker();
     final XFile? _pickedFile = await _picker.pickImage(
@@ -201,85 +181,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     });
   }
 
-  // Future<void> _pickImage() async {
-  //   _pickedFile = (await _picker.pickImage(
-  //     source: ImageSource.gallery,
-  //     imageQuality: 5,
-  //   ))!;
-  //   final bytes = await _pickedFile.readAsBytes();
-  //
-  //   double imageSizeMB = bytes.lengthInBytes / (1024 * 1024); // convert bytes to MB
-  //
-  //   print('SELECTED IMAGE SIZE $imageSizeMB MB.');
-  //
-  //   if (imageSizeMB > 30) {
-  //     Fluttertoast.showToast(
-  //       msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.BOTTOM,
-  //       backgroundColor: AppColors.secondaryColor,
-  //       textColor: AppColors.primaryWhiteColor,
-  //     );
-  //     return; // Stop further processing if image exceeds size limit
-  //   }
-  //
-  //   // Proceed with further processing if image size is within the limit
-  //   Fluttertoast.showToast(
-  //     msg: AppLocalizations.of(context)!.pleasesavetheprofilephoto,
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //     backgroundColor: AppColors.secondaryColor,
-  //     textColor: AppColors.primaryWhiteColor,
-  //   );
-
-  //   setState(() {
-  //     _image = File(_pickedFile.path);
-  //     galleryFile = File(_pickedFile.path);
-  //     String img64 = base64Encode(bytes);
-  //     imageBase64 = img64;
-  //     extension = p.extension(galleryFile!.path).trim().toString().replaceAll('.', '');
-  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-  //   });
-  // }
-
-  // Future<void> _pickImage() async {
-  //   _pickedFile = (await _picker.pickImage(
-  //       source: ImageSource.gallery, imageQuality: 5))!;
-  //   final bytes = await _pickedFile.readAsBytes();
-  //   final image = await decodeImageFromList(bytes);
-  //
-  //   // Calculate the dimensions of the image
-  //   int imageWidth = image.width;
-  //   int imageHeight = image.height;
-  //   // Calculate the total number of megapixels
-  //   double megapixels = (imageWidth * imageHeight) / 1000000;
-  //
-  //   print('SELECTED IMAGE HAS $megapixels MP.');
-  //
-  //   if (megapixels > 5) {
-  //     Fluttertoast.showToast(
-  //       msg: AppLocalizations.of(context)!.selectedimageisgreaterthan,
-  //       // "Selected image is greater than 5MP, Please Choose an image size less than 5MP",
-  //       toastLength: Toast.LENGTH_SHORT,
-  //       gravity: ToastGravity.BOTTOM,
-  //       backgroundColor: AppColors.secondaryColor,
-  //       textColor: AppColors.primaryWhiteColor,
-  //     );
-  //     return;
-  //   }
-  //
-  //   setState(() {
-  //     _image = File(_pickedFile.path);
-  //     galleryFile = File(_pickedFile.path);
-  //     String img64 = base64Encode(bytes);
-  //     imageBase64 = img64;
-  //     extension =
-  //         p.extension(galleryFile!.path).trim().toString().replaceAll('.', '');
-  //     imageUploadFormated = "data:image/$extension;base64,$imageBase64";
-  //   });
-  // }
-
-
+  ///Initialising variables
   myProfileArgumentData() {
     firstnameController.text = widget.myProfileArguments.first_name;
     print("FIRST NAME : ${firstnameController.text}");
@@ -293,21 +195,21 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     print("GENDER : ${genderController.text}");
 
     nationalityController.text =
-    context.read<LanguageBloc>().state.selectedLanguage == Language.english
-        ? widget.myProfileArguments.nationality_name_en
-        : widget.myProfileArguments.nationality_name_ar;
+        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+            ? widget.myProfileArguments.nationality_name_en
+            : widget.myProfileArguments.nationality_name_ar;
     print("NATIONALITY : ${nationalityController.text}");
 
     cityController.text =
-    context.read<LanguageBloc>().state.selectedLanguage == Language.english
-        ? widget.myProfileArguments.city_name
-        : widget.myProfileArguments.city_name_ar;
+        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+            ? widget.myProfileArguments.city_name
+            : widget.myProfileArguments.city_name_ar;
     print("CITY : ${cityController.text}");
 
     countryController.text =
-    context.read<LanguageBloc>().state.selectedLanguage == Language.english
-        ? widget.myProfileArguments.country_name_en
-        : widget.myProfileArguments.country_name_ar;
+        context.read<LanguageBloc>().state.selectedLanguage == Language.english
+            ? widget.myProfileArguments.country_name_en
+            : widget.myProfileArguments.country_name_ar;
     print("COUNTRTY : ${countryController.text}");
 
     emailController.text = widget.myProfileArguments.email;
@@ -320,11 +222,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   ///Runtime User Access and Permission handling
-
   void openSettings() {
     openAppSettings();
   }
 
+  ///Runtime User Access and Permission handling
   void _showPermissionDialog(BuildContext permissionDialogContext) {
     showDialog(
         context: _scaffoldKey.currentContext!,
@@ -339,7 +241,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
               ),
             ),
             content: Text(
-              AppLocalizations.of(context)!.tocontinuefileuploadallowaccesstofilesandstorage,
+              AppLocalizations.of(context)!
+                  .tocontinuefileuploadallowaccesstofilesandstorage,
               // "To continue file upload allow access to files and storage.",
               style: GoogleFonts.openSans(
                 fontSize: 15,
@@ -379,8 +282,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
         });
   }
 
-
-
+  ///Runtime User Access and Permission handling
   Future<void> checkPermissionForGallery(
       Permission permission, BuildContext context) async {
     final status = await permission.request();
@@ -398,7 +300,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       _pickImage();
     }
   }
-
 
   @override
   void initState() {
@@ -512,22 +413,23 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                   slivers: [
                     SliverAppBar(
                       leading: IconButton(
-                        icon: const Icon(
-                          Icons.cancel_outlined,
+                        icon: Image.asset(
+                          Assets.CANCEL,
                           color: AppColors.primaryWhiteColor,
+                          width: 24,
+                          height: 24,
                         ),
                         onPressed: () {
                           BlocProvider.of<MyProfileBloc>(context)
                               .add(GetProfileDataEvent());
                           context.pop();
-                          print("Profile tapped!");
                         },
                       ),
                       pinned: true,
                       stretch: true,
-                      collapsedHeight: getProportionateScreenHeight(160),
+                      collapsedHeight: getProportionateScreenHeight(150),
                       backgroundColor: AppColors.primaryColor,
-                      expandedHeight: getProportionateScreenHeight(100),
+                      expandedHeight: getProportionateScreenHeight(150),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(9),
@@ -538,7 +440,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                         collapseMode: CollapseMode.parallax,
                         centerTitle: false,
                         titlePadding: const EdgeInsets.only(
-                            top: 60, bottom: 20, left: 50, right: 50),
+                            top: 35, bottom: 20, left: 50, right: 50),
                         title: BlocBuilder<MyProfileBloc, MyProfileState>(
                           builder: (context, state) {
                             if (state is MyProfileLoaded) {
@@ -550,228 +452,154 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                               print("PHOTO CODE : $bytesImage");
 
                               return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    flex: 2,
+                                  Flexible(
+                                    flex: 3,
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          state.myProfileScreenResponse.data!
-                                              .firstName
-                                              .toString(),
-                                          // myProfileArguments.first_name,
-                                          // ObjectFactory().prefs.getUserName() ?? "",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 21,
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.secondaryColor,
+                                        Expanded(
+                                          flex: state.myProfileScreenResponse
+                                                      .data!.firstName
+                                                      .toString()
+                                                      .length >
+                                                  15
+                                              ? 4
+                                              : 1,
+                                          child: Text(
+                                            state.myProfileScreenResponse.data!
+                                                .firstName
+                                                .toString(),
+                                            maxLines: 3,
+                                            textAlign: TextAlign.start,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 21,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.secondaryColor,
+                                            ),
                                           ),
                                         ),
-                                        const SizedBox(height: 10),
-                                        GestureDetector(
-                                          onTap: () {
-                                            context.push("/changePassword");
-                                          },
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .changepassword,
-                                            // "Change Password",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                              AppColors.primaryWhiteColor,
+                                        Flexible(
+                                          flex: 2,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              context.push("/changePassword");
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .changepassword,
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700,
+                                                color:
+                                                    AppColors.primaryWhiteColor,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  Spacer(),
                                   Flexible(
-                                    // flex: 0,
-                                    child: Stack(children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          // checkPermissionForGallery(context);
-                                          // pickImage();
-
-                                          if (selectedImages.isEmpty) {
-                                            if (Platform.isAndroid) {
-                                              final androidInfo =
-                                              await DeviceInfoPlugin().androidInfo;
-                                              if (androidInfo.version.sdkInt <= 32) {
-                                                checkPermissionForGallery(Permission.storage,
-                                                    _scaffoldKey.currentContext!);
-                                              } else {
-                                                checkPermissionForGallery(Permission.photos,
-                                                    _scaffoldKey.currentContext!);
-                                              }
-                                            } else if (Platform.isIOS) {
-                                              checkPermissionForGallery(Permission.storage,
-                                                  _scaffoldKey.currentContext!);
+                                    flex: 2,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        if (selectedImages.isEmpty) {
+                                          if (Platform.isAndroid) {
+                                            final androidInfo =
+                                                await DeviceInfoPlugin()
+                                                    .androidInfo;
+                                            if (androidInfo.version.sdkInt <=
+                                                32) {
+                                              checkPermissionForGallery(
+                                                Permission.storage,
+                                                _scaffoldKey.currentContext!,
+                                              );
+                                            } else {
+                                              checkPermissionForGallery(
+                                                Permission.photos,
+                                                _scaffoldKey.currentContext!,
+                                              );
                                             }
-                                          } else {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                backgroundColor: AppColors.secondaryButtonColor,
-                                                content:
-                                                Text(
-                                                  AppLocalizations.of(context)!.pleasechooseeitheroneoption,
-                                                  // "Please choose either one option"
-                                                ),
-                                              ),
+                                          } else if (Platform.isIOS) {
+                                            checkPermissionForGallery(
+                                              Permission.storage,
+                                              _scaffoldKey.currentContext!,
                                             );
                                           }
-                                        },
-                                        child: _image!.path.isNotEmpty
-                                            ? AspectRatio(
-                                          aspectRatio: 1.0,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: 130,
-                                            height: 130,
-                                            // color: Colors.grey[300],
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              // borderRadius: BorderRadius.circular(100),
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              backgroundColor: AppColors
+                                                  .secondaryButtonColor,
+                                              content: Text(
+                                                AppLocalizations.of(context)!
+                                                    .pleasechooseeitheroneoption,
+                                              ),
                                             ),
-                                            child: Stack(
-                                              children: [
-                                                Align(
-                                                  alignment:
-                                                  Alignment.center,
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                    BorderRadius
-                                                        .circular(100),
-                                                    child: Image.file(
-                                                      File(_image!.path),
-                                                      width: 130,
-                                                      height: 130,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                          );
+                                        }
+                                      },
+                                      child: _image!.path.isNotEmpty
+                                          ? AspectRatio(
+                                              aspectRatio: 1.0,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: 130,
+                                                height: 130,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
                                                 ),
-                                                context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                                    ? const Positioned(
-                                                  bottom: 8,
-                                                  right: 1,
-                                                  child: Icon(
-                                                    Icons
-                                                        .add_a_photo_outlined,
-                                                    color: AppColors
-                                                        .secondaryColor,
+                                                child: Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                        child: Image.file(
+                                                          File(_image!.path),
+                                                          width: 130,
+                                                          height: 130,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          : AspectRatio(
+                                              aspectRatio: 1.0,
+                                              child: Container(
+                                                width: 130.0,
+                                                height: 130.0,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                    alignment: Alignment.center,
+                                                    fit: BoxFit.cover,
+                                                    image:
+                                                        MemoryImage(bytesImage),
                                                   ),
-                                                )
-                                                    : const Positioned(
-                                                  bottom: 8,
-                                                  left: 1,
-                                                  child: Icon(
-                                                    Icons
-                                                        .add_a_photo_outlined,
-                                                    color: AppColors
-                                                        .secondaryColor,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                            : Stack(children: [
-                                          AspectRatio(
-                                            aspectRatio: 1.0,
-                                            child: Container(
-                                              width: 130.0,
-                                              height: 130.0,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                // border: Border.all(
-                                                //   color: AppColors.secondaryColor,
-                                                //   width: 2.0,
-                                                // ),
-                                                image: DecorationImage(
-                                                  alignment:
-                                                  Alignment.center,
-                                                  fit: BoxFit.cover,
-                                                  image: MemoryImage(
-                                                      bytesImage),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                                              ? const Positioned(
-                                            bottom: 8,
-                                            right: 1,
-                                            child: Icon(
-                                              Icons
-                                                  .add_a_photo_outlined,
-                                              color: AppColors
-                                                  .secondaryColor,
-                                            ),
-                                          )
-                                              : const Positioned(
-                                            bottom: 8,
-                                            left: 1,
-                                            child: Icon(
-                                              Icons
-                                                  .add_a_photo_outlined,
-                                              color: AppColors
-                                                  .secondaryColor,
-                                            ),
-                                          )
-                                        ]),
-                                        // Container(
-                                        //         alignment: Alignment.center,
-                                        //         width: 130,
-                                        //         height: 130,
-                                        //         decoration: const BoxDecoration(
-                                        //           shape: BoxShape.circle,
-                                        //           color: AppColors.shadow,
-                                        //           // borderRadius: BorderRadius.circular(100),
-                                        //         ),
-                                        //         child: const Stack(
-                                        //           children: [
-                                        //             Align(
-                                        //               alignment:
-                                        //                   Alignment.center,
-                                        //               child: Text("Add"),
-                                        //             ),
-                                        //             Positioned(
-                                        //                 bottom: 8,
-                                        //                 right: 8,
-                                        //                 child: Icon(
-                                        //                   Icons
-                                        //                       .add_a_photo_outlined,
-                                        //                   color: AppColors
-                                        //                       .secondaryColor,
-                                        //                 )
-                                        //                 // Image.asset(Assets.NO_PROFILE_IMG,scale: 20),
-                                        //                 ),
-                                        //           ],
-                                        //         ),
-                                        //       )
-                                      )
-                                    ]),
-
-                                    // CircleAvatar(
-                                    //   backgroundColor: Colors.transparent,
-                                    //   radius: 50,
-                                    //   backgroundImage: NetworkImage(
-                                    //       "https://s3-alpha-sig.figma.com/img/d067/c913/ad868d019f92ce267e6de23af3413e5b?Expires=1706486400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=BTjjS~v0e0x44jHIWuKYMNaWYXlHG7EN3Yjq111uXWjvGWD0oPTpDDuaPCAtTv9cdqXNKlztZmY35PSEAiUohNuYoaQDt-ZI5pG5QleefSvEir~3854~O8EEXI1aGpmu5ciF9KdwvmZwK3WYpf8S150xkDq7v94NndSusDG2VpkUYejPJUr4C~qM2vO0g7lNJ33W5-bMNoCyWpW128kmLdDk36~oAJxjrLK0Vhg88eJ1ORr-A5yVpKrJaIHxw2DXQrlWbtpZvmfc4HWh09tN7Lz70hYnd8Fk4NN6UpXLiHv0DNeRp6-W3NNaRRJTpJx70RUXbcI38u4jGr9Ahd69ew__"),
-                                    // ),
+                                    ),
                                   ),
-                                  // SizedBox(height: 120),
                                 ],
                               );
                             }
-                            return SizedBox();
+                            return const SizedBox();
                           },
                         ),
                       ),
@@ -804,7 +632,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                 if (state is MyProfileLoaded) {
                                   return Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       // SizedBox(height: 30,),
                                       Text(
@@ -828,26 +656,26 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   MyProfileState>(
                                                 builder: (context, state) {
                                                   if (state
-                                                  is MyProfileLoaded) {
+                                                      is MyProfileLoaded) {
                                                     return MyTextField(
                                                       enable: true,
                                                       focusNode: _firstname,
                                                       // horizontal: 10,
                                                       hintText:
-                                                      AppLocalizations.of(
-                                                          context)!
-                                                          .firstname,
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .firstname,
                                                       // hintText: Strings.SIGNUP_FIRSTNAME_LABEL_TEXT,
                                                       obscureText: false,
                                                       maxLines: 1,
                                                       controller:
-                                                      firstnameController,
+                                                          firstnameController,
                                                       keyboardType:
-                                                      TextInputType.text,
+                                                          TextInputType.text,
                                                       validator: (value) {
                                                         String? err =
-                                                        validateFirstname(
-                                                            value);
+                                                            validateFirstname(
+                                                                value);
                                                         if (err != null) {
                                                           _firstname
                                                               .requestFocus();
@@ -870,22 +698,22 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   MyProfileState>(
                                                 builder: (context, state) {
                                                   if (state
-                                                  is MyProfileLoaded) {
+                                                      is MyProfileLoaded) {
                                                     return MyTextField(
                                                       enable: true,
                                                       focusNode: _secondname,
                                                       // horizontal: 10,
                                                       hintText:
-                                                      AppLocalizations.of(
-                                                          context)!
-                                                          .lastname,
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .lastname,
                                                       // hintText: Strings.SIGNUP_LASTNAME_LABEL_TEXT,
                                                       obscureText: false,
                                                       maxLines: 1,
                                                       controller:
-                                                      lastnameController,
+                                                          lastnameController,
                                                       keyboardType:
-                                                      TextInputType.text,
+                                                          TextInputType.text,
                                                       // validator: (value) {
                                                       //   String? err =
                                                       //       validateLastname(
@@ -923,8 +751,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                             controller: dateInputController,
                                             // hintText: "Date of Birth",
                                             hintText:
-                                            AppLocalizations.of(context)!
-                                                .dateofbirth,
+                                                AppLocalizations.of(context)!
+                                                    .dateofbirth,
                                             onDateIconTap: () {
                                               _showDatePicker(context);
                                             },
@@ -944,10 +772,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               isExpanded: true,
                                               hint: Text(
                                                 genderController.text.isEmpty
-                                                // ? "Gender"
+                                                    // ? "Gender"
                                                     ? AppLocalizations.of(
-                                                    context)!
-                                                    .gender
+                                                            context)!
+                                                        .gender
                                                     : genderController.text,
                                                 style: GoogleFonts.openSans(
                                                   color: AppColors
@@ -955,23 +783,21 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   fontSize: 14,
                                                 ),
                                               ),
-                                              items:  Gender.map(
-                                                    (item) =>
-                                                    DropdownMenuItem<
-                                                        String>(
-                                                      value: item,
-                                                      child: Text(
-                                                        item,
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          color: AppColors
-                                                              .primaryBlackColor,
-                                                          fontSize: 14,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
+                                              items: Gender.map(
+                                                (item) =>
+                                                    DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: GoogleFonts.openSans(
+                                                      color: AppColors
+                                                          .primaryBlackColor,
+                                                      fontSize: 14,
                                                     ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
                                               ).toList(),
                                               value: selectedGender,
                                               onChanged: (String? value) {
@@ -988,11 +814,11 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     left: 14, right: 14),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(5),
+                                                      BorderRadius.circular(5),
                                                   border: Border.all(
                                                     width: 1,
                                                     color:
-                                                    const Color(0xFFE6ECFF),
+                                                        const Color(0xFFE6ECFF),
                                                   ),
                                                   color: AppColors
                                                       .primaryWhiteColor,
@@ -1000,42 +826,42 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 elevation: 0,
                                               ),
                                               iconStyleData:
-                                              const IconStyleData(
+                                                  const IconStyleData(
                                                 icon: Icon(
                                                   Icons.arrow_drop_down_rounded,
                                                   size: 35,
                                                 ),
                                                 iconSize: 14,
                                                 iconEnabledColor:
-                                                AppColors.secondaryColor,
+                                                    AppColors.secondaryColor,
                                                 iconDisabledColor:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                               dropdownStyleData:
-                                              DropdownStyleData(
+                                                  DropdownStyleData(
                                                 maxHeight: 200,
                                                 width: 350,
                                                 decoration: BoxDecoration(
                                                   borderRadius:
-                                                  BorderRadius.circular(14),
+                                                      BorderRadius.circular(14),
                                                   color: AppColors
                                                       .primaryWhiteColor,
                                                 ),
                                                 offset: const Offset(-2, -5),
                                                 scrollbarTheme:
-                                                ScrollbarThemeData(
+                                                    ScrollbarThemeData(
                                                   radius:
-                                                  const Radius.circular(40),
+                                                      const Radius.circular(40),
                                                   thickness:
-                                                  MaterialStateProperty.all<
-                                                      double>(6),
+                                                      MaterialStateProperty.all<
+                                                          double>(6),
                                                   thumbVisibility:
-                                                  MaterialStateProperty.all<
-                                                      bool>(true),
+                                                      MaterialStateProperty.all<
+                                                          bool>(true),
                                                 ),
                                               ),
                                               menuItemStyleData:
-                                              const MenuItemStyleData(
+                                                  const MenuItemStyleData(
                                                 height: 40,
                                                 padding: EdgeInsets.only(
                                                     left: 14, right: 14),
@@ -1058,64 +884,64 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               if (state is NationalityLoaded) {
                                                 return DropdownButtonHideUnderline(
                                                   child:
-                                                  DropdownButton2<String>(
+                                                      DropdownButton2<String>(
                                                     isExpanded: true,
                                                     hint: Text(
                                                       nationalityController
-                                                          .text.isEmpty
+                                                              .text.isEmpty
                                                           ? AppLocalizations.of(
-                                                          context)!
-                                                          .nationality
-                                                      // ? "Nationality"
+                                                                  context)!
+                                                              .nationality
+                                                          // ? "Nationality"
                                                           : nationalityController
-                                                          .text,
+                                                              .text,
                                                       style:
-                                                      GoogleFonts.openSans(
+                                                          GoogleFonts.openSans(
                                                         color: AppColors
                                                             .primaryGrayColor,
                                                         fontSize: 14,
                                                       ),
                                                     ),
                                                     items:
-                                                    state
-                                                        .nationalityResponse
-                                                        .data
-                                                        .map(
-                                                          (item) =>
-                                                          DropdownMenuItem<
-                                                              String>(
-                                                            value: item.id
-                                                                .toString(),
-                                                            child: Text(
-                                                              context.read<LanguageBloc>().state.selectedLanguage ==
-                                                                  Language
-                                                                      .english
-                                                                  ? item
-                                                                  .nationality
-                                                                  : item
-                                                                  .nationalityArabic,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                color: AppColors
-                                                                    .primaryBlackColor,
-                                                                fontSize:
-                                                                14,
+                                                        state
+                                                            .nationalityResponse
+                                                            .data
+                                                            .map(
+                                                              (item) =>
+                                                                  DropdownMenuItem<
+                                                                      String>(
+                                                                value: item.id
+                                                                    .toString(),
+                                                                child: Text(
+                                                                  context.read<LanguageBloc>().state.selectedLanguage ==
+                                                                          Language
+                                                                              .english
+                                                                      ? item
+                                                                          .nationality
+                                                                      : item
+                                                                          .nationalityArabic,
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    color: AppColors
+                                                                        .primaryBlackColor,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
                                                               ),
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                            ),
-                                                          ),
-                                                    )
-                                                        .toList(),
+                                                            )
+                                                            .toList(),
                                                     value:
-                                                    selectedNationalityValue,
+                                                        selectedNationalityValue,
                                                     onChanged: (String? value) {
                                                       setState(() {
                                                         selectedNationalityValue =
-                                                        value!;
+                                                            value!;
                                                         selectedNationality =
-                                                        selectedNationalityValue!;
+                                                            selectedNationalityValue!;
                                                         selectedNationalityID =
                                                             int.tryParse(
                                                                 selectedNationality!);
@@ -1127,17 +953,17 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                           'Selected Nationalityvalue : $selectedNationality');
                                                     },
                                                     buttonStyleData:
-                                                    ButtonStyleData(
+                                                        ButtonStyleData(
                                                       width: 340,
                                                       height: 50,
                                                       padding:
-                                                      const EdgeInsets.only(
-                                                          left: 14,
-                                                          right: 14),
+                                                          const EdgeInsets.only(
+                                                              left: 14,
+                                                              right: 14),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                         border: Border.all(
                                                           width: 1,
                                                           color: const Color(
@@ -1149,7 +975,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       elevation: 0,
                                                     ),
                                                     iconStyleData:
-                                                    const IconStyleData(
+                                                        const IconStyleData(
                                                       icon: Icon(
                                                         Icons
                                                             .arrow_drop_down_rounded,
@@ -1157,40 +983,40 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       ),
                                                       iconSize: 14,
                                                       iconEnabledColor:
-                                                      AppColors
-                                                          .secondaryColor,
+                                                          AppColors
+                                                              .secondaryColor,
                                                       iconDisabledColor:
-                                                      AppColors
-                                                          .primaryGrayColor,
+                                                          AppColors
+                                                              .primaryGrayColor,
                                                     ),
                                                     dropdownStyleData:
-                                                    DropdownStyleData(
+                                                        DropdownStyleData(
                                                       maxHeight: 200,
                                                       width: 350,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(14),
+                                                            BorderRadius
+                                                                .circular(14),
                                                         color: AppColors
                                                             .primaryWhiteColor,
                                                       ),
                                                       offset:
-                                                      const Offset(-2, -5),
+                                                          const Offset(-2, -5),
                                                       scrollbarTheme:
-                                                      ScrollbarThemeData(
+                                                          ScrollbarThemeData(
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                        MaterialStateProperty
-                                                            .all<double>(6),
+                                                            MaterialStateProperty
+                                                                .all<double>(6),
                                                         thumbVisibility:
-                                                        MaterialStateProperty
-                                                            .all<bool>(
-                                                            true),
+                                                            MaterialStateProperty
+                                                                .all<bool>(
+                                                                    true),
                                                       ),
                                                     ),
                                                     menuItemStyleData:
-                                                    const MenuItemStyleData(
+                                                        const MenuItemStyleData(
                                                       height: 40,
                                                       padding: EdgeInsets.only(
                                                           left: 14, right: 14),
@@ -1207,7 +1033,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
                                       SizedBox(
                                           height:
-                                          getProportionateScreenHeight(15)),
+                                              getProportionateScreenHeight(15)),
 
                                       /// Country
                                       Center(
@@ -1220,63 +1046,63 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               if (state is CountryLoaded) {
                                                 return DropdownButtonHideUnderline(
                                                   child:
-                                                  DropdownButton2<String>(
+                                                      DropdownButton2<String>(
                                                     isExpanded: true,
                                                     hint: Text(
                                                       countryController
-                                                          .text.isEmpty
-                                                      // ? "Country you live in"
+                                                              .text.isEmpty
+                                                          // ? "Country you live in"
                                                           ? AppLocalizations.of(
-                                                          context)!
-                                                          .countryyoulivein
+                                                                  context)!
+                                                              .countryyoulivein
                                                           : countryController
-                                                          .text,
+                                                              .text,
                                                       style:
-                                                      GoogleFonts.openSans(
+                                                          GoogleFonts.openSans(
                                                         color: AppColors
                                                             .primaryGrayColor,
                                                         fontSize: 14,
                                                       ),
                                                     ),
                                                     items:
-                                                    state.countryResponse
-                                                        .data
-                                                        .map(
-                                                          (item) =>
-                                                          DropdownMenuItem<
-                                                              String>(
-                                                            value: item
-                                                                .countriesId
-                                                                .toString(),
-                                                            child: Text(
-                                                              context.read<LanguageBloc>().state.selectedLanguage ==
-                                                                  Language
-                                                                      .english
-                                                                  ? item
-                                                                  .name
-                                                                  : item
-                                                                  .nameArabic,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                color: AppColors
-                                                                    .primaryBlackColor,
-                                                                fontSize:
-                                                                14,
+                                                        state.countryResponse
+                                                            .data
+                                                            .map(
+                                                              (item) =>
+                                                                  DropdownMenuItem<
+                                                                      String>(
+                                                                value: item
+                                                                    .countriesId
+                                                                    .toString(),
+                                                                child: Text(
+                                                                  context.read<LanguageBloc>().state.selectedLanguage ==
+                                                                          Language
+                                                                              .english
+                                                                      ? item
+                                                                          .name
+                                                                      : item
+                                                                          .nameArabic,
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    color: AppColors
+                                                                        .primaryBlackColor,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
                                                               ),
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                            ),
-                                                          ),
-                                                    )
-                                                        .toList(),
+                                                            )
+                                                            .toList(),
                                                     value: selectedCountryValue,
                                                     onChanged: (String? value) {
                                                       setState(() {
                                                         selectedCountryValue =
                                                             value;
                                                         selectedCountry =
-                                                        selectedCountryValue!;
+                                                            selectedCountryValue!;
                                                         selectedCountryID =
                                                             int.tryParse(
                                                                 selectedCountry!);
@@ -1284,27 +1110,27 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       print(
                                                           'Selected Country ID: $selectedCountryID');
                                                       BlocProvider.of<CityBloc>(
-                                                          context)
+                                                              context)
                                                           .add(
                                                         GetCityEvent(
                                                             getCityRequest:
-                                                            GetCityRequest(
-                                                                countriesId:
-                                                                selectedCountryID!)),
+                                                                GetCityRequest(
+                                                                    countriesId:
+                                                                        selectedCountryID!)),
                                                       );
                                                     },
                                                     buttonStyleData:
-                                                    ButtonStyleData(
+                                                        ButtonStyleData(
                                                       width: 340,
                                                       height: 50,
                                                       padding:
-                                                      const EdgeInsets.only(
-                                                          left: 14,
-                                                          right: 14),
+                                                          const EdgeInsets.only(
+                                                              left: 14,
+                                                              right: 14),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                         border: Border.all(
                                                           width: 1,
                                                           color: const Color(
@@ -1316,7 +1142,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       elevation: 0,
                                                     ),
                                                     iconStyleData:
-                                                    const IconStyleData(
+                                                        const IconStyleData(
                                                       icon: Icon(
                                                         Icons
                                                             .arrow_drop_down_rounded,
@@ -1324,40 +1150,40 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       ),
                                                       iconSize: 14,
                                                       iconEnabledColor:
-                                                      AppColors
-                                                          .secondaryColor,
+                                                          AppColors
+                                                              .secondaryColor,
                                                       iconDisabledColor:
-                                                      AppColors
-                                                          .primaryGrayColor,
+                                                          AppColors
+                                                              .primaryGrayColor,
                                                     ),
                                                     dropdownStyleData:
-                                                    DropdownStyleData(
+                                                        DropdownStyleData(
                                                       maxHeight: 200,
                                                       width: 350,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(14),
+                                                            BorderRadius
+                                                                .circular(14),
                                                         color: AppColors
                                                             .primaryWhiteColor,
                                                       ),
                                                       offset:
-                                                      const Offset(-2, -5),
+                                                          const Offset(-2, -5),
                                                       scrollbarTheme:
-                                                      ScrollbarThemeData(
+                                                          ScrollbarThemeData(
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                        MaterialStateProperty
-                                                            .all<double>(6),
+                                                            MaterialStateProperty
+                                                                .all<double>(6),
                                                         thumbVisibility:
-                                                        MaterialStateProperty
-                                                            .all<bool>(
-                                                            true),
+                                                            MaterialStateProperty
+                                                                .all<bool>(
+                                                                    true),
                                                       ),
                                                     ),
                                                     menuItemStyleData:
-                                                    const MenuItemStyleData(
+                                                        const MenuItemStyleData(
                                                       height: 40,
                                                       padding: EdgeInsets.only(
                                                           left: 14, right: 14),
@@ -1374,7 +1200,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
                                       SizedBox(
                                           height:
-                                          getProportionateScreenHeight(15)),
+                                              getProportionateScreenHeight(15)),
 
                                       /// City
                                       Center(
@@ -1382,7 +1208,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 11),
                                           child:
-                                          BlocBuilder<CityBloc, CityState>(
+                                              BlocBuilder<CityBloc, CityState>(
                                             builder: (context, state) {
                                               if (state is CityLoading) {
                                                 return Center(
@@ -1395,55 +1221,55 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               } else if (state is CityLoaded) {
                                                 return DropdownButtonHideUnderline(
                                                   child:
-                                                  DropdownButton2<String>(
+                                                      DropdownButton2<String>(
                                                     isExpanded: true,
                                                     hint: Text(
                                                       cityController
-                                                          .text.isEmpty
-                                                      // ? "City"
+                                                              .text.isEmpty
+                                                          // ? "City"
                                                           ? AppLocalizations.of(
-                                                          context)!
-                                                          .city
+                                                                  context)!
+                                                              .city
                                                           : cityController.text,
                                                       style:
-                                                      GoogleFonts.openSans(
+                                                          GoogleFonts.openSans(
                                                         color: AppColors
                                                             .primaryGrayColor,
                                                         fontSize: 14,
                                                       ),
                                                     ),
                                                     items:
-                                                    state.getCityResponse
-                                                        .data
-                                                        .map(
-                                                          (item) =>
-                                                          DropdownMenuItem<
-                                                              String>(
-                                                            value: item
-                                                                .cityId
-                                                                .toString(),
-                                                            child: Text(
-                                                              context.read<LanguageBloc>().state.selectedLanguage ==
-                                                                  Language
-                                                                      .english
-                                                                  ? item
-                                                                  .city
-                                                                  : item
-                                                                  .cityArabic,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                color: AppColors
-                                                                    .primaryBlackColor,
-                                                                fontSize:
-                                                                14,
+                                                        state.getCityResponse
+                                                            .data
+                                                            .map(
+                                                              (item) =>
+                                                                  DropdownMenuItem<
+                                                                      String>(
+                                                                value: item
+                                                                    .cityId
+                                                                    .toString(),
+                                                                child: Text(
+                                                                  context.read<LanguageBloc>().state.selectedLanguage ==
+                                                                          Language
+                                                                              .english
+                                                                      ? item
+                                                                          .city
+                                                                      : item
+                                                                          .cityArabic,
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    color: AppColors
+                                                                        .primaryBlackColor,
+                                                                    fontSize:
+                                                                        14,
+                                                                  ),
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
                                                               ),
-                                                              overflow:
-                                                              TextOverflow
-                                                                  .ellipsis,
-                                                            ),
-                                                          ),
-                                                    )
-                                                        .toList(),
+                                                            )
+                                                            .toList(),
                                                     value: selectedCityID,
                                                     onChanged: (String? value) {
                                                       setState(() {
@@ -1453,17 +1279,17 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       });
                                                     },
                                                     buttonStyleData:
-                                                    ButtonStyleData(
+                                                        ButtonStyleData(
                                                       width: 340,
                                                       height: 50,
                                                       padding:
-                                                      const EdgeInsets.only(
-                                                          left: 14,
-                                                          right: 14),
+                                                          const EdgeInsets.only(
+                                                              left: 14,
+                                                              right: 14),
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                         border: Border.all(
                                                           width: 1,
                                                           color: const Color(
@@ -1475,7 +1301,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       elevation: 0,
                                                     ),
                                                     iconStyleData:
-                                                    const IconStyleData(
+                                                        const IconStyleData(
                                                       icon: Icon(
                                                         Icons
                                                             .arrow_drop_down_rounded,
@@ -1483,40 +1309,40 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       ),
                                                       iconSize: 14,
                                                       iconEnabledColor:
-                                                      AppColors
-                                                          .secondaryColor,
+                                                          AppColors
+                                                              .secondaryColor,
                                                       iconDisabledColor:
-                                                      AppColors
-                                                          .primaryGrayColor,
+                                                          AppColors
+                                                              .primaryGrayColor,
                                                     ),
                                                     dropdownStyleData:
-                                                    DropdownStyleData(
+                                                        DropdownStyleData(
                                                       maxHeight: 200,
                                                       width: 350,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                        BorderRadius
-                                                            .circular(14),
+                                                            BorderRadius
+                                                                .circular(14),
                                                         color: AppColors
                                                             .primaryWhiteColor,
                                                       ),
                                                       offset:
-                                                      const Offset(-2, -5),
+                                                          const Offset(-2, -5),
                                                       scrollbarTheme:
-                                                      ScrollbarThemeData(
+                                                          ScrollbarThemeData(
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                        MaterialStateProperty
-                                                            .all<double>(6),
+                                                            MaterialStateProperty
+                                                                .all<double>(6),
                                                         thumbVisibility:
-                                                        MaterialStateProperty
-                                                            .all<bool>(
-                                                            true),
+                                                            MaterialStateProperty
+                                                                .all<bool>(
+                                                                    true),
                                                       ),
                                                     ),
                                                     menuItemStyleData:
-                                                    const MenuItemStyleData(
+                                                        const MenuItemStyleData(
                                                       height: 40,
                                                       padding: EdgeInsets.only(
                                                           left: 14, right: 14),
@@ -1553,8 +1379,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                           // horizontal: 10,
                                           // hintText: Strings.SIGNUP_EMAIL_LABEL_TEXT,
                                           hintText:
-                                          AppLocalizations.of(context)!
-                                              .email,
+                                              AppLocalizations.of(context)!
+                                                  .email,
                                           obscureText: false,
                                           maxLines: 1,
                                           controller: emailController,
@@ -1581,14 +1407,14 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                 // horizontal: 10,
                                                 // hintText: Strings.PHONE_NUMBER,
                                                 hintText: AppLocalizations.of(
-                                                    context)!
+                                                        context)!
                                                     .phonenumber,
                                                 obscureText: false,
                                                 maxLines: 1,
                                                 controller: mobileController,
 
                                                 keyboardType:
-                                                TextInputType.number,
+                                                    TextInputType.number,
                                                 // validator: (value) {
                                                 //   String? err =
                                                 //       validatePhoneNumber(
@@ -1622,96 +1448,124 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                             child: MyButton(
                                               Textfontsize: 16,
                                               TextColors:
-                                              AppColors.primaryWhiteColor,
+                                                  AppColors.primaryWhiteColor,
                                               // text: "save",
                                               text:
-                                              AppLocalizations.of(context)!
-                                                  .save,
+                                                  AppLocalizations.of(context)!
+                                                      .save,
                                               color: AppColors.secondaryColor,
                                               width: 340,
                                               height: 40,
                                               onTap: () {
                                                 // BlocProvider.of<MyProfileBloc>(context)
                                                 //     .add(GetProfileDataEvent());
-                                                if (firstnameController.text.isEmpty) {
+                                                if (firstnameController
+                                                    .text.isEmpty) {
                                                   Fluttertoast.showToast(
-                                                    msg: AppLocalizations.of(context)!.enterfirstname,
+                                                    msg: AppLocalizations.of(
+                                                            context)!
+                                                        .enterfirstname,
                                                     // msg: AppLocalizations.of(context)!.allfieldsareimportant,
-                                                    toastLength: Toast.LENGTH_LONG,
-                                                    gravity: ToastGravity.BOTTOM,
-                                                    backgroundColor: AppColors.primaryBlackColor,
-                                                    textColor: AppColors.primaryWhiteColor,
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    backgroundColor: AppColors
+                                                        .primaryBlackColor,
+                                                    textColor: AppColors
+                                                        .primaryWhiteColor,
                                                   );
                                                   return;
                                                 }
                                                 if (_formKey.currentState
-                                                    ?.validate() ??
+                                                        ?.validate() ??
                                                     false) {
                                                   BlocProvider.of<
-                                                      MyProfileBloc>(
-                                                      context)
+                                                              MyProfileBloc>(
+                                                          context)
                                                       .add(
                                                     EditProfileDataEvent(
                                                       editProfileRequest:
-                                                      EditProfileRequest(
-                                                        firstName: firstnameController.text,
-                                                        lastName: lastnameController.text,
+                                                          EditProfileRequest(
+                                                        firstName:
+                                                            firstnameController
+                                                                .text,
+                                                        lastName:
+                                                            lastnameController
+                                                                .text,
                                                         photo: imageUploadFormated
-                                                            .isNotEmpty
+                                                                .isNotEmpty
                                                             ? imageUploadFormated
                                                             : widget
-                                                            .myProfileArguments
-                                                            .photo,
+                                                                .myProfileArguments
+                                                                .photo,
                                                         dob: selectedDate !=
-                                                            null &&
-                                                            selectedDate
-                                                                .toString()
-                                                                .isNotEmpty
+                                                                    null &&
+                                                                selectedDate
+                                                                    .toString()
+                                                                    .isNotEmpty
                                                             ? selectedDate
-                                                            .toString()
-                                                            : dateInputController
-                                                            .text,
-                                                        gender: selectedGender !=
-                                                            null &&
-                                                            selectedGender
                                                                 .toString()
-                                                                .isNotEmpty
+                                                            : dateInputController
+                                                                .text,
+                                                        gender: selectedGender !=
+                                                                    null &&
+                                                                selectedGender
+                                                                    .toString()
+                                                                    .isNotEmpty
                                                             ? selectedGender
-                                                            .toString()
+                                                                .toString()
                                                             : genderController
-                                                            .text,
-                                                        mobileNo: mobileController.text,
+                                                                .text,
+                                                        mobileNo:
+                                                            mobileController
+                                                                .text,
                                                         // mobileNo: int.parse(mobileController.text),
                                                         //     nationalityId: widget.myProfileArguments.nationality_id.toString() == "0"
                                                         //         ? int.tryParse("")
                                                         //         : selectedNationalityID ?? int.parse(widget.myProfileArguments.nationality_id.toString()),
 
-                                                        nationalityId: (selectedNationalityID != null)
-                                                            ? selectedNationalityID!.toString()
-                                                            : ((widget.myProfileArguments.nationality_id.toString() == "0")
-                                                            ? ""
-                                                            : widget.myProfileArguments.nationality_id.toString()),
+                                                        nationalityId: (selectedNationalityID !=
+                                                                null)
+                                                            ? selectedNationalityID!
+                                                                .toString()
+                                                            : ((widget.myProfileArguments
+                                                                        .nationality_id
+                                                                        .toString() ==
+                                                                    "0")
+                                                                ? ""
+                                                                : widget
+                                                                    .myProfileArguments
+                                                                    .nationality_id
+                                                                    .toString()),
 
                                                         // nationalityId: selectedNationalityID != null
                                                         //     ? selectedNationalityID!
                                                         //     : int.parse(widget.myProfileArguments.nationality_id.toString()),
 
                                                         city: selectedCityID != null &&
-                                                            selectedCityID
-                                                                .toString()
-                                                                .isNotEmpty
+                                                                selectedCityID
+                                                                    .toString()
+                                                                    .isNotEmpty
                                                             ? selectedCityID
-                                                            .toString()
+                                                                .toString()
                                                             : widget
-                                                            .myProfileArguments
-                                                            .city
-                                                            .toString(),
-                                                        countryId: (selectedCountryID != null)
-                                                            ? selectedCountryID!.toString()
-                                                            : ((widget.myProfileArguments.country_id.toString() == "0")
-                                                            ? ""
-                                                            : widget.myProfileArguments.country_id.toString()),
-
+                                                                .myProfileArguments
+                                                                .city
+                                                                .toString(),
+                                                        countryId: (selectedCountryID !=
+                                                                null)
+                                                            ? selectedCountryID!
+                                                                .toString()
+                                                            : ((widget.myProfileArguments
+                                                                        .country_id
+                                                                        .toString() ==
+                                                                    "0")
+                                                                ? ""
+                                                                : widget
+                                                                    .myProfileArguments
+                                                                    .country_id
+                                                                    .toString()),
 
                                                         // countryId: selectedCountryID != null                                                             ? selectedCountryID!
                                                         //     : int.parse(widget.myProfileArguments.country_id.toString()),
@@ -1746,15 +1600,16 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   Fluttertoast.showToast(
                                                     // msg: "All fields are important",
                                                     msg: AppLocalizations.of(
-                                                        context)!
+                                                            context)!
                                                         .allfieldsareimportant,
                                                     toastLength:
-                                                    Toast.LENGTH_SHORT,
+                                                        Toast.LENGTH_SHORT,
                                                     gravity:
-                                                    ToastGravity.BOTTOM,
-                                                    backgroundColor:
-                                                    AppColors.primaryBlackColor,
-                                                    textColor: AppColors.primaryWhiteColor,
+                                                        ToastGravity.BOTTOM,
+                                                    backgroundColor: AppColors
+                                                        .primaryBlackColor,
+                                                    textColor: AppColors
+                                                        .primaryWhiteColor,
                                                   );
                                                 }
                                               },
@@ -1851,7 +1706,7 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide:
-            const BorderSide(width: 1, color: AppColors.borderColor),
+                const BorderSide(width: 1, color: AppColors.borderColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
@@ -1860,7 +1715,7 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
           fillColor: AppColors.primaryWhiteColor,
           filled: true,
           contentPadding:
-          const EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
+              const EdgeInsets.only(left: 15, right: 8, top: 8, bottom: 8),
           suffixIcon: IconButton(
             padding: const EdgeInsets.only(right: 20, left: 20),
             color: AppColors.secondaryColor,

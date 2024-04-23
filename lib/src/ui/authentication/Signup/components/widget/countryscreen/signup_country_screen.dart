@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -746,18 +745,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                     obscureText: false,
                                     maxLines: 1,
                                     keyboardType: TextInputType.none,
-                                    // focusNode: _countrynumber,
                                     controller: countryCodeController,
                                     enable: false,
                                     hintText: "+xx",
-                                    validator: (value) {
-                                      String? err =
-                                          validateCountryCodeNumber(value);
-                                      if (err != null) {
-                                        _countrynumber.requestFocus();
-                                      }
-                                      return err;
-                                    },
                                     // controller: ,
                                   ),
                                 ),
@@ -772,7 +762,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                         : LengthLimitingTextInputFormatter(10)
                                   ],
                                   focusNode: _countrynumber,
-                                  // horizontal: 10,
                                   hintText:
                                       AppLocalizations.of(context)!.phonenumber,
                                   // hintText: Strings.PHONE_NUMBER,
@@ -780,13 +769,6 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   maxLines: 1,
                                   controller: phoneNumberController,
                                   keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    String? err = validatePhoneNumber(value);
-                                    if (err != null) {
-                                      _countrynumber.requestFocus();
-                                    }
-                                    return err;
-                                  },
                                 ).animate().then(delay: 200.ms).slideX(),
                               ),
                             ],
@@ -810,9 +792,8 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                             return Center(
                               child: MyButton(
                                 Textfontsize: 16,
-                                TextColors: Colors.white,
+                                TextColors: AppColors.primaryWhiteColor,
                                 text: AppLocalizations.of(context)!.submit,
-                                // text: Strings.SINGUP_BUTTON_SUBMIT,
                                 color: AppColors.secondaryColor,
                                 width: getProportionateScreenHeight(340),
                                 height: getProportionateScreenWidth(40),
@@ -825,10 +806,9 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                   print(
                                       "MOBILE: ${countryCodeController.text + phoneNumberController.text}");
 
-                                  if (_formKey.currentState?.validate() ??
-                                      false) {
+
                                     if (selectedCountry.isNotEmpty &&
-                                        selectedCity.isNotEmpty) {
+                                        selectedCity.isNotEmpty && phoneNumberController.text.isNotEmpty) {
                                       BlocProvider.of<SignUpBloc>(context).add(
                                         SignUpRequestEvent(
                                           signupRequest: SignupRequest(
@@ -862,22 +842,15 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                           ),
                                         ),
                                       );
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => const HomeScreen(),
-                                      //   ),
-                                      // );
                                     }
-                                  } else {
+                                   else {
                                     Fluttertoast.showToast(
                                       msg: AppLocalizations.of(context)!
                                           .allfieldsareimportant,
-                                      // msg: "All fields are important",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.black87,
-                                      textColor: Colors.white,
+                                      backgroundColor: AppColors.primaryWhiteColor,
+                                      textColor: AppColors.secondaryColor,
                                     );
                                   }
                                 },

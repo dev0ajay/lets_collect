@@ -37,7 +37,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         elevation: 0,
         title: Text(
           // "Notification Center",
-          AppLocalizations.of(context)!.notificationcenter,
+          AppLocalizations.of(context)!.notificationdetails,
           style: GoogleFonts.openSans(
             color: AppColors.primaryWhiteColor,
             fontSize: 22,
