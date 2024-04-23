@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final scanReceiptRequestResponse = scanReceiptRequestResponseFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -7,23 +10,27 @@ String scanReceiptRequestResponseToJson(ScanReceiptRequestResponse data) => json
 
 class ScanReceiptRequestResponse {
   bool? success;
+  int? statusCode;
   Data? data;
   String? message;
 
   ScanReceiptRequestResponse({
     this.success,
+    this.statusCode,
     this.data,
     this.message,
   });
 
   factory ScanReceiptRequestResponse.fromJson(Map<String, dynamic> json) => ScanReceiptRequestResponse(
     success: json["success"],
+    statusCode: json["status_code"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
+    "status_code": statusCode,
     "data": data?.toJson(),
     "message": message,
   };
@@ -50,7 +57,6 @@ class Data {
     partnerPoint: json["partner_point"],
     brandPoint: json["brand_point"],
     pointId: json["point_id"],
-
   );
 
   Map<String, dynamic> toJson() => {
@@ -59,6 +65,5 @@ class Data {
     "partner_point": partnerPoint,
     "brand_point": brandPoint,
     "point_id": pointId,
-
   };
 }

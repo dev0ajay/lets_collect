@@ -399,8 +399,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               }
               if (state is ScanLoaded) {
                 if (state.scanReceiptRequestResponse.success == false &&
-                    state.scanReceiptRequestResponse.message ==
-                        "This receipt number already exists") {
+                    state.scanReceiptRequestResponse.statusCode == 400) {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -409,51 +408,51 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                     elevation: 5,
                     alignment: Alignment.center,
                     content: SizedBox(
-                        height: getProportionateScreenHeight(260),
-                        width: getProportionateScreenWidth(320),
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: IconButton(
-                                onPressed: () {
-                                  context.pop();
-                                  _clearImage();
-                                },
-                                icon: const Icon(Icons.close),
+                      height: getProportionateScreenHeight(260),
+                      width: getProportionateScreenWidth(320),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              onPressed: () {
+                                context.pop();
+                                _clearImage();
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Flexible(
+                            flex: 3,
+                            child: Center(
+                              child: Image.asset(
+                                Assets.APP_LOGO,
+                                height: 95,
+                                width: 150,
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            Flexible(
-                              flex: 3,
-                              child: Center(
-                                child: Image.asset(
-                                  Assets.APP_LOGO,
-                                  height: 95,
-                                  width: 150,
-                                ),
+                          ),
+                          const SizedBox(height: 20),
+                          Flexible(
+                            flex: 2,
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .oopslookslikewearefacing,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            Flexible(
-                              flex: 2,
-                              child: Text(
-                                state.scanReceiptRequestResponse.message!,
-                                // AppLocalizations.of(context)!
-                                //     .oopslookslikeyouhavealready,
-                                // "Oops! Looks like you’ve already scanned this one.",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.openSans(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 }
-                else if (state.scanReceiptRequestResponse.success == false) {
+
+                if (state.scanReceiptRequestResponse.success == false) {
                   return AlertDialog(
                     backgroundColor: AppColors.primaryWhiteColor,
                     shape: RoundedRectangleBorder(
@@ -492,8 +491,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               flex: 2,
                               child: Text(
                                 state.scanReceiptRequestResponse.message!,
-                                // AppLocalizations.of(context)!
-                                //     .oopslookslikewearefacing,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -552,19 +549,18 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               ),
                             ),
                             const SizedBox(height: 10),
-
                             Flexible(
                               flex: 2,
                               child: Visibility(
-                                visible: state.scanReceiptRequestResponse.data!.totalPoints != 0,
+                                visible: state.scanReceiptRequestResponse.data!
+                                        .totalPoints !=
+                                    0,
                                 child: TextButton(
                                   onPressed: () {
                                     _clearImage();
                                     context.push("/point_tracker_details",
-                                        extra: state
-                                            .scanReceiptRequestResponse
-                                            .data!
-                                            .pointId);
+                                        extra: state.scanReceiptRequestResponse
+                                            .data!.pointId);
                                     context.pop();
                                   },
                                   child: Text(

@@ -55,6 +55,7 @@ class _PurchaseHistoryDetailsScreenState
         return false;
       },
       child: Scaffold(
+        backgroundColor: AppColors.primaryWhiteColor,
         body: BlocConsumer<NetworkBloc, NetworkState>(
           listener: (context, state) {
             if (state is NetworkSuccess) {
@@ -84,16 +85,12 @@ class _PurchaseHistoryDetailsScreenState
                           ],
                         );
                       } else if (state is PurchaseHistoryDetailsLoaded) {
-                        // if (state.purchaseHistoryDetailsResponse.data.itemData.isEmpty) {
-                        //   return Center(
-                        //     child: Lottie.asset(Assets.OOPS),
-                        //   );
-                        // }
                         return CustomScrollView(
                           slivers: [
                             SliverPadding(
                               padding: const EdgeInsets.only(top: 20),
                               sliver: SliverAppBar(
+                                elevation: 0,
                                 backgroundColor: AppColors.primaryWhiteColor,
                                 automaticallyImplyLeading: false,
                                 expandedHeight: 300.0,
@@ -121,138 +118,150 @@ class _PurchaseHistoryDetailsScreenState
                                       ),
                                       child: Column(
                                         children: [
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            " ${state.purchaseHistoryDetailsResponse.data.receiptData.currencyCode} ${state.purchaseHistoryDetailsResponse.data.receiptData.totalAmount}",
-                                            style: GoogleFonts.openSans(
-                                              color: AppColors.primaryColor,
-                                              fontSize: 36,
-                                              fontWeight: FontWeight.w700,
+                                          const SizedBox(height: 10),
+                                          Expanded(
+                                            flex: 4,
+                                            child: Text(
+                                              " ${state.purchaseHistoryDetailsResponse.data.receiptData.currencyCode} ${state.purchaseHistoryDetailsResponse.data.receiptData.totalAmount}",
+                                              style: GoogleFonts.openSans(
+                                                color: AppColors.primaryColor,
+                                                fontSize: 36,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                flex: 0,
-                                                child: Text(
-                                                  // "Date",
-                                                  "${AppLocalizations.of(context)!
-                                                      .date}:  ",
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                          const SizedBox(height: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Text(
+                                                    // "Date",
+                                                    "${AppLocalizations.of(context)!
+                                                        .date}:  ",
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                child: Text(
-                                                  state
-                                                      .purchaseHistoryDetailsResponse
-                                                      .data
-                                                      .receiptData
-                                                      .receiptDate
-                                                      .toString(),
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    state
+                                                        .purchaseHistoryDetailsResponse
+                                                        .data
+                                                        .receiptData
+                                                        .receiptDate
+                                                        .toString(),
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                          const SizedBox(height: 5),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                flex: 0,
-                                                child: Text(
-                                                  // "Super market",
-                                                  AppLocalizations.of(context)!
-                                                      .supermarket,
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                          const SizedBox(height: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Text(
+                                                    // "Super market",
+                                                    AppLocalizations.of(context)!
+                                                        .supermarket,
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                child: Text(
-                                                  context
-                                                              .read<
-                                                                  LanguageBloc>()
-                                                              .state
-                                                              .selectedLanguage ==
-                                                          Language.english
-                                                      ? state
-                                                          .purchaseHistoryDetailsResponse
-                                                          .data
-                                                          .receiptData
-                                                          .branch
-                                                      : state
-                                                          .purchaseHistoryDetailsResponse
-                                                          .data
-                                                          .receiptData
-                                                          .branch,
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    context
+                                                                .read<
+                                                                    LanguageBloc>()
+                                                                .state
+                                                                .selectedLanguage ==
+                                                            Language.english
+                                                        ? state
+                                                            .purchaseHistoryDetailsResponse
+                                                            .data
+                                                            .receiptData
+                                                            .branch
+                                                        : state
+                                                            .purchaseHistoryDetailsResponse
+                                                            .data
+                                                            .receiptData
+                                                            .branch,
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                          const SizedBox(height: 5),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Expanded(
-                                                flex: 0,
-                                                child: Text(
-                                                  // "Total item",
-                                                  AppLocalizations.of(context)!
-                                                      .totalitem,
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                          const SizedBox(height: 10),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  flex: 0,
+                                                  child: Text(
+                                                    // "Total item",
+                                                    AppLocalizations.of(context)!
+                                                        .totalitem,
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Flexible(
-                                                flex: 1,
-                                                child: Text(
-                                                  state
-                                                      .purchaseHistoryDetailsResponse
-                                                      .data
-                                                      .receiptData
-                                                      .totalNoOfProducts
-                                                      .toString(),
-                                                  style: GoogleFonts.roboto(
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                                Flexible(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    state
+                                                        .purchaseHistoryDetailsResponse
+                                                        .data
+                                                        .receiptData
+                                                        .totalNoOfProducts
+                                                        .toString(),
+                                                    style: GoogleFonts.roboto(
+                                                      color:
+                                                          AppColors.primaryColor,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -261,127 +270,97 @@ class _PurchaseHistoryDetailsScreenState
                                 ),
                               ),
                             ),
-                            SliverToBoxAdapter(
-                              child: Column(
-                                children: [
-                                  ListView.builder(
-                                    padding: const EdgeInsets.only(top: 10),
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: state
-                                        .purchaseHistoryDetailsResponse
-                                        .data
-                                        .itemData
-                                        .length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 30,
-                                            right: 30,
-                                            bottom: 10,
-                                            top: 0),
-                                        decoration: BoxDecoration(
-                                          border: const Border(
-                                            bottom: BorderSide(
-                                                width: 1,
-                                                color: AppColors.borderColor),
-                                            top: BorderSide(
-                                                width: 1,
-                                                color: AppColors.borderColor),
-                                            left: BorderSide(
-                                                width: 1,
-                                                color: AppColors.borderColor),
-                                            right: BorderSide(
-                                                width: 1,
-                                                color: AppColors.borderColor),
-                                          ),
-                                          color: AppColors.primaryWhiteColor,
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              color: AppColors.boxShadow,
-                                              blurRadius: 4,
-                                              offset: Offset(4, 2),
-                                              spreadRadius: 0,
+                            SliverPadding(
+                              padding: const EdgeInsets.only(left: 15,right: 15,bottom: 30),
+                              sliver: SliverToBoxAdapter(
+                                child: Column(
+                                  children: [
+                                    ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: state
+                                          .purchaseHistoryDetailsResponse
+                                          .data
+                                          .itemData
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(top: 20),
+                                          child: Container(
+                                            height: getProportionateScreenHeight(90),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryWhiteColor,
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color:
+                                                  Color.fromRGBO(0, 0, 0, 0.31),
+                                                  blurRadius: 4.10,
+                                                  offset: Offset(2, 4),
+                                                  spreadRadius: 0,
+                                                ),
+                                              ],
+                                              borderRadius: BorderRadius.circular(8),
                                             ),
-                                            BoxShadow(
-                                              color: AppColors.boxShadow,
-                                              blurRadius: 4,
-                                              offset: Offset(-4, -2),
-                                              spreadRadius: 0,
-                                            ),
-                                          ],
-                                          borderRadius: BorderRadius.circular(5),
-                                        ),
-                                        child: ListTile(
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 15, horizontal: 16),
-                                          leading: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
+                                            child: ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 15, horizontal: 16),
+                                              title: Text(
                                                 // state.purchaseHistoryDetailsResponse.data.itemData[index].itemName,
                                                 context
-                                                            .read<
-                                                                LanguageBloc>()
-                                                            .state
-                                                            .selectedLanguage ==
-                                                        Language.english
+                                                    .read<
+                                                    LanguageBloc>()
+                                                    .state
+                                                    .selectedLanguage ==
+                                                    Language.english
                                                     ? state
-                                                        .purchaseHistoryDetailsResponse
-                                                        .data
-                                                        .itemData[index]
-                                                        .itemName
+                                                    .purchaseHistoryDetailsResponse
+                                                    .data
+                                                    .itemData[index]
+                                                    .itemName
                                                     : state
-                                                        .purchaseHistoryDetailsResponse
-                                                        .data
-                                                        .itemData[index]
-                                                        .itemName,
+                                                    .purchaseHistoryDetailsResponse
+                                                    .data
+                                                    .itemData[index]
+                                                    .itemName,
+                                                textAlign: TextAlign.start,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.roboto(
                                                   color: AppColors
                                                       .primaryBlackColor,
-                                                  fontSize: 13,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
-                                              Text(
+                                              subtitle: Text(
                                                 state
                                                     .purchaseHistoryDetailsResponse
                                                     .data
                                                     .itemData[index]
-                                                    .code,
+                                                    .brandName,
                                                 style: GoogleFonts.roboto(
-                                                  fontSize: 12,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.w400,
                                                 ),
                                               ),
-                                              Text(
-                                                "Point Tier",
-                                                // AppLocalizations.of(context)!.pointtier,
-                                                style: GoogleFonts.roboto(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
+                                              trailing: Text(
+                                                "${state.purchaseHistoryDetailsResponse.data.receiptData.currencyCode} ${state.purchaseHistoryDetailsResponse.data.itemData[index].itemPrice}",
+                                                style: GoogleFonts.openSans(
+                                                  color: AppColors
+                                                      .secondaryButtonColor,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          trailing: Text(
-                                            // "${AppLocalizations.of(context)!.bhd} ${state.purchaseHistoryDetailsResponse.data.itemData[index].itemPrice}",
-                                            "${state.purchaseHistoryDetailsResponse.data.receiptData.currencyCode} ${state.purchaseHistoryDetailsResponse.data.itemData[index].itemPrice}",
-                                            style: GoogleFonts.openSans(
-                                              color: AppColors
-                                                  .secondaryButtonColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
