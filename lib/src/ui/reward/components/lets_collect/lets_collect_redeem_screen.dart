@@ -133,7 +133,6 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                   widget.redeemScreenArguments.imageUrl,
                                   fit: BoxFit.fill,
                                   placeholder: (context, url) => SizedBox(
-                                    // height: getProportionateScreenHeight(170),
                                     width: MediaQuery.of(context).size.width,
                                     child: Center(
                                       child: Lottie.asset(

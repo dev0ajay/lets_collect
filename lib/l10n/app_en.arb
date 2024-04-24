@@ -188,7 +188,7 @@
 
     "transactionlog" : "Transaction Log",
     "totalamount" : "Total Amount",
-    "date" : "Date : ",
+    "date" : "Date :  ",
     "supermarket" : "SuperMarket :  ",
     "totalitem" : "Total items : ",
     "bhd" : "BHD",

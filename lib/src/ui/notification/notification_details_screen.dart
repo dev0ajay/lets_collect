@@ -55,7 +55,6 @@ class NotificationDetailsScreen extends StatelessWidget {
                 children: [
                   Lottie.asset(Assets.NO_INTERNET),
                   Text(
-                    // "You are not connected to the internet",
                     AppLocalizations.of(context)!
                         .youarenotconnectedtotheinternet,
                     style: GoogleFonts.openSans(
@@ -90,13 +89,14 @@ class NotificationDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    flex: 3,
+                    // flex: 3,
                     child: Text(
                       context.read<LanguageBloc>().state.selectedLanguage ==
                               Language.english
                           ? notificationDetailsArgument.title
                           : notificationDetailsArgument.title,
-                      maxLines: 5,
+                      maxLines: 8,
+                      textAlign: TextAlign.start,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryColor,
@@ -113,6 +113,7 @@ class NotificationDetailsScreen extends StatelessWidget {
                               Language.english
                           ? notificationDetailsArgument.message
                           : notificationDetailsArgument.message,
+                      textAlign: TextAlign.start,
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryColor2,
                         fontSize: 25,
@@ -134,6 +135,14 @@ class NotificationDetailsScreen extends StatelessWidget {
                           fontFamily: "Fonarto",
                         ),
                         children: <TextSpan>[
+                          TextSpan(
+                            text: " : ",
+                            style: GoogleFonts.openSans(
+                              color: AppColors.secondaryButtonColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
                           TextSpan(
                             text: notificationDetailsArgument.date,
                             style: GoogleFonts.openSans(

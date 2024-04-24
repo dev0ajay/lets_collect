@@ -216,7 +216,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                       backgroundColor: AppColors.secondaryColor,
                       content: Text(
                         AppLocalizations.of(context)!.someerroroccurred,
-                        // "Some Error Happened",
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                         ),
@@ -242,9 +241,9 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                           icon: const Icon(
                             Icons.arrow_back_ios_outlined,
                             color: AppColors.primaryWhiteColor,
-                          )),
+                          ),
+                      ),
                       title: Text(
-                        // "Contact us",
                         AppLocalizations.of(context)!.contactus,
                         style: GoogleFonts.openSans(
                           fontSize: 24,
@@ -284,7 +283,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                               const SizedBox(height: 35),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8.0),
                                   boxShadow: [
                                     BoxShadow(
@@ -303,12 +302,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                   controller: subjectController,
                                   keyboardType: TextInputType.text,
                                   focusNode: _subjectFocus,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return '';
-                                  //   }
-                                  //   return null;
-                                  // },
                                 ),
                               )
                                   .animate()
@@ -316,7 +309,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                               const SizedBox(height: 35),
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppColors.primaryWhiteColor,
                                   borderRadius: BorderRadius.circular(8.0),
                                   boxShadow: [
                                     BoxShadow(
@@ -337,12 +330,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     maxLines: 10,
                                     keyboardType: TextInputType.multiline,
                                     focusNode: null,
-                                    // validator: (value) {
-                                    //   if (value == null || value.isEmpty) {
-                                    //     return "";
-                                    //   }
-                                    //   return null;
-                                    // },
                                   ),
                                 ),
                               )
@@ -375,7 +362,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                         content:
                                         Text(
                                           AppLocalizations.of(context)!.pleasechooseeitheroneoption,
-                                          // "Please choose either one option"
                                         ),
                                       ),
                                     );
@@ -431,7 +417,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                             child: Center(
                                               child: Text(
                                                   "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
-                                              // '${AppLocalizations.of(context)!.selectedfile} ${_pickedFile!.path.split("/").last}'),
                                             ),
                                           ),
                                         ),
@@ -447,7 +432,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                             AppColors.secondaryColor,
                                             child: Icon(
                                               Icons.delete,
-                                              color: Colors.white,
+                                              color: AppColors.primaryWhiteColor,
                                               size: 16,
                                             ),
                                           ),
@@ -478,7 +463,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     }
                                     return MyButton(
                                       Textfontsize: 16,
-                                      TextColors: Colors.white,
+                                      TextColors: AppColors.primaryWhiteColor,
                                       // text: "Submit",
                                       text : AppLocalizations.of(context)!.submit,
                                       color: AppColors.secondaryColor,
@@ -551,7 +536,6 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
                   AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
-                  // "You are not connected to the internet",
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
                     fontSize: 20,
@@ -573,76 +557,83 @@ class _ContactUsScreenState extends State<ContactUsScreen>
   }) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.primaryWhiteColor,
-        elevation: 5,
-        alignment: Alignment.center,
-        content: SizedBox(
-          height: getProportionateScreenHeight(230),
-          width: getProportionateScreenWidth(500),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () {
-                    subjectController.clear();
-                    messageController.clear();
-                    _removeFile();
-                    context.pop();
-                    // Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close),
+      barrierDismissible: false,
+      builder: (ctx) => WillPopScope(
+        onWillPop: () async {
+          subjectController.clear();
+          messageController.clear();
+          _removeFile();
+          context.pop();
+          return false;
+        },
+        child: AlertDialog(
+          backgroundColor: AppColors.primaryWhiteColor,
+          elevation: 5,
+          alignment: Alignment.center,
+          content: SizedBox(
+            height: getProportionateScreenHeight(230),
+            width: getProportionateScreenWidth(500),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {
+                      subjectController.clear();
+                      messageController.clear();
+                      _removeFile();
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.close),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                // "Thank you for contacting us",
-                AppLocalizations.of(context)!.thankyouforcontactingus,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.openSans(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.secondaryColor,
+                const SizedBox(height: 10),
+                Text(
+                  AppLocalizations.of(context)!.thankyouforcontactingus,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.openSans(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.secondaryColor,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              Text(
-                // "We’ll get back to you as soon as we can. It may take up to 3 working days.",
-                AppLocalizations.of(context)!.wewillgetbackto,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                const SizedBox(height: 30),
+                Text(
+                  AppLocalizations.of(context)!.wewillgetbackto,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.openSans(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: MyButton(
-                  Textfontsize: 16,
-                  TextColors: Colors.white,
-                  // text: "Ok",
-                  text : AppLocalizations.of(context)!.ok,
-                  color: AppColors.secondaryColor,
-                  height: 40,
-                  // Adjust the height as needed
-                  onTap: () {
-                    subjectController.clear();
-                    messageController.clear();
-                    _removeFile();
-                    context.pop();
-                  },
-                  showImage: false,
-                  imagePath: '',
-                  imagewidth: 0,
-                  imageheight: 0,
-                  width: 0,
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.only(left: 50, right: 50),
+                  child: MyButton(
+                    Textfontsize: 16,
+                    TextColors: AppColors.primaryWhiteColor,
+                    // text: "Ok",
+                    text : AppLocalizations.of(context)!.ok,
+                    color: AppColors.secondaryColor,
+                    height: 40,
+                    // Adjust the height as needed
+                    onTap: () {
+                      subjectController.clear();
+                      messageController.clear();
+                      _removeFile();
+                      context.pop();
+                    },
+                    showImage: false,
+                    imagePath: '',
+                    imagewidth: 0,
+                    imageheight: 0,
+                    width: 0,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

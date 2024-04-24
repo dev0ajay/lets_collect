@@ -301,7 +301,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             }
                           },
                           child: Container(
-                            // padding: const EdgeInsets.all(25),
                             decoration: BoxDecoration(
                               color: AppColors.primaryWhiteColor,
                               boxShadow: const [
@@ -322,9 +321,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                     alignment: Alignment.center,
                                     child: ClipOval(
                                       child: CachedNetworkImage(
+                                        filterQuality: FilterQuality.medium,
                                         height: 90,
                                         width: 90,
-
                                         alignment: Alignment.center,
                                         fadeInCurve: Curves.easeIn,
                                         fadeInDuration:
@@ -335,7 +334,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                             .data![index]
                                             .departmentImage!,
                                         placeholder: (context, url) => SizedBox(
-                                          // height: getProportionateScreenHeight(170),
                                           width:
                                               MediaQuery.of(context).size.width,
                                           child: Center(

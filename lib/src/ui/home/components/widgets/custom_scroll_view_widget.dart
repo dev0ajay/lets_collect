@@ -16,6 +16,8 @@ import 'package:lets_collect/src/model/referral/referral_code_update_request.dar
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../../../../language.dart';
+import '../../../../bloc/language/language_bloc.dart';
 import '../../../../constants/assets.dart';
 import '../../../../utils/data/object_factory.dart';
 import '../../../../utils/screen_size/size_config.dart';
@@ -186,35 +188,49 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                     SliverPadding(
                       sliver: BlocConsumer<ReferralBloc, ReferralState>(
                         listener: (context, state) {
+                          // if (state is ReferralCodeUpdateLoading) {
+                          //   const Center(
+                          //     heightFactor: 10,
+                          //     child: RefreshProgressIndicator(
+                          //       color: AppColors.secondaryColor,
+                          //     ),
+                          //   );
+                          // }
 
                           if (state is ReferralCodeUpdateLoaded) {
-                            if (state.referralCodeUpdateRequestResponse
-                                    .success ==
-                                true) {
+                            if (state.referralCodeUpdateRequestResponse.success == true) {
                               _showDialogBox(context: context);
                             } else {
                               if (state.referralCodeUpdateRequestResponse
-                                          .success ==
-                                      false &&
+                                  .success ==
+                                  false &&
                                   state.referralCodeUpdateRequestResponse
-                                          .message ==
+                                      .message ==
                                       "The referral code field is required") {
                                 _showDialogBox(context: context);
                               }
                               if (state.referralCodeUpdateRequestResponse
-                                          .success ==
-                                      false &&
+                                  .success ==
+                                  false &&
                                   state.referralCodeUpdateRequestResponse
-                                          .message ==
+                                      .message ==
                                       "Invalid Referral Code") {
                                 _showDialogBox(context: context);
                               }
                               if (state.referralCodeUpdateRequestResponse
-                                          .success ==
-                                      false &&
+                                  .success ==
+                                  false &&
                                   state.referralCodeUpdateRequestResponse
-                                          .message ==
+                                      .message ==
                                       "Referral code already added") {
+                                _showDialogBox(context: context);
+                              }
+                              if (state.referralCodeUpdateRequestResponse
+                                  .success ==
+                                  false &&
+                                  state.referralCodeUpdateRequestResponse
+                                      .message ==
+                                      "User already referred.") {
                                 _showDialogBox(context: context);
                               }
                             }
@@ -225,19 +241,18 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                             key: _formKey,
                             child: SliverToBoxAdapter(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Flexible(
                                     flex: 2,
                                     child: Container(
-                                      height: getProportionateScreenHeight(50),
+                                      height: 50,
+                                      // width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
                                         color: AppColors.primaryWhiteColor,
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
-                                            color: AppColors.borderColor,
-                                            width: 1),
+                                            color: AppColors.borderColor, width: 1),
                                         boxShadow: const [
                                           BoxShadow(
                                             color: AppColors.boxShadow,
@@ -254,36 +269,31 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                         ],
                                       ),
                                       child: SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(50),
-                                        child: CupertinoTextField.borderless(
+                                        height: getProportionateScreenHeight(50),
+                                        child:  CupertinoTextField.borderless(
                                           padding: const EdgeInsets.only(
                                               left: 15,
                                               top: 15,
                                               right: 6,
                                               bottom: 10),
                                           // placeholder: 'Referral code',
+                                          placeholder: AppLocalizations.of(context)!.referralcode,
                                           controller: referralController,
-                                          placeholder:
-                                              AppLocalizations.of(context)!
-                                                  .referralcode,
                                         ),
                                       ),
                                     ),
                                   ),
                                   const SizedBox(width: 12),
                                   Flexible(
-                                    child: BlocBuilder<ReferralBloc,
-                                        ReferralState>(
+                                    child: BlocBuilder<ReferralBloc, ReferralState>(
                                       builder: (context, state) {
-                                        if (state
-                                            is ReferralCodeUpdateLoading) {
+                                        if (state is ReferralCodeUpdateLoading) {
                                           return const Center(
                                             child: RefreshProgressIndicator(
-                                              color:
-                                                  AppColors.primaryWhiteColor,
+                                              color: AppColors
+                                                  .primaryWhiteColor,
                                               backgroundColor:
-                                                  AppColors.secondaryColor,
+                                              AppColors.secondaryColor,
                                             ),
                                           );
                                         }
@@ -292,66 +302,63 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                             elevation: 3,
                                             fixedSize: const Size(120, 48),
                                             shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
+                                              borderRadius: BorderRadius.circular(8),
                                             ),
-                                            backgroundColor:
-                                                AppColors.secondaryColor,
+                                            backgroundColor: AppColors.secondaryColor,
                                           ),
                                           onPressed: () {
                                             if (referralController
                                                 .text.isEmpty) {
                                               Fluttertoast.showToast(
                                                 // msg: "The referral code field is required",
-                                                msg: AppLocalizations.of(
-                                                        context)!
-                                                    .thereferralcodefieldisrequired,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.BOTTOM,
-                                                backgroundColor:
-                                                    AppColors.secondaryColor,
-                                                textColor:
-                                                    AppColors.primaryWhiteColor,
+                                                msg: AppLocalizations.of(context)!.thereferralcodefieldisrequired,
+                                                toastLength:
+                                                Toast.LENGTH_LONG,
+                                                gravity:
+                                                ToastGravity.BOTTOM,
+                                                backgroundColor: AppColors
+                                                    .secondaryColor,
+                                                textColor: AppColors
+                                                    .primaryWhiteColor,
                                               );
                                               return;
                                             }
 
                                             if (_formKey.currentState!
                                                 .validate()) {
+                                              String selectedLanguage = context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                  ? Language.english.text
+                                                  : Language.arabic.text;
+
+                                              print('Selected Language: $selectedLanguage');
+
                                               BlocProvider.of<ReferralBloc>(
-                                                      context)
-                                                  .add(
-                                                GetReferralCodeUpdateEvent(
-                                                  referralCodeUpdateRequest:
-                                                      ReferralCodeUpdateRequest(
-                                                          referralCode:
-                                                              referralController
-                                                                  .text),
+                                                  context).add(GetReferralCodeUpdateEvent(
+                                                referralCodeUpdateRequest: ReferralCodeUpdateRequest(
+                                                    referralCode: referralController.text,
+                                                    language:  selectedLanguage
                                                 ),
+                                              ),
                                               );
                                             } else {
                                               Fluttertoast.showToast(
                                                 // msg: "The referral code field is required",
-                                                msg: AppLocalizations.of(
-                                                        context)!
-                                                    .thereferralcodefieldisrequired,
-                                                toastLength: Toast.LENGTH_LONG,
-                                                gravity: ToastGravity.BOTTOM,
-                                                backgroundColor:
-                                                    AppColors.secondaryColor,
-                                                textColor:
-                                                    AppColors.primaryWhiteColor,
+                                                msg: AppLocalizations.of(context)!.thereferralcodefieldisrequired,
+                                                toastLength:
+                                                Toast.LENGTH_LONG,
+                                                gravity:
+                                                ToastGravity.BOTTOM,
+                                                backgroundColor: AppColors.secondaryColor,
+                                                textColor: AppColors.primaryWhiteColor,
                                               );
                                             }
                                           },
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .bonuspoint,
+                                          child:  Text(
+                                            AppLocalizations.of(context)!.bonuspoint,
                                             // "Bonus point!",
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
-                                                color: AppColors
-                                                    .primaryWhiteColor),
+                                                color: AppColors.primaryWhiteColor),
                                           ),
                                         );
                                       },
@@ -363,8 +370,8 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                           );
                         },
                       ),
-                      padding:
-                           EdgeInsets.only(top: 10, left: 10, right: 10,bottom: getProportionateScreenHeight(10)),
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 10, right: 10, bottom: 15),
                     ),
                     SliverToBoxAdapter(
                       child: SizedBox(

@@ -84,7 +84,7 @@ class _RedeemScreenState extends State<RedeemScreen> {
                     width: getProportionateScreenWidth(242),
                     height: getProportionateScreenHeight(280),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.primaryWhiteColor,
                       borderRadius: BorderRadius.circular(5),
                       border: const Border(
                           right: BorderSide(

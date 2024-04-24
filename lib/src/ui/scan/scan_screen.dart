@@ -770,16 +770,19 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               imageUploadFormated = "data:image/$extension;base64,$imageBase64";
             });
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-                SnackBar(
-                    backgroundColor: AppColors.secondaryColor,
-                    content: Text(
-                      AppLocalizations.of(context)!.nothingisselected,
-                      style: GoogleFonts.openSans(
-                        color: AppColors.primaryWhiteColor,
-                      ),
-                      // 'Nothing is selected'
-                    )));
+            ScaffoldMessenger.of(context).showSnackBar(
+              // is this context <<<
+              SnackBar(
+                backgroundColor: AppColors.secondaryColor,
+                content: Text(
+                  AppLocalizations.of(context)!.nothingisselected,
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryWhiteColor,
+                  ),
+                  // 'Nothing is selected'
+                ),
+              ),
+            );
           }
         },
       );

@@ -71,7 +71,7 @@ class ApiClient {
     _baseOptionsLetsCollect = BaseOptions(
       baseUrl: UrlsLetsCollect.baseUrl,
       connectTimeout: const Duration(milliseconds: 300000),
-      receiveTimeout: const Duration(milliseconds: 300000),
+      receiveTimeout: const Duration(milliseconds: 1000000),
       followRedirects: true,
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
@@ -115,39 +115,6 @@ class ApiClient {
     ));
   }
 
-  //
-  // /// get otp
-
-  //
-  // /// get otp
-  // Future<Response> getOtpForExistingCustomer(phoneNo, signature) {
-  //   return dioMyg.get(UrlsMyg.GET_OTP_FOR_EXISTING_CUSTOMER +
-  //       phoneNo +
-  //       "&userID=${ObjectFactory().prefs.getUserId()}&smsKey=$signature");
-  // }
-  //
-  // /// get otp
-  // Future<Response> addMobNumberToExistingCustomer(phoneNo) {
-  //   return dioMyg.get(UrlsMyg.ADD_NUMBER_TO_EXISTING_CUSTOMER +
-  //       phoneNo +
-  //       "&userID=${ObjectFactory().prefs.getUserId()}");
-  // }
-  //
-  // /// get otp
-  // Future<Response> loginWithEmail(email, password, referredBy, fcmToken) {
-  //   return dioMyg.get(UrlsMyg.LOGIN_WITH_EMAIL +
-  //       "$email&userPassword=$password&referredBy=$referredBy&fcmToken=$fcmToken");
-  // }
-  //
-  // /// verify otp
-  // Future<Response> loginWithPhone(String phoneNo, String referredBy, fcmToken) {
-  //   return dioMyg.post(UrlsMyg.LOGIN_WITH_PHONE, data: {
-  //     "phoneNo": phoneNo,
-  //     "referredBy": referredBy,
-  //     "fcmToken": fcmToken
-  //   });
-  // }
-  //
 
   ///Register
   Future<Response> registerUser(SignupRequest signupRequest) {

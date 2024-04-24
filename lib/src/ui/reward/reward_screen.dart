@@ -4652,7 +4652,7 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .brand![index].rewardImage!,
+                              .brand![index].brandLogo!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
                             // height: getProportionateScreenHeight(170),
@@ -4823,10 +4823,9 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .partner![index].rewardImage!,
+                              .partner![index].partnerLogo!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
-                            // height: getProportionateScreenHeight(170),
                             width: MediaQuery.of(context).size.width,
                             child: Center(
                               child: Lottie.asset(
