@@ -108,8 +108,8 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
           SliverAppBar(
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
               ),
             ),
             expandedHeight: getProportionateScreenHeight(200.0),
@@ -135,10 +135,11 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            flexibleSpace:  FlexibleSpaceBar(
+            flexibleSpace: FlexibleSpaceBar(
               background: Padding(
                 padding: const EdgeInsets.only(top: 30.0),
-                child: Image(fit: BoxFit.scaleDown,
+                child: Image(
+                  fit: BoxFit.scaleDown,
                   // fit: BoxFit.contain,
                   image: const AssetImage("assets/png_icons/point.png"),
                   width: getProportionateScreenWidth(80),
@@ -267,7 +268,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                       children: [
                         const SizedBox(height: 15),
                         const Padding(
-                          padding: EdgeInsets.only(top: 10),
+                          padding: EdgeInsets.only(top: 30),
                           child: PointTrackerChart(),
                         ),
                         const SizedBox(height: 15),
@@ -1178,86 +1179,101 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
                                                   .data[index]
                                                   .id);
                                         },
-                                        child: Container(
-                                          width: double.infinity,
-                                          margin: const EdgeInsets.only(
-                                            left: 5,
-                                            right: 5,
-                                            bottom: 10,
-                                            top: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryWhiteColor,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: AppColors.boxShadow,
-                                                blurRadius: 4,
-                                                offset: Offset(4, 2),
-                                                spreadRadius: 0,
-                                              ),
-                                              BoxShadow(
-                                                color: AppColors.boxShadow,
-                                                blurRadius: 4,
-                                                offset: Offset(-4, -2),
-                                                spreadRadius: 0,
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20, horizontal: 16),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      // "${state.pointTrackerRequestResponse.data[index].totalPoints} "
-                                                      // "points",
-                                                      "${state.pointTrackerRequestResponse.data[index].totalPoints} "
-                                                      "${AppLocalizations.of(context)!.points}",
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                        child: state.pointTrackerRequestResponse
+                                                    .data[index].totalPoints ==
+                                                0
+                                            ? const SizedBox()
+                                            : Container(
+                                                width: double.infinity,
+                                                margin: const EdgeInsets.only(
+                                                  left: 5,
+                                                  right: 5,
+                                                  bottom: 10,
+                                                  top: 10,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors
+                                                      .primaryWhiteColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      color:
+                                                          AppColors.boxShadow,
+                                                      blurRadius: 4,
+                                                      offset: Offset(4, 2),
+                                                      spreadRadius: 0,
                                                     ),
-                                                    const Divider(
-                                                      color: Colors.transparent,
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      state
-                                                          .pointTrackerRequestResponse
-                                                          .data[index]
-                                                          .expiryDate,
-                                                      style: GoogleFonts.roboto(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                    BoxShadow(
+                                                      color:
+                                                          AppColors.boxShadow,
+                                                      blurRadius: 4,
+                                                      offset: Offset(-4, -2),
+                                                      spreadRadius: 0,
                                                     ),
                                                   ],
                                                 ),
-                                                const Icon(
-                                                  Icons
-                                                      .arrow_forward_ios_rounded,
-                                                  size: 15,
-                                                  color:
-                                                      AppColors.secondaryColor,
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 16),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            "${state.pointTrackerRequestResponse.data[index].totalPoints} "
+                                                            "${AppLocalizations.of(context)!.points}",
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              fontSize: 19,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                          const Divider(
+                                                            color: Colors
+                                                                .transparent,
+                                                            height: 10,
+                                                          ),
+                                                          Text(
+                                                            state
+                                                                .pointTrackerRequestResponse
+                                                                .data[index]
+                                                                .expiryDate,
+                                                            style: GoogleFonts
+                                                                .roboto(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        size: 15,
+                                                        color: AppColors
+                                                            .secondaryColor,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                              ),
                                       );
                                     },
                                   )

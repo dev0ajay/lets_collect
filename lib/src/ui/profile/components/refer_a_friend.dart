@@ -105,7 +105,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                   if (state is ReferralListLoaded) {
                     if (state.referralListResponse.success == true) {
                       referralID = state.referralListResponse.data[index].referralId.toString();
-                      print("referralId == ${referralID}");
+                      print("referralId == $referralID");
 
                       pageTitle = context.read<LanguageBloc>().state.selectedLanguage == Language.english
                           ? state.referralListResponse.cmsData.pageTitle
@@ -200,7 +200,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                       height: 200, width: 200),
                                 ),
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               state is ReferralListLoaded
                                   ?Expanded(
                                 flex: 0,
@@ -214,7 +214,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                   ),
                                 ),
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               const SizedBox(height: 35),
                               state is ReferralListLoaded
                                   ?Expanded(
@@ -225,7 +225,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                         fontWeight: FontWeight.w400,
                                         fontSize: 16)),
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               const SizedBox(height: 20),
                               state is ReferralListLoaded
                                   ? Expanded(
@@ -274,7 +274,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                     .animate()
                                     .scale(delay: 200.ms, duration: 300.ms),
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                               const SizedBox(height: 35),
                               state is ReferralListLoaded
                                   ? Expanded(
@@ -305,7 +305,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                     .animate()
                                     .scale(delay: 200.ms, duration: 300.ms),
                               )
-                                  :  SizedBox(),
+                                  :  const SizedBox(),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -416,7 +416,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                     .animate()
                                     .scale(delay: 200.ms, duration: 300.ms),
                               )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                             ],
                           ),
                         ),

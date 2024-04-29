@@ -8,7 +8,6 @@ import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/point_tracker/point_tracker_request.dart';
-import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import '../../../model/point_tracker/point_tracker_details_request.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -182,7 +181,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                                             ),
                                           ),
                                           Text(
-                                            expiryDate,
+                                            "  $expiryDate",
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
                                               fontSize: 12,
@@ -563,7 +562,7 @@ class _PointTrackerDetailsScreenState extends State<PointTrackerDetailsScreen> {
                     ),
                     Text(
                       // "Point Tracker",
-                      AppLocalizations.of(context)!.pointtracker,
+                      AppLocalizations.of(context)!.pointdetails,
                       style: GoogleFonts.openSans(
                         color: AppColors.primaryWhiteColor,
                         fontSize: 24,

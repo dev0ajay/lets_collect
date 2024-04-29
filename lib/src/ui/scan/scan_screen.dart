@@ -8,15 +8,17 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/bloc/scan_bloc/scan_bloc.dart';
-import 'package:lets_collect/src/ui/scan/components/scan_detail_screen_argument.dart';
 import 'package:lets_collect/src/ui/scan/components/widgets/scan_screen_collect_button.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../language.dart';
+import '../../bloc/language/language_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
 import 'package:path/path.dart' as p;
@@ -188,11 +190,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                                 _scaffoldKey.currentContext!);
                                       },
                                       child: Center(
-                                        child: ImageIcon(
-                                          const AssetImage(Assets.UPLOAD),
-                                          size:
-                                              getProportionateScreenHeight(100),
-                                        ),
+                                        child: SvgPicture.asset(Assets.CAM_SVG,
+                                            fit: BoxFit.fill),
                                       ),
                                     ),
                                   ),
@@ -366,7 +365,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                           flex: 2,
                           child: Text(
                             AppLocalizations.of(context)!.wearecruching,
-                            // "We are crunching those points for you",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.openSans(
                               fontSize: 16,
@@ -490,7 +488,14 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
+                                context
+                                            .read<LanguageBloc>()
+                                            .state
+                                            .selectedLanguage ==
+                                        Language.english
+                                    ? state.scanReceiptRequestResponse.message!
+                                    : state.scanReceiptRequestResponse
+                                        .messageArabic!,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,

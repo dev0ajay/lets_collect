@@ -182,10 +182,13 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 0),
-                            child: PurchaseHistoryBarChartWidget(),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 0),
+                              child: PurchaseHistoryBarChartWidget(),
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -1100,14 +1103,17 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                                   .receiptId
                                                   .toString());
                                         },
-                                        child: Container(
-                                          width: double.infinity,
-                                          margin: const EdgeInsets.only(
-                                              left: 5,
-                                              right: 5,
-                                              bottom: 10,
-                                              top: 10),
-                                          decoration: BoxDecoration(
+                                        child: IntrinsicHeight(
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            margin: const EdgeInsets.only(
+                                                left: 5,
+                                                right: 5,
+                                                bottom: 10,
+                                                top: 10),
+                                            decoration: BoxDecoration(
                                               color:
                                                   AppColors.primaryWhiteColor,
                                               borderRadius:
@@ -1115,85 +1121,92 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: AppColors.boxShadow,
-                                                  blurRadius: 8,
+                                                  blurRadius: 4,
                                                   offset: Offset(4, 2),
                                                   spreadRadius: 0,
                                                 ),
                                                 BoxShadow(
                                                   color: AppColors.boxShadow,
-                                                  blurRadius: 8,
+                                                  blurRadius: 4,
                                                   offset: Offset(-4, -2),
                                                   spreadRadius: 0,
                                                 ),
                                               ],
-                                              border: Border.all(
-                                                  color: AppColors.borderColor,
-                                                  width: 1)),
-                                          child: ListTile(
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                              vertical: 5,
-                                              horizontal: 16,
+                                              // border: Border.all(
+                                              //     color: AppColors.borderColor,
+                                              //     width: 1),
                                             ),
-                                            title: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  // state.purchaseHistoryResponse.data[index].supermarketName,
-                                                  context
-                                                              .read<
-                                                                  LanguageBloc>()
-                                                              .state
-                                                              .selectedLanguage ==
-                                                          Language.english
-                                                      ? state
-                                                          .purchaseHistoryResponse
-                                                          .data[index]
-                                                          .supermarketName
-                                                      : state
-                                                          .purchaseHistoryResponse
-                                                          .data[index]
-                                                          .supermarketName,
-                                                  style: GoogleFonts.roboto(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors
-                                                        .secondaryButtonColor,
+                                            child: ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                top: 4,
+                                                left: 16,
+                                                    right: 16,
+                                                    bottom: 0
+                                              ),
+                                              title: Text(
+                                                // state.purchaseHistoryResponse.data[index].supermarketName,
+                                                context
+                                                            .read<
+                                                                LanguageBloc>()
+                                                            .state
+                                                            .selectedLanguage ==
+                                                        Language.english
+                                                    ? state
+                                                        .purchaseHistoryResponse
+                                                        .data[index]
+                                                        .supermarketName
+                                                    : state
+                                                        .purchaseHistoryResponse
+                                                        .data[index]
+                                                        .supermarketName,
+                                                style: GoogleFonts.roboto(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors
+                                                      .secondaryButtonColor,
+                                                ),
+                                              ),
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                               mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    // "Total amount"
+                                                    "${AppLocalizations.of(context)!.totalamount} "
+                                                    "  ${state.purchaseHistoryResponse.data[index].totalAmount} "
+                                                    "${AppLocalizations.of(context)!.bhd} ",
+                                                    // "${state.purchaseHistoryResponse.data[index].currencyCode}",
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 2,
-                                                ),
-                                                Text(
-                                                  // "Total amount"
-                                                  "${AppLocalizations.of(context)!.totalamount} "
-                                                  "  ${state.purchaseHistoryResponse.data[index].totalAmount} "
-                                                  "${AppLocalizations.of(context)!.bhd} ",
-                                                  // "${state.purchaseHistoryResponse.data[index].currencyCode}",
-                                                  style: GoogleFonts.roboto(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    state
+                                                        .purchaseHistoryResponse
+                                                        .data[index]
+                                                        .receiptDate
+                                                        .toString(),
+                                                    style: GoogleFonts.roboto(
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 2),
-                                                Text(
-                                                  state.purchaseHistoryResponse
-                                                      .data[index].receiptDate
-                                                      .toString(),
-                                                  style: GoogleFonts.roboto(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            trailing: const Icon(
-                                              Icons.arrow_forward_ios_rounded,
-                                              size: 15,
-                                              color: AppColors.secondaryColor,
+                                                ],
+                                              ),
+                                              // isThreeLine: true,
+                                              // dense: true,
+                                              trailing: const Icon(
+                                                Icons.arrow_forward_ios_rounded,
+                                                size: 15,
+                                                color: AppColors.secondaryColor,
+                                              ),
                                             ),
                                           ),
                                         ),

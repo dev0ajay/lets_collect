@@ -7,12 +7,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../language.dart';
+import '../../bloc/language/language_bloc.dart';
 import '../../bloc/scan_bloc/scan_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
@@ -276,10 +279,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             //   // _showPicker(context: context);
                             // },
                             child: Center(
-                              child: ImageIcon(
-                                const AssetImage(Assets.SCANNER),
-                                size: getProportionateScreenHeight(100),
-                              ),
+                              child: SvgPicture.asset(Assets.CAM_SVG,fit: BoxFit.cover)
                             ),
                           ),
                           Text(
@@ -324,10 +324,7 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                               }
                             },
                             child: Center(
-                              child: ImageIcon(
-                                const AssetImage(Assets.UPLOAD),
-                                size: getProportionateScreenHeight(100),
-                              ),
+                              child: SvgPicture.asset(Assets.UPLOAD_SVG,fit: BoxFit.cover)
                             ),
                           ),
                         ],
@@ -523,7 +520,10 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
         builder: (ctx) {
           BlocProvider.of<ScanBloc>(context).add(
             ScanReceiptEvent(
-                data: FormData.fromMap({"file": imageUploadFormated})),
+              data: FormData.fromMap(
+                {"file": imageUploadFormated},
+              ),
+            ),
           );
           return BlocBuilder<ScanBloc, ScanState>(
             builder: (context, state) {
@@ -689,10 +689,14 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                             Flexible(
                               flex: 2,
                               child: Text(
-                                state.scanReceiptRequestResponse.message!,
-                                // AppLocalizations.of(context)!
-                                //     .oopslookslikewearefacing,
-                                // "Oops! Looks like we’re facing some issue scanning this receipt",
+                                context
+                                            .read<LanguageBloc>()
+                                            .state
+                                            .selectedLanguage ==
+                                        Language.english
+                                    ? state.scanReceiptRequestResponse.message!
+                                    : state.scanReceiptRequestResponse
+                                        .messageArabic!,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.openSans(
                                   fontSize: 16,
@@ -761,10 +765,8 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                                   onPressed: () {
                                     _removeFile();
                                     context.push("/point_tracker_details",
-                                        extra: state
-                                            .scanReceiptRequestResponse
-                                            .data!
-                                            .pointId);
+                                        extra: state.scanReceiptRequestResponse
+                                            .data!.pointId);
                                     context.pop();
                                   },
                                   child: Text(
@@ -890,18 +892,18 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
         imageUploadFormated = "data:image/$extension;base64,$imageBase64";
       });
     } else {
-     if(context.mounted) {
-       ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
-           SnackBar(
-               backgroundColor: AppColors.secondaryColor,
-               content: Text(
-                 AppLocalizations.of(context)!.nothingisselected,
-                 style: GoogleFonts.openSans(
-                   color: AppColors.primaryWhiteColor,
-                 ),
-                 // 'Nothing is selected'
-               )));
-     }
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(// is this context <<<
+            SnackBar(
+                backgroundColor: AppColors.secondaryColor,
+                content: Text(
+                  AppLocalizations.of(context)!.nothingisselected,
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryWhiteColor,
+                  ),
+                  // 'Nothing is selected'
+                )));
+      }
     }
   }
 

@@ -4425,6 +4425,8 @@ class _RewardScreenState extends State<RewardScreen> {
                               .letsCollect![index].reedemStores!,
                           wereToRedeem_ar: state.rewardTierRequestResponse.data!
                               .letsCollect![index].reedemStores!,
+                          name: state.rewardTierRequestResponse.data!
+                              .partner![index].brandName!,
                         ),
                       );
                     },
@@ -4617,6 +4619,12 @@ class _RewardScreenState extends State<RewardScreen> {
                             .toString(),
                         wereToRedeem_ar: state.rewardTierRequestResponse.data!
                             .brand![index].reedemStores!,
+                        name:  context.read<LanguageBloc>().state.selectedLanguage ==
+                            Language.english ?
+                        state.rewardTierRequestResponse.data!
+                            .partner![index].brandName! :
+                        state.rewardTierRequestResponse.data!
+                            .partner![index].brandNameArabic!,
                       ),
                     );
                   },
@@ -4789,6 +4797,8 @@ class _RewardScreenState extends State<RewardScreen> {
                             .toString(),
                         wereToRedeem_ar: state.rewardTierRequestResponse.data!
                             .partner![index].reedemStores!,
+                        name: state.rewardTierRequestResponse.data!
+                          .partner![index].partnerName!,
                       ),
                     );
                   },
@@ -4823,6 +4833,9 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
+                              .partner![index].partnerLogo!.isEmpty ? state.rewardTierRequestResponse.data!
+                              .partner![index].brandLogo! :
+                          state.rewardTierRequestResponse.data!
                               .partner![index].partnerLogo!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(

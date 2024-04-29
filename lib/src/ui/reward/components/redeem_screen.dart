@@ -119,7 +119,7 @@ class _RedeemScreenState extends State<RedeemScreen> {
                                 fadeInCurve: Curves.easeIn,
                                 fadeInDuration:
                                 const Duration(milliseconds: 200),
-                                fit: BoxFit.fill,
+                                fit: BoxFit.contain,
                                 imageUrl: widget.brandAndPartnerRedeemArguments.productImageUrl,
                                 width: MediaQuery.of(context).size.width,
                                 placeholder: (context, url) => Lottie.asset(

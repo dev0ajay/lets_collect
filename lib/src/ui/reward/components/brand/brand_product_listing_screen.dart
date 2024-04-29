@@ -58,7 +58,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
           sort: "",
           eligible: "",
           brandId: widget.redeemScreenArguments.iD.toString(),
-          redemptionTier: "2",
+          redemptionTier: "3",
         ),
       ),
     );
@@ -888,7 +888,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                   fadeInCurve: Curves.easeIn,
                                   fadeInDuration:
                                   const Duration(milliseconds: 200),
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.contain,
                                   imageUrl:
                                   state
                                       .brandAndPartnerProductRequestResponse

@@ -10,7 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/contact_us_bloc/contact_us_bloc.dart';
+import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/components/Custome_Textfiled.dart';
 import 'package:lets_collect/src/components/my_button.dart';
 import 'package:lets_collect/src/constants/assets.dart';
@@ -163,7 +165,8 @@ class _ContactUsScreenState extends State<ContactUsScreen>
       _showPermissionDialog(_scaffoldKey.currentContext!);
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
-      openSettings();
+      // openSettings();
+      _showPermissionDialog(_scaffoldKey.currentContext!);
     } else if (status.isLimited) {
       print("Permission permanently denied");
       _pickFile();
@@ -224,6 +227,20 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                   );
                 }
               }
+              if (state is ContactUsErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.secondaryColor,
+                    content: Text(
+                      context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                          ? state.errorMsg
+                          : AppLocalizations.of(context)!.oopslookslikewearefacing,
+                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                    ),
+                  ),
+                );
+              }
             },
             builder: (context, state) {
               return GestureDetector(
@@ -235,13 +252,13 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                     appBar: AppBar(
                       backgroundColor: AppColors.primaryColor,
                       leading: IconButton(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back_ios_outlined,
-                            color: AppColors.primaryWhiteColor,
-                          ),
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: AppColors.primaryWhiteColor,
+                        ),
                       ),
                       title: Text(
                         AppLocalizations.of(context)!.contactus,
@@ -404,19 +421,34 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                     )
                                         : Row(
                                       children: [
+                                        // SizedBox(
+                                        //   height:
+                                        //   getProportionateScreenHeight(
+                                        //       100),
+                                        //   width: getProportionateScreenWidth(
+                                        //       300),
+                                        //   child: ClipRRect(
+                                        //     borderRadius: BorderRadius.circular(5),
+                                        //     child: Image.file(
+                                        //       _pickedFile!,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         ClipRRect(
                                           borderRadius:
                                           BorderRadius.circular(10),
                                           child: SizedBox(
-                                            height:
-                                            getProportionateScreenHeight(
-                                                60),
-                                            width:
-                                            getProportionateScreenWidth(
-                                                300),
-                                            child: Center(
-                                              child: Text(
-                                                  "${AppLocalizations.of(context)!.selectedfile} : ${_pickedFile!.path.split("/").last}"),
+                                            height: getProportionateScreenHeight(150),
+                                            width: getProportionateScreenWidth(300),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text("${AppLocalizations.of(context)!.selectedfile} "),
+                                                SizedBox(height: getProportionateScreenHeight(120),
+                                                  width: getProportionateScreenWidth(120),
+                                                  child: Image.file(_pickedFile!),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
@@ -476,7 +508,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                             msg: AppLocalizations.of(context)!.allfieldsareimportant,
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
-                                            backgroundColor: AppColors.secondaryColor,
+                                            backgroundColor: AppColors.primaryBlackColor,
                                             textColor: AppColors.primaryWhiteColor,
                                           );
                                           return;
@@ -504,7 +536,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
                                             toastLength: Toast.LENGTH_LONG,
                                             gravity: ToastGravity.BOTTOM,
                                             backgroundColor:
-                                            AppColors.secondaryColor,
+                                            AppColors.primaryBlackColor,
                                             textColor:
                                             AppColors.primaryWhiteColor,
                                           );
@@ -571,7 +603,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
           elevation: 5,
           alignment: Alignment.center,
           content: SizedBox(
-            height: getProportionateScreenHeight(230),
+            height: getProportionateScreenHeight(240),
             width: getProportionateScreenWidth(500),
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_collect/src/bloc/point_tracker_bloc/point_tracker_bloc.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../constants/colors.dart';
 import '../../../model/point_tracker/point_tracker_response.dart';
@@ -68,19 +69,20 @@ class _PointTrackerChartState extends State<PointTrackerChart> {
                   barTouchData: BarTouchData(
                     allowTouchBarBackDraw: true,
                     enabled: true,
+                    handleBuiltInTouches: true,
                   ),
                   // baselineY: 0,
-                  titlesData:  const FlTitlesData(
+                  titlesData:   FlTitlesData(
                     bottomTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     // AxisTitles(sideTitles: BarTitle.getBottomTitles()),
                     leftTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: true),
+                    AxisTitles(sideTitles: SideTitles(showTitles: true,reservedSize: getProportionateScreenWidth(28)),
                     ),
                     topTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     rightTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     // leftTitles: BarTitle.getLeftTitle(),
                   ),
                   // borderData: ,
@@ -134,6 +136,7 @@ List<BarChartGroupData> _buildBarGroups(PointTrackerRequestResponse pointTracker
       totalAmount += amount;
       rods.add(
         BarChartRodData(
+          width: 7,
           fromY: 0,
           toY: amount,
           color: rodColors[i % rodColors.length],

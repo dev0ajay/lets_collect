@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_bloc.dart';
+import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 
 import '../../../constants/colors.dart';
 import '../../../model/purchase_history/purchase_history_response.dart';
@@ -10,110 +11,108 @@ class PurchaseHistoryBarChartWidget extends StatefulWidget {
   const PurchaseHistoryBarChartWidget({super.key});
 
   @override
-  State<PurchaseHistoryBarChartWidget> createState() => _PurchaseHistoryBarChartWidgetState();
+  State<PurchaseHistoryBarChartWidget> createState() =>
+      _PurchaseHistoryBarChartWidgetState();
 }
 
-class _PurchaseHistoryBarChartWidgetState extends State<PurchaseHistoryBarChartWidget> {
- ScrollDragController? controller;
- late double minX;
- late double maxX;
- late  String totalAmount = "0";
+class _PurchaseHistoryBarChartWidgetState
+    extends State<PurchaseHistoryBarChartWidget> {
+  ScrollDragController? controller;
+  late double minX;
+  late double maxX;
+  late String totalAmount = "0";
 
+  // List<PurchaseData>? purchaseData;
 
- // List<PurchaseData>? purchaseData;
+  void checkSameDate(PurchaseHistoryResponse jsonData) {
+    for (int i = 0; i < jsonData.data.length; i++) {
+      String currentDate = jsonData.data[i].receiptDate.toString();
+      for (int j = i + 1; j < jsonData.data.length; j++) {
+        if (currentDate == jsonData.data[j].receiptDate) {
+          // totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
+          // print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
+          // print("Total amount: $totalAmount of indexes $i and $j");
+          // You can do further processing here if needed
+        }
+      }
+    }
+  }
 
-
-
-
-
- void checkSameDate(PurchaseHistoryResponse jsonData) {
-   for (int i = 0; i < jsonData.data.length; i++) {
-     String currentDate = jsonData.data[i].receiptDate.toString();
-     for (int j = i + 1; j < jsonData.data.length; j++) {
-       if (currentDate == jsonData.data[j].receiptDate) {
-
-         // totalAmount = (jsonData.data![i].totalAmount! + jsonData.data![j].totalAmount!);
-         // print("Date ${jsonData.data![j].receiptDate} found at indexes $i and $j");
-         // print("Total amount: $totalAmount of indexes $i and $j");
-         // You can do further processing here if needed
-       }
-     }
-   }
- }
-
-
- @override
+  @override
   void initState() {
     super.initState();
     minX = 0;
   }
+
   @override
   Widget build(BuildContext context) {
-    return  BlocConsumer<PurchaseHistoryBloc, PurchaseHistoryState>(
-  listener: (context, state) {
-    if(state is PurchaseHistoryLoaded) {
-     // purchaseData = state.purchaseHistoryResponse.data;
-    }
-  },
-  builder: (context, state) {
-   if(state is PurchaseHistoryLoaded) {
-     if(state.purchaseHistoryResponse.data.isNotEmpty) {
-       return AspectRatio(
-         aspectRatio: 16 / 9,
-         child: BarChart(
-           swapAnimationDuration: const Duration(milliseconds: 150), // Optional
-           swapAnimationCurve: Curves.linear,
-           BarChartData(
-               maxY: _getMaxTotalAmount(state.purchaseHistoryResponse),
-               gridData:  const FlGridData(
-                 show: true,
-                 drawVerticalLine: false,
-                 drawHorizontalLine: true,
-                 // checkToShowHorizontalLine: (value) => value % BarData.interval == 0,
-               ),
-               alignment: BarChartAlignment.spaceAround,
-               borderData: FlBorderData(
-                   border: const Border(bottom: BorderSide(
-                     color: AppColors.chartAxisLineColors,
-                     width: 2,
-                   ), left: BorderSide(
-                     color: AppColors.chartAxisLineColors,
-                     width: 2,
-                   ),
-                   )
-               ),
-               // groupsSpace: 4,
-               barTouchData: BarTouchData(
-                 allowTouchBarBackDraw: true,
-                 enabled: true,
-               ),
-               // baselineY: 0,
-               titlesData:  const FlTitlesData(
-                 bottomTitles:
-                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                 leftTitles:
-                 AxisTitles(sideTitles: SideTitles(showTitles: true),
-                 ),
-                 topTitles:
-                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                 rightTitles:
-                 AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                 // leftTitles: BarTitle.getLeftTitle(),
-               ),
-               // borderData: ,
-               barGroups: _buildBarGroups(state.purchaseHistoryResponse),
-           ),
-         ),
-       );
-     }
-   }
-   return const SizedBox();
-  },
-);
-
+    return BlocConsumer<PurchaseHistoryBloc, PurchaseHistoryState>(
+      listener: (context, state) {
+        if (state is PurchaseHistoryLoaded) {
+          // purchaseData = state.purchaseHistoryResponse.data;
+        }
+      },
+      builder: (context, state) {
+        if (state is PurchaseHistoryLoaded) {
+          if (state.purchaseHistoryResponse.data.isNotEmpty) {
+            return AspectRatio(
+              aspectRatio: 16 / 9,
+              child: BarChart(
+                swapAnimationDuration: const Duration(milliseconds: 150),
+                // Optional
+                swapAnimationCurve: Curves.linear,
+                BarChartData(
+                  maxY: _getMaxTotalAmount(state.purchaseHistoryResponse),
+                  gridData: const FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    drawHorizontalLine: true,
+                    // checkToShowHorizontalLine: (value) => value % BarData.interval == 0,
+                  ),
+                  alignment: BarChartAlignment.spaceAround,
+                  borderData: FlBorderData(
+                      border: const Border(
+                    bottom: BorderSide(
+                      color: AppColors.chartAxisLineColors,
+                      width: 2,
+                    ),
+                    left: BorderSide(
+                      color: AppColors.chartAxisLineColors,
+                      width: 2,
+                    ),
+                  )),
+                  // groupsSpace: 4,
+                  barTouchData: BarTouchData(
+                    allowTouchBarBackDraw: true,
+                    enabled: true,
+                  ),
+                  // baselineY: 0,
+                  titlesData: FlTitlesData(
+                    bottomTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: getProportionateScreenWidth(28)),
+                    ),
+                    topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                    // leftTitles: BarTitle.getLeftTitle(),
+                  ),
+                  // borderData: ,
+                  barGroups: _buildBarGroups(state.purchaseHistoryResponse),
+                ),
+              ),
+            );
+          }
+        }
+        return const SizedBox();
+      },
+    );
   }
 }
-
 
 double _getMaxTotalAmount(PurchaseHistoryResponse purchaseData) {
   double maxTotalAmount = 0;
@@ -132,7 +131,7 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
   Map<String, List<PurchaseData>> groupedData = {};
 
   final List<Color> rodColors = [
- AppColors.secondaryColor,
+    AppColors.secondaryColor,
     AppColors.primaryColor,
   ];
 
@@ -151,6 +150,7 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
       totalAmount += amount;
       rods.add(
         BarChartRodData(
+          width: 7,
           fromY: 0,
           toY: amount,
           color: rodColors[i % rodColors.length],
@@ -171,6 +171,7 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
     // }
     barGroups.add(
       BarChartGroupData(
+        groupVertically: true,
         x: barGroups.length,
         barsSpace: 1,
         barRods: rods,
@@ -180,10 +181,6 @@ List<BarChartGroupData> _buildBarGroups(PurchaseHistoryResponse purchaseData) {
   });
   return barGroups;
 }
-
-
-
-
 
 class BarTitle {
   static SideTitles getBottomTitles() {

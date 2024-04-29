@@ -134,18 +134,18 @@ class MyProfileScreenState extends State<MyProfileScreen> {
 
   ///Image picker for profile picture
   Future<void> _pickImage() async {
-    final _picker = ImagePicker();
-    final XFile? _pickedFile = await _picker.pickImage(
+    final picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 85,
     );
 
-    if (_pickedFile == null) {
+    if (pickedFile == null) {
       // User canceled picking image
       return;
     }
 
-    final bytes = await _pickedFile.readAsBytes();
+    final bytes = await pickedFile.readAsBytes();
 
     final kb = bytes.lengthInBytes / 1024;
     double imageSizeMB = kb / 1024;
@@ -172,8 +172,8 @@ class MyProfileScreenState extends State<MyProfileScreen> {
     }
 
     setState(() {
-      _image = File(_pickedFile.path);
-      galleryFile = File(_pickedFile.path);
+      _image = File(pickedFile.path);
+      galleryFile = File(pickedFile.path);
       String img64 = base64Encode(bytes);
       imageBase64 = img64;
       extension = p.extension(galleryFile!.path).trim().replaceAll('.', '');
@@ -505,7 +505,7 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                       ],
                                     ),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   Flexible(
                                     flex: 2,
                                     child: GestureDetector(

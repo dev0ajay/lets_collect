@@ -17,6 +17,7 @@ class SearchProvider {
           .apiClient
           .searchCategoryRequest(searchCategoryRequest);
       if (response.statusCode == 200) {
+        print(response.toString());
         return StateModel<SearchCategoryRequestResponse>.success(
             SearchCategoryRequestResponse.fromJson(response.data));
       } else {}

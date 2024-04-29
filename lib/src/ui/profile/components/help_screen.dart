@@ -47,7 +47,7 @@ class _HelpScreenState extends State<HelpScreen> {
         ),
         actions: const [
           Text(
-            "v1.2.16+12",
+            "v1.2.8+14",
             style: TextStyle(fontSize: 9),
           )
         ],

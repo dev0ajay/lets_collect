@@ -13,12 +13,14 @@ class ScanReceiptRequestResponse {
   int? statusCode;
   Data? data;
   String? message;
+  String? messageArabic;
 
   ScanReceiptRequestResponse({
     this.success,
     this.statusCode,
     this.data,
     this.message,
+    this.messageArabic,
   });
 
   factory ScanReceiptRequestResponse.fromJson(Map<String, dynamic> json) => ScanReceiptRequestResponse(
@@ -26,6 +28,7 @@ class ScanReceiptRequestResponse {
     statusCode: json["status_code"],
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
     message: json["message"],
+    messageArabic: json["message_arabic"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +36,7 @@ class ScanReceiptRequestResponse {
     "status_code": statusCode,
     "data": data?.toJson(),
     "message": message,
+    "message_arabic": messageArabic,
   };
 }
 

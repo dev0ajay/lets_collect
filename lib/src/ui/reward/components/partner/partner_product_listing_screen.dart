@@ -58,7 +58,7 @@ class _PartnerProductListingScreenState
           sort: "",
           eligible: "",
           brandId: widget.redeemScreenArguments.iD.toString(),
-          redemptionTier: "3",
+          redemptionTier: "2",
         ),
       ),
     );

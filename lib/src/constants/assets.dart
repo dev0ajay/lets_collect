@@ -4,6 +4,7 @@ class Assets {
   Assets._();
 
   // splash screen assets
+  static const String SPLASH_LOGO = 'assets/png_icons/splash_logo.png';
 
   // Localization icon assets
 
@@ -57,21 +58,13 @@ class Assets {
   static const String SEARCH_SVG = 'assets/svg/search.svg';
   static const String PROFILE_SVG = 'assets/svg/profile.svg';
   static const String SCAN_SVG = 'assets/svg/scan.svg';
-
-
-
-
-
-
+  static const String CAM_SVG = 'assets/svg/cam.svg';
+  static const String UPLOAD_SVG = 'assets/svg/upload.svg';
 
 
   ///General
-  static const String SPLASH_LOGO = 'assets/png_icons/splash_logo.png';
   static const String UPLOAD = 'assets/png_icons/upload.png';
   static const String SCANNER = 'assets/png_icons/scanner.png';
-  static const String BEGA = 'assets/png_icons/bega.png';
-  static const String DURRA = 'assets/png_icons/durra.png';
-  static const String MAZA = 'assets/png_icons/maza.png';
   static const String NOTI = 'assets/png_icons/app_icon_android.png';
 
 
@@ -90,40 +83,6 @@ class Assets {
   static const String HELP = 'assets/png_icons/help.png';
   static const String CANCEL = 'assets/png_icons/cancel.png';
 
-// Referral window screen
-
-  //bottom navigation
-
-
-  //product details screen
-
-
-  //cart screen
-
-
-  //payment screen
-
-
-  //address selection screen
-
-
-  //profile screen
-
-
-  //category screen
-
-
-  //Referral window screen
-
-  //layout selection screen
-
-
-  //help center screen
-
-  // store locator screen
-
-
-  //gif
 
 
 
