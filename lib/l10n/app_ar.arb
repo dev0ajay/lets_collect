@@ -190,7 +190,7 @@
     "transactionlog" : "سجل المعاملات",
     "totalamount" : "المبلغ الإجمالي",
     "date" : " التاريخ",
-    "supermarket" : "السوبرماركت",
+    "supermarket" : "اسم السوبر ماركت",
     "totalitem" : "إجمالي العناصر",
     "bhd" : "د.ب.",
 
@@ -233,7 +233,7 @@
     "specialoffers" : "عروض خاصة",
     "specialofferdetails" : "تفاصيل العرض الخاص",
     "startdate" : "تاريخ البدء",
-    "date" : "Date",
+    "date" : "تاريخ",
     "enddate" : "تاريخ الانتهاء",
     "findthisexclusiveofferat" : "ابحث عن هذا العرض الحصري على",
 
@@ -290,8 +290,5 @@
     "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين",
     "notificationdetails" : "تفاصيل الإشعار",
     "pointdetails" : "تفاصيل النقاط"
-
-
-
 
 }

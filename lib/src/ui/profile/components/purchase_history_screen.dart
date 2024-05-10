@@ -10,6 +10,7 @@ import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
+import 'package:lets_collect/src/ui/profile/components/purchase_history_details_arguments.dart';
 import 'package:lottie/lottie.dart';
 import '../../../bloc/filter_bloc/filter_bloc.dart';
 import '../../../bloc/purchase_history_bloc/purchase_history_bloc.dart';
@@ -1097,11 +1098,18 @@ class _PurchaseHistoryScreenState extends State<PurchaseHistoryScreen> {
                                         onTap: () {
                                           context.push(
                                               '/purchase_history_details',
-                                              extra: state
-                                                  .purchaseHistoryResponse
-                                                  .data[index]
-                                                  .receiptId
-                                                  .toString());
+                                              extra: PurchaseHistoryDetailsArgument(
+                                                  supermarketName: state
+                                                      .purchaseHistoryResponse
+                                                      .data[index]
+                                                      .supermarketName,
+                                                  receiptId: state
+                                                      .purchaseHistoryResponse
+                                                      .data[index]
+                                                      .receiptId
+                                                      .toString(),
+                                              )
+                                          );
                                         },
                                         child: IntrinsicHeight(
                                           child: Container(

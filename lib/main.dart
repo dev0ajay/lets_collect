@@ -21,19 +21,6 @@ Future<void> main() async {
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   ObjectFactory().setPrefs(sharedPreferences);
-//
-//  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-//  if (Platform.isAndroid) {
-//    androidInfo = await deviceInfo.androidInfo;
-//    if (androidInfo != null) {
-//      ObjectFactory().prefs.setPhoneModel(phoneModel: androidInfo.model);
-//    }
-//
-//    print('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
-//  } else {
-//    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-//    print('Running on ${iosInfo.utsname.machine}');
-//  }
 
   ///setting pref
 

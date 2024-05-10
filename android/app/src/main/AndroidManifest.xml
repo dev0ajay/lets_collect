@@ -37,7 +37,7 @@
         android:enableOnBackInvokedCallback="true"
         android:label="lets_collect"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/ic_launcher">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_stat_app_icon_android" />

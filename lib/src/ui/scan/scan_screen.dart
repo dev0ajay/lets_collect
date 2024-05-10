@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -69,15 +67,14 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
 
   ///Runtime User Access and Permission handling
 
-  Future<void> checkPermissionForGallery(
-      Permission permission, BuildContext context) async {
+  Future<void> checkPermissionForGallery(Permission permission) async {
     final status = await permission.request();
     if (status.isGranted) {
       print("Permission granted");
       getImage(ImageSource.gallery);
     } else if (status.isDenied) {
       print("Permission Denied");
-      _showPermissionDialog(_scaffoldKey.currentContext!);
+      _showPermissionDialog();
     } else if (status.isPermanentlyDenied) {
       print("Permission permanently denied");
 
@@ -88,8 +85,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> checkPermissionForCamera(
-      Permission permission, BuildContext context) async {
+  Future<void> checkPermissionForCamera(Permission permission) async {
     final status = await permission.request();
     if (status.isGranted) {
       // _showPicker(context: context);
@@ -98,11 +94,22 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
       // getImage(ImageSource.camera);
     } else if (status.isDenied) {
       print("Permission denied");
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(content: Text("Permission is not Granted")));
-      _showPermissionDialog(context);
+      _showPermissionDialog();
     } else if (status.isPermanentlyDenied) {
       openSettings();
+    }
+  }
+
+  Future<void> checkPlatform() async {
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if (androidInfo.version.sdkInt <= 32) {
+        checkPermissionForGallery(Permission.storage);
+      } else {
+        checkPermissionForGallery(Permission.photos);
+      }
+    } else if (Platform.isIOS) {
+      checkPermissionForGallery(Permission.photos);
     }
   }
 
@@ -227,7 +234,22 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                 ),
                           GestureDetector(
                             onTap: () {
-                              context.push('/long_receipt');
+                              // context.push('/long_receipt');
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    content: SizedBox(
+                                      height: getProportionateScreenHeight(260),
+                                      width: getProportionateScreenWidth(320),
+                                      child: Lottie.asset(Assets.SOON),
+                                    ),
+                                  );
+                                },
+                              );
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(top: 20),
@@ -641,7 +663,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         });
   }
 
-  void _showPermissionDialog(BuildContext permissionDialogContext) {
+  void _showPermissionDialog() {
     showDialog(
         context: _scaffoldKey.currentContext!,
         builder: (BuildContext permissionDialogContext) {
@@ -700,49 +722,43 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     required BuildContext context,
   }) {
     showModalBottomSheet(
+      // backgroundColor: AppColors.primaryWhiteColor,
       context: _scaffoldKey.currentContext!,
       builder: (BuildContext context) {
         return SafeArea(
           child: Wrap(
             children: <Widget>[
               ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: Text(
-                  AppLocalizations.of(context)!.photolibrary,
-                  // 'Photo Library'
+                leading: const Icon(
+                  Icons.photo_library,
+                  color: AppColors.primaryColor,
                 ),
-                onTap: () async {
-                  if (Platform.isAndroid) {
-                    final androidInfo = await DeviceInfoPlugin().androidInfo;
-                    if (androidInfo.version.sdkInt <= 32) {
-                      checkPermissionForGallery(Permission.storage, context);
-                    } else {
-                      checkPermissionForGallery(Permission.photos, context);
-                    }
-                  } else if (Platform.isIOS) {
-                    checkPermissionForGallery(Permission.photos, context);
-                  }
+                title: Text(
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryColor,
+                  ),
+                  AppLocalizations.of(context)!.photolibrary,
+                ),
+                onTap: () {
+                  checkPlatform();
                   context.pop();
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.photo_camera),
+                leading: const Icon(
+                  Icons.photo_camera,
+                  color: AppColors.primaryColor,
+                ),
                 title: Text(
+                  style: GoogleFonts.openSans(
+                    color: AppColors.primaryColor,
+                  ),
                   AppLocalizations.of(context)!.camera,
+
                   // 'Camera'
                 ),
-                onTap: () async {
-                  await checkPermissionForCamera(Permission.camera, context);
-                  // if(Platform.isAndroid) {
-                  //   final androidInfo = await DeviceInfoPlugin().androidInfo;
-                  //   if (androidInfo.version.sdkInt <= 32) {
-                  //     checkPermissionForGallery(Permission.camera, context);
-                  //   } else {
-                  //     checkPermissionForGallery(Permission.camera, context);
-                  //   }
-                  // }else if(Platform.isIOS) {
-                  //   checkPermissionForGallery(Permission.camera, context);
-                  // }
+                onTap: () {
+                  checkPermissionForCamera(Permission.camera);
                   context.pop();
                 },
               ),

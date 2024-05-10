@@ -338,11 +338,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
           return Stack(
             children: [
               const Scaffold(backgroundColor: Colors.transparent),
-              const Opacity(
-                opacity: 0.8,
-                child:
-                    ModalBarrier(dismissible: false, color: Colors.transparent),
-              ),
+              const ModalBarrier(dismissible: false, color: Colors.transparent),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -368,7 +364,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
         return WillPopScope(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 15, right: 15),
               child: SingleChildScrollView(
                 child: Form(
                   key: _formKey,
@@ -379,7 +375,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                         child: Text(
                           Strings.LOGIN_LETS_COLLECT,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.primaryWhiteColor,
                             fontSize: 40,
                             letterSpacing: 2.0,
                           ),
@@ -584,15 +580,17 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Flexible(
-                            child: MyButton(
-                              imagePath: Assets.MAIL,
-                              Textfontsize: 14,
-                              TextColors: AppColors.iconGreyColor,
-                              text: AppLocalizations.of(context)!.emailsignup,
-                              color: AppColors.primaryWhiteColor,
-                              width: 160,
-                              height: 40,
-                              onTap: () {
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                fixedSize:  Size(
+                                    Platform.isAndroid ? 160 : MediaQuery.of(context).size.width, 35),
+                                padding: EdgeInsets.zero,
+                                backgroundColor: AppColors.primaryWhiteColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
                                 Navigator.of(context).push(
                                   PageRouteBuilder(
                                     reverseTransitionDuration:
@@ -620,9 +618,39 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                   ),
                                 );
                               },
-                              showImage: true,
-                              imagewidth: 28,
-                              imageheight: 20,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    Assets.MAIL,
+                                    width: 20,
+                                    height: 20,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  state is AppleSignInLoading
+                                      ? const Center(
+                                          child: SizedBox(
+                                            height: 10,
+                                            width: 10,
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.secondaryColor,
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        )
+                                      : Text(
+                                          AppLocalizations.of(context)!
+                                              .signinwithemail,
+                                          // "Sign In",
+                                          style: GoogleFonts.roboto(
+                                            color: AppColors.primaryGrayColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -633,7 +661,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                     builder: (context, state) {
                                       return ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                          fixedSize: const Size(160, 40),
+                                          padding: EdgeInsets.zero,
                                           backgroundColor:
                                               AppColors.primaryWhiteColor,
                                           shape: RoundedRectangleBorder(
@@ -671,12 +699,10 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                                 : Text(
                                                     AppLocalizations.of(
                                                             context)!
-                                                        .signin,
-                                                    // "Sign In",
+                                                        .loginwithapple,
                                                     style: GoogleFonts.roboto(
                                                       color: AppColors
                                                           .primaryGrayColor,
-                                                      fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -780,7 +806,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               builder: (context, state) {
                                 return ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(160, 40),
+                                    padding: EdgeInsets.zero,
+                                    // fixedSize: const Size(160, 40),
                                     backgroundColor:
                                         AppColors.primaryWhiteColor,
                                     shape: RoundedRectangleBorder(
@@ -817,7 +844,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             )
                                           : Text(
                                               AppLocalizations.of(context)!
-                                                  .signin,
+                                                  .loginwithgoogle,
                                               // "Sign In",
                                               style: GoogleFonts.roboto(
                                                 color:
@@ -892,7 +919,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               builder: (context, state) {
                                 return ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(160, 40),
+                                    padding: EdgeInsets.zero,
+                                    // fixedSize: const Size(160, 40),
                                     backgroundColor:
                                         AppColors.primaryWhiteColor,
                                     shape: RoundedRectangleBorder(
@@ -909,9 +937,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                     children: [
                                       Image.asset(
                                         Assets.FACEBOOK,
-                                        width: 20,
-                                        height: 20,
-                                        fit: BoxFit.contain,
+                                        width: 25,
+                                        height: 25,
+                                        fit: BoxFit.cover,
                                       ),
                                       const SizedBox(width: 8),
                                       state is FacebookSignInLoading
@@ -929,8 +957,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             )
                                           : Text(
                                               AppLocalizations.of(context)!
-                                                  .signin,
-                                              // "Sign In",
+                                                  .loginwithfacebook,
                                               style: GoogleFonts.roboto(
                                                 color:
                                                     AppColors.primaryGrayColor,

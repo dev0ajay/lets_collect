@@ -716,7 +716,7 @@ class _PartnerProductListingScreenState
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context)!.partner,
+                  widget.redeemScreenArguments.name,
                   // "Partner",
                   style: GoogleFonts.roboto(
                     fontSize: 16,
@@ -728,7 +728,7 @@ class _PartnerProductListingScreenState
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: widget.redeemScreenArguments.requiredPoint,
+                        text: widget.redeemScreenArguments.totalPoint,
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                           fontSize: 20,
@@ -876,6 +876,7 @@ class _PartnerProductListingScreenState
                             .rewards![index]
                             .reedemStores!,
                         from: 'brand_products',
+                        totalPoint: widget.redeemScreenArguments.totalPoint.toString(),
                       ),
                     );
                   },

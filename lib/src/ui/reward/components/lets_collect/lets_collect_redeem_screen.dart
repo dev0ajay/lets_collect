@@ -98,7 +98,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                       width: getProportionateScreenWidth(242),
                       height: getProportionateScreenHeight(280),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.primaryWhiteColor,
                         borderRadius: BorderRadius.circular(5),
                         border: const Border(
                             right: BorderSide(
@@ -214,7 +214,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                   child: InkWell(
                     splashColor: AppColors.secondaryButtonColor,
                     splashFactory: InkSplash.splashFactory,
-                    onTap: () async{
+                    onTap: () {
                       if(int.tryParse(widget.redeemScreenArguments.totalPoint!)! > int.parse(widget.redeemScreenArguments.requiredPoint)) {
                         BlocProvider.of<RedeemBloc>(context).add(
                           GetQrCodeUrlEvent(
@@ -222,7 +222,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                 rewardId: widget.redeemScreenArguments.rewardId!),
                           ),
                         );
-                        await  showDialog(
+                          showDialog(
                           context: context,
                           builder: (BuildContext context) =>
                               RedeemAlertOverlayWidget(

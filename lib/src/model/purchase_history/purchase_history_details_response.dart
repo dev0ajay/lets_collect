@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final purchaseHistoryDetailsResponse = purchaseHistoryDetailsResponseFromJson(jsonString);
-
 import 'dart:convert';
-
-PurchaseHistoryDetailsResponse purchaseHistoryDetailsResponseFromJson(String str) => PurchaseHistoryDetailsResponse.fromJson(json.decode(str));
-
-String purchaseHistoryDetailsResponseToJson(PurchaseHistoryDetailsResponse data) => json.encode(data.toJson());
 
 class PurchaseHistoryDetailsResponse {
   bool? success;
@@ -18,6 +10,10 @@ class PurchaseHistoryDetailsResponse {
     this.statusCode,
     this.data,
   });
+
+  factory PurchaseHistoryDetailsResponse.fromRawJson(String str) => PurchaseHistoryDetailsResponse.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory PurchaseHistoryDetailsResponse.fromJson(Map<String, dynamic> json) => PurchaseHistoryDetailsResponse(
     success: json["success"],
@@ -41,6 +37,10 @@ class Data {
     this.itemData,
   });
 
+  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     receiptData: json["receipt_data"] == null ? null : ReceiptData.fromJson(json["receipt_data"]),
     itemData: json["item_data"] == null ? [] : List<ItemDatum>.from(json["item_data"]!.map((x) => ItemDatum.fromJson(x))),
@@ -59,7 +59,7 @@ class ItemDatum {
   String? code;
   String? brandName;
   String? itemPrice;
-  int? quatity;
+  double? quatity;
   String? totalPrice;
 
   ItemDatum({
@@ -73,6 +73,10 @@ class ItemDatum {
     this.totalPrice,
   });
 
+  factory ItemDatum.fromRawJson(String str) => ItemDatum.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
   factory ItemDatum.fromJson(Map<String, dynamic> json) => ItemDatum(
     id: json["id"],
     receiptId: json["receipt_id"],
@@ -80,7 +84,7 @@ class ItemDatum {
     code: json["code"],
     brandName: json["brand_name"],
     itemPrice: json["item_price"],
-    quatity: json["quatity"],
+    quatity: json["quatity"]?.toDouble(),
     totalPrice: json["total_price"],
   );
 
@@ -126,6 +130,10 @@ class ReceiptData {
     this.tillNumber,
     this.paymentMethod,
   });
+
+  factory ReceiptData.fromRawJson(String str) => ReceiptData.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory ReceiptData.fromJson(Map<String, dynamic> json) => ReceiptData(
     receiptId: json["receipt_id"],

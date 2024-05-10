@@ -716,8 +716,8 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.brand,
-                  // "Brand",
+                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ?
+                  widget.redeemScreenArguments.name : widget.redeemScreenArguments.name,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -728,7 +728,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: widget.redeemScreenArguments.requiredPoint,
+                        text: widget.redeemScreenArguments.totalPoint,
                         style: GoogleFonts.openSans(
                           color: AppColors.primaryWhiteColor,
                           fontSize: 20,
@@ -858,6 +858,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                           qrCodeGenerationUrl: "",
                           whereToRedeem: state.brandAndPartnerProductRequestResponse.data!.rewards![index].reedemStores!,
                           from: 'brand_products',
+                          totalPoint: widget.redeemScreenArguments.totalPoint.toString(),
                         ),
                       );
                     },

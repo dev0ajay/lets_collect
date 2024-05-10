@@ -9,6 +9,7 @@ import 'package:lets_collect/src/bloc/purchase_history_bloc/purchase_history_blo
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/purchase_history/purchase_history_request.dart';
+import 'package:lets_collect/src/ui/profile/components/purchase_history_details_arguments.dart';
 import 'package:lets_collect/src/utils/network_connectivity/bloc/network_bloc.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:lottie/lottie.dart';
@@ -16,9 +17,10 @@ import '../../../model/purchase_history/purchase_history_details_request.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PurchaseHistoryDetailsScreen extends StatefulWidget {
-  final String receiptId;
+  final PurchaseHistoryDetailsArgument purchaseHistoryDetailsArgument;
 
-  const PurchaseHistoryDetailsScreen({super.key, required this.receiptId});
+  const PurchaseHistoryDetailsScreen(
+      {super.key, required this.purchaseHistoryDetailsArgument});
 
   @override
   State<PurchaseHistoryDetailsScreen> createState() =>
@@ -32,11 +34,11 @@ class _PurchaseHistoryDetailsScreenState
   @override
   void initState() {
     super.initState();
-    print("ReceiptID: ${widget.receiptId}");
+    print("ReceiptID: ${widget.purchaseHistoryDetailsArgument.receiptId}");
     BlocProvider.of<PurchaseHistoryBloc>(context).add(
       GetPurchaseHistoryDetails(
-        purchaseHistoryDetailsRequest:
-            PurchaseHistoryDetailsRequest(purchaseId: widget.receiptId),
+        purchaseHistoryDetailsRequest: PurchaseHistoryDetailsRequest(
+            purchaseId: widget.purchaseHistoryDetailsArgument.receiptId),
       ),
     );
   }
@@ -93,7 +95,8 @@ class _PurchaseHistoryDetailsScreenState
                                 elevation: 0,
                                 backgroundColor: AppColors.primaryWhiteColor,
                                 automaticallyImplyLeading: false,
-                                expandedHeight: getProportionateScreenHeight(300.0),
+                                expandedHeight:
+                                    getProportionateScreenHeight(300.0),
                                 floating: false,
                                 pinned: true,
                                 flexibleSpace: FlexibleSpaceBar(
@@ -140,7 +143,6 @@ class _PurchaseHistoryDetailsScreenState
                                                 Expanded(
                                                   flex: 0,
                                                   child: Text(
-                                                    // "Date",
                                                     "${AppLocalizations.of(context)!.date}:  ",
                                                     style: GoogleFonts.roboto(
                                                       color: AppColors
@@ -204,16 +206,8 @@ class _PurchaseHistoryDetailsScreenState
                                                                 .state
                                                                 .selectedLanguage ==
                                                             Language.english
-                                                        ? state
-                                                            .purchaseHistoryDetailsResponse
-                                                            .data!
-                                                            .receiptData!
-                                                            .branch!
-                                                        : state
-                                                            .purchaseHistoryDetailsResponse
-                                                            .data!
-                                                            .receiptData!
-                                                            .branch!,
+                                                        ? widget.purchaseHistoryDetailsArgument.supermarketName
+                                                        : widget.purchaseHistoryDetailsArgument.supermarketName,
                                                     style: GoogleFonts.roboto(
                                                       color: AppColors
                                                           .primaryColor,
@@ -385,7 +379,7 @@ class _PurchaseHistoryDetailsScreenState
                                                 ],
                                               ),
                                               trailing: Text(
-                                                "${state.purchaseHistoryDetailsResponse.data!.receiptData!.currencyCode} ${state.purchaseHistoryDetailsResponse.data!.itemData![index].itemPrice}",
+                                                "${state.purchaseHistoryDetailsResponse.data!.receiptData!.currencyCode} ${state.purchaseHistoryDetailsResponse.data!.itemData![index].totalPrice}",
                                                 style: GoogleFonts.openSans(
                                                   color: AppColors
                                                       .secondaryButtonColor,

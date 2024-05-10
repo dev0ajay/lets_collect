@@ -96,14 +96,6 @@ class ApiClient {
       },
     );
 
-    // (dioLetsCollect.httpClientAdapter
-    // as HttpClientAdapter).onHttpClientCreate =
-    //     (client) {
-    //   client.badCertificateCallback =
-    //       (X509Certificate cert, String host, int port) {
-    //     return true;
-    //   };
-    // };
 
     dioLetsCollect.interceptors.add(InterceptorsWrapper(
       onRequest: (reqOptions, handler) {
@@ -114,7 +106,6 @@ class ApiClient {
       },
     ));
   }
-
 
   ///Register
   Future<Response> registerUser(SignupRequest signupRequest) {
@@ -318,6 +309,7 @@ class ApiClient {
       PurchaseHistoryRequest purchaseHistoryRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.PURCHASE_HISTORY,
+      data: purchaseHistoryRequest,
       options: Options(headers: {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
@@ -328,8 +320,8 @@ class ApiClient {
   Future<Response> purchaseHistoryDetailsRequest(
       PurchaseHistoryDetailsRequest purchaseHistoryDetailsRequest) {
     return dioLetsCollect.post(
-      data: purchaseHistoryDetailsRequest,
       UrlsLetsCollect.PURCHASE_HISTORY_DETAILS,
+      data: purchaseHistoryDetailsRequest,
       options: Options(headers: {
         "Authorization": ObjectFactory().prefs.getAuthToken(),
       }),
@@ -497,15 +489,14 @@ class ApiClient {
   }
 
   ///Change Password
-  Future<Response> getChangePasswordClient(ChangePasswordRequest changePasswordRequest) {
+  Future<Response> getChangePasswordClient(
+      ChangePasswordRequest changePasswordRequest) {
     return dioLetsCollect.post(
       UrlsLetsCollect.CHANGE_PASSWORD,
-      data:changePasswordRequest,
-      options: Options(
-          headers: {
-            "Authorization": ObjectFactory().prefs.getAuthToken(),
-          }
-      ),
+      data: changePasswordRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
     );
   }
 }

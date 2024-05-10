@@ -5,6 +5,7 @@ class BrandAndPartnerRedeemArguments {
   final String qrCodeGenerationUrl;
   final String from;
   final int rewardId;
+  final String totalPoint;
 
   BrandAndPartnerRedeemArguments({
     required this.requiredPoints,
@@ -13,5 +14,6 @@ class BrandAndPartnerRedeemArguments {
     required this.whereToRedeem,
     required this.from,
     required this.rewardId,
+    required this.totalPoint,
   });
 }

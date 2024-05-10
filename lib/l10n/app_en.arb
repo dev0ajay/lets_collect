@@ -189,7 +189,7 @@
     "transactionlog" : "Transaction Log",
     "totalamount" : "Total Amount",
     "date" : "Date :  ",
-    "supermarket" : "SuperMarket :  ",
+    "supermarket" : "SuperMarket Name :  ",
     "totalitem" : "Total items : ",
     "bhd" : "BHD",
 
@@ -289,5 +289,12 @@
     "passwordchangedsuccessfull" : "Password Changed Successfully!",
     "newpasswordandconfirmpassworddonotmatch" : "New password and confirm password do not match",
     "notificationdetails" : "Notification Details",
-    "pointdetails" : "Point Details"
+    "pointdetails" : "Point Details",
+    "loginwithfacebook" : "Login with Facebook",
+    "loginwithgoogle" : "Login with Google",
+    "loginwithapple" : "Login with Apple",
+    "signinwithemail" : "Sign in with email"
+
+
+
 }

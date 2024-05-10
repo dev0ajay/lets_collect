@@ -2034,8 +2034,8 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   child:
                                                                       Container(
                                                                     // height: 40,
-                                                                    color:
-                                                                        AppColors.primaryWhiteColor,
+                                                                    color: AppColors
+                                                                        .primaryWhiteColor,
                                                                     child:
                                                                         Column(
                                                                       children: [
@@ -4423,7 +4423,7 @@ class _RewardScreenState extends State<RewardScreen> {
                               .letsCollect![index].rewardImage!,
                           wereToRedeem: state.rewardTierRequestResponse.data!
                               .letsCollect![index].reedemStores!,
-                          wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                          wereToRedeemAr: state.rewardTierRequestResponse.data!
                               .letsCollect![index].reedemStores!,
                           name: state.rewardTierRequestResponse.data!
                               .partner![index].brandName!,
@@ -4617,14 +4617,19 @@ class _RewardScreenState extends State<RewardScreen> {
                         iD: state.rewardTierRequestResponse.data!.brand![index]
                             .brandId
                             .toString(),
-                        wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                        wereToRedeemAr: state.rewardTierRequestResponse.data!
                             .brand![index].reedemStores!,
-                        name:  context.read<LanguageBloc>().state.selectedLanguage ==
-                            Language.english ?
-                        state.rewardTierRequestResponse.data!
-                            .partner![index].brandName! :
-                        state.rewardTierRequestResponse.data!
-                            .partner![index].brandNameArabic!,
+                        name: context
+                                    .read<LanguageBloc>()
+                                    .state
+                                    .selectedLanguage ==
+                                Language.english
+                            ? state.rewardTierRequestResponse.data!
+                                .brand![index].brandName!
+                            : state.rewardTierRequestResponse.data!
+                                .brand![index].brandNameArabic!,
+                        totalPoint: state.rewardTierRequestResponse.totalPoints
+                            .toString(),
                       ),
                     );
                   },
@@ -4795,10 +4800,19 @@ class _RewardScreenState extends State<RewardScreen> {
                         iD: state.rewardTierRequestResponse.data!
                             .partner![index].brandId
                             .toString(),
-                        wereToRedeem_ar: state.rewardTierRequestResponse.data!
+                        wereToRedeemAr: state.rewardTierRequestResponse.data!
                             .partner![index].reedemStores!,
-                        name: state.rewardTierRequestResponse.data!
-                          .partner![index].partnerName!,
+                        name: context
+                                    .read<LanguageBloc>()
+                                    .state
+                                    .selectedLanguage ==
+                                Language.english
+                            ? state.rewardTierRequestResponse.data!
+                                .partner![index].brandName!
+                            : state.rewardTierRequestResponse.data!
+                                .partner![index].brandNameArabic!,
+                        totalPoint: state.rewardTierRequestResponse.totalPoints
+                            .toString(),
                       ),
                     );
                   },
@@ -4833,10 +4847,11 @@ class _RewardScreenState extends State<RewardScreen> {
                           fadeInDuration: const Duration(milliseconds: 200),
                           fit: BoxFit.contain,
                           imageUrl: state.rewardTierRequestResponse.data!
-                              .partner![index].partnerLogo!.isEmpty ? state.rewardTierRequestResponse.data!
-                              .partner![index].brandLogo! :
-                          state.rewardTierRequestResponse.data!
-                              .partner![index].partnerLogo!,
+                                  .partner![index].partnerLogo!.isEmpty
+                              ? state.rewardTierRequestResponse.data!
+                                  .partner![index].brandLogo!
+                              : state.rewardTierRequestResponse.data!
+                                  .partner![index].partnerLogo!,
                           width: MediaQuery.of(context).size.width,
                           placeholder: (context, url) => SizedBox(
                             width: MediaQuery.of(context).size.width,

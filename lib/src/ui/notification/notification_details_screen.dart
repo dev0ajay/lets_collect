@@ -89,40 +89,6 @@ class NotificationDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    // flex: 3,
-                    child: Text(
-                      context.read<LanguageBloc>().state.selectedLanguage ==
-                              Language.english
-                          ? notificationDetailsArgument.title
-                          : notificationDetailsArgument.title,
-                      maxLines: 8,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.openSans(
-                        color: AppColors.primaryColor,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Flexible(
-                    // flex: 2,
-                    child: Text(
-                      context.read<LanguageBloc>().state.selectedLanguage ==
-                              Language.english
-                          ? notificationDetailsArgument.message
-                          : notificationDetailsArgument.message,
-                      textAlign: TextAlign.start,
-                      style: GoogleFonts.openSans(
-                        color: AppColors.primaryColor2,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Flexible(
                     child: RichText(
                       softWrap: true,
                       maxLines: 1,
@@ -155,6 +121,41 @@ class NotificationDetailsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  Flexible(
+                    // flex: 3,
+                    child: Text(
+                      context.read<LanguageBloc>().state.selectedLanguage ==
+                              Language.english
+                          ? notificationDetailsArgument.title
+                          : notificationDetailsArgument.title,
+                      maxLines: 8,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryColor,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Flexible(
+                    // flex: 2,
+                    child: Text(
+                      context.read<LanguageBloc>().state.selectedLanguage ==
+                              Language.english
+                          ? notificationDetailsArgument.message
+                          : notificationDetailsArgument.message,
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryColor2,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             );

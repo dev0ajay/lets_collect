@@ -12,6 +12,7 @@ import '../../../bloc/redeem/redeem_bloc.dart';
 import '../../../constants/assets.dart';
 import '../../../constants/colors.dart';
 import '../../../model/redeem/qr_code_url_request.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RedeemScreen extends StatefulWidget {
   final BrandAndPartnerRedeemArguments brandAndPartnerRedeemArguments;
@@ -114,13 +115,14 @@ class _RedeemScreenState extends State<RedeemScreen> {
                             flex: 4,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child:  CachedNetworkImage(
+                              child: CachedNetworkImage(
                                 alignment: Alignment.center,
                                 fadeInCurve: Curves.easeIn,
                                 fadeInDuration:
-                                const Duration(milliseconds: 200),
+                                    const Duration(milliseconds: 200),
                                 fit: BoxFit.contain,
-                                imageUrl: widget.brandAndPartnerRedeemArguments.productImageUrl,
+                                imageUrl: widget.brandAndPartnerRedeemArguments
+                                    .productImageUrl,
                                 width: MediaQuery.of(context).size.width,
                                 placeholder: (context, url) => Lottie.asset(
                                   Assets.JUMBINGDOT,
@@ -128,7 +130,7 @@ class _RedeemScreenState extends State<RedeemScreen> {
                                   width: 10,
                                 ),
                                 errorWidget: (context, url, error) =>
-                                const ImageIcon(
+                                    const ImageIcon(
                                   size: 250,
                                   color: AppColors.hintColor,
                                   AssetImage(Assets.NO_IMG),
@@ -140,7 +142,8 @@ class _RedeemScreenState extends State<RedeemScreen> {
                           Flexible(
                             flex: 1,
                             child: Text(
-                              widget.brandAndPartnerRedeemArguments.requiredPoints,
+                              widget.brandAndPartnerRedeemArguments
+                                  .requiredPoints,
                               style: GoogleFonts.roboto(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
@@ -168,7 +171,10 @@ class _RedeemScreenState extends State<RedeemScreen> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  _showDialogBox(context: context, storeList: widget.brandAndPartnerRedeemArguments.whereToRedeem);
+                  _showDialogBox(
+                      context: context,
+                      storeList:
+                          widget.brandAndPartnerRedeemArguments.whereToRedeem);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -193,19 +199,40 @@ class _RedeemScreenState extends State<RedeemScreen> {
                   splashColor: AppColors.secondaryButtonColor,
                   splashFactory: InkSplash.splashFactory,
                   onTap: () {
-                    BlocProvider.of<RedeemBloc>(context).add(
-                      GetQrCodeUrlEvent(
-                        qrCodeUrlRequest: QrCodeUrlRequest(rewardId: widget.brandAndPartnerRedeemArguments.rewardId),
-                      ),
-                    );
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                           RedeemAlertOverlayWidget(
-                             imageUrl: widget.brandAndPartnerRedeemArguments.productImageUrl,
-                             requiredPoints: widget.brandAndPartnerRedeemArguments.requiredPoints,
-                           ),
-                    );
+                    if (int.tryParse(
+                            widget.brandAndPartnerRedeemArguments.totalPoint)! >
+                        int.parse(widget
+                            .brandAndPartnerRedeemArguments.requiredPoints)) {
+                      BlocProvider.of<RedeemBloc>(context).add(
+                        GetQrCodeUrlEvent(
+                          qrCodeUrlRequest: QrCodeUrlRequest(
+                              rewardId: widget
+                                  .brandAndPartnerRedeemArguments.rewardId),
+                        ),
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            RedeemAlertOverlayWidget(
+                          imageUrl: widget
+                              .brandAndPartnerRedeemArguments.productImageUrl,
+                          requiredPoints: widget
+                              .brandAndPartnerRedeemArguments.requiredPoints,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: AppColors.secondaryColor,
+                        content: Text(
+                          AppLocalizations.of(context)!
+                              .youdonthaveenoughpointstoreddemthisitem,
+                          // "You don't have enough points to redeem this item.",
+                          style: const TextStyle(
+                            color: AppColors.primaryWhiteColor,
+                          ),
+                        ),
+                      ));
+                    }
                   },
                   child: const SizedBox(
                     child: Padding(
@@ -234,7 +261,6 @@ class _RedeemScreenState extends State<RedeemScreen> {
       ),
     );
   }
-
 
   void _showDialogBox({
     required BuildContext context,
@@ -266,26 +292,26 @@ class _RedeemScreenState extends State<RedeemScreen> {
               const SizedBox(height: 10),
               Center(
                   child: Text(
-                    "In Following Physical Store",
-                    style: GoogleFonts.roboto(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
+                "In Following Physical Store",
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
               const SizedBox(height: 20),
               Expanded(
                 flex: 2,
                 child: Column(
                     children: List.generate(
-                      storeList.length,
-                          (index) => Text(
-                        "\u2022 ${storeList[index]}",
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    )),
+                  storeList.length,
+                  (index) => Text(
+                    "\u2022 ${storeList[index]}",
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )),
               ),
             ],
           ),

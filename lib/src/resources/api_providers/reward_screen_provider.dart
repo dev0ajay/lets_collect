@@ -17,11 +17,12 @@ class RewardScreenProvider {
     try {
       final response =
           await ObjectFactory().apiClient.rewardTierRequest(rewardTierRequest);
+      print(response.toString());
       if (response.statusCode == 200) {
+        print(response.toString());
         return StateModel<RewardTierRequestResponse>.success(
             RewardTierRequestResponse.fromJson(response.data));
       } else {}
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -49,10 +50,10 @@ class RewardScreenProvider {
       final response =
           await ObjectFactory().apiClient.getBrandAndCategoryList();
       if (response.statusCode == 200) {
+        print(response.toString());
         return StateModel<BrandAndCategoryFilterResponse>.success(
             BrandAndCategoryFilterResponse.fromJson(response.data));
       } else {}
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -80,8 +81,8 @@ class RewardScreenProvider {
       final response = await ObjectFactory()
           .apiClient
           .getBrandAndPartnerProduct(brandAndPartnerProductRequest);
-      print(response.toString());
       if (response.statusCode == 200) {
+        print(response.toString());
         return StateModel<BrandAndPartnerProductRequestResponse>.success(
             BrandAndPartnerProductRequestResponse.fromJson(response.data));
       } else {}

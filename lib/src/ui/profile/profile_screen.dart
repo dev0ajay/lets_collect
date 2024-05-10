@@ -258,12 +258,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                             fontStyle: FontStyle.normal,
-                                            letterSpacing:
-                                                0, // This is the default value for normal line height
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 150,
                                         ),
                                         SizedBox(
                                           height: 20,
@@ -275,9 +270,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                   .image();
                                             },
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
                                         ),
                                       ],
                                     ),

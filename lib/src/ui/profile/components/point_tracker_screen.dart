@@ -104,6 +104,7 @@ class _PointTrackerScreenState extends State<PointTrackerScreen> {
     return Scaffold(
       backgroundColor: AppColors.primaryWhiteColor,
       body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             shape: const RoundedRectangleBorder(
