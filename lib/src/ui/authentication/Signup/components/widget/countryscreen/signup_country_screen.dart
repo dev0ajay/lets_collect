@@ -798,15 +798,13 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                 width: getProportionateScreenHeight(340),
                                 height: getProportionateScreenWidth(40),
                                 onTap: () {
-                                  print(
-                                      "SELECTED COUNTRY ID: $selectedCountry");
-                                  print(
-                                      "SELECTED COUNTRY CODE: ${countryCodeController.text}");
-                                  print("SELECTED CITY: $selectedCity");
-                                  print(
-                                      "MOBILE: ${countryCodeController.text + phoneNumberController.text}");
-
-
+                                  // print(
+                                  //     "SELECTED COUNTRY ID: $selectedCountry");
+                                  // print(
+                                  //     "SELECTED COUNTRY CODE: ${countryCodeController.text}");
+                                  // print("SELECTED CITY: $selectedCity");
+                                  // print(
+                                  //     "MOBILE: ${countryCodeController.text + phoneNumberController.text}");
                                     if (selectedCountry.isNotEmpty &&
                                         selectedCity.isNotEmpty && phoneNumberController.text.isNotEmpty) {
                                       BlocProvider.of<SignUpBloc>(context).add(

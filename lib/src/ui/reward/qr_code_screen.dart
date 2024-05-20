@@ -25,7 +25,7 @@ class _QrCodeGenerationScreenState extends State<QrCodeGenerationScreen> {
   @override
   void initState() {
     super.initState();
-    print("QRURL: ${widget.qrCodeScreenArguments.qrUrl}");
+    // print("QRURL: ${widget.qrCodeScreenArguments.qrUrl}");
   }
 
   @override

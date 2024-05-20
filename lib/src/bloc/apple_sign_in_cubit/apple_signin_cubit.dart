@@ -31,6 +31,7 @@ class AppleSignInCubit extends Cubit<AppleSignInState> {
         final userCredential =
         await _firebaseAuth.signInWithCredential(credential);
         final firebaseUser = userCredential.user!;
+        emit(AppleSignInLoaded(user: firebaseUser));
 
         if (scopes.contains(Scope.fullName)) {
           final fullName = appleIdCredential.fullName;
@@ -42,7 +43,6 @@ class AppleSignInCubit extends Cubit<AppleSignInState> {
             print('NAME: ${fullName.givenName} ${fullName.familyName}');
             await firebaseUser.updateDisplayName(displayName);
             print(userCredential.user?.displayName);
-            emit(AppleSignInLoaded(user: firebaseUser));
           }
           // print(userCredential.user?.email);
           // print(userCredential.user?.phoneNumber);

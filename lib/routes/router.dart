@@ -21,7 +21,6 @@ import 'package:lets_collect/src/ui/reward/components/brand_and_partner_redeem_a
 import 'package:lets_collect/src/ui/reward/components/lets_collect_redeem_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/components/qr_code_screen_arguments.dart';
 import 'package:lets_collect/src/ui/reward/qr_code_screen.dart';
-import 'package:lets_collect/src/ui/scan/scan_history_screen.dart';
 import 'package:lets_collect/src/ui/special_offer/components/offer_details_arguments.dart';
 import 'package:lets_collect/src/ui/special_offer/special_offer_details_screen.dart';
 import 'package:lets_collect/src/ui/special_offer/special_offer_screen.dart';
@@ -572,31 +571,6 @@ class AppRouter {
                   child: RedeemScreen(
                     brandAndPartnerRedeemArguments:
                         state.extra as BrandAndPartnerRedeemArguments,
-                  ),
-                  transitionDuration: const Duration(milliseconds: 450),
-                  transitionsBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child) {
-                    // Change the opacity of the screen using a Curve based on the the animation's
-                    // value
-                    return FadeTransition(
-                      opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
-                      child: child,
-                    );
-                  },
-                );
-              }),
-          GoRoute(
-              path: 'scan_history',
-              pageBuilder: (BuildContext context, GoRouterState state) {
-                return CustomTransitionPage<void>(
-                  key: state.pageKey,
-                  child: ScanHistoryDetailsScreen(
-                    scanDetailsScreenArgument:
-                        state.extra as ScanDetailsScreenArgument,
-                    onIndexChanged: (int) {},
                   ),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,

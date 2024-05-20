@@ -36,7 +36,6 @@ class LongRecieptScreen extends StatefulWidget {
 class _LongRecieptScreenState extends State<LongRecieptScreen>
     with WidgetsBindingObserver {
   List<XFile>? galleryFile;
-  File? _cameraImage;
   final _picker = ImagePicker();
   File? _pickedFile;
   String imageBase64 = "";
@@ -117,16 +116,12 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
       Permission permission, BuildContext context) async {
     final status = await permission.request();
     if (status.isGranted) {
-      print("Permission granted");
       _pickFile();
     } else if (status.isDenied) {
-      print("Permission Denied");
       _showPermissionDialog(_scaffoldKey.currentContext!);
     } else if (status.isPermanentlyDenied) {
-      print("Permission permanently denied");
       openSettings();
     } else if (status.isLimited) {
-      print("Permission permanently denied");
       _pickFile();
     }
   }
@@ -462,7 +457,6 @@ class _LongRecieptScreenState extends State<LongRecieptScreen>
                         splashColor: AppColors.secondaryButtonColor,
                         splashFactory: InkSplash.splashFactory,
                         onTap: () {
-                          print(imageUploadFormated);
                           if (imageUploadFormated.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

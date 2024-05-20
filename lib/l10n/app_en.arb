@@ -102,7 +102,7 @@
     "brandreward" : "Brand Reward",
     "partnerreward" : "Partner Reward",
     "wherecaniredeemthisreward" : "Where can i redeem this rewards ?",
-    "infollowingphysicalstore" : "In Following Physical Store",
+    "thisitemcanberedeemed" : "This item can be redeemed: ",
     "collect" : "Collect",
     "termsandconditionsapplied" : "Terms and Conditions applied",
     "youdonthaveenoughpointstoreddemthisitem" : "You don't have enough points to redeem this item",
@@ -251,6 +251,8 @@
     "pleaselogoutandreopentheapplication" : "Please Logout and re-open the Application !",
     "pleaseentercorrectreferralcode" : "Please Enter Correct Referral Code !",
     "useralreadyreferred" : "User already referred",
+    "pleasetryagainlater" : "Please try again later!",
+
 
     "couldnotcompletetherequest" : "Couldn't complete the request, Please try again!.",
     "pointsgetredeemed" : "Points get Redeemed",
@@ -293,8 +295,6 @@
     "loginwithfacebook" : "Login with Facebook",
     "loginwithgoogle" : "Login with Google",
     "loginwithapple" : "Login with Apple",
-    "signinwithemail" : "Sign in with email"
-
-
-
+    "signinwithemail" : "Sign in with email",
+    "inviteafriendandwinmorepoints" : "Invite a friend and win more points!"
 }

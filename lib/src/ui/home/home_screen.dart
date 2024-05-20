@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       selectedNavIndex = index;
-      print("Index: $selectedNavIndex");
+      // print("Index: $selectedNavIndex");
     });
   }
 
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   setState(() {
                     selectedNavIndex = 4;
-                    print("bottomNavindex: $selectedNavIndex");
+                    // print("bottomNavindex: $selectedNavIndex");
                   });
                   // context.go('/scan');
                 },

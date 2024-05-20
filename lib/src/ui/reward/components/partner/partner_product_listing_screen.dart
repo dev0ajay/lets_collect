@@ -317,8 +317,7 @@ class _PartnerProductListingScreenState
                                             AppColors.secondaryColor,
                                           ),
                                           onPressed: () async {
-                                            print(selectedSortFilter);
-                                            print("Sort Selected: $sortQuery");
+
                                             BlocProvider.of<
                                                 BrandAndPartnerProductBloc>(
                                                 context)

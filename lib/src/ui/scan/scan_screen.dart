@@ -70,17 +70,13 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   Future<void> checkPermissionForGallery(Permission permission) async {
     final status = await permission.request();
     if (status.isGranted) {
-      print("Permission granted");
       getImage(ImageSource.gallery);
     } else if (status.isDenied) {
-      print("Permission Denied");
       _showPermissionDialog();
     } else if (status.isPermanentlyDenied) {
-      print("Permission permanently denied");
 
       openSettings();
     } else if (status.isLimited) {
-      print("Permission permanently denied");
       getImage(ImageSource.gallery);
     }
   }
@@ -88,12 +84,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   Future<void> checkPermissionForCamera(Permission permission) async {
     final status = await permission.request();
     if (status.isGranted) {
-      // _showPicker(context: context);
-      print("Granted permission");
       getImage(ImageSource.camera);
-      // getImage(ImageSource.camera);
     } else if (status.isDenied) {
-      print("Permission denied");
       _showPermissionDialog();
     } else if (status.isPermanentlyDenied) {
       openSettings();

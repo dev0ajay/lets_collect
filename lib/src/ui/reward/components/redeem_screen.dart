@@ -292,7 +292,7 @@ class _RedeemScreenState extends State<RedeemScreen> {
               const SizedBox(height: 10),
               Center(
                   child: Text(
-                "In Following Physical Store",
+                    AppLocalizations.of(context)!.thisitemcanberedeemed,
                 style: GoogleFonts.roboto(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,

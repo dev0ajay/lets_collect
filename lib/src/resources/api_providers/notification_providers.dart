@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import '../../model/notification/notification_response.dart';
 import '../../model/state_model.dart';
@@ -6,23 +5,23 @@ import '../../utils/data/object_factory.dart';
 
 class NotificationProvider {
   Future<StateModel?> getNotificationData() async {
-
     try {
       final response = await ObjectFactory().apiClient.getNotificationData();
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
         return StateModel<NotificationGetResponse>.success(
             NotificationGetResponse.fromJson(response.data));
       } else {
         return null;
-      }    }  on DioException catch (e) {
+      }
+    } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -33,7 +32,5 @@ class NotificationProvider {
       }
     }
     return null;
-
   }
-
 }

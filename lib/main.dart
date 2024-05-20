@@ -17,12 +17,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+///Setting prefs
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   ObjectFactory().setPrefs(sharedPreferences);
 
-  ///setting pref
+  ///setting Overlay
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
+import 'package:lets_collect/src/utils/data/object_factory.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
@@ -50,74 +51,100 @@ class EmailVerifiedAlertOverlayState extends State<EmailVerifiedAlertOverlay>
                 child: Container(
                   margin: const EdgeInsets.all(20.0),
                   padding: const EdgeInsets.all(15.0),
-                  height: getProportionateScreenHeight(300),
+                  height: 350,
+                  width: getProportionateScreenWidth(400),
                   decoration: ShapeDecoration(
                       color: AppColors.primaryWhiteColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0))),
                   child: Column(
                     children: [
-                      // const SizedBox(height: 40),
-                      Image.asset(Assets.GIFT_ICON),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        flex: 4,
+                          child: Image.asset(Assets.GIFT_ICON),
+                      ),
                       const SizedBox(height: 10),
-                      Text(
-                        AppLocalizations.of(context)!.congratulations,
-                        // "Congratulations !",
-                        style: GoogleFonts.openSans(
-                          color: AppColors.secondaryColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                      Flexible(
+                        // flex: 1,
+                        child: Text(
+                          AppLocalizations.of(context)!.congratulations,
+                          // "Congratulations !",
+                          style: GoogleFonts.openSans(
+                            color: AppColors.secondaryColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                      Text(
-                        AppLocalizations.of(context)!.youhaveearned,
-                        // "You have earned",
-                        style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.cardTextColor,
+                      const SizedBox(height: 10),
+
+                      Flexible(
+                        // flex: 1,
+                        child: Text(
+                          AppLocalizations.of(context)!.youhaveearned,
+                          // "You have earned",
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardTextColor,
+                          ),
                         ),
                       ),
-                      Text(
-                        state.homeResponse.emailVerificationPoints.toString(),
-                        style: GoogleFonts.openSans(
-                          color: AppColors.cardTextColor,
-                          fontSize: 44,
-                          fontWeight: FontWeight.w700,
+                      // const SizedBox(height: 10),
+
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          state.homeResponse.emailVerificationPoints.toString(),
+                          style: GoogleFonts.openSans(
+                            color: AppColors.cardTextColor,
+                            fontSize: 44,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                      Text(
-                        AppLocalizations.of(context)!.points,
-                        // "Points",
-                        style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.cardTextColor,
+                      const SizedBox(height: 10),
+
+                      Flexible(
+                        flex: 1,
+                        child: Text(
+                          AppLocalizations.of(context)!.points,
+                          // "Points",
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardTextColor,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                      Flexible(
+                        flex: 2,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            fixedSize: const Size(121, 36),
+                            backgroundColor: AppColors.secondaryColor,
                           ),
-                          fixedSize: const Size(121, 36),
-                          backgroundColor: AppColors.secondaryColor,
-                        ),
-                        onPressed: () {
-                          context.pop();
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.yay,
-                          // "Yay!",
-                          style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.primaryWhiteColor,
+                          onPressed: () {
+                            context.pop();
+                            ObjectFactory().prefs.setIsEmailVerified(false);
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.yay,
+                            // "Yay!",
+                            style: GoogleFonts.roboto(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.primaryWhiteColor,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      // const SizedBox(height: 20),
                     ],
                   ),
                 ),

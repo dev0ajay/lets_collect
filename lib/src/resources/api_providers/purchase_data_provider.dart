@@ -19,7 +19,7 @@ class PurchaseDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .purchaseHistoryRequest(purchaseHistoryRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<PurchaseHistoryResponse>.success(
             PurchaseHistoryResponse.fromJson(response.data));
@@ -31,9 +31,9 @@ class PurchaseDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -55,7 +55,7 @@ class PurchaseDataProvider {
           .apiClient
           .purchaseHistoryDetailsRequest(purchaseHistoryDetailsRequest);
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
 
         return StateModel<PurchaseHistoryDetailsResponse>.success(
             PurchaseHistoryDetailsResponse.fromJson(response.data));
@@ -67,9 +67,9 @@ class PurchaseDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -88,7 +88,7 @@ class PurchaseDataProvider {
       // 404
       final response = await ObjectFactory().apiClient.getSuperMarketList();
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
 
         return StateModel<SuperMarketListResponse>.success(
             SuperMarketListResponse.fromJson(response.data));
@@ -99,14 +99,14 @@ class PurchaseDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
-        print(e.response!.data);
-        print(e.response!.headers);
-        print(e.response!.requestOptions);
+        // print(e.response!.data);
+        // print(e.response!.headers);
+        // print(e.response!.requestOptions);
         return StateModel.error(e.response!.statusMessage);
         // return response!;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
+        // print(e.requestOptions);
         print(e.message);
       }
       // return e;
@@ -123,7 +123,7 @@ class PurchaseDataProvider {
           .apiClient
           .pointTrackerRequest(pointTrackerRequest);
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
 
         return StateModel<PointTrackerRequestResponse>.success(
             PointTrackerRequestResponse.fromJson(response.data));
@@ -134,14 +134,14 @@ class PurchaseDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
-        print(e.response!.data);
-        print(e.response!.headers);
-        print(e.response!.requestOptions);
+        // print(e.response!.data);
+        // print(e.response!.headers);
+        // print(e.response!.requestOptions);
         return StateModel.error(e.response!.statusMessage);
         // return response!;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
+        // print(e.requestOptions);
         print(e.message);
       }
       // return e;
@@ -158,7 +158,7 @@ class PurchaseDataProvider {
           .apiClient
           .pointTrackerDetailsRequest(pointTrackerDetailsRequest);
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
 
         return StateModel<PointTrackerDetailsRequestResponse>.success(
             PointTrackerDetailsRequestResponse.fromJson(response.data));
@@ -169,14 +169,14 @@ class PurchaseDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
-        print(e.response!.data);
-        print(e.response!.headers);
-        print(e.response!.requestOptions);
+        // print(e.response!.data);
+        // print(e.response!.headers);
+        // print(e.response!.requestOptions);
         return StateModel.error(e.response!.statusMessage);
         // return response!;
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
+        // print(e.requestOptions);
         print(e.message);
       }
       // return e;

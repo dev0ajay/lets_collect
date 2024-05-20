@@ -316,7 +316,6 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                             AppColors.secondaryColor,
                                           ),
                                           onPressed: () {
-                                            print(selectedSortFilter);
                                             BlocProvider.of<
                                                 BrandAndPartnerProductBloc>(
                                                 context)
@@ -572,8 +571,6 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                               AppColors.secondaryColor,
                                             ),
                                             onPressed: () {
-                                              print(
-                                                  "Eligible Filter: $eligibleFilter");
                                               BlocProvider.of<
                                                   BrandAndPartnerProductBloc>(
                                                   context)

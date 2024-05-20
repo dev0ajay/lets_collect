@@ -111,8 +111,8 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
       print("APPLEID: ${user.email}");
       print("DISPLAY NAME: ${user.displayName}");
       // print("DISPLAY NAME: ${user.}");
-      print(
-          "DISPLAY NAME: ${user.providerData.map((e) => e.displayName.toString())}");
+      // print(
+      //     "DISPLAY NAME: ${user.providerData.map((e) => e.displayName.toString())}");
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -582,8 +582,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           Flexible(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                fixedSize:  Size(
-                                    Platform.isAndroid ? 160 : MediaQuery.of(context).size.width, 35),
+                                fixedSize:  const Size(160, 40),
                                 padding: EdgeInsets.zero,
                                 backgroundColor: AppColors.primaryWhiteColor,
                                 shape: RoundedRectangleBorder(
@@ -661,6 +660,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                     builder: (context, state) {
                                       return ElevatedButton(
                                         style: ElevatedButton.styleFrom(
+                                          fixedSize: const Size(160, 40),
                                           padding: EdgeInsets.zero,
                                           backgroundColor:
                                               AppColors.primaryWhiteColor,
@@ -807,7 +807,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                 return ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.zero,
-                                    // fixedSize: const Size(160, 40),
+                                    fixedSize: const Size(160, 40),
                                     backgroundColor:
                                         AppColors.primaryWhiteColor,
                                     shape: RoundedRectangleBorder(
@@ -860,117 +860,118 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Flexible(
-                            child: BlocConsumer<FacebookSignInCubit,
-                                FacebookSigninState>(
-                              listener: (context, state) {
-                                if (state is FacebookSignInSuccess) {
-                                  BlocProvider.of<LoginBloc>(context).add(
-                                    FacebookSignInEvent(
-                                      facebookSignInRequest:
-                                          FacebookSignInRequest(
-                                        email: state.user.email!,
-                                        displayName: state.user.displayName!,
-                                        mobileNo: state.user.phoneNumber == null
-                                            ? "0"
-                                            : state.user.phoneNumber!,
-                                        faceBookId: state.user.uid,
-                                        deviceToken: ObjectFactory()
-                                            .prefs
-                                            .getFcmToken()!,
-                                        deviceType:
-                                            Platform.isAndroid ? "A" : "I",
-                                      ),
-                                    ),
-                                  );
-                                  print(state.user.uid);
-                                  print(state.user.phoneNumber);
-                                  print(state.user.displayName);
-                                  print(state.user.email);
-                                  print(state.user.photoURL);
-                                }
-                                if (state is FacebookSignInDenied) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: AppColors.secondaryColor,
-                                      content: Text(
-                                        "Couldn't complete the request, Please try again!.",
-                                        style: GoogleFonts.openSans(
-                                          color: AppColors.primaryWhiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                if (state is FacebookSignInError) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: AppColors.secondaryColor,
-                                      content: Text(
-                                        "Couldn't complete the request, Please try again!.",
-                                        style: GoogleFonts.openSans(
-                                          color: AppColors.primaryWhiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                              builder: (context, state) {
-                                return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    // fixedSize: const Size(160, 40),
-                                    backgroundColor:
-                                        AppColors.primaryWhiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  onPressed: state is FacebookSignInLoading
-                                      ? null
-                                      : () => context
-                                          .read<FacebookSignInCubit>()
-                                          .loginWithFacebook(),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        Assets.FACEBOOK,
-                                        width: 25,
-                                        height: 25,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      state is FacebookSignInLoading
-                                          ? const Center(
-                                              child: SizedBox(
-                                                height: 10,
-                                                width: 10,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color:
-                                                      AppColors.secondaryColor,
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                            )
-                                          : Text(
-                                              AppLocalizations.of(context)!
-                                                  .loginwithfacebook,
-                                              style: GoogleFonts.roboto(
-                                                color:
-                                                    AppColors.primaryGrayColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                          ///Facebook
+                          // Flexible(
+                          //   child: BlocConsumer<FacebookSignInCubit,
+                          //       FacebookSigninState>(
+                          //     listener: (context, state) {
+                          //       if (state is FacebookSignInSuccess) {
+                          //         BlocProvider.of<LoginBloc>(context).add(
+                          //           FacebookSignInEvent(
+                          //             facebookSignInRequest:
+                          //                 FacebookSignInRequest(
+                          //               email: state.user.email!,
+                          //               displayName: state.user.displayName!,
+                          //               mobileNo: state.user.phoneNumber == null
+                          //                   ? "0"
+                          //                   : state.user.phoneNumber!,
+                          //               faceBookId: state.user.uid,
+                          //               deviceToken: ObjectFactory()
+                          //                   .prefs
+                          //                   .getFcmToken()!,
+                          //               deviceType:
+                          //                   Platform.isAndroid ? "A" : "I",
+                          //             ),
+                          //           ),
+                          //         );
+                          //         print(state.user.uid);
+                          //         print(state.user.phoneNumber);
+                          //         print(state.user.displayName);
+                          //         print(state.user.email);
+                          //         print(state.user.photoURL);
+                          //       }
+                          //       if (state is FacebookSignInDenied) {
+                          //         ScaffoldMessenger.of(context).showSnackBar(
+                          //           SnackBar(
+                          //             backgroundColor: AppColors.secondaryColor,
+                          //             content: Text(
+                          //               "Couldn't complete the request, Please try again!.",
+                          //               style: GoogleFonts.openSans(
+                          //                 color: AppColors.primaryWhiteColor,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       }
+                          //       if (state is FacebookSignInError) {
+                          //         ScaffoldMessenger.of(context).showSnackBar(
+                          //           SnackBar(
+                          //             backgroundColor: AppColors.secondaryColor,
+                          //             content: Text(
+                          //               "Couldn't complete the request, Please try again!.",
+                          //               style: GoogleFonts.openSans(
+                          //                 color: AppColors.primaryWhiteColor,
+                          //               ),
+                          //             ),
+                          //           ),
+                          //         );
+                          //       }
+                          //     },
+                          //     builder: (context, state) {
+                          //       return ElevatedButton(
+                          //         style: ElevatedButton.styleFrom(
+                          //           padding: EdgeInsets.zero,
+                          //           // fixedSize: const Size(160, 40),
+                          //           backgroundColor:
+                          //               AppColors.primaryWhiteColor,
+                          //           shape: RoundedRectangleBorder(
+                          //             borderRadius: BorderRadius.circular(8),
+                          //           ),
+                          //         ),
+                          //         onPressed: state is FacebookSignInLoading
+                          //             ? null
+                          //             : () => context
+                          //                 .read<FacebookSignInCubit>()
+                          //                 .loginWithFacebook(),
+                          //         child: Row(
+                          //           mainAxisAlignment: MainAxisAlignment.center,
+                          //           children: [
+                          //             Image.asset(
+                          //               Assets.FACEBOOK,
+                          //               width: 25,
+                          //               height: 25,
+                          //               fit: BoxFit.cover,
+                          //             ),
+                          //             const SizedBox(width: 8),
+                          //             state is FacebookSignInLoading
+                          //                 ? const Center(
+                          //                     child: SizedBox(
+                          //                       height: 10,
+                          //                       width: 10,
+                          //                       child:
+                          //                           CircularProgressIndicator(
+                          //                         color:
+                          //                             AppColors.secondaryColor,
+                          //                         strokeWidth: 2,
+                          //                       ),
+                          //                     ),
+                          //                   )
+                          //                 : Text(
+                          //                     AppLocalizations.of(context)!
+                          //                         .loginwithfacebook,
+                          //                     style: GoogleFonts.roboto(
+                          //                       color:
+                          //                           AppColors.primaryGrayColor,
+                          //                       fontSize: 14,
+                          //                       fontWeight: FontWeight.w400,
+                          //                     ),
+                          //                   ),
+                          //           ],
+                          //         ),
+                          //       );
+                          //     },
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 15),

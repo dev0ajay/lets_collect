@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../../constants/colors.dart';
+import '../../../../utils/data/object_factory.dart';
 
 class EmailNotVerifiedAlertOverlay extends StatefulWidget {
   const EmailNotVerifiedAlertOverlay({super.key});
@@ -107,6 +108,9 @@ class EmailNotVerifiedAlertOverlayState extends State<EmailNotVerifiedAlertOverl
                               ),
                               onPressed: () {
                                 context.pop();
+                                setState(() {
+                                  ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
+                                });
                               },
                             ),
                         ),

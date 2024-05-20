@@ -31,8 +31,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.redeemScreenArguments.totalPoint);
-    print( widget.redeemScreenArguments.requiredPoint);
+
     // ObjectFactory().prefs.getLetsCollectTierData()!.data.letsCollect.forEach((element) { });
   }
 
@@ -312,7 +311,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
               const SizedBox(height: 10),
               Center(
                   child: Text(
-                    AppLocalizations.of(context)!.infollowingphysicalstore,
+                    AppLocalizations.of(context)!.thisitemcanberedeemed,
                     // "In Following Physical Store",
                     style: GoogleFonts.roboto(
                       fontSize: 18,

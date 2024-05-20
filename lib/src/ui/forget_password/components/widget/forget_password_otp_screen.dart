@@ -294,12 +294,12 @@ class _ForgetPasswordOtpScreenState extends State<ForgetPasswordOtpScreen> {
                                           // },
                                           hapticFeedbackType:
                                               HapticFeedbackType.lightImpact,
-                                          onCompleted: (pin) {
-                                            debugPrint('onCompleted: $pin');
-                                          },
-                                          onChanged: (value) {
-                                            debugPrint('onChanged: $value');
-                                          },
+                                          // onCompleted: (pin) {
+                                          //   debugPrint('onCompleted: $pin');
+                                          // },
+                                          // onChanged: (value) {
+                                          //   debugPrint('onChanged: $value');
+                                          // },
                                           cursor: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,

@@ -86,14 +86,17 @@ class _PurchaseHistoryBarChartWidgetState
                     allowTouchBarBackDraw: true,
                     enabled: true,
                   ),
-                  // baselineY: 0,
                   titlesData: FlTitlesData(
-                    bottomTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false)),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                        reservedSize: getProportionateScreenHeight(28),
+                      ),
+                    ),
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: getProportionateScreenWidth(28)),
+                          reservedSize: getProportionateScreenHeight(28)),
                     ),
                     topTitles: const AxisTitles(
                         sideTitles: SideTitles(showTitles: false)),

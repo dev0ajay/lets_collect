@@ -29,7 +29,7 @@ class AuthDataProvider {
     try {
       final response =
           await ObjectFactory().apiClient.registerUser(signupRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200 && response.data["success"] == true) {
         return StateModel<SignUpRequestResponse>.success(
             SignUpRequestResponse.fromJson(response.data));
@@ -44,9 +44,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         // print(e.response!.headers);
         // print(e.response!.requestOptions);
         return StateModel.error(
@@ -71,7 +71,7 @@ class AuthDataProvider {
     try {
       final response =
           await ObjectFactory().apiClient.loginRequest(loginRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<LoginRequestResponse>.success(
             LoginRequestResponse.fromJson(response.data));
@@ -83,9 +83,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         // print(e.response!.headers);
         // print(e.response!.requestOptions);
         return StateModel.error(
@@ -108,7 +108,7 @@ class AuthDataProvider {
   ///City
   Future<StateModel?> getCity(GetCityRequest getCityRequest) async {
     final response = await ObjectFactory().apiClient.getCity(getCityRequest);
-    print(response.toString());
+    // print(response.toString());
     if (response.statusCode == 200) {
       return StateModel<GetCityResponse>.success(
           GetCityResponse.fromJson(response.data));
@@ -121,7 +121,7 @@ class AuthDataProvider {
   Future<StateModel?> getNation() async {
     try {
       final response = await ObjectFactory().apiClient.getNation();
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<NationalityResponse>.success(
             NationalityResponse.fromJson(response.data));
@@ -133,9 +133,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -156,7 +156,7 @@ class AuthDataProvider {
   Future<StateModel?> getCountry() async {
     try {
       final response = await ObjectFactory().apiClient.getCountry();
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<CountryResponse>.success(
             CountryResponse.fromJson(response.data));
@@ -168,9 +168,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -196,7 +196,7 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .forgotPassword(forgotPasswordEmailRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<ForgotPasswordEmailRequestResponse>.success(
             ForgotPasswordEmailRequestResponse.fromJson(response.data));
@@ -207,9 +207,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -229,7 +229,7 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .forgotPasswordOtp(forgotPasswordOtpRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<ForgotPasswordOtpRequestResponse>.success(
             ForgotPasswordOtpRequestResponse.fromJson(response.data));
@@ -243,9 +243,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -265,7 +265,7 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .forgotPasswordReset(forgotPasswordResetRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<ForgotPasswordResetRequestResponse>.success(
             ForgotPasswordResetRequestResponse.fromJson(response.data));
@@ -279,9 +279,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -298,7 +298,7 @@ class AuthDataProvider {
     try {
       final response =
           await ObjectFactory().apiClient.googleLogin(googleLoginRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<GoogleLoginResponse>.success(
             GoogleLoginResponse.fromJson(response.data));
@@ -312,9 +312,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -333,8 +333,8 @@ class AuthDataProvider {
     try {
       final response =
           await ObjectFactory().apiClient.signInWithApple(appleSignInRequest);
-      print(response.toString());
       if (response.statusCode == 200) {
+        // print(response.toString());
         return StateModel<AppleSignInRequestResponse>.success(
             AppleSignInRequestResponse.fromJson(response.data));
       } else {
@@ -347,9 +347,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -369,7 +369,7 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .signInWithFacebook(facebookSignInRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<FacebookSignInResponse>.success(
             FacebookSignInResponse.fromJson(response.data));
@@ -381,9 +381,9 @@ class AuthDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;

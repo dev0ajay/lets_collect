@@ -24,7 +24,7 @@ import '../../../../utils/screen_size/size_config.dart';
 import '../../../special_offer/components/offer_details_arguments.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'alert_overlay_widget.dart';
+import 'emailNotVerifiedAlertOverlay.dart';
 import 'email_verified_alert_overlay.dart';
 
 class CustomScrollViewWidget extends StatefulWidget {
@@ -68,13 +68,17 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                 if (!_isEmailVerified && !_isEmailNotVerifyExecuted) {
                   if (state.homeResponse.emailVerified == 1) {
                     _isEmailVerified = true;
-                    showDialog(
+                    ObjectFactory().prefs.setIsEmailVerified(true);
+                    if(ObjectFactory().prefs.isEmailVerified()!) {
+                      showDialog(
                         context: context,
                         builder: (BuildContext context) =>
                             const EmailVerifiedAlertOverlay());
+                    }
                   } else if (state.homeResponse.emailVerified == 0 &&
-                      !_isEmailNotVerifyExecuted) {
+                      !_isEmailNotVerifyExecuted ) {
                     _isEmailNotVerifyExecuted = true;
+
                     showDialog(
                       context: context,
                       builder: (BuildContext context) =>
@@ -330,7 +334,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                                   ? Language.english.text
                                                   : Language.arabic.text;
 
-                                              print('Selected Language: $selectedLanguage');
+                                              // print('Selected Language: $selectedLanguage');
 
                                               BlocProvider.of<ReferralBloc>(
                                                   context).add(GetReferralCodeUpdateEvent(
@@ -386,7 +390,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                 splashFactory: InkSplash.splashFactory,
                                 splashColor: AppColors.borderColor,
                                 onTap: () {
-                                  print("INDEX::4}");
+                                  // print("INDEX::4}");
                                   widget.onIndexChanged(4);
                                 },
                                 child: Container(
@@ -454,7 +458,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                               padding: const EdgeInsets.only(right: 0),
                               child: InkWell(
                                 onTap: () {
-                                  print("INDEX::1}");
+                                  // print("INDEX::1}");
                                   widget.onIndexChanged(1);
                                 },
                                 child: Container(
@@ -542,7 +546,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                   splashColor: AppColors.borderColor,
                                   splashFactory: InkSparkle.splashFactory,
                                   onTap: () {
-                                    print("INDEX::2}");
+                                    // print("INDEX::2}");
                                     widget.onIndexChanged(2);
                                   },
                                   child: SizedBox(

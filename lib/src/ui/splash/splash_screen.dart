@@ -26,13 +26,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final splashDelay = 3;
-  late final FirebaseMessaging _messaging;
   NotificationServices notificationServices = NotificationServices();
-  PushNotification? _notificationInfo;
 
   _loadWidget() async {
     var duration = Duration(seconds: splashDelay);
-    // registerNotification();
     return Timer(duration, navigationPage);
   }
 
@@ -53,10 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
     notificationServices.firebaseInit(context);
     notificationServices.setupInteractMessage(context);
     notificationServices.getDeviceToken().then((value) {
-      if (kDebugMode) {
-        print('device token');
-        print(value);
-      }
     });
     BlocProvider.of<NationalityBloc>(context).add(GetNationality());
     BlocProvider.of<CountryBloc>(context).add(GetCountryEvent());

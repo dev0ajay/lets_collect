@@ -103,7 +103,7 @@
     "brandreward" : "مكافأة العلامة التجارية",
     "partnerreward" : "مكافأة الشريك",
     "wherecaniredeemthisreward" : "أين يمكنني استبدال هذه المكافآت؟",
-    "infollowingphysicalstore" : "في المتجر المادي التالي",
+    "thisitemcanberedeemed" : "يمكن استبدال هذا العنصر",
     "collect" : "جمع",
     "termsandconditionsapplied" : "تطبق الشروط والأحكام",
     "youdonthaveenoughpointstoreddemthisitem" : "ليس لديك نقاط كافية لاستبدال هذا العنصر",
@@ -251,6 +251,7 @@
     "pleaselogoutandreopentheapplication" : "!يرجى تسجيل الخروج وإعادة فتح التطبيق",
     "pleaseentercorrectreferralcode" : "الرجاء إدخال رمز الإحالة الصحيح!",
     "useralreadyreferred" : "لقد تم إحالة المستخدم بالفعل",
+    "pleasetryagainlater" : "الرجاء معاودة المحاولة في وقت لاحق!",
 
     "couldnotcompletetherequest" : ".لم نستطع من إكمال الطلب، يرجى المحاولة مرة أخرى",
     "pointsgetredeemed" : "يتم استبدال النقاط",
@@ -289,6 +290,7 @@
     "passwordchangedsuccessfull" : "!تم تغيير كلمة المرور بنجاح",
     "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين",
     "notificationdetails" : "تفاصيل الإشعار",
-    "pointdetails" : "تفاصيل النقاط"
+    "pointdetails" : "تفاصيل النقاط",
+    "inviteafriendandwinmorepoints" : "قم بدعوة صديق واربح المزيد من النقاط!"
 
 }

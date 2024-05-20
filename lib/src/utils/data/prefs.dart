@@ -37,6 +37,8 @@ class Prefs {
   static const String _BRAND_TIER_DATA = "brand_tier_data";
   static const String _PARTNER_TIER_DATA = "partner_tier_data";
   static const String _LETSCOLLECT_TIER_DATA = "letsCollect_tier_data";
+  static const String _SET_GET_INT = "flag";
+
 
 
   Prefs();
@@ -356,6 +358,19 @@ class Prefs {
       _sharedPreferences!.getBool(_IS_EMAIL_NOT_VERIFIED_CALLED) == true
       ? true
       : false;
+
+
+
+
+  ///saving  the email verification flag
+  void setFlagInt({String? flag}) {
+    _sharedPreferences!.setString(_SET_GET_INT, flag!);
+  }
+
+  ///get method  for auth token
+  String? getFlagInt() => _sharedPreferences!.getString(_SET_GET_INT);
+
+
 
   ///  referral data
   // void saveReferralContent(ReferralScreenResponse result) {

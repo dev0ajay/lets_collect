@@ -278,8 +278,6 @@ class _ForgetPasswordConfirmScreenState
                                     width: 340,
                                     height: 40,
                                     onTap: () {
-                                      print(
-                                          ObjectFactory().prefs.getAuthToken());
                                       if (_formKey.currentState!.validate()) {
                                         BlocProvider.of<ForgotPasswordBloc>(
                                                 context)

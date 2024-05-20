@@ -13,7 +13,7 @@ class HomeDataProvider {
 
       final response = await ObjectFactory().apiClient.getHomeData();
       if (response.statusCode == 200) {
-        print(response.toString());
+        // print(response.toString());
         return StateModel<HomeResponse>.success(
             HomeResponse.fromJson(response.data));
       } else {
@@ -23,9 +23,9 @@ class HomeDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -45,7 +45,7 @@ class HomeDataProvider {
     try {
 
       final response = await ObjectFactory().apiClient.getOfferList(offerListRequest);
-      print(response.toString());
+      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<OfferListRequestResponse>.success(
             OfferListRequestResponse.fromJson(response.data));
@@ -57,9 +57,9 @@ class HomeDataProvider {
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
         // print(e.response!.statusCode == 500);
-        print("Error: ${e.error.toString()}");
-        print("Error msg: ${e.message}");
-        print("Error type: ${e.type}");
+        // print("Error: ${e.error.toString()}");
+        // print("Error msg: ${e.message}");
+        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;

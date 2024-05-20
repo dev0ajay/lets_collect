@@ -105,7 +105,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     state.myProfileScreenResponse.data!.photo.toString();
                 final UriData? data = Uri.parse(b64).data;
                 Uint8List bytesImage = data!.contentAsBytes();
-                print("PHOTO CODE : $bytesImage");
                 return CustomScrollView(
                   physics: const ClampingScrollPhysics(),
                   slivers: [
@@ -355,7 +354,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             .toString(),
                                       ),
                                     );
-                                    print("MyProfile tapped!");
                                   },
                                   // labelText: "My Profile",
                                   labelText:
@@ -374,7 +372,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
                                     context.push("/Point_Tracker");
-                                    print("Point Tracker tapped!");
                                   },
                                   // labelText: "Point Tracker",
                                   labelText: AppLocalizations.of(context)!
@@ -392,24 +389,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 padding: const EdgeInsets.only(top: 18),
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
-                                    // showDialog(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return AlertDialog(
-                                    //       shape: RoundedRectangleBorder(
-                                    //           borderRadius:
-                                    //               BorderRadius.circular(10)),
-                                    //       content: SizedBox(
-                                    //         height:
-                                    //             getProportionateScreenHeight(
-                                    //                 260),
-                                    //         width: getProportionateScreenWidth(
-                                    //             320),
-                                    //         child: Lottie.asset(Assets.SOON),
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    // );
+
                                     context.push("/redemption");
                                   },
                                   // labelText: "Redemption Tracker",
@@ -429,7 +409,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 child: ProfileDetailsListTileWidget(
                                   onPressed: () {
                                     context.push("/Purchase_History");
-                                    print("Purchase History tapped!");
                                   },
                                   // labelText: "Purchase History",
                                   labelText: AppLocalizations.of(context)!
@@ -470,7 +449,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     context.push('/notification');
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    // labelText: "Notification center",
                                     labelText: AppLocalizations.of(context)!
                                         .notificationcenter,
                                     textStyle: GoogleFonts.roboto(
@@ -514,7 +492,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     );
                                   },
                                   child: ProfileDetailsListTileWidget(
-                                    // labelText: "Delete Account",
                                     labelText: AppLocalizations.of(context)!
                                         .deleteaccount,
                                     textStyle: GoogleFonts.roboto(
@@ -544,7 +521,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             const LogOutAlertOverlay());
                                   },
                                   child: Text(
-                                    // "Log out",
                                     AppLocalizations.of(context)!.logout,
                                     style: const TextStyle(
                                       color: AppColors.secondaryColor,
@@ -577,7 +553,6 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  // "You are not connected to the internet",
                   AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
@@ -594,7 +569,6 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: [
                 Lottie.asset(Assets.NO_INTERNET),
                 Text(
-                  // "You are not connected to the internet",
                   AppLocalizations.of(context)!.youarenotconnectedtotheinternet,
                   style: GoogleFonts.openSans(
                     color: AppColors.primaryGrayColor,
@@ -647,8 +621,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: () {
-                          print(
-                              'Selected Language: ${Language.values[index].text}');
                           context.read<LanguageBloc>().add(ChangeLanguage(
                               selectedLanguage: Language.values[index]));
                           Future.delayed(const Duration(milliseconds: 300))

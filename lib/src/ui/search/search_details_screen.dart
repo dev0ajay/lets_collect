@@ -31,7 +31,6 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
 
   @override
   void initState() {
-    print("ID: ${widget.searchScreenArguments.categoryId}");
     super.initState();
     BlocProvider.of<SearchBloc>(context).add(
       GetBrandEvent(

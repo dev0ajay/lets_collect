@@ -361,8 +361,6 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                   .secondaryColor,
                                                         ),
                                                         onPressed: () async {
-                                                          print(
-                                                              selectedSortFilter);
                                                           BlocProvider.of<
                                                                       OfferBloc>(
                                                                   context)
@@ -897,11 +895,6 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                           .secondaryColor,
                                                                 ),
                                                                 onPressed: () {
-                                                                  print(
-                                                                      "Selected Category: $selectedCategoryFilters");
-                                                                  print(
-                                                                      "Selected Brand: $selectedBrandFilters");
-
                                                                   BlocProvider.of<
                                                                               OfferBloc>(
                                                                           context)

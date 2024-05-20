@@ -39,10 +39,7 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
     controller.forward();
   }
 
-  Future<void> _signOut() async {
-    await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,15 +93,14 @@ class LogOutAlertOverlayState extends State<LogOutAlertOverlay>
                               onPressed: () {
                                 context.read<GoogleSignInCubit>()
                                     .signOut();
-                                context
-                                    .read<FacebookSignInCubit>()
-                                    .logOutFromFacebook();
+                                // context
+                                //     .read<FacebookSignInCubit>()
+                                //     .logOutFromFacebook();
                                 ObjectFactory().prefs.setIsLoggedIn(false);
                                 ObjectFactory().prefs.setAuthToken(token: "");
                                 ObjectFactory().prefs.setUserName(userName: "");
                                 ObjectFactory().prefs.setIsEmailNotVerifiedCalled(false);
-                                // ObjectFactory().prefs.clearPrefs();
-                                // ignore: use_build_context_synchronously
+
                                 context.go('/login');
                               },
                               child: Text(

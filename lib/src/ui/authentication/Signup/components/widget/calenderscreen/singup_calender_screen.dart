@@ -545,7 +545,6 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                         width: 340,
                         height: 40,
                         onTap: () {
-                          print("Nationality:$selectedNationality");
                           if (dateInputController.text.isNotEmpty &&
                               gender.isNotEmpty &&
                               selectedNationality.isNotEmpty &&

@@ -353,8 +353,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                               ),
                                                               onPressed:
                                                                   () async {
-                                                                print(
-                                                                    selectedSortFilter);
+
                                                                 BlocProvider.of<
                                                                             RewardTierBloc>(
                                                                         context)
@@ -973,10 +972,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       ),
                                                                       onPressed:
                                                                           () {
-                                                                        print(
-                                                                            "Selected Category: $selectedCategoryFilters");
-                                                                        print(
-                                                                            "Selected Brand: $selectedBrandFilters");
 
                                                                         BlocProvider.of<RewardTierBloc>(context)
                                                                             .add(
@@ -1380,8 +1375,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                   ),
                                                                   onPressed:
                                                                       () async {
-                                                                    print(
-                                                                        selectedSortFilter);
+
                                                                     BlocProvider.of<RewardTierBloc>(
                                                                             context)
                                                                         .add(
@@ -1972,8 +1966,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                           ),
                                                                           onPressed:
                                                                               () {
-                                                                            print("Selected Category: $selectedCategoryFilters");
-                                                                            print("Selected Brand: $selectedBrandFilters");
+
 
                                                                             BlocProvider.of<RewardTierBloc>(context).add(
                                                                               RewardTierRequestEvent(
@@ -2339,8 +2332,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       ),
                                                                       onPressed:
                                                                           () async {
-                                                                        print(
-                                                                            selectedSortFilter);
+
                                                                         BlocProvider.of<RewardTierBloc>(context)
                                                                             .add(
                                                                           RewardTierRequestEvent(
@@ -2911,8 +2903,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 backgroundColor: AppColors.secondaryColor,
                                                                               ),
                                                                               onPressed: () {
-                                                                                print("Selected Category: $selectedCategoryFilters");
-                                                                                print("Selected Brand: $selectedBrandFilters");
 
                                                                                 BlocProvider.of<RewardTierBloc>(context).add(
                                                                                   RewardTierRequestEvent(
@@ -3294,8 +3284,7 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                       ),
                                                                       onPressed:
                                                                           () async {
-                                                                        print(
-                                                                            selectedSortFilter);
+
                                                                         BlocProvider.of<RewardTierBloc>(context)
                                                                             .add(
                                                                           RewardTierRequestEvent(
@@ -3861,8 +3850,6 @@ class _RewardScreenState extends State<RewardScreen> {
                                                                                 backgroundColor: AppColors.secondaryColor,
                                                                               ),
                                                                               onPressed: () {
-                                                                                print("Selected Category: $selectedCategoryFilters");
-                                                                                print("Selected Brand: $selectedBrandFilters");
 
                                                                                 BlocProvider.of<RewardTierBloc>(context).add(
                                                                                   RewardTierRequestEvent(
