@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -199,6 +200,7 @@ class _RedeemScreenState extends State<RedeemScreen> {
                   splashColor: AppColors.secondaryButtonColor,
                   splashFactory: InkSplash.splashFactory,
                   onTap: () {
+                    HapticFeedback.selectionClick();
                     if (int.tryParse(
                             widget.brandAndPartnerRedeemArguments.totalPoint)! >
                         int.parse(widget

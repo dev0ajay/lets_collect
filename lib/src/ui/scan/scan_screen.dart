@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,7 +66,6 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
   }
 
   ///Runtime User Access and Permission handling
-
   Future<void> checkPermissionForGallery(Permission permission) async {
     final status = await permission.request();
     if (status.isGranted) {
@@ -224,63 +223,65 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                                     // width: getProportionateScreenWidth(360),
                                   ),
                                 ),
-                          GestureDetector(
-                            onTap: () {
-                              // context.push('/long_receipt');
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    content: SizedBox(
-                                      height: getProportionateScreenHeight(260),
-                                      width: getProportionateScreenWidth(320),
-                                      child: Lottie.asset(Assets.SOON),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: DottedBorder(
-                                borderType: BorderType.RRect,
-                                color: AppColors.cardTextColor,
-                                radius: const Radius.circular(10),
-                                child: SizedBox(
-                                  height: getProportionateScreenHeight(60),
-                                  width: getProportionateScreenWidth(320),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        AppLocalizations.of(context)!.ereciept,
-                                        // "E-Reciept (or) Reciept too long?",
-                                        style: GoogleFonts.roboto(
-                                          color: AppColors.cardTextColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 20),
-                                      const Icon(
-                                        Icons.camera_alt,
-                                        color: AppColors.cardTextColor,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          ///Long Receipt Text Button
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     // context.push('/long_receipt');
+                          //     showDialog(
+                          //       context: context,
+                          //       builder: (BuildContext context) {
+                          //         return AlertDialog(
+                          //           shape: RoundedRectangleBorder(
+                          //               borderRadius:
+                          //                   BorderRadius.circular(10)),
+                          //           content: SizedBox(
+                          //             height: getProportionateScreenHeight(260),
+                          //             width: getProportionateScreenWidth(320),
+                          //             child: Lottie.asset(Assets.SOON),
+                          //           ),
+                          //         );
+                          //       },
+                          //     );
+                          //   },
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.only(top: 20),
+                          //     child: DottedBorder(
+                          //       borderType: BorderType.RRect,
+                          //       color: AppColors.cardTextColor,
+                          //       radius: const Radius.circular(10),
+                          //       child: SizedBox(
+                          //         height: getProportionateScreenHeight(60),
+                          //         width: getProportionateScreenWidth(320),
+                          //         child: Row(
+                          //           mainAxisAlignment: MainAxisAlignment.center,
+                          //           children: [
+                          //             Text(
+                          //               AppLocalizations.of(context)!.ereciept,
+                          //               // "E-Reciept (or) Reciept too long?",
+                          //               style: GoogleFonts.roboto(
+                          //                 color: AppColors.cardTextColor,
+                          //                 fontSize: 16,
+                          //                 fontWeight: FontWeight.w400,
+                          //               ),
+                          //             ),
+                          //             const SizedBox(width: 20),
+                          //             const Icon(
+                          //               Icons.camera_alt,
+                          //               color: AppColors.cardTextColor,
+                          //             )
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 20),
                             child: InkWell(
                               splashColor: AppColors.secondaryButtonColor,
                               splashFactory: InkSplash.splashFactory,
                               onTap: () {
+                                HapticFeedback.selectionClick();
                                 if (galleryFile != null) {
                                   BlocProvider.of<ScanBloc>(context).add(
                                     ScanReceiptEvent(
@@ -338,6 +339,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
         barrierDismissible: false,
         context: context,
         builder: (ctx) {
+          SizeConfig().init(context);
           return BlocBuilder<ScanBloc, ScanState>(
             builder: (context, state) {
               if (state is ScanLoading) {
@@ -369,8 +371,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                           child: Center(
                             child: Image.asset(
                               Assets.APP_LOGO,
-                              height: 95,
-                              width: 150,
+                              height: getProportionateScreenHeight(95),
+                              width: getProportionateScreenWidth(150),
                             ),
                           ),
                         ),
@@ -440,8 +442,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             child: Center(
                               child: Image.asset(
                                 Assets.APP_LOGO,
-                                height: 95,
-                                width: 150,
+                                height: getProportionateScreenHeight(95),
+                                width: getProportionateScreenWidth(150),
                               ),
                             ),
                           ),
@@ -493,8 +495,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               child: Center(
                                 child: Image.asset(
                                   Assets.APP_LOGO,
-                                  height: 95,
-                                  width: 150,
+                                  height: getProportionateScreenHeight(95),
+                                  width: getProportionateScreenWidth(150),
                                 ),
                               ),
                             ),
@@ -549,8 +551,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                               child: Center(
                                 child: Image.asset(
                                   Assets.APP_LOGO,
-                                  height: 95,
-                                  width: 150,
+                                  height: getProportionateScreenHeight(95),
+                                  width: getProportionateScreenWidth(150),
                                 ),
                               ),
                             ),
@@ -627,8 +629,8 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
                             child: Center(
                               child: Image.asset(
                                 Assets.APP_LOGO,
-                                height: 95,
-                                width: 150,
+                                height: getProportionateScreenHeight(95),
+                                width: getProportionateScreenWidth(150),
                               ),
                             ),
                           ),

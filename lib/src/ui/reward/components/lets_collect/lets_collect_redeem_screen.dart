@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -214,6 +215,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                     splashColor: AppColors.secondaryButtonColor,
                     splashFactory: InkSplash.splashFactory,
                     onTap: () {
+                      HapticFeedback.selectionClick();
                       if(int.tryParse(widget.redeemScreenArguments.totalPoint!)! > int.parse(widget.redeemScreenArguments.requiredPoint)) {
                         BlocProvider.of<RedeemBloc>(context).add(
                           GetQrCodeUrlEvent(

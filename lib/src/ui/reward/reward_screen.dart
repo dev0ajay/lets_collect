@@ -4026,7 +4026,6 @@ class _RewardScreenState extends State<RewardScreen> {
                             child: Text(
                               AppLocalizations.of(context)!
                                   .pleasechoosearewardtier,
-                              // "Please choose a reward tier",
                               style: GoogleFonts.openSans(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
@@ -4048,6 +4047,12 @@ class _RewardScreenState extends State<RewardScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     _scrollToBottom();
+                                    BlocProvider.of<RewardTierBloc>(context).add(
+                                      RewardTierRequestEvent(
+                                        rewardTierRequest: RewardTierRequest(
+                                            sort: "", eligible: "", categoryId: "", brandId: ""),
+                                      ),
+                                    );
                                     setState(() {
                                       isRewardTierSelected = true;
                                       isLetsCollectSelected = true;
@@ -4113,6 +4118,12 @@ class _RewardScreenState extends State<RewardScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     _scrollToBottom();
+                                    BlocProvider.of<RewardTierBloc>(context).add(
+                                      RewardTierRequestEvent(
+                                        rewardTierRequest: RewardTierRequest(
+                                            sort: "", eligible: "", categoryId: "", brandId: ""),
+                                      ),
+                                    );
                                     setState(() {
                                       isLetsCollectSelected = false;
                                       isBrandSelected = true;
@@ -4176,6 +4187,12 @@ class _RewardScreenState extends State<RewardScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     _scrollToBottom();
+                                    BlocProvider.of<RewardTierBloc>(context).add(
+                                      RewardTierRequestEvent(
+                                        rewardTierRequest: RewardTierRequest(
+                                            sort: "", eligible: "", categoryId: "", brandId: ""),
+                                      ),
+                                    );
                                     setState(() {
                                       isLetsCollectSelected = false;
                                       isBrandSelected = false;

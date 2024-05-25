@@ -27,6 +27,7 @@ class _HelpScreenState extends State<HelpScreen> {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
             onPressed: () {
@@ -45,10 +46,17 @@ class _HelpScreenState extends State<HelpScreen> {
             color: AppColors.primaryWhiteColor,
           ),
         ),
+
         actions: const [
-          Text(
-            "v1.2.8+14",
-            style: TextStyle(fontSize: 9),
+          Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Text(
+                "v1.2.15+21",
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
           )
         ],
       ),

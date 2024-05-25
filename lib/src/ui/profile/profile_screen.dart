@@ -259,17 +259,17 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             fontStyle: FontStyle.normal,
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 20,
-                                          child: BlocBuilder<LanguageBloc,
-                                              LanguageState>(
-                                            builder: (context, state) {
-                                              return state
-                                                  .selectedLanguage.image
-                                                  .image();
-                                            },
-                                          ),
-                                        ),
+                                        // SizedBox(
+                                        //   height: 20,
+                                        //   child: BlocBuilder<LanguageBloc,
+                                        //       LanguageState>(
+                                        //     builder: (context, state) {
+                                        //       return state
+                                        //           .selectedLanguage.image
+                                        //           .image();
+                                        //     },
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -455,8 +455,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FontStyle.normal,
-                                      letterSpacing:
-                                          0, // This is the default value for normal line height
+                                      letterSpacing: 0, // This is the default value for normal line height
                                     ),
                                   ),
                                 ),
@@ -485,6 +484,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 padding: const EdgeInsets.only(top: 18.0),
                                 child: GestureDetector(
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) =>
@@ -515,10 +515,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     backgroundColor: AppColors.primaryColor,
                                   ),
                                   onPressed: () {
+                                    HapticFeedback.lightImpact();
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) =>
-                                            const LogOutAlertOverlay());
+                                            const LogOutAlertOverlay(),
+                                    );
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)!.logout,
@@ -626,24 +628,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Future.delayed(const Duration(milliseconds: 300))
                               .then((value) => Navigator.of(context).pop());
                         },
-                        leading: ClipOval(
-                          child: Language.values[index].image.image(
-                            height: 32.0,
-                            width: 32.0,
-                          ),
-                        ),
                         title: Text(
                           Language.values[index].text,
                           style: TextStyle(
                               color: Language.values[index] ==
                                       state.selectedLanguage
                                   ? AppColors.primaryWhiteColor
-                                  : AppColors.primaryBlackColor),
+                                  : AppColors.primaryBlackColor,
+                          ),
                         ),
                         trailing:
                             Language.values[index] == state.selectedLanguage
                                 ? const Icon(Icons.check_circle_rounded,
-                                    color: AppColors.secondaryColor)
+                                    color: AppColors.secondaryColor,
+                            )
                                 : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),

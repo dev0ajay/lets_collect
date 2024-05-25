@@ -35,7 +35,7 @@
     <application
         android:requestLegacyExternalStorage="true"
         android:enableOnBackInvokedCallback="true"
-        android:label="lets_collect"
+        android:label="Lets Collect"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data

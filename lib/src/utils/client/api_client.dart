@@ -31,7 +31,7 @@ import '../urls/urls.dart';
 
 class ApiClient {
   ApiClient() {
-    initClientLetsCollect();
+    initClientLetsCollectDev();
   }
 
 //for api client testing only
@@ -63,15 +63,57 @@ class ApiClient {
   String? message;
 
   /// client production
+  // initClientLetsCollectLive() async {
+  //   // String basicAuth =
+  //   //     'Basic ' + base64Encode(utf8.encode('$usernameMyg:$passwordMygDev'));
+  //   _baseOptionsLetsCollect = BaseOptions(
+  //     baseUrl: UrlsLetsCollect.baseUrl,
+  //     connectTimeout: const Duration(milliseconds: 300000),
+  //     receiveTimeout: const Duration(milliseconds: 1000000),
+  //     followRedirects: true,
+  //     headers: {
+  //       HttpHeaders.contentTypeHeader: 'application/json',
+  //       HttpHeaders.acceptHeader: 'application/json',
+  //
+  //       // "authorization": basicAuth
+  //     },
+  //     responseType: ResponseType.json,
+  //     receiveDataWhenStatusError: true,
+  //   );
+  //
+  //   dioLetsCollect = Dio(_baseOptionsLetsCollect);
+  //   dioLetsCollect.httpClientAdapter = IOHttpClientAdapter(
+  //     createHttpClient: () {
+  //       // Don't trust any certificate just because their root cert is trusted.
+  //       final HttpClient client =
+  //       HttpClient(context: SecurityContext(withTrustedRoots: false));
+  //       // You can test the intermediate / root cert here. We just ignore it.
+  //       client.badCertificateCallback =
+  //       ((X509Certificate cert, String host, int port) => true);
+  //       return client;
+  //     },
+  //   );
+  //
+  //
+  //   dioLetsCollect.interceptors.add(InterceptorsWrapper(
+  //     onRequest: (reqOptions, handler) {
+  //       return handler.next(reqOptions);
+  //     },
+  //     onError: (DioError dioError, handler) {
+  //       return handler.next(dioError);
+  //     },
+  //   ));
+  // }
+
 
   ///client dev
-  initClientLetsCollect() async {
+  initClientLetsCollectDev() async {
     // String basicAuth =
     //     'Basic ' + base64Encode(utf8.encode('$usernameMyg:$passwordMygDev'));
     _baseOptionsLetsCollect = BaseOptions(
       baseUrl: UrlsLetsCollect.baseUrl,
-      connectTimeout: const Duration(milliseconds: 300000),
-      receiveTimeout: const Duration(milliseconds: 1000000),
+      connectTimeout: const Duration(seconds: 10000),
+      receiveTimeout: const Duration(seconds: 15000),
       followRedirects: true,
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
