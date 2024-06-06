@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/language.dart';
-import 'package:lets_collect/src/bloc/language/language_bloc.dart';
 import 'package:lets_collect/src/bloc/redeem/redeem_bloc.dart';
 import 'package:lets_collect/src/model/redeem/qr_code_url_request.dart';
 import 'package:lets_collect/src/ui/reward/components/widgets/redeem_alert_overlay_widget.dart';
@@ -30,22 +28,15 @@ class LetsCollectRedeemScreen extends StatefulWidget {
 
 class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
   @override
-  void initState() {
-    super.initState();
-
-    // ObjectFactory().prefs.getLetsCollectTierData()!.data.letsCollect.forEach((element) { });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            )),
+          bottomLeft: Radius.circular(5),
+          bottomRight: Radius.circular(5),
+        )),
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           onPressed: () {
@@ -120,7 +111,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                       ),
                       child: Padding(
                         padding:
-                        const EdgeInsets.only(top: 20, left: 10, right: 10),
+                            const EdgeInsets.only(top: 20, left: 10, right: 10),
                         child: Column(
                           // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -130,7 +121,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                 borderRadius: BorderRadius.circular(5),
                                 child: CachedNetworkImage(
                                   imageUrl:
-                                  widget.redeemScreenArguments.imageUrl,
+                                      " widget.redeemScreenArguments.imageUrl",
                                   fit: BoxFit.fill,
                                   placeholder: (context, url) => SizedBox(
                                     width: MediaQuery.of(context).size.width,
@@ -143,7 +134,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                                     ),
                                   ),
                                   errorWidget: (context, url, error) =>
-                                  const ImageIcon(
+                                      const ImageIcon(
                                     size: 200,
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
@@ -155,7 +146,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                             Flexible(
                               flex: 1,
                               child: Text(
-                                widget.redeemScreenArguments.requiredPoint,
+                                "widget.redeemScreenArguments.requiredPoint",
                                 style: GoogleFonts.roboto(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
@@ -186,12 +177,16 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                   padding: const EdgeInsets.only(top: 20),
                   child: GestureDetector(
                     onTap: () {
-                      _showDialogBox(
-                        context: context,
-                        storeList: context.read<LanguageBloc>().state.selectedLanguage == Language.english
-                            ? widget.redeemScreenArguments.wereToRedeem
-                            : widget.redeemScreenArguments.wereToRedeem,
-                      );
+                      // _showDialogBox(
+                      //   context: context,
+                      //   storeList: context
+                      //               .read<LanguageBloc>()
+                      //               .state
+                      //               .selectedLanguage ==
+                      //           Language.english
+                      //       ? widget.redeemScreenArguments.wereToRedeem
+                      //       : widget.redeemScreenArguments.wereToRedeem,
+                      // );
                     },
                     child: Text(
                       // " Where can i redeem this reward?",
@@ -216,41 +211,41 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
                     splashFactory: InkSplash.splashFactory,
                     onTap: () {
                       HapticFeedback.selectionClick();
-                      if(int.tryParse(widget.redeemScreenArguments.totalPoint!)! > int.parse(widget.redeemScreenArguments.requiredPoint)) {
+                      if (int.tryParse(
+                              widget.redeemScreenArguments.totalPoint!)! >
+                          int.parse(
+                              widget.redeemScreenArguments.requiredPoint!)) {
                         BlocProvider.of<RedeemBloc>(context).add(
                           GetQrCodeUrlEvent(
                             qrCodeUrlRequest: QrCodeUrlRequest(
-                                rewardId: widget.redeemScreenArguments.rewardId!),
+                                rewardId:
+                                    widget.redeemScreenArguments.rewardId!),
                           ),
                         );
-                          showDialog(
+                        showDialog(
                           context: context,
                           builder: (BuildContext context) =>
                               RedeemAlertOverlayWidget(
-                                imageUrl: widget.redeemScreenArguments.imageUrl,
-                                requiredPoints:
-                                widget.redeemScreenArguments.requiredPoint,
-                              ),
+                            imageUrl: widget.redeemScreenArguments.imageUrl!,
+                            requiredPoints:
+                                widget.redeemScreenArguments.requiredPoint!,
+                          ),
                         );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: AppColors.secondaryColor,
+                          content: Text(
+                            AppLocalizations.of(context)!
+                                .youdonthaveenoughpointstoreddemthisitem,
+                            // "You don't have enough points to redeem this item.",
+                            style: const TextStyle(
+                              color: AppColors.primaryWhiteColor,
+                            ),
+                          ),
+                        ));
                       }
-                      else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: AppColors.secondaryColor,
-                              content: Text(
-                                AppLocalizations.of(context)!.youdonthaveenoughpointstoreddemthisitem,
-                                // "You don't have enough points to redeem this item.",
-                                style: const TextStyle(
-                                  color: AppColors.primaryWhiteColor,
-                                ),
-                              ),
-                            )
-                        );
-                      }
-
-
                     },
-                    child:  SizedBox(
+                    child: SizedBox(
                       child: Padding(
                         padding: const EdgeInsets.all(3.0),
                         child: ScanScreenCollectButton(
@@ -283,6 +278,7 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
     );
   }
 
+  ///Dialog box for supermarket list
   void _showDialogBox({
     required BuildContext context,
     required List<String> storeList,
@@ -313,27 +309,28 @@ class _LetsCollectRedeemScreenState extends State<LetsCollectRedeemScreen> {
               const SizedBox(height: 10),
               Center(
                   child: Text(
-                    AppLocalizations.of(context)!.thisitemcanberedeemed,
-                    // "In Following Physical Store",
-                    style: GoogleFonts.roboto(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
+                AppLocalizations.of(context)!.thisitemcanberedeemed,
+                // "In Following Physical Store",
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              )),
               const SizedBox(height: 20),
               Expanded(
                 flex: 2,
                 child: Column(
-                    children: List.generate(
-                      storeList.length,
-                          (index) => Text(
-                        "\u2022 ${storeList[index]}",
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  children: List.generate(
+                    storeList.length,
+                    (index) => Text(
+                      "\u2022 ${storeList[index]}",
+                      style: GoogleFonts.openSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

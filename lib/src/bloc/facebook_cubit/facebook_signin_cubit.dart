@@ -12,7 +12,7 @@ class FacebookSignInCubit extends Cubit<FacebookSigninState> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   Future<void> _getFacebookUserData(String accessToken) async {
-    final String graphEndpoint = "https://graph.facebook.com/v14.0/me?fields=name,email";
+    const String graphEndpoint = "https://graph.facebook.com/v14.0/me?fields=name,email";
     final Map<String, String> queryParams = {"access_token": accessToken};
     final Uri url = Uri.parse(graphEndpoint).replace(queryParameters: queryParams);
 

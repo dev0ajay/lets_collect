@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "113086635979-5d8m6p2lh57kjf362rhauorvv2ormks9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crayotech.lets_collect",
+            "certificate_hash": "4f0a76f5b895afa01e0ca4a5c43a50890fd52c96"
+          }
+        },
+        {
           "client_id": "113086635979-7omk2al589h612f11ajsr6b1au6vua65.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -37,6 +45,14 @@
             {
               "client_id": "113086635979-ggqk5rnq6b0g9e475vgqc5jijf4s5u3q.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "113086635979-83usej8u9bl97a44ouj7t7ehlc69nf0e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.crayotech.letsCollect",
+                "app_store_id": "6477857759"
+              }
             }
           ]
         }

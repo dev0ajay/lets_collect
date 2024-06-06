@@ -10,7 +10,7 @@ part 'delete_account_event.dart';
 part 'delete_account_state.dart';
 
 class DeleteAccountBloc extends Bloc<DeleteAccountEvent, DeleteAccountState> {
-  ProfileDataProvider profileDataProvider;
+  ProfileScreenProvider profileDataProvider;
   DeleteAccountBloc({required this.profileDataProvider}) : super(DeleteAccountInitial()) {
     on<DeleteAccountEventTrigger>((event, emit) async{
       emit(DeleteAccountLoading());

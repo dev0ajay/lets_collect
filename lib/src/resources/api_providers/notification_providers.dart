@@ -18,10 +18,7 @@ class NotificationProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;

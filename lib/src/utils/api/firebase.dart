@@ -22,7 +22,7 @@ class NotificationServices {
   void initLocalNotifications(
       BuildContext context, RemoteMessage message) async {
     var androidInitializationSettings =
-        const AndroidInitializationSettings('@mipmap/ic_stat_logo');
+        const AndroidInitializationSettings("@mipmap/ic_launcher_foreground");
     var iosInitializationSettings = const DarwinInitializationSettings();
 
     var initializationSetting = InitializationSettings(
@@ -30,7 +30,6 @@ class NotificationServices {
 
     await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
         onDidReceiveNotificationResponse: (payload) {
-      // handle interaction when app is active for android
       handleMessage(context, message);
     });
   }
@@ -102,45 +101,6 @@ class NotificationServices {
         initLocalNotifications(context, message);
         showNotification(message);
       }
-      ///Overlay for notification
-      // _notificationInfo = pushNotification;
-      // if (_notificationInfo != null) {
-      //   /// For displaying the notification as an overlay
-      //   showOverlayNotification(
-      //         (context) {
-      //       return Card(
-      //         margin: const EdgeInsets.symmetric(horizontal: 4),
-      //         child: SafeArea(
-      //           child: ListTile(
-      //             leading: SizedBox.fromSize(
-      //               size: const Size(40, 40),
-      //               child: ClipOval(
-      //                 child: Container(
-      //                   // color: AppColors.primaryGrayColor,
-      //                   decoration: const BoxDecoration(
-      //                       image: DecorationImage(image: AssetImage(Assets.NOTI),fit: BoxFit.contain)
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //             title: Text(_notificationInfo!.title!),
-      //             subtitle: Text(_notificationInfo!.body!),
-      //             trailing: InkWell(
-      //               child: const Text(
-      //                 "Dismiss",
-      //                 style: TextStyle(color: AppColors.secondaryColor),
-      //               ),
-      //               onTap: () {
-      //                 OverlaySupportEntry.of(context)!.dismiss();
-      //               },
-      //             ),
-      //           ),
-      //         ),
-      //       );
-      //     },
-      //     duration: const Duration(milliseconds: 4000),
-      //   );
-      // }
     });
   }
 
@@ -167,7 +127,6 @@ class NotificationServices {
         print('user granted provisional permission');
       }
     } else {
-      //appsetting.AppSettings.openNotificationSettings();
       if (kDebugMode) {
         print('user denied permission');
       }
@@ -193,9 +152,7 @@ class NotificationServices {
             priority: Priority.high,
             playSound: true,
             ticker: 'ticker',
-            sound: channel.sound
-            //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
-            //  icon: largeIconPath
+            sound: channel.sound,
             );
 
     const DarwinNotificationDetails darwinNotificationDetails =
@@ -248,7 +205,7 @@ class NotificationServices {
 
   void handleMessage(BuildContext context, RemoteMessage message) {
     if (ObjectFactory().prefs.isLoggedIn()!) {
-    context.go('/home');
+    // context.go('/home');
     context.push('/notification');
   }else {
       context.go('/login');

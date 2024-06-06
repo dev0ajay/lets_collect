@@ -16,24 +16,12 @@ class ObjectFactory {
   ///Initialisation of Objects
   final Prefs _prefs = Prefs();
   final ApiClient _apiClient = ApiClient();
-  // ApiClientDev _apiClientDev = ApiClientDev();
-  // ApiClientPostServer _apiClientPostServer = ApiClientPostServer();
-  // ApiClientPayTm _apiClientPayTm = ApiClientPayTm();
-  // ApiClientNewServer _apiClientNewServer = ApiClientNewServer();
-  // Repository _repository = Repository();
+
 
   ///
   /// Getters of Objects
   ///
   ApiClient get apiClient => _apiClient;
-
-  // ApiClientDev get apiClientDev => _apiClientDev;
-  //
-  // ApiClientPayTm get apiClientPayTm => _apiClientPayTm;
-  //
-  // ApiClientNewServer get apiClientNewServer => _apiClientNewServer;
-  //
-  // ApiClientPostServer get apiClientPostServer => _apiClientPostServer;
 
   Prefs get prefs => _prefs;
 

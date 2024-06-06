@@ -248,6 +248,7 @@
     "invalidreferral" : ".رمز الإحالة غير صالح",
     "referralexpired" : ".رمز الإحالة منتهي الصلاحية",
     "referralsendseuccessfully" : ".تم إرسال رمز الإحالة بنجاح",
+    "pleasetryagainlater" : "الرجاء المحاولة مرة أخرى لاحقا",
     "pleaselogoutandreopentheapplication" : "!يرجى تسجيل الخروج وإعادة فتح التطبيق",
     "pleaseentercorrectreferralcode" : "الرجاء إدخال رمز الإحالة الصحيح!",
     "useralreadyreferred" : "لقد تم إحالة المستخدم بالفعل",
@@ -291,6 +292,7 @@
     "newpasswordandconfirmpassworddonotmatch" : "كلمة المرور الجديدة وتأكيد كلمة المرور غير متطابقين",
     "notificationdetails" : "تفاصيل الإشعار",
     "pointdetails" : "تفاصيل النقاط",
-    "inviteafriendandwinmorepoints" : "قم بدعوة صديق واربح المزيد من النقاط!"
+    "inviteafriendandwinmorepoints" : "قم بدعوة صديق واربح المزيد من النقاط!",
+    "rewards" : "المكافآت"
 
 }

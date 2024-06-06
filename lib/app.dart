@@ -15,8 +15,8 @@ import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.d
 import 'package:lets_collect/src/bloc/home_bloc/home_bloc.dart';
 import 'package:lets_collect/src/bloc/how_to_redeem/how_to_redeem_my_points_bloc.dart';
 import 'package:lets_collect/src/bloc/language/language_bloc.dart';
-import 'package:lets_collect/src/bloc/language/language_event.dart';
 import 'package:lets_collect/src/bloc/language/language_state.dart';
+import 'package:lets_collect/src/bloc/language_selection_bloc/language_selection_bloc.dart';
 import 'package:lets_collect/src/bloc/my_profile_bloc/my_profile_bloc.dart';
 import 'package:lets_collect/src/bloc/nationality_bloc/nationality_bloc.dart';
 import 'package:lets_collect/src/bloc/notification/notification_bloc.dart';
@@ -69,7 +69,7 @@ class _AppState extends State<App> {
             create: (create) => HomeDataProvider(),
           ),
           RepositoryProvider(
-            create: (create) => ProfileDataProvider(),
+            create: (create) => ProfileScreenProvider(),
           ),
           RepositoryProvider(
             create: (create) => SearchProvider(),
@@ -100,8 +100,8 @@ class _AppState extends State<App> {
                   NetworkBloc()..add(NetworkObserve()),
             ),
             BlocProvider<LanguageBloc>(
-              create: (context) => LanguageBloc()..add(GetLanguage()),
-            ),
+              create: (context) => LanguageBloc(profileScreenProvider:  RepositoryProvider.of(context),)),
+
             BlocProvider<SignUpBloc>(
               create: (BuildContext context) => SignUpBloc(
                 authProvider: RepositoryProvider.of(context),
@@ -230,6 +230,10 @@ class _AppState extends State<App> {
               create: (BuildContext context) => ChangePasswordBloc(
                   myProfileDataProvider: RepositoryProvider.of(context)),
             ),
+            BlocProvider<LanguageSelectionBloc>(
+              create: (BuildContext context) => LanguageSelectionBloc(
+    profileScreenProvider: RepositoryProvider.of(context),
+            ),),
           ],
           child: BlocBuilder<LanguageBloc, LanguageState>(
             builder: (context, state) {
@@ -239,7 +243,6 @@ class _AppState extends State<App> {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 themeAnimationCurve: Curves.easeIn,
                 themeAnimationDuration: const Duration(milliseconds: 750),
-                // routerConfig: AppRouter.router,
                 routerDelegate: AppRouter.router.routerDelegate,
                 routeInformationProvider:
                     AppRouter.router.routeInformationProvider,

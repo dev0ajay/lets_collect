@@ -1,23 +1,23 @@
 class LetCollectRedeemScreenArguments {
-  final String requiredPoint;
-  final String imageUrl;
-  final String name;
+   String? requiredPoint;
+   String? imageUrl;
+   String? name;
 
-  final List<String> wereToRedeem;
-  final List<String> wereToRedeemAr;
+   List<String>? wereToRedeem;
+   List<String>? wereToRedeemAr;
   String? iD;
   String? from;
   int? rewardId;
   String? totalPoint;
 
-  LetCollectRedeemScreenArguments(
-      {required this.requiredPoint,
-      required this.imageUrl,
-      required this.wereToRedeem,
-      required this.wereToRedeemAr,
-      this.iD,
-      required this.rewardId,
-      this.totalPoint,
-      required this.name,
-    });
+  LetCollectRedeemScreenArguments({
+    this.requiredPoint,
+    this.imageUrl,
+    this.wereToRedeem,
+    this.wereToRedeemAr,
+    this.iD,
+    this.rewardId,
+    this.totalPoint,
+    required this.name,
+  });
 }

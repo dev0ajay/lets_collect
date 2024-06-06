@@ -43,12 +43,7 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
-        // print(e.response!.headers);
-        // print(e.response!.requestOptions);
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -82,12 +77,7 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
-        // print(e.response!.headers);
-        // print(e.response!.requestOptions);
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -132,10 +122,7 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -167,10 +154,7 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -206,10 +190,7 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -229,7 +210,6 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .forgotPasswordOtp(forgotPasswordOtpRequest);
-      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<ForgotPasswordOtpRequestResponse>.success(
             ForgotPasswordOtpRequestResponse.fromJson(response.data));
@@ -237,15 +217,11 @@ class AuthDataProvider {
         return StateModel.error(
             "The server isn't responding! Please try again later.");
       }
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -273,18 +249,13 @@ class AuthDataProvider {
         return StateModel.error(
             "The server isn't responding! Please try again later.");
       }
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
-        // return response!;
       } else if (e.response != null && e.response!.statusCode == 408) {
         return StateModel.error(
             "Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!");
@@ -298,7 +269,6 @@ class AuthDataProvider {
     try {
       final response =
           await ObjectFactory().apiClient.googleLogin(googleLoginRequest);
-      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<GoogleLoginResponse>.success(
             GoogleLoginResponse.fromJson(response.data));
@@ -306,15 +276,10 @@ class AuthDataProvider {
         return StateModel.error(
             "The server isn't responding! Please try again later.");
       }
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -341,15 +306,11 @@ class AuthDataProvider {
         return StateModel.error(
             "The server isn't responding! Please try again later.");
       }
-      print(response.toString());
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
         // return response!;
@@ -369,7 +330,6 @@ class AuthDataProvider {
       final response = await ObjectFactory()
           .apiClient
           .signInWithFacebook(facebookSignInRequest);
-      // print(response.toString());
       if (response.statusCode == 200) {
         return StateModel<FacebookSignInResponse>.success(
             FacebookSignInResponse.fromJson(response.data));
@@ -380,13 +340,9 @@ class AuthDataProvider {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null && e.response!.statusCode == 500) {
-        // print(e.response!.statusCode == 500);
-        // print("Error: ${e.error.toString()}");
-        // print("Error msg: ${e.message}");
-        // print("Error type: ${e.type}");
+
         return StateModel.error(
             "The server isn't responding! Please try again later.");
-        // return response!;
       } else if (e.response != null && e.response!.statusCode == 408) {
         return StateModel.error(
             "Hello there! It seems like your request took longer than expected to process. We apologize for the inconvenience. Please try again later or reach out to our support team for assistance. Thank you for your patience!");

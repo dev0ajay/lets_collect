@@ -1,17 +1,14 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/src/bloc/facebook_cubit/facebook_signin_cubit.dart';
 import 'package:lets_collect/src/bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/strings.dart';
-import 'package:lets_collect/src/model/auth/facebook_sign_in_request.dart';
 import 'package:lets_collect/src/model/auth/google_login_request.dart';
 import 'package:lets_collect/src/model/auth/login_request.dart';
 import 'package:lets_collect/src/bloc/login_bloc/login_bloc.dart';
@@ -82,14 +79,14 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   }
 
   ///Register Notification Service
-  void registerNotification() {
-    FirebaseMessaging fm = FirebaseMessaging.instance;
-    fm.getToken().then((token) {
-      print("token is $token");
-      Strings.FCM = token ?? "";
-      ObjectFactory().prefs.setFcmToken(token: token);
-    });
-  }
+  // void registerNotification() {
+  //   FirebaseMessaging fm = FirebaseMessaging.instance;
+  //   fm.getToken().then((token) {
+  //     print("token is $token");
+  //     Strings.FCM = token ?? "";
+  //     ObjectFactory().prefs.setFcmToken(token: token);
+  //   });
+  // }
 
   ///URL launcher
   Future<void> _launchInBrowser(String url) async {
@@ -108,11 +105,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
     try {
       final authService = BlocProvider.of<AppleSignInCubit>(context);
       final user = await authService.signInWithApple();
-      print("APPLEID: ${user.email}");
-      print("DISPLAY NAME: ${user.displayName}");
-      // print("DISPLAY NAME: ${user.}");
-      // print(
-      //     "DISPLAY NAME: ${user.providerData.map((e) => e.displayName.toString())}");
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -123,7 +115,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
   @override
   void initState() {
     super.initState();
-    registerNotification();
+    // registerNotification();
   }
 
   @override
@@ -153,8 +145,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           Language.english
                       ? state.loginRequestResponse.message
                       : state.loginRequestResponse.messageArabic,
-
-                  /// arabic add akita
                   style: const TextStyle(color: AppColors.primaryWhiteColor),
                 ),
               ),
@@ -215,7 +205,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                 userName: state.googleLoginResponse.data!.firstName);
             ObjectFactory().prefs.setIsLoggedIn(true);
             context.pushReplacement("/home");
-            // ignore: unnecessary_null_comparison
           } else if (state.googleLoginResponse.success == false &&
               state.googleLoginResponse.token!.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -351,9 +340,13 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       child: Lottie.asset(Assets.JUMBINGDOT,
                           height: 90, width: 90),
                     ),
-                    const Text(
-                      "Please wait",
-                      style: TextStyle(color: AppColors.secondaryColor),
+                     Text(
+                      AppLocalizations.of(context)!.pleasewait,
+                      style: GoogleFonts.openSans(
+                        color: AppColors.primaryWhiteColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -447,7 +440,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       MyTextField(
                         hintText:
                             AppLocalizations.of(context)!.enteryourpassword,
-                        // hintText: Strings.LOGIN_PASSWORD_HINT_TEXT,
                         obscureText: true,
                         maxLines: 1,
                         controller: passwordController,
@@ -528,8 +520,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                               width: 340,
                               height: 40,
                               onTap: () {
+                                //To initiate a crash for Firebase CrashLytics
+                                // FirebaseCrashlytics.instance.crash();
                                 if (_formKey.currentState!.validate()) {
-                                  // If the form is valid, perform login action
                                   BlocProvider.of<LoginBloc>(context).add(
                                     LoginRequestEvent(
                                       loginRequest: LoginRequest(
@@ -547,7 +540,6 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                   Fluttertoast.showToast(
                                     msg: AppLocalizations.of(context)!
                                         .allfieldsareimportant,
-                                    // msg: "All fields are important",
                                     toastLength: Toast.LENGTH_LONG,
                                     gravity: ToastGravity.BOTTOM,
                                     backgroundColor:
@@ -577,12 +569,11 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                       ),
                       const SizedBox(height: 10),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Flexible(
+                          Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                fixedSize:  const Size(160, 40),
+                                fixedSize: const Size(160, 40),
                                 padding: EdgeInsets.zero,
                                 backgroundColor: AppColors.primaryWhiteColor,
                                 shape: RoundedRectangleBorder(
@@ -653,8 +644,112 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                             ),
                           ),
                           const SizedBox(width: 10),
+                          Expanded(
+                            child: BlocConsumer<GoogleSignInCubit,
+                                GoogleSignInState>(
+                              listener: (context, state) {
+                                if (state is GoogleSignInSuccess) {
+                                  BlocProvider.of<LoginBloc>(context).add(
+                                    GetGoogleLoginEvent(
+                                      googleLoginRequest: GoogleLoginRequest(
+                                        email: state.user.email!,
+                                        deviceToken: ObjectFactory()
+                                            .prefs
+                                            .getFcmToken()!,
+                                        deviceType:
+                                            Platform.isAndroid ? "A" : "I",
+                                        displayName: state.user.providerData[0]
+                                                .displayName!.isEmpty
+                                            ? ""
+                                            : state.user.providerData[0]
+                                                .displayName!,
+                                        mobileNo: state.user.providerData[0]
+                                                    .phoneNumber ==
+                                                null
+                                            ? "0"
+                                            : state.user.providerData[0]
+                                                .phoneNumber!,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                if (state is GoogleSignInDenied) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: AppColors.secondaryColor,
+                                      content: Text(
+                                        AppLocalizations.of(context)!.couldnotcompletetherequest,
+                                        style: GoogleFonts.openSans(
+                                          color: AppColors.primaryWhiteColor,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                return ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    fixedSize: const Size(160, 40),
+                                    backgroundColor:
+                                        AppColors.primaryWhiteColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: state is GoogleSignInCubitLoading
+                                      ? null
+                                      : () => context
+                                          .read<GoogleSignInCubit>()
+                                          .login(),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        Assets.GOOGLE,
+                                        width: 20,
+                                        height: 20,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      state is GoogleSignInCubitLoading
+                                          ? const Center(
+                                              child: SizedBox(
+                                                height: 10,
+                                                width: 10,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color:
+                                                      AppColors.secondaryColor,
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                            )
+                                          : Text(
+                                              AppLocalizations.of(context)!
+                                                  .loginwithgoogle,
+                                              // "Sign In",
+                                              style: GoogleFonts.roboto(
+                                                color:
+                                                    AppColors.primaryGrayColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
                           Platform.isIOS
-                              ? Flexible(
+                              ? Expanded(
                                   child: BlocConsumer<AppleSignInCubit,
                                       AppleSignInState>(
                                     builder: (context, state) {
@@ -741,7 +836,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                             backgroundColor:
                                                 AppColors.secondaryColor,
                                             content: Text(
-                                              "Couldn't complete the request, Please try again!.",
+                                              AppLocalizations.of(context)!.couldnotcompletetherequest,
                                               style: GoogleFonts.openSans(
                                                 color:
                                                     AppColors.primaryWhiteColor,
@@ -754,114 +849,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                                   ),
                                 )
                               : const SizedBox(),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: BlocConsumer<GoogleSignInCubit,
-                                GoogleSignInState>(
-                              listener: (context, state) {
-                                if (state is GoogleSignInSuccess) {
-                                  BlocProvider.of<LoginBloc>(context).add(
-                                    GetGoogleLoginEvent(
-                                      googleLoginRequest: GoogleLoginRequest(
-                                        email: state.user.email!,
-                                        deviceToken: ObjectFactory()
-                                            .prefs
-                                            .getFcmToken()!,
-                                        deviceType:
-                                            Platform.isAndroid ? "A" : "I",
-                                        displayName: state.user.providerData[0]
-                                                .displayName!.isEmpty
-                                            ? ""
-                                            : state.user.providerData[0]
-                                                .displayName!,
-                                        mobileNo: state.user.providerData[0]
-                                                    .phoneNumber ==
-                                                null
-                                            ? "0"
-                                            : state.user.providerData[0]
-                                                .phoneNumber!,
-                                      ),
-                                    ),
-                                  );
-                                }
-                                if (state is GoogleSignInDenied) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: AppColors.secondaryColor,
-                                      content: Text(
-                                        "Couldn't complete the request, Please try again!.",
-                                        style: GoogleFonts.openSans(
-                                          color: AppColors.primaryWhiteColor,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                              builder: (context, state) {
-                                return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    fixedSize: const Size(160, 40),
-                                    backgroundColor:
-                                        AppColors.primaryWhiteColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  onPressed: state is GoogleSignInCubitLoading
-                                      ? null
-                                      : () => context
-                                          .read<GoogleSignInCubit>()
-                                          .login(),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        Assets.GOOGLE,
-                                        width: 20,
-                                        height: 20,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      state is GoogleSignInCubitLoading
-                                          ? const Center(
-                                              child: SizedBox(
-                                                height: 10,
-                                                width: 10,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color:
-                                                      AppColors.secondaryColor,
-                                                  strokeWidth: 2,
-                                                ),
-                                              ),
-                                            )
-                                          : Text(
-                                              AppLocalizations.of(context)!
-                                                  .loginwithgoogle,
-                                              // "Sign In",
-                                              style: GoogleFonts.roboto(
-                                                color:
-                                                    AppColors.primaryGrayColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 10),
+                          // SizedBox(width: 10),
                           ///Facebook
-                          // Flexible(
+                          // Expanded(
                           //   child: BlocConsumer<FacebookSignInCubit,
                           //       FacebookSigninState>(
                           //     listener: (context, state) {
@@ -884,11 +874,11 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           //             ),
                           //           ),
                           //         );
-                          //         print(state.user.uid);
-                          //         print(state.user.phoneNumber);
-                          //         print(state.user.displayName);
-                          //         print(state.user.email);
-                          //         print(state.user.photoURL);
+                          //         // print(state.user.uid);
+                          //         // print(state.user.phoneNumber);
+                          //         // print(state.user.displayName);
+                          //         // print(state.user.email);
+                          //         // print(state.user.photoURL);
                           //       }
                           //       if (state is FacebookSignInDenied) {
                           //         ScaffoldMessenger.of(context).showSnackBar(
@@ -908,7 +898,7 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           //           SnackBar(
                           //             backgroundColor: AppColors.secondaryColor,
                           //             content: Text(
-                          //               "Couldn't complete the request, Please try again!.",
+                          //               AppLocalizations.of(context)!.couldnotcompletetherequest,
                           //               style: GoogleFonts.openSans(
                           //                 color: AppColors.primaryWhiteColor,
                           //               ),
@@ -921,7 +911,9 @@ class _LoginUiwidgetState extends State<LoginUiwidget> {
                           //       return ElevatedButton(
                           //         style: ElevatedButton.styleFrom(
                           //           padding: EdgeInsets.zero,
-                          //           // fixedSize: const Size(160, 40),
+                          //           fixedSize: Platform.isAndroid
+                          //               ? null
+                          //               : const Size(160, 40),
                           //           backgroundColor:
                           //               AppColors.primaryWhiteColor,
                           //           shape: RoundedRectangleBorder(

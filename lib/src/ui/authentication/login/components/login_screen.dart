@@ -9,14 +9,14 @@ import '../../../../constants/assets.dart';
 import '../../../../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Login_screen extends StatefulWidget {
-  const Login_screen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login_screen> createState() => _Login_screenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _Login_screenState extends State<Login_screen> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

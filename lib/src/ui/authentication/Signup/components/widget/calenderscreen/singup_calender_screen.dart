@@ -269,9 +269,9 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                             });
                           },
                           activeColor: AppColors.secondaryColor,
-                          fillColor: MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.selected)) {
+                          fillColor: WidgetStateProperty.resolveWith<Color>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.selected)) {
                               return AppColors.secondaryColor;
                             }
                             return AppColors.primaryWhiteColor;
@@ -297,9 +297,9 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                             });
                           },
                           activeColor: AppColors.secondaryColor,
-                          fillColor: MaterialStateProperty.resolveWith<Color>(
-                              (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.selected)) {
+                          fillColor: WidgetStateProperty.resolveWith<Color>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.selected)) {
                               return AppColors.secondaryColor;
                             }
                             return AppColors.primaryWhiteColor;
@@ -479,9 +479,9 @@ class _SignupCalenderScreenState extends State<SignupCalenderScreen> {
                                   scrollbarTheme: ScrollbarThemeData(
                                     radius: const Radius.circular(40),
                                     thickness:
-                                        MaterialStateProperty.all<double>(6),
+                                        WidgetStateProperty.all<double>(6),
                                     thumbVisibility:
-                                        MaterialStateProperty.all<bool>(true),
+                                        WidgetStateProperty.all<bool>(true),
                                   ),
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(

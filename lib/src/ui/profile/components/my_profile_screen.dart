@@ -184,41 +184,25 @@ class MyProfileScreenState extends State<MyProfileScreen> {
   ///Initialising variables
   myProfileArgumentData() {
     firstnameController.text = widget.myProfileArguments.first_name;
-    print("FIRST NAME : ${firstnameController.text}");
-
     lastnameController.text = widget.myProfileArguments.last_name;
-    print("LASTNAME  : ${lastnameController.text}");
-
     dateInputController.text = widget.myProfileArguments.dob;
-
     genderController.text = widget.myProfileArguments.gender;
-    print("GENDER : ${genderController.text}");
-
     nationalityController.text =
         context.read<LanguageBloc>().state.selectedLanguage == Language.english
             ? widget.myProfileArguments.nationality_name_en
             : widget.myProfileArguments.nationality_name_ar;
-    print("NATIONALITY : ${nationalityController.text}");
-
     cityController.text =
         context.read<LanguageBloc>().state.selectedLanguage == Language.english
             ? widget.myProfileArguments.city_name
             : widget.myProfileArguments.city_name_ar;
-    print("CITY : ${cityController.text}");
-
     countryController.text =
         context.read<LanguageBloc>().state.selectedLanguage == Language.english
             ? widget.myProfileArguments.country_name_en
             : widget.myProfileArguments.country_name_ar;
-    print("COUNTRTY : ${countryController.text}");
-
     emailController.text = widget.myProfileArguments.email;
-    print("EMAIL : ${emailController.text}");
-
     mobileController.text = widget.myProfileArguments.mobile_no == "0"
         ? ""
         : widget.myProfileArguments.mobile_no;
-    print("MOBILE NUMBER : ${mobileController.text}");
   }
 
   ///Runtime User Access and Permission handling
@@ -287,16 +271,12 @@ class MyProfileScreenState extends State<MyProfileScreen> {
       Permission permission, BuildContext context) async {
     final status = await permission.request();
     if (status.isGranted) {
-      print("Permission granted");
       _pickImage();
     } else if (status.isDenied) {
-      print("Permission Denied");
       _showPermissionDialog(_scaffoldKey.currentContext!);
     } else if (status.isPermanentlyDenied) {
-      print("Permission permanently denied");
       openSettings();
     } else if (status.isLimited) {
-      print("Permission permanently denied");
       _pickImage();
     }
   }
@@ -449,8 +429,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                   .toString();
                               final UriData? data = Uri.parse(b64).data;
                               Uint8List bytesImage = data!.contentAsBytes();
-                              print("PHOTO CODE : $bytesImage");
-
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -744,8 +722,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                         child: GestureDetector(
                                           onTap: () {
                                             _showDatePicker(context);
-                                            print(
-                                                "DATE OF BIRTH :$selectedDate ");
                                           },
                                           child: DatePickerTextField(
                                             controller: dateInputController,
@@ -803,8 +779,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                               onChanged: (String? value) {
                                                 setState(() {
                                                   selectedGender = value!;
-                                                  print(
-                                                      "SELECTED GENDER :$selectedGender");
                                                 });
                                               },
                                               buttonStyleData: ButtonStyleData(
@@ -853,10 +827,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                   radius:
                                                       const Radius.circular(40),
                                                   thickness:
-                                                      MaterialStateProperty.all<
+                                                      WidgetStateProperty.all<
                                                           double>(6),
                                                   thumbVisibility:
-                                                      MaterialStateProperty.all<
+                                                      WidgetStateProperty.all<
                                                           bool>(true),
                                                 ),
                                               ),
@@ -946,11 +920,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                             int.tryParse(
                                                                 selectedNationality!);
                                                       });
-                                                      print(
-                                                          'Selected Nationality ID: $selectedNationalityID');
-
-                                                      print(
-                                                          'Selected Nationalityvalue : $selectedNationality');
                                                     },
                                                     buttonStyleData:
                                                         ButtonStyleData(
@@ -1007,10 +976,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<double>(6),
                                                         thumbVisibility:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<bool>(
                                                                     true),
                                                       ),
@@ -1107,8 +1076,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                             int.tryParse(
                                                                 selectedCountry!);
                                                       });
-                                                      print(
-                                                          'Selected Country ID: $selectedCountryID');
                                                       BlocProvider.of<CityBloc>(
                                                               context)
                                                           .add(
@@ -1174,10 +1141,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<double>(6),
                                                         thumbVisibility:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<bool>(
                                                                     true),
                                                       ),
@@ -1274,8 +1241,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                     onChanged: (String? value) {
                                                       setState(() {
                                                         selectedCityID = value!;
-                                                        print(
-                                                            "SELECTED CITY ID :$selectedCityID");
                                                       });
                                                     },
                                                     buttonStyleData:
@@ -1333,10 +1298,10 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                         radius: const Radius
                                                             .circular(40),
                                                         thickness:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<double>(6),
                                                         thumbVisibility:
-                                                            MaterialStateProperty
+                                                            WidgetStateProperty
                                                                 .all<bool>(
                                                                     true),
                                                       ),
@@ -1576,26 +1541,6 @@ class MyProfileScreenState extends State<MyProfileScreen> {
                                                       ),
                                                     ),
                                                   );
-                                                  print(
-                                                      'FIRST NAME = $firstnameController');
-                                                  print(
-                                                      'LAST NAME = $lastnameController');
-                                                  print(
-                                                      'DOB = ${selectedDate != null && selectedDate.toString().isNotEmpty ? selectedDate.toString() : dateInputController.text}');
-                                                  print(
-                                                      'GENDER = ${selectedGender != null && selectedGender.toString().isNotEmpty ? selectedGender.toString() : genderController.text}');
-                                                  print(
-                                                      'NATIONALITY  = ${selectedNationalityID != null ? selectedNationalityID! : int.parse(widget.myProfileArguments.nationality_id.toString())}');
-                                                  print(
-                                                      'COUNTRY = ${selectedCountryID != null ? selectedCountryID! : int.parse(widget.myProfileArguments.country_id.toString())}');
-                                                  print(
-                                                      'CITY =  ${selectedCityID != null && selectedCityID.toString().isNotEmpty ? selectedCityID.toString() : widget.myProfileArguments.city.toString()}');
-                                                  print(
-                                                      'Email = $emailController');
-                                                  print(
-                                                      'PHONE NUMBER =  $mobileController');
-                                                  print(
-                                                      "PHOTO  = ${imageUploadFormated.isNotEmpty ? imageUploadFormated : widget.myProfileArguments.photo}");
                                                 } else {
                                                   Fluttertoast.showToast(
                                                     // msg: "All fields are important",

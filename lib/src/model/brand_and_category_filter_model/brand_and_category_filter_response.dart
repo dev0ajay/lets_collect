@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final brandAndCategoryFilterResponse = brandAndCategoryFilterResponseFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -6,64 +9,64 @@ BrandAndCategoryFilterResponse brandAndCategoryFilterResponseFromJson(String str
 String brandAndCategoryFilterResponseToJson(BrandAndCategoryFilterResponse data) => json.encode(data.toJson());
 
 class BrandAndCategoryFilterResponse {
-  final bool success;
-  final int statusCode;
-  final Data data;
+  final bool? success;
+  final int? statusCode;
+  final Data? data;
 
   BrandAndCategoryFilterResponse({
-    required this.success,
-    required this.statusCode,
-    required this.data,
+    this.success,
+    this.statusCode,
+    this.data,
   });
 
   factory BrandAndCategoryFilterResponse.fromJson(Map<String, dynamic> json) => BrandAndCategoryFilterResponse(
     success: json["success"],
     statusCode: json["status_code"],
-    data: Data.fromJson(json["data"]),
+    data: json["data"] == null ? null : Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "status_code": statusCode,
-    "data": data.toJson(),
+    "data": data?.toJson(),
   };
 }
 
 class Data {
-  final List<Brand> brands;
-  final List<Category> category;
+  final List<Brand>? brands;
+  final List<Category>? category;
 
   Data({
-    required this.brands,
-    required this.category,
+    this.brands,
+    this.category,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
-    category: List<Category>.from(json["category"].map((x) => Category.fromJson(x))),
+    brands: json["brands"] == null ? [] : List<Brand>.from(json["brands"]!.map((x) => Brand.fromJson(x))),
+    category: json["category"] == null ? [] : List<Category>.from(json["category"]!.map((x) => Category.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "brands": List<dynamic>.from(brands.map((x) => x.toJson())),
-    "category": List<dynamic>.from(category.map((x) => x.toJson())),
+    "brands": brands == null ? [] : List<dynamic>.from(brands!.map((x) => x.toJson())),
+    "category": category == null ? [] : List<dynamic>.from(category!.map((x) => x.toJson())),
   };
 }
 
 class Brand {
-  final int id;
-  final String brandName;
-  final String brandNameArabic;
-  final String brandLink;
-  final int defaultPoints;
-  final int status;
+  final int? id;
+  final String? brandName;
+  final String? brandNameArabic;
+  final String? brandLink;
+  final int? defaultPoints;
+  final int? status;
 
   Brand({
-    required this.id,
-    required this.brandName,
-    required this.brandNameArabic,
-    required this.brandLink,
-    required this.defaultPoints,
-    required this.status,
+    this.id,
+    this.brandName,
+    this.brandNameArabic,
+    this.brandLink,
+    this.defaultPoints,
+    this.status,
   });
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
@@ -86,14 +89,14 @@ class Brand {
 }
 
 class Category {
-  final int id;
-  final String category;
-  final String categoryNameArabic;
+  final int? id;
+  final String? category;
+  final String? categoryNameArabic;
 
   Category({
-    required this.id,
-    required this.category,
-    required this.categoryNameArabic,
+    this.id,
+    this.category,
+    this.categoryNameArabic,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(

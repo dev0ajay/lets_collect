@@ -234,7 +234,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                 );
                               },
                               child: Text(
-                                // "Try again",
                                 AppLocalizations.of(context)!.tryagain,
                                 style: const TextStyle(
                                     color: AppColors.primaryWhiteColor),

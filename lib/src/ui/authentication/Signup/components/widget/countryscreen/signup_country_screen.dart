@@ -530,10 +530,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                       scrollbarTheme: ScrollbarThemeData(
                                         radius: const Radius.circular(40),
                                         thickness:
-                                            MaterialStateProperty.all<double>(
+                                            WidgetStateProperty.all<double>(
                                                 6),
                                         thumbVisibility:
-                                            MaterialStateProperty.all<bool>(
+                                            WidgetStateProperty.all<bool>(
                                                 true),
                                       ),
                                     ),
@@ -708,10 +708,10 @@ class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
                                       scrollbarTheme: ScrollbarThemeData(
                                         radius: const Radius.circular(40),
                                         thickness:
-                                            MaterialStateProperty.all<double>(
+                                            WidgetStateProperty.all<double>(
                                                 6),
                                         thumbVisibility:
-                                            MaterialStateProperty.all<bool>(
+                                            WidgetStateProperty.all<bool>(
                                                 true),
                                       ),
                                     ),

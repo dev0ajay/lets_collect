@@ -10,7 +10,7 @@ part 'contact_us_event.dart';
 part 'contact_us_state.dart';
 
 class ContactUsBloc extends Bloc<ContactUsEvent, ContactUsState> {
-  final ProfileDataProvider myProfileDataProvider;
+  final ProfileScreenProvider myProfileDataProvider;
   ContactUsBloc({required this.myProfileDataProvider}) : super(ContactUsInitial()) {
     on<GetContactUsEvent>((event, emit) async{
       emit(ContactUsLoading());

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:lets_collect/language.dart';
 
+
 abstract class LanguageEvent extends Equatable {
   const LanguageEvent();
 
@@ -17,3 +18,4 @@ class ChangeLanguage extends LanguageEvent {
 }
 
 class GetLanguage extends LanguageEvent {}
+

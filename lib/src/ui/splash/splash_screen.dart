@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lets_collect/src/model/notification/push_notification_model.dart';
 import 'package:lottie/lottie.dart';
 import '../../bloc/country_bloc/country_bloc.dart';
 import '../../bloc/nationality_bloc/nationality_bloc.dart';
 import '../../constants/assets.dart';
 import '../../constants/colors.dart';
+import '../../constants/strings.dart';
 import '../../utils/api/firebase.dart';
 import '../../utils/data/object_factory.dart';
 import '../../utils/network_connectivity/bloc/network_bloc.dart';
@@ -41,9 +40,20 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  ///Register Notification Service
+  void registerNotification() {
+    FirebaseMessaging fm = FirebaseMessaging.instance;
+    fm.getToken().then((token) {
+      print("token is $token");
+      Strings.FCM = token ?? "";
+      ObjectFactory().prefs.setFcmToken(token: token);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    registerNotification();
     _loadWidget();
     notificationServices.requestNotificationPermission();
     notificationServices.forgroundMessage();

@@ -31,8 +31,6 @@ class UrlsLetsCollect {
   ///Notification
   static const String NOTIFICATION = "/api/lcuser/list_notifications";
 
-  ///Edit Profile
-
 
   ///Profile Screen
   static const String TERMS_AND_CONDITIONS = "/api/lcuser/terms_and_conditions";
@@ -51,6 +49,7 @@ class UrlsLetsCollect {
   static const String REFERRAL_FRIEND = "/api/lcuser/refer_friend";
   static const String REFERRAL_CODE_UPDATE = "/api/lcuser/referral_code_update";
   static const String CHANGE_PASSWORD = "/api/lcadmin/change_password";
+  static const String LANGUAGE_SELECTION = "/api/lcadmin/update_language";
 
 
 
@@ -73,7 +72,6 @@ class UrlsLetsCollect {
   ///Point Tracker
   static const String POINT_TRACKER = "/api/lcuser/point_history";
   static const String POINT_TRACKER_DETAILS = "/api/lcuser/point_history_details";
-
 
 
 }

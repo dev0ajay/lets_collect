@@ -1,7 +1,7 @@
 {
 
     "selectlanguage" : "select Language",
-    "changelanguage" : "Change Language",
+    "changelanguage" : "Change language",
     "youarenotconnectedtotheinternet" : "You are not connected to the internet",
 
     "letscollect" : "Let's Collect",
@@ -25,11 +25,11 @@
     "enteravalidemailaddress" : "Enter a valid email address",
     "theusernamehasalreadybeentaken" : "The user name has already been taken.",
     "theemailhasalreadybeentaken" :  "The email has already been taken.",
-    "themobilenohasalreadybeentaken" : "The mobile no has already been taken.",
+    "themobilenohasalreadybeentaken" : "The mobile number has already been taken.",
     "enteravalidphonenumber" : "Enter a valid phone number",
 
     "next" : "Next",
-    "jointodayandstartcollect" : "Join Today And Start Collect",
+    "jointodayandstartcollect" : "Join Today And Start Collecting",
     "firstname" : "First Name",
     "enterfirstname" : "Enter First Name",
     "lastname" : "Last Name",
@@ -64,7 +64,7 @@
     "pleaseenteravalidmail" : "Please enter a valid mail",
     "donotworry" : "Do not worry! We will help you recover your password.",
     "sentotp" : "Sent OTP",
-    "reset" : "Rest",
+    "reset" : "Reset",
 
     "resetpassword" : "Reset Password",
     "pleaseentertheonetimepassword" : "Please enter the One-Time password to verify your account.",
@@ -248,6 +248,7 @@
     "invalidreferral" : "Invalid Referral",
     "referralexpired" : "Referral Expired",
     "referralsendseuccessfully" : "Referral send Successfully",
+    "pleasetryagainlater" : "Please Try again later",
     "pleaselogoutandreopentheapplication" : "Please Logout and re-open the Application !",
     "pleaseentercorrectreferralcode" : "Please Enter Correct Referral Code !",
     "useralreadyreferred" : "User already referred",
@@ -296,5 +297,7 @@
     "loginwithgoogle" : "Login with Google",
     "loginwithapple" : "Login with Apple",
     "signinwithemail" : "Sign in with email",
-    "inviteafriendandwinmorepoints" : "Invite a friend and win more points!"
+    "inviteafriendandwinmorepoints" : "Invite a friend and win more points!",
+    "rewards" : "Rewards"
+
 }

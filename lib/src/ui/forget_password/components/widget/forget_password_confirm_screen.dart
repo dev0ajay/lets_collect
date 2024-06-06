@@ -13,7 +13,6 @@ import 'package:lets_collect/src/constants/assets.dart';
 import 'package:lets_collect/src/constants/colors.dart';
 import 'package:lets_collect/src/model/auth/forgot_password_reset_request.dart';
 import 'package:lottie/lottie.dart';
-import '../../../../utils/data/object_factory.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../utils/network_connectivity/bloc/network_bloc.dart';

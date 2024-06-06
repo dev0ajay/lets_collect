@@ -37,14 +37,14 @@
         android:enableOnBackInvokedCallback="true"
         android:label="Lets Collect"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher_foreground">
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_stat_app_icon_android" />
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/holo_red_dark"
-            tools:targetApi="ice_cream_sandwich" />
+            android:resource="@mipmap/ic_launcher_foreground" />
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_color"-->
+<!--            android:resource="@android:color/holo_red_dark"-->
+<!--            tools:targetApi="ice_cream_sandwich" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true"

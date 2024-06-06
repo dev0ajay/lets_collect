@@ -29,7 +29,6 @@ class BrandProductListingScreen extends StatefulWidget {
 }
 
 class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
-
   String? eligibleFilter;
   List<String> selectedSortVariants = <String>[];
   String selectedSortFilter = "";
@@ -58,7 +57,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
           sort: "",
           eligible: "",
           brandId: widget.redeemScreenArguments.iD.toString(),
-          redemptionTier: "3",
+
         ),
       ),
     );
@@ -71,9 +70,9 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            )),
+          bottomLeft: Radius.circular(5),
+          bottomRight: Radius.circular(5),
+        )),
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           onPressed: () {
@@ -127,18 +126,19 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Text(
-                                              AppLocalizations.of(context)!.sortby,
+                                              AppLocalizations.of(context)!
+                                                  .sortby,
                                               // "Sort by",
                                               style: GoogleFonts.roboto(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w400,
                                                 color:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                             ),
                                             IconButton(
@@ -146,7 +146,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                               icon: const Icon(
                                                 Icons.close,
                                                 color:
-                                                AppColors.primaryGrayColor,
+                                                    AppColors.primaryGrayColor,
                                               ),
                                             )
                                           ],
@@ -167,92 +167,97 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                       Column(
                                         children: List.generate(
                                           sort.length,
-                                              (index) => Padding(
+                                          (index) => Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 6),
                                             child: Container(
                                               padding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 10,
-                                                  vertical: 6),
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 6),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 mainAxisSize: MainAxisSize.max,
                                                 children: <Widget>[
                                                   Text(
-                                                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                                                    context
+                                                                .read<
+                                                                    LanguageBloc>()
+                                                                .state
+                                                                .selectedLanguage ==
+                                                            Language.english
                                                         ? sort[index]
                                                         : sort_ar[index],
                                                     softWrap: true,
                                                     overflow:
-                                                    TextOverflow.ellipsis,
+                                                        TextOverflow.ellipsis,
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodyLarge!
                                                         .copyWith(
-                                                      fontSize: 15,
-                                                    ),
+                                                          fontSize: 15,
+                                                        ),
                                                   ),
                                                   selectedSortVariants
-                                                      .contains(sort[index])
+                                                          .contains(sort[index])
                                                       ? InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        selectedSortVariants
-                                                            .remove(sort[
-                                                        index]);
-                                                      });
-                                                    },
-                                                    child:
-                                                    const CustomRoundedButton(
-                                                        enabled:
-                                                        true),
-                                                  )
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selectedSortVariants
+                                                                  .remove(sort[
+                                                                      index]);
+                                                            });
+                                                          },
+                                                          child:
+                                                              const CustomRoundedButton(
+                                                                  enabled:
+                                                                      true),
+                                                        )
                                                       : InkWell(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        selectedSortVariants
-                                                            .add(sort[
-                                                        index]);
-                                                        if (selectedSortVariants
-                                                            .length >
-                                                            1) {
-                                                          selectedSortVariants
-                                                              .removeAt(
-                                                              0);
-                                                        }
-                                                        selectedSortFilter =
-                                                        selectedSortVariants[
-                                                        0];
-                                                        if (selectedSortFilter ==
-                                                            "Recent") {
-                                                          sortQuery =
-                                                          "recent";
-                                                        }
-                                                        if (selectedSortFilter ==
-                                                            "Expiry First") {
-                                                          sortQuery =
-                                                          "expire_first";
-                                                        }
-                                                        if (selectedSortFilter ==
-                                                            "Points Low") {
-                                                          sortQuery =
-                                                          "points_low";
-                                                        }
-                                                        if (selectedSortFilter ==
-                                                            "Points High") {
-                                                          sortQuery =
-                                                          "points_high";
-                                                        }
-                                                      });
-                                                    },
-                                                    child:
-                                                    const CustomRoundedButton(
-                                                      enabled: false,
-                                                    ),
-                                                  ),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              selectedSortVariants
+                                                                  .add(sort[
+                                                                      index]);
+                                                              if (selectedSortVariants
+                                                                      .length >
+                                                                  1) {
+                                                                selectedSortVariants
+                                                                    .removeAt(
+                                                                        0);
+                                                              }
+                                                              selectedSortFilter =
+                                                                  selectedSortVariants[
+                                                                      0];
+                                                              if (selectedSortFilter ==
+                                                                  "Recent") {
+                                                                sortQuery =
+                                                                    "recent";
+                                                              }
+                                                              if (selectedSortFilter ==
+                                                                  "Expiry First") {
+                                                                sortQuery =
+                                                                    "expire_first";
+                                                              }
+                                                              if (selectedSortFilter ==
+                                                                  "Points Low") {
+                                                                sortQuery =
+                                                                    "points_low";
+                                                              }
+                                                              if (selectedSortFilter ==
+                                                                  "Points High") {
+                                                                sortQuery =
+                                                                    "points_high";
+                                                              }
+                                                            });
+                                                          },
+                                                          child:
+                                                              const CustomRoundedButton(
+                                                            enabled: false,
+                                                          ),
+                                                        ),
                                                 ],
                                               ),
                                             ),
@@ -274,29 +279,30 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                         left: 20, right: 20, bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         TextButton(
                                           onPressed: () {
                                             clearFilter();
                                             context.pop();
                                             BlocProvider.of<
-                                                BrandAndPartnerProductBloc>(
-                                                context)
+                                                        BrandAndPartnerProductBloc>(
+                                                    context)
                                                 .add(
                                               GetBrandAndPartnerProductRequest(
                                                   brandAndPartnerProductRequest:
-                                                  BrandAndPartnerProductRequest(
-                                                    sort: "",
-                                                    eligible: "",
-                                                    brandId: widget.redeemScreenArguments.iD!,
-                                                    redemptionTier: "2",
-                                                  )
-                                              ),
+                                                      BrandAndPartnerProductRequest(
+                                                sort: "",
+                                                eligible: "",
+                                                brandId: widget
+                                                    .redeemScreenArguments.iD!,
+                                                // redemptionTier: "2",
+                                              )),
                                             );
                                           },
                                           child: Text(
-                                            AppLocalizations.of(context)!.clearall,
+                                            AppLocalizations.of(context)!
+                                                .clearall,
                                             // "Clear All",
                                             style: GoogleFonts.roboto(
                                               color: AppColors.primaryColor,
@@ -310,23 +316,25 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                             fixedSize: const Size(100, 40),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(8),
+                                                  BorderRadius.circular(8),
                                             ),
                                             backgroundColor:
-                                            AppColors.secondaryColor,
+                                                AppColors.secondaryColor,
                                           ),
                                           onPressed: () {
                                             BlocProvider.of<
-                                                BrandAndPartnerProductBloc>(
-                                                context)
+                                                        BrandAndPartnerProductBloc>(
+                                                    context)
                                                 .add(
                                               GetBrandAndPartnerProductRequest(
                                                 brandAndPartnerProductRequest:
-                                                BrandAndPartnerProductRequest(
+                                                    BrandAndPartnerProductRequest(
                                                   sort: sortQuery,
                                                   eligible: "",
-                                                  brandId: widget.redeemScreenArguments.iD!,
-                                                  redemptionTier: "2",
+                                                  brandId: widget
+                                                      .redeemScreenArguments
+                                                      .iD!,
+                                                  // redemptionTier: "2",
                                                 ),
                                               ),
                                             );
@@ -337,7 +345,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                             // "Apply",
                                             style: GoogleFonts.roboto(
                                               color:
-                                              AppColors.primaryWhiteColor,
+                                                  AppColors.primaryWhiteColor,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14,
                                             ),
@@ -370,7 +378,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     ),
                   ],
                 ),
-                child:  Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -381,8 +389,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                         fontSize: 13,
                       ),
                     ),
-                    SvgPicture.asset(Assets.SORT_SVG,height: 10,width: 10),
-
+                    SvgPicture.asset(Assets.SORT_SVG, height: 10, width: 10),
                   ],
                 ),
               ),
@@ -418,7 +425,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                             children: [
                               SizedBox(
                                 height:
-                                MediaQuery.of(context).size.height / 1.6,
+                                    MediaQuery.of(context).size.height / 1.6,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: [
@@ -431,11 +438,12 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                               horizontal: 10, vertical: 6),
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             mainAxisSize: MainAxisSize.max,
                                             children: <Widget>[
                                               Text(
-                                                AppLocalizations.of(context)!.eligible,
+                                                AppLocalizations.of(context)!
+                                                    .eligible,
                                                 // "Eligible",
                                                 softWrap: true,
                                                 overflow: TextOverflow.ellipsis,
@@ -443,77 +451,77 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                                     .textTheme
                                                     .bodyLarge!
                                                     .copyWith(
-                                                  fontSize: 15,
-                                                ),
+                                                      fontSize: 15,
+                                                    ),
                                               ),
                                               eligibleFilter == "Eligible"
                                                   ? InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    eligibleFilter = "";
-                                                    // selectedFilters[]
-                                                  });
-                                                },
-                                                child: Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  decoration:
-                                                  const BoxDecoration(
-                                                    shape: BoxShape
-                                                        .rectangle,
-                                                    image:
-                                                    DecorationImage(
-                                                      image: AssetImage(Assets
-                                                          .DISABLED_TICK),
-                                                      fit: BoxFit.contain,
-                                                      scale: 6,
-                                                    ),
-                                                    color: AppColors
-                                                        .secondaryColor,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          blurRadius: 1.5,
-                                                          color: Colors
-                                                              .black38,
-                                                          offset: Offset(
-                                                              0, 1))
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
+                                                      onTap: () {
+                                                        setState(() {
+                                                          eligibleFilter = "";
+                                                          // selectedFilters[]
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape: BoxShape
+                                                              .rectangle,
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(Assets
+                                                                .DISABLED_TICK),
+                                                            fit: BoxFit.contain,
+                                                            scale: 6,
+                                                          ),
+                                                          color: AppColors
+                                                              .secondaryColor,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                blurRadius: 1.5,
+                                                                color: Colors
+                                                                    .black38,
+                                                                offset: Offset(
+                                                                    0, 1))
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
                                                   : InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    eligibleFilter =
-                                                    "Eligible";
-                                                  });
-                                                },
-                                                child: Container(
-                                                  height: 20,
-                                                  width: 20,
-                                                  decoration:
-                                                  const BoxDecoration(
-                                                    shape: BoxShape
-                                                        .rectangle,
-                                                    color:
-                                                    Color(0xFFD9D9D9),
-                                                    image:
-                                                    DecorationImage(
-                                                      image: AssetImage(Assets
-                                                          .DISABLED_TICK),
-                                                      fit: BoxFit.contain,
+                                                      onTap: () {
+                                                        setState(() {
+                                                          eligibleFilter =
+                                                              "Eligible";
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        height: 20,
+                                                        width: 20,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape: BoxShape
+                                                              .rectangle,
+                                                          color:
+                                                              Color(0xFFD9D9D9),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(Assets
+                                                                .DISABLED_TICK),
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                blurRadius: 1.5,
+                                                                color: Colors
+                                                                    .black38,
+                                                                offset: Offset(
+                                                                    0, 1))
+                                                          ],
+                                                        ),
+                                                      ),
                                                     ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          blurRadius: 1.5,
-                                                          color: Colors
-                                                              .black38,
-                                                          offset: Offset(
-                                                              0, 1))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
                                             ],
                                           ),
                                         ),
@@ -544,14 +552,15 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                           left: 20, right: 20, bottom: 10),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           TextButton(
                                             onPressed: () {
                                               clearFilter();
                                             },
                                             child: Text(
-                                              AppLocalizations.of(context)!.clearall,
+                                              AppLocalizations.of(context)!
+                                                  .clearall,
                                               // "Clear All",
                                               style: GoogleFonts.roboto(
                                                 color: AppColors.underlineColor,
@@ -565,38 +574,39 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                               fixedSize: const Size(100, 40),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(8),
+                                                    BorderRadius.circular(8),
                                               ),
                                               backgroundColor:
-                                              AppColors.secondaryColor,
+                                                  AppColors.secondaryColor,
                                             ),
                                             onPressed: () {
                                               BlocProvider.of<
-                                                  BrandAndPartnerProductBloc>(
-                                                  context)
+                                                          BrandAndPartnerProductBloc>(
+                                                      context)
                                                   .add(
                                                 GetBrandAndPartnerProductRequest(
                                                     brandAndPartnerProductRequest:
-                                                    BrandAndPartnerProductRequest(
-                                                      sort: "",
-                                                      eligible: eligibleFilter ==
+                                                        BrandAndPartnerProductRequest(
+                                                  sort: "",
+                                                  eligible: eligibleFilter ==
                                                           "Eligible"
-                                                          ? "1"
-                                                          : "",
-                                                      brandId: widget
-                                                          .redeemScreenArguments
-                                                          .iD!,
-                                                      redemptionTier: "2",
-                                                    )),
+                                                      ? "1"
+                                                      : "",
+                                                  brandId: widget
+                                                      .redeemScreenArguments
+                                                      .iD!,
+                                                  // redemptionTier: "2",
+                                                )),
                                               );
                                               context.pop();
                                             },
                                             child: Text(
                                               // "Apply",
-                                              AppLocalizations.of(context)!.apply,
+                                              AppLocalizations.of(context)!
+                                                  .apply,
                                               style: GoogleFonts.roboto(
                                                 color:
-                                                AppColors.primaryWhiteColor,
+                                                    AppColors.primaryWhiteColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 14,
                                               ),
@@ -630,12 +640,13 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                         children: [
                                           Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(
-                                                AppLocalizations.of(context)!.filterby,
+                                                AppLocalizations.of(context)!
+                                                    .filterby,
                                                 // "Filter by",
                                                 style: GoogleFonts.roboto(
                                                   fontSize: 16,
@@ -658,7 +669,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                           ),
                                           const Divider(
                                               color:
-                                              AppColors.primaryGrayColor),
+                                                  AppColors.primaryGrayColor),
                                         ],
                                       ),
                                     ),
@@ -687,7 +698,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     ),
                   ],
                 ),
-                child:  Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -698,8 +709,11 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                         fontSize: 13,
                       ),
                     ),
-                    SvgPicture.asset(Assets.FILTER_SVG,height: 10,width: 10,),
-
+                    SvgPicture.asset(
+                      Assets.FILTER_SVG,
+                      height: 10,
+                      width: 10,
+                    ),
                   ],
                 ),
               ),
@@ -713,8 +727,10 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ?
-                  widget.redeemScreenArguments.name : widget.redeemScreenArguments.name,
+                  context.read<LanguageBloc>().state.selectedLanguage ==
+                          Language.english
+                      ? widget.redeemScreenArguments.name!
+                      : widget.redeemScreenArguments.name!,
                   style: GoogleFonts.roboto(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -761,7 +777,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
   }
 
   BlocBuilder<BrandAndPartnerProductBloc, BrandAndPartnerProductState>
-  buildBrandProductGridMethod() {
+      buildBrandProductGridMethod() {
     return BlocBuilder<BrandAndPartnerProductBloc, BrandAndPartnerProductState>(
       builder: (context, state) {
         if (state is BrandAndPartnerProductLoading) {
@@ -787,12 +803,14 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                 Expanded(
                   flex: 2,
                   child: Text(
-                    context.read<LanguageBloc>().state.selectedLanguage == Language.english
+                    context.read<LanguageBloc>().state.selectedLanguage ==
+                            Language.english
                         ? state.errorMsg
-                        : AppLocalizations.of(context)!.oopslookslikewearefacing,                    textAlign: TextAlign.center,
+                        : AppLocalizations.of(context)!
+                            .oopslookslikewearefacing,
+                    textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        color: AppColors.primaryColor),
+                    style: const TextStyle(color: AppColors.primaryColor),
                   ),
                 ),
                 // const Spacer(),
@@ -808,19 +826,21 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                     onPressed: () {
                       BlocProvider.of<BrandAndPartnerProductBloc>(context).add(
                         GetBrandAndPartnerProductRequest(
-                          brandAndPartnerProductRequest: BrandAndPartnerProductRequest(
+                          brandAndPartnerProductRequest:
+                              BrandAndPartnerProductRequest(
                             sort: "",
                             eligible: "",
                             brandId: widget.redeemScreenArguments.iD.toString(),
-                            redemptionTier: "2",
+                            // redemptionTier: "2",
                           ),
                         ),
                       );
                     },
-                    child:  Text(
+                    child: Text(
                       // "Try again",
                       AppLocalizations.of(context)!.tryagain,
-                      style: const TextStyle(color: AppColors.primaryWhiteColor),
+                      style:
+                          const TextStyle(color: AppColors.primaryWhiteColor),
                     ),
                   ),
                 ),
@@ -847,15 +867,31 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      context.push('/redeem_screen',
+                      context.push(
+                        '/redeem_screen',
                         extra: BrandAndPartnerRedeemArguments(
-                          rewardId: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardId!,
-                          requiredPoints: state.brandAndPartnerProductRequestResponse.data!.rewards![index].requiredPoints.toString(),
-                          productImageUrl: state.brandAndPartnerProductRequestResponse.data!.rewards![index].rewardImage!,
+                          rewardId: state.brandAndPartnerProductRequestResponse
+                              .data!.rewards![index].rewardId!,
+                          requiredPoints: state
+                              .brandAndPartnerProductRequestResponse
+                              .data!
+                              .rewards![index]
+                              .requiredPoints
+                              .toString(),
+                          productImageUrl: state
+                              .brandAndPartnerProductRequestResponse
+                              .data!
+                              .rewards![index]
+                              .rewardImage!,
                           qrCodeGenerationUrl: "",
-                          whereToRedeem: state.brandAndPartnerProductRequestResponse.data!.rewards![index].reedemStores!,
+                          whereToRedeem: state
+                              .brandAndPartnerProductRequestResponse
+                              .data!
+                              .rewards![index]
+                              .reedemStores!,
                           from: 'brand_products',
-                          totalPoint: widget.redeemScreenArguments.totalPoint.toString(),
+                          totalPoint: widget.redeemScreenArguments.totalPoint
+                              .toString(),
                         ),
                       );
                     },
@@ -885,29 +921,27 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                                   alignment: Alignment.center,
                                   fadeInCurve: Curves.easeIn,
                                   fadeInDuration:
-                                  const Duration(milliseconds: 200),
+                                      const Duration(milliseconds: 200),
                                   fit: BoxFit.contain,
-                                  imageUrl:
-                                  state
+                                  imageUrl: state
                                       .brandAndPartnerProductRequestResponse
                                       .data!
                                       .rewards![index]
                                       .rewardImage!,
                                   width: MediaQuery.of(context).size.width,
-                                  placeholder: (context, url) =>
-                                      SizedBox(
-                                        // height: getProportionateScreenHeight(170),
-                                        width: MediaQuery.of(context).size.width,
-                                        child: Center(
-                                          child: Lottie.asset(
-                                            Assets.JUMBINGDOT,
-                                            height: 45,
-                                            width: 45,
-                                          ),
-                                        ),
+                                  placeholder: (context, url) => SizedBox(
+                                    // height: getProportionateScreenHeight(170),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: Lottie.asset(
+                                        Assets.JUMBINGDOT,
+                                        height: 45,
+                                        width: 45,
                                       ),
+                                    ),
+                                  ),
                                   errorWidget: (context, url, error) =>
-                                  const ImageIcon(
+                                      const ImageIcon(
                                     color: AppColors.hintColor,
                                     AssetImage(Assets.NO_IMG),
                                   ),
@@ -919,7 +953,7 @@ class _BrandProductListingScreenState extends State<BrandProductListingScreen> {
                             flex: 1,
                             child: Padding(
                               padding:
-                              const EdgeInsets.only(top: 8.0, left: 20),
+                                  const EdgeInsets.only(top: 8.0, left: 20),
                               child: Text(
                                 state.brandAndPartnerProductRequestResponse
                                     .data!.rewards![index].requiredPoints

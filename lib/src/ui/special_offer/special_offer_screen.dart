@@ -604,8 +604,8 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                           List.generate(
                                                                         state
                                                                             .brandAndCategoryFilterResponse
-                                                                            .data
-                                                                            .brands
+                                                                            .data!
+                                                                            .brands!
                                                                             .length,
                                                                         (index) =>
                                                                             Padding(
@@ -623,18 +623,18 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                               mainAxisSize: MainAxisSize.max,
                                                                               children: <Widget>[
                                                                                 Text(
-                                                                                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ? state.brandAndCategoryFilterResponse.data.brands[index].brandName : state.brandAndCategoryFilterResponse.data.brands[index].brandNameArabic,
+                                                                                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ? state.brandAndCategoryFilterResponse.data!.brands![index].brandName! : state.brandAndCategoryFilterResponse.data!.brands![index].brandNameArabic!,
                                                                                   softWrap: true,
                                                                                   overflow: TextOverflow.ellipsis,
                                                                                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                         fontSize: 15,
                                                                                       ),
                                                                                 ),
-                                                                                selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data.brands[index].id.toString())
+                                                                                selectedBrandVariants.contains(state.brandAndCategoryFilterResponse.data!.brands![index].id.toString())
                                                                                     ? InkWell(
                                                                                         onTap: () {
                                                                                           setState(() {
-                                                                                            selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                            selectedBrandVariants.remove(state.brandAndCategoryFilterResponse.data!.brands![index].id.toString());
                                                                                             // selectedFilters[]
                                                                                           });
                                                                                         },
@@ -658,7 +658,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                     : InkWell(
                                                                                         onTap: () {
                                                                                           setState(() {
-                                                                                            selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data.brands[index].id.toString());
+                                                                                            selectedBrandVariants.add(state.brandAndCategoryFilterResponse.data!.brands![index].id.toString());
                                                                                             if (selectedBrandVariants.length > 1) {
                                                                                               selectedBrandVariants.removeAt(0);
                                                                                             }
@@ -737,8 +737,8 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                           List.generate(
                                                                         state
                                                                             .brandAndCategoryFilterResponse
-                                                                            .data
-                                                                            .category
+                                                                            .data!
+                                                                            .category!
                                                                             .length,
                                                                         (index) =>
                                                                             Padding(
@@ -756,18 +756,18 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                               mainAxisSize: MainAxisSize.max,
                                                                               children: <Widget>[
                                                                                 Text(
-                                                                                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ? state.brandAndCategoryFilterResponse.data.category[index].category : state.brandAndCategoryFilterResponse.data.category[index].categoryNameArabic,
+                                                                                  context.read<LanguageBloc>().state.selectedLanguage == Language.english ? state.brandAndCategoryFilterResponse.data!.category![index].category! : state.brandAndCategoryFilterResponse.data!.category![index].categoryNameArabic!,
                                                                                   softWrap: true,
                                                                                   overflow: TextOverflow.ellipsis,
                                                                                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                                                         fontSize: 15,
                                                                                       ),
                                                                                 ),
-                                                                                selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data.category[index].id.toString())
+                                                                                selectedCategoryVariants.contains(state.brandAndCategoryFilterResponse.data!.category![index].id.toString())
                                                                                     ? InkWell(
                                                                                         onTap: () {
                                                                                           setState(() {
-                                                                                            selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                            selectedCategoryVariants.remove(state.brandAndCategoryFilterResponse.data!.category![index].id.toString());
                                                                                             // selectedFilters[]
                                                                                           });
                                                                                         },
@@ -791,7 +791,7 @@ class _SpecialOfferScreenState extends State<SpecialOfferScreen> {
                                                                                     : InkWell(
                                                                                         onTap: () {
                                                                                           setState(() {
-                                                                                            selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data.category[index].id.toString());
+                                                                                            selectedCategoryVariants.add(state.brandAndCategoryFilterResponse.data!.category![index].id.toString());
                                                                                             selectedCategoryFilters = selectedCategoryVariants.join(",");
                                                                                           });
                                                                                         },

@@ -508,8 +508,7 @@ class _CustomScrollViewWidgetState extends State<CustomScrollViewWidget> {
                                       Flexible(
                                         flex: 1,
                                         child: Text(
-                                          "${AppLocalizations.of(context)!.totalpoints}  \n ${state.homeResponse.totalPoints} ${AppLocalizations.of(context)!.pts}",
-                                          // "Total points \n ${state.homeResponse.totalPoints} pts",
+                                          AppLocalizations.of(context)!.rewards,
                                           textAlign: TextAlign.center,
                                           style: GoogleFonts.openSans(
                                             fontSize: 12,

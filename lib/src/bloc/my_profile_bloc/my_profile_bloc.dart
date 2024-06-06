@@ -13,7 +13,7 @@ part 'my_profile_event.dart';
 part 'my_profile_state.dart';
 
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileState> {
-  final ProfileDataProvider myProfileDataProvider;
+  final ProfileScreenProvider myProfileDataProvider;
 
   MyProfileBloc({required this.myProfileDataProvider})
       : super(MyProfileInitial()) {

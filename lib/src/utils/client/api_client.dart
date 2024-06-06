@@ -20,6 +20,7 @@ import '../../model/auth/apple_signin_request.dart';
 import '../../model/change_password/change_password_request.dart';
 import '../../model/contact_us/contact_us_request.dart';
 import '../../model/edit_profile/edit_profile_request.dart';
+import '../../model/language_selection/language_selection_request.dart';
 import '../../model/point_tracker/point_tracker_details_request.dart';
 import '../../model/point_tracker/point_tracker_request.dart';
 import '../../model/purchase_history/purchase_history_details_request.dart';
@@ -143,7 +144,7 @@ class ApiClient {
       onRequest: (reqOptions, handler) {
         return handler.next(reqOptions);
       },
-      onError: (DioError dioError, handler) {
+      onError: (DioException dioError, handler) {
         return handler.next(dioError);
       },
     ));
@@ -541,4 +542,18 @@ class ApiClient {
       }),
     );
   }
+
+  ///Change Language
+  Future<Response> languageSelection(
+      LanguageSelectionRequest languageSelectionRequest) {
+    return dioLetsCollect.post(
+      UrlsLetsCollect.LANGUAGE_SELECTION,
+      data: languageSelectionRequest,
+      options: Options(headers: {
+        "Authorization": ObjectFactory().prefs.getAuthToken(),
+      }),
+    );
+  }
+
+
 }

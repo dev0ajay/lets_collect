@@ -1,10 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lets_collect/src/bloc/facebook_cubit/facebook_signin_cubit.dart';
 import 'package:lets_collect/src/utils/data/object_factory.dart';
 import '../../../bloc/google_signIn_cubit/google_sign_in_cubit.dart';
 import '../../../constants/colors.dart';

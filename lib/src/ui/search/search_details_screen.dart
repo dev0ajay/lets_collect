@@ -223,7 +223,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                           },
                                         ),
                                       ),
-                                    )),
+                                    ),
+                                ),
                                 Expanded(
                                   flex: 2,
                                   child: GestureDetector(
@@ -303,9 +304,9 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     ),
                                   );
                                 },
-                                child: const Text(
-                                  "Try again",
-                                  style: TextStyle(
+                                child:  Text(
+                                  AppLocalizations.of(context)!.tryagain,
+                                  style: const TextStyle(
                                       color: AppColors.primaryWhiteColor),
                                 ),
                               ),
@@ -323,7 +324,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                         ),
                       );
                     } else if (state is BrandLoaded) {
-                      if (state.searchBrandRequestResponse.data.isEmpty) {
+                      if (state.searchBrandRequestResponse.data!.isEmpty) {
                         return Center(
                           child: Lottie.asset(Assets.OOPS),
                         );
@@ -343,7 +344,7 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                               mainAxisSpacing: 15.0,
                             ),
                             itemCount:
-                                state.searchBrandRequestResponse.data.length,
+                                state.searchBrandRequestResponse.data!.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 height: 100.0,
@@ -366,8 +367,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                     onTap: () {
                                       String brandLink = state
                                           .searchBrandRequestResponse
-                                          .data[index]
-                                          .brandLink;
+                                          .data![index]
+                                          .brandLink!;
                                       if (brandLink.isNotEmpty &&
                                           brandLink.isNotEmpty) {
                                         launchUrl(brandLink);
@@ -378,8 +379,8 @@ class _SearchDetailsScreenState extends State<SearchDetailsScreen> {
                                       child: CachedNetworkImage(
                                         imageUrl: state
                                             .searchBrandRequestResponse
-                                            .data[index]
-                                            .brandLogo,
+                                            .data![index]
+                                            .brandLogo!,
                                         width:
                                             MediaQuery.of(context).size.width,
                                         fit: BoxFit.contain,

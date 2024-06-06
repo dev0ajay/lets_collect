@@ -127,9 +127,9 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
+    Color getColor(Set<WidgetState> states) {
+      const Set<WidgetState> interactiveStates = <WidgetState>{
+        WidgetState.pressed,
       };
       // if (states.any(interactiveStates.contains)) {
       //   return Colors.blue;
@@ -286,7 +286,7 @@ class _SignUpFirstScreenState extends State<SignUpFirstScreen> {
                           flex: 1,
                           child: Checkbox(
                             checkColor: AppColors.secondaryColor,
-                            fillColor: MaterialStateProperty.resolveWith(getColor),
+                            fillColor: WidgetStateProperty.resolveWith(getColor),
                             value: isChecked,
                             onChanged: (bool? value) {
                               setState(() {

@@ -10,6 +10,7 @@ class AppColors {
   static const Color primaryGrayColor = Colors.grey;
   static const Color secondaryColor = Color(0xFFF55562);
   static const Color hintColor = Colors.grey;
+  static const Color benchmarkPointColor = Colors.lightGreen;
   static const Color chartAxisLineColors = Color(0xFFDFDFDF);
 
 

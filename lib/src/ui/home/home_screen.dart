@@ -15,6 +15,7 @@ import 'package:lets_collect/src/ui/search/search_screen.dart';
 import 'package:lets_collect/src/utils/screen_size/size_config.dart';
 import '../../bloc/home_bloc/home_bloc.dart';
 import '../../constants/assets.dart';
+import '../../utils/data/object_factory.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,6 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     BlocProvider.of<HomeBloc>(context).add(GetHomeData());
+    print(ObjectFactory().prefs.getFcmToken());
+
     super.initState();
   }
 

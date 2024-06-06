@@ -25,7 +25,7 @@ part 'redemption_history_state.dart';
 
 
 class RedemptionHistoryBloc extends Bloc<RedemptionHistoryEvent, RedemptionHistoryState> {
-  final ProfileDataProvider profileDataProvider;
+  final ProfileScreenProvider profileDataProvider;
 
   RedemptionHistoryBloc({required this.profileDataProvider}) : super(RedemptionHistoryInitial()) {
     // if (profileDataProvider == null) {

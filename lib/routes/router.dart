@@ -30,7 +30,6 @@ import 'package:lets_collect/src/ui/profile/components/privacy_policies.dart';
 import 'package:lets_collect/src/ui/profile/components/terms_and_conditions.dart';
 import 'package:lets_collect/src/ui/reward/components/brand/brand_product_listing_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/lets_collect/lets_collect_redeem_screen.dart';
-import 'package:lets_collect/src/ui/reward/components/partner/partner_product_listing_screen.dart';
 import 'package:lets_collect/src/ui/reward/components/redeem_screen.dart';
 import 'package:lets_collect/src/ui/reward/reward_screen.dart';
 import 'package:lets_collect/src/ui/scan/long_reciept_screen.dart';
@@ -48,7 +47,6 @@ import '../src/ui/home/home_screen.dart';
 import '../src/ui/profile/components/change_password_screen.dart';
 import '../src/ui/profile/components/my_profile_screen_arguments.dart';
 import '../src/ui/profile/profile_screen.dart';
-import '../src/ui/scan/components/scan_detail_screen_argument.dart';
 import '../src/ui/scan/scan_screen.dart';
 
 class AppRouter {
@@ -64,7 +62,7 @@ class AppRouter {
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return CustomTransitionPage<void>(
                   key: state.pageKey,
-                  child: const Login_screen(),
+                  child: const LoginScreen(),
                   transitionDuration: const Duration(milliseconds: 450),
                   transitionsBuilder: (BuildContext context,
                       Animation<double> animation,
@@ -238,30 +236,30 @@ class AppRouter {
                   },
                 );
               }),
-          GoRoute(
-              path: 'partner_products',
-              pageBuilder: (BuildContext context, GoRouterState state) {
-                return CustomTransitionPage<void>(
-                  key: state.pageKey,
-                  child: PartnerProductListingScreen(
-                    redeemScreenArguments:
-                        state.extra as LetCollectRedeemScreenArguments,
-                  ),
-                  transitionDuration: const Duration(milliseconds: 450),
-                  transitionsBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child) {
-                    // Change the opacity of the screen using a Curve based on the the animation's
-                    // value
-                    return FadeTransition(
-                      opacity:
-                          CurveTween(curve: Curves.easeIn).animate(animation),
-                      child: child,
-                    );
-                  },
-                );
-              }),
+          // GoRoute(
+          //     path: 'partner_products',
+          //     pageBuilder: (BuildContext context, GoRouterState state) {
+          //       return CustomTransitionPage<void>(
+          //         key: state.pageKey,
+          //         child: PartnerProductListingScreen(
+          //           redeemScreenArguments:
+          //               state.extra as LetCollectRedeemScreenArguments,
+          //         ),
+          //         transitionDuration: const Duration(milliseconds: 450),
+          //         transitionsBuilder: (BuildContext context,
+          //             Animation<double> animation,
+          //             Animation<double> secondaryAnimation,
+          //             Widget child) {
+          //           // Change the opacity of the screen using a Curve based on the the animation's
+          //           // value
+          //           return FadeTransition(
+          //             opacity:
+          //                 CurveTween(curve: Curves.easeIn).animate(animation),
+          //             child: child,
+          //           );
+          //         },
+          //       );
+          //     }),
           GoRoute(
               path: 'search',
               pageBuilder: (BuildContext context, GoRouterState state) {

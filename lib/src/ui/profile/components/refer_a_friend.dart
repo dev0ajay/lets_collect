@@ -111,7 +111,6 @@ class _ReferralScreenState extends State<ReferralScreen> {
                       } else {
                         referralID = "0";
                       }
-                      print("referralId == $referralID");
                       pageTitle = (context
                                   .read<LanguageBloc>()
                                   .state
@@ -233,8 +232,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                     AppLocalizations.of(context)!
                                         .inviteafriendandwinmorepoints,
                                     style: GoogleFonts.roboto(
-                                        color: AppColors.secondaryColor,
-                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: 16,
                                     ),
                                 ),
@@ -242,8 +241,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                               const SizedBox(height: 20),
                               Expanded(
                                 flex: 0,
-                                child: Text(pageContent),
-                              ),
+                                child: Text(pageContent).animate().then(delay: 800.ms).slideY(),
+                              ).animate(),
                               const SizedBox(
                                 height: 35,
                               ),
@@ -403,12 +402,6 @@ class _ReferralScreenState extends State<ReferralScreen> {
                                                             .text,
                                                       ),
                                                     ));
-                                                    print(
-                                                        "referralId = ${referralID.toString()}");
-                                                    print(
-                                                        "Subject = $nameController");
-                                                    print(
-                                                        "Message = $emailController");
                                                   } else {
                                                     Fluttertoast.showToast(
                                                       msg: AppLocalizations.of(

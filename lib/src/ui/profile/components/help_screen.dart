@@ -53,7 +53,7 @@ class _HelpScreenState extends State<HelpScreen> {
             child: Padding(
               padding: EdgeInsets.only(right: 10),
               child: Text(
-                "v1.2.15+21",
+                "1.3.16+22",
                 style: TextStyle(fontSize: 12),
               ),
             ),

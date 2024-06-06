@@ -4,11 +4,12 @@ import 'package:lets_collect/language.dart';
 import 'package:lets_collect/src/bloc/language/language_event.dart';
 import 'package:lets_collect/src/bloc/language/language_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../../resources/api_providers/profile_screen_provider.dart';
 const languagePrefsKey = 'languagePrefs';
 
 class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
-  LanguageBloc() : super(const LanguageState()) {
+  final ProfileScreenProvider profileScreenProvider;
+  LanguageBloc({required this.profileScreenProvider}) : super(const LanguageState()) {
     on<ChangeLanguage>(onChangeLanguage);
     on<GetLanguage>(onGetLanguage);
   }
@@ -20,6 +21,7 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
       event.selectedLanguage.value.languageCode,
     );
     emit(state.copyWith(selectedLanguage: event.selectedLanguage));
+
   }
 
   onGetLanguage(GetLanguage event, Emitter<LanguageState> emit) async {
@@ -31,6 +33,9 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
           .where((item) => item.value.languageCode == selectedLanguage)
           .first
           : Language.english,
-    ));
+    ),
+    );
   }
+
+
 }
